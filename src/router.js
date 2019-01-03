@@ -1,17 +1,36 @@
+import firebase from 'firebase';
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+
+import Home from "@/views/Home.vue";
+import Login from "@/views/Login.vue";
+import SignUp from "@/views/SignUp.vue";
 
 Vue.use(Router);
-
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/",
-      name: "home",
-      component: Home
+      path: '*',
+      redirect: '/login'
+    },
+    {
+      path: '/',
+      redirect: '/login'
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },     
+    {
+      path: "/home",
+      name: "Home",
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/about",
@@ -21,6 +40,23 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
-    }
+    },
+   
+    {
+      path: "/sign-up",
+      name: "SignUp",
+      component: SignUp
+    }   
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !currentUser) next('login');
+  else if (!requiresAuth && currentUser) next('home');
+  else next();
+});
+
+export default router;
