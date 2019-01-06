@@ -5,6 +5,7 @@ import Router from "vue-router";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
+import Profile from "@/views/Profile.vue";
 
 import ArchiveList from '@/components/ArchiveList'
 import ShowArchive from '@/components/ShowArchive'
@@ -39,6 +40,14 @@ const router = new Router({
       }
     },
     {
+      path: "/profile",
+      name: "Profile",
+      component: Profile,
+      meta: {
+        requiresAuth: true
+      }
+    },    
+    {
       path: "/about",
       name: "about",
       // route level code-splitting
@@ -53,7 +62,7 @@ const router = new Router({
       component: SignUp
     },
     {
-      path: '/list',
+      path: '/archives',
       name: 'ArchiveList',
       component: ArchiveList,
       meta: {

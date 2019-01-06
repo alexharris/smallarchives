@@ -11,10 +11,11 @@
                       placeholder="Enter name">
         </b-form-input>
       </b-form-group>
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <div class="btn-toolbar">
+      <b-button type="submit" variant="primary">Submit</b-button>&nbsp;
+       <b-button type="reset" variant="danger">Reset</b-button>
+    </div>
     </b-form>
-    {{uid}}
   </div>
 </template>
 

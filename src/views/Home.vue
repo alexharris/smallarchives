@@ -1,16 +1,11 @@
 <template>
   <div class="home">
-    <h1>Welcome</h1>
-    <ul>
-      <li>{{ email }}</li>
-      <li>{{ uid }}</li>
-      <li>{{ displayName }}</li>
-    </ul>
+  <b-jumbotron header="Welcome" lead="Lorem ipsum dolor sit amet, consectetur adipiscing elit." >
+  <p>Sed ultrices justo odio, eu consequat sem tristique a. Donec nec aliquam ante. Mauris vitae pellentesque velit. Maecenas felis leo, egestas in leo quis, pharetra fermentum libero. Cras pulvinar est ac justo ultricies consectetur. In eu finibus orci. Duis vitae tempor turpis. Curabitur sit amet laoreet felis. In hac habitasse platea dictumst. </p>
+</b-jumbotron>
 
+    <b-button @click="logout">Logout</b-button>
 
-    <button @click="logout">Logout</button>
-
-    <UserProfileForm />
 
   </div>
 </template>
@@ -18,47 +13,9 @@
 <script>
 
 import firebase from 'firebase';
-import UserProfileForm from '../components/UserProfileForm'
 
 export default {
-  name: "home",
-  components: {
-    UserProfileForm
-  },
-  data() {
-    return {
-      email: 'hello',
-      uid: '',
-      displayName: ''
-    }
-  },
-  created () {
-
-    var currentUser = firebase.auth().currentUser;
-    var email;
-    if (currentUser != null) {
-      this.email = currentUser.email;
-      this.uid = currentUser.uid;
-    }
-    //get user id from auth
-    console.log(this.uid);
-
-    //get the doc for the current user
-    var userRef = firebase.firestore().collection("users").doc(this.uid);
-
-    //update it
-    userRef.get().then((doc) => {
-        if (doc.exists) {
-            this.displayName = doc.data().displayName
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
-
-  },  
+  name: "home", 
   methods: {
   	logout: function() {
   		firebase.auth().signOut().then(() => {
