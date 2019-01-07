@@ -3,7 +3,7 @@
     <b-col cols="12">
       <h2>
         Add Archive
-        <b-link href="archive-list">(Archive List)</b-link>
+        <b-link href="archives">(Archive List)</b-link>
       </h2>
       <b-jumbotron>
         <b-form @submit="onSubmit">
@@ -56,7 +56,7 @@ export default {
       evt.preventDefault()
       // Add a new document to Archives > {user id} > UserArchives
 
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.archive.title).set({
+      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").add({
         title: this.archive.title,
         desc: this.archive.desc
       }).catch((error) => {
@@ -64,7 +64,7 @@ export default {
       });
 
       this.$router.push({
-        name: 'ArchiveList'
+        name: 'Archives'
       })
 
       // this.ref.add(this.archive).then((docRef) => {
@@ -72,7 +72,7 @@ export default {
       //   console.log(this.archive.uid)
       //   this.archive.userid = ''
       //   this.$router.push({
-      //     name: 'ArchiveList'
+      //     name: 'Archives'
       //   })
       // })
       // .catch((error) => {

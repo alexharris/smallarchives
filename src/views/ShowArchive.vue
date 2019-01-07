@@ -10,7 +10,7 @@
           {{archive.title}}
         </template>
         <template slot="lead">
-          Title: {{archive.title}}<br>
+          <p>{{archive.desc}}</p>
         </template>
         <hr class="my-4">
         <b-btn class="edit-btn" variant="success" @click.stop="editarchive(key)">Edit</b-btn>
@@ -33,7 +33,7 @@ export default {
     }
   },
   created () {
-    const ref = firebase.firestore().collection('archives').doc(this.$route.params.id);
+    const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.id);
     ref.get().then((doc) => {
       if (doc.exists) {
         this.key = doc.id;
@@ -51,9 +51,9 @@ export default {
       })
     },
     deletearchive (id) {
-      firebase.firestore().collection('archives').doc(id).delete().then(() => {
+      firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(() => {
         this.$router.push({
-          name: 'ArchiveList'
+          name: 'Archives'
         })
       }).catch((error) => {
         alert("Error removing document: ", error);

@@ -18,8 +18,9 @@
 
 import firebase from 'firebase'
 
+
 export default {
-  name: 'ArchiveList',
+  name: 'Archives',
   data () {
     return {
       fields: {

@@ -7,10 +7,10 @@ import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
 import Profile from "@/views/Profile.vue";
 
-import ArchiveList from '@/components/ArchiveList'
-import ShowArchive from '@/components/ShowArchive'
-import AddArchive from '@/components/AddArchive'
-import EditArchive from '@/components/EditArchive'
+import Archives from '@/views/Archives'
+import ShowArchive from '@/views/ShowArchive'
+import AddArchive from '@/views/AddArchive'
+import EditArchive from '@/views/EditArchive'
 
 Vue.use(Router);
 
@@ -63,8 +63,8 @@ const router = new Router({
     },
     {
       path: '/archives',
-      name: 'ArchiveList',
-      component: ArchiveList,
+      name: 'Archives',
+      component: Archives,
       meta: {
         requiresAuth: true
       }      

@@ -14,6 +14,18 @@
                     label="Enter Title">
             <b-form-input id="title" v-model.trim="archive.title"></b-form-input>
           </b-form-group>
+          <b-form-group id="fieldsetHorizontal"
+                    horizontal
+                    :label-cols="4"
+                    breakpoint="md"
+                    label="Enter Description">
+    <b-form-textarea id="textarea1"
+                     v-model="archive.desc"
+                     placeholder="Enter something"
+                     :rows="3"
+                     :max-rows="6">
+    </b-form-textarea>
+          </b-form-group>          
           <b-button type="submit" variant="primary">Update</b-button>
         </b-form>
       </b-jumbotron>
@@ -34,7 +46,7 @@ export default {
     }
   },
   created () {
-    const ref = firebase.firestore().collection('archives').doc(this.$route.params.id);
+    const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.id);
     ref.get().then((doc) => {
       if (doc.exists) {
         this.archive = doc.data();
@@ -46,7 +58,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      const updateRef = firebase.firestore().collection('archives').doc(this.$route.params.id);
+      const updateRef = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.id);
       updateRef.set(this.archive).then((docRef) => {
         this.key = ''
         this.archive.title = ''
