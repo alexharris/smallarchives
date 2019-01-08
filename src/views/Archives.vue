@@ -14,7 +14,6 @@
 
 import firebase from 'firebase'
 
-
 export default {
   name: 'Archives',
   data () {
@@ -32,7 +31,6 @@ export default {
     this.ref.onSnapshot((querySnapshot) => {
       this.archives = [];
       querySnapshot.forEach((doc) => {
-
         this.archives.push({
           key: doc.id,
           title: doc.data().title

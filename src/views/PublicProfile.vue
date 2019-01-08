@@ -7,8 +7,7 @@
     </ul>
     <ul id="example-1">
       <li v-for="item in archives">
-        {{ item.title }}
-        {{ item.desc }}
+        <a href="#" @click.stop="details(item)">{{ item.title }}</a>
       </li>
     </ul>        
   </div>
@@ -33,8 +32,9 @@ export default {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
+          // Assign the user id from thd document to the uid variable
           this.uid = doc.id
-
+          // Pass the id to getUserArchives to populate that users archives
           this.getUserArchives(doc.id)
       });
     })
@@ -61,7 +61,12 @@ export default {
           });
         });
       });       
+    }   
+  },
+  methods: {
+    details (item) {
+      this.$router.push({ name: 'PublicArchive', params: { id: item.key, username: this.displayName }})
     }
-  }  
+  }   
 };
 </script>

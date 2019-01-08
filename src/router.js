@@ -15,6 +15,7 @@ import AddArchive from '@/views/AddArchive'
 import EditArchive from '@/views/EditArchive'
 
 import PublicProfile from '@/views/PublicProfile'
+import PublicArchive from '@/views/PublicArchive'
 
 Vue.use(Router);
 
@@ -85,12 +86,12 @@ const router = new Router({
       path: "/u/:username",
       name: "PublicProfile",
       component: PublicProfile
-    },
-    // {
-    //   path: "/:user_id/:doc_id",
-    //   name: "PublicProfile",
-    //   component: PublicProfile
-    // }    
+    },   
+    {
+      path: '/u/:username/:id',
+      name: 'PublicArchive',
+      component: PublicArchive
+    }    
   ]
 });
 

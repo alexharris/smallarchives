@@ -1,15 +1,16 @@
 <template>
-  <b-row>
-    <b-col cols="8">
+  <div>
 
 
 
           <h1>{{archive.title}}</h1>
-
           <p>{{archive.desc}}</p>
 
-    </b-col>
-  </b-row>
+          <p>{{key}}</p>
+
+
+  <a href="" @click.stop="goToUser()">Back to {{ this.username }}'s profile</a>
+</div>
 </template>
 
 <script>
@@ -20,20 +21,47 @@ export default {
   name: 'PublicArchive',
   data () {
     return {
+      uid: '',
       key: '',
-      archive: {}
+      archive: {},
+      username:''
     }
   },
   created () {
-    const ref = firebase.firestore().collection('archives').doc(this.$route.params.user_id).collection('userarchives').doc(this.$route.params.doc_id);
-    ref.get().then((doc) => {
-      if (doc.exists) {
-        this.key = doc.id;
-        this.archive = doc.data();
-      } else {
-        alert("No such document!");
-      }
+    this.username = this.$route.params.username
+    // get the user id based on the displayname from the route
+    firebase.firestore().collection('users').where("displayName", "==", this.$route.params.username)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          // Assign the user id from thd document to the uid variable
+          this.uid = doc.id
+          // Pass the id to getArchiveDetails to populate this archives details
+          this.getArchiveDetails(doc.id)
+      });
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
     });
+  },
+  computed: {
+    getArchiveDetails: function() {
+      const ref = firebase.firestore().collection('archives').doc(this.uid).collection('userarchives').doc(this.$route.params.id);
+
+      ref.get().then((doc) => {
+        if (doc.exists) {
+
+          this.key = doc.id;
+          this.archive = doc.data();
+        } else {
+          alert("No such document!");
+        }
+      });
+    },
+    goToUser: function(username) {
+      this.$router.push({ name: 'PublicProfile', params: { username: this.username }})
+    }
   }
 }
 </script>
