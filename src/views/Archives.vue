@@ -1,10 +1,6 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <h2>
-        Archive List
-        <b-link href="add-archive">(Add Archive)</b-link>
-      </h2>
       <b-table striped hover :items="archives" :fields="fields">
         <template slot="actions" scope="row">
           <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>
@@ -51,10 +47,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .table {
-    width: 96%;
-    margin: 0 auto;
-  }
-</style>

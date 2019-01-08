@@ -2,15 +2,19 @@ import firebase from 'firebase';
 import Vue from "vue";
 import Router from "vue-router";
 
-import Home from "@/views/Home.vue";
+import Admin from "@/views/Admin.vue";
+
 import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
 import Profile from "@/views/Profile.vue";
 
+import Dashboard from '@/views/Dashboard'
 import Archives from '@/views/Archives'
 import ShowArchive from '@/views/ShowArchive'
 import AddArchive from '@/views/AddArchive'
 import EditArchive from '@/views/EditArchive'
+
+import PublicProfile from '@/views/PublicProfile'
 
 Vue.use(Router);
 
@@ -20,11 +24,52 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      redirect: '/admin'
     },
     {
       path: '/',
       redirect: '/login'
+    },
+    {
+      path: "/admin",
+      name: "Admin",
+      component: Admin,
+      redirect: '/admin/dashboard',
+      meta: {
+        requiresAuth: true
+      },        
+      children: [
+        {
+          path: '/admin/archives',
+          name: 'Archives',
+          component: Archives
+        },
+        {
+          path: '/admin/dashboard',
+          name: 'Dashboard',
+          component: Dashboard
+        },        
+        {
+          path: '/admin/show-archive/:id',
+          name: 'ShowArchive',
+          component: ShowArchive
+        },   
+        {
+          path: '/admin/add-archive',
+          name: 'addArchive',
+          component: AddArchive           
+        },
+        {
+          path: '/admin/edit-archive/:id',
+          name: 'EditArchive',
+          component: EditArchive
+        },
+        {
+          path: "/admin/profile",
+          name: "Profile",
+          component: Profile
+        }            
+      ]
     },
     {
       path: "/login",
@@ -32,61 +77,20 @@ const router = new Router({
       component: Login
     },     
     {
-      path: "/home",
-      name: "Home",
-      component: Home,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/profile",
-      name: "Profile",
-      component: Profile,
-      meta: {
-        requiresAuth: true
-      }
-    },    
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
-    }, 
-    {
       path: "/sign-up",
       name: "SignUp",
       component: SignUp
     },
     {
-      path: '/archives',
-      name: 'Archives',
-      component: Archives,
-      meta: {
-        requiresAuth: true
-      }      
-    },    
-    {
-      path: '/show-archive/:id',
-      name: 'ShowArchive',
-      component: ShowArchive
+      path: "/u/:username",
+      name: "PublicProfile",
+      component: PublicProfile
     },
-    {
-      path: '/add-archive',
-      name: 'addArchive',
-      component: AddArchive,
-      meta: {
-        requiresAuth: true
-      }        
-    },
-    {
-      path: '/edit-archive/:id',
-      name: 'EditArchive',
-      component: EditArchive
-    }
+    // {
+    //   path: "/:user_id/:doc_id",
+    //   name: "PublicProfile",
+    //   component: PublicProfile
+    // }    
   ]
 });
 

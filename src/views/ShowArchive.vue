@@ -1,10 +1,10 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <h2>
-        Show Archive
-        <b-link href="/list">(Archive List)</b-link>
-      </h2>
+
+
+        <b-link href="/archives">Back to archives</b-link>
+
       <b-jumbotron>
         <template slot="header">
           {{archive.title}}
@@ -62,13 +62,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .jumbotron {
-    padding: 2rem;
-  }
-  .edit-btn {
-    margin-right: 20px;
-    width: 70px;
-  }
-</style>
