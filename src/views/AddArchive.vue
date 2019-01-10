@@ -31,7 +31,6 @@
 <script>
 
 import firebase from 'firebase'
-import UserProfileForm from '../components/UserProfileForm'
 
 
 // userRef = firebase.firestore().collection("users").doc(this.uid);

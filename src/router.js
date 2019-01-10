@@ -7,6 +7,7 @@ import Admin from "@/views/Admin.vue";
 import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
 import Profile from "@/views/Profile.vue";
+import EditUserProfile from "@/views/EditUserProfile.vue";
 
 import Archives from '@/views/Archives'
 import ShowArchive from '@/views/ShowArchive'
@@ -55,8 +56,12 @@ const router = new Router({
           path: "/admin/profile",
           name: "Profile",
           component: Profile
-        },                  
-
+        },   
+        {
+          path: "/admin/edit-profile",
+          name: "EditProfile",
+          component: EditUserProfile
+        },                         
       ]      
     },
     {

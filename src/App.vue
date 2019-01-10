@@ -31,7 +31,8 @@ export default {
     	return this.$store.getters.getUser;
     },
     displayName: function() {
-		return this.$store.getters.getUser.email;
+
+		return this.$store.getters.getUser.displayName;
     },   
   }, 
   methods: {
