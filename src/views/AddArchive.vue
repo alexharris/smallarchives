@@ -3,7 +3,6 @@
     <b-col cols="12">
       <h2>
         Add Archive
-        <b-link href="archives">(Archive List)</b-link>
       </h2>
       <b-jumbotron>
         <b-form @submit="onSubmit">

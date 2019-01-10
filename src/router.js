@@ -8,7 +8,6 @@ import Login from "@/views/Login.vue";
 import SignUp from "@/views/SignUp.vue";
 import Profile from "@/views/Profile.vue";
 
-import Dashboard from '@/views/Dashboard'
 import Archives from '@/views/Archives'
 import ShowArchive from '@/views/ShowArchive'
 import AddArchive from '@/views/AddArchive'
@@ -24,37 +23,24 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '*',
-      redirect: '/admin'
-    },
-    {
-      path: '/',
-      redirect: '/login'
-    },
-    {
       path: "/admin",
       name: "Admin",
       component: Admin,
-      redirect: '/admin/dashboard',
+      redirect: '/admin/archives',
       meta: {
         requiresAuth: true
-      },        
-      children: [
+      },
+      children: [      
         {
           path: '/admin/archives',
           name: 'Archives',
           component: Archives
         },
         {
-          path: '/admin/dashboard',
-          name: 'Dashboard',
-          component: Dashboard
-        },        
-        {
           path: '/admin/show-archive/:id',
           name: 'ShowArchive',
           component: ShowArchive
-        },   
+        }, 
         {
           path: '/admin/add-archive',
           name: 'addArchive',
@@ -69,8 +55,9 @@ const router = new Router({
           path: "/admin/profile",
           name: "Profile",
           component: Profile
-        }            
-      ]
+        },                  
+
+      ]      
     },
     {
       path: "/login",
@@ -91,7 +78,11 @@ const router = new Router({
       path: '/u/:username/:id',
       name: 'PublicArchive',
       component: PublicArchive
-    }    
+    },
+    {
+      path: '*',
+      redirect: '/admin'
+    }   
   ]
 });
 

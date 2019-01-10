@@ -24,9 +24,11 @@
     },
     methods: {
       login: function() {
+
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
-            this.$router.replace('admin/dashboard')
+            this.$store.dispatch('setUser')
+            this.$router.replace('admin/archives')
           },
           (err) => {
             alert('Oops. ' + err.message)

@@ -55,11 +55,6 @@ export default {
         console.log("Error getting document:", error);
     });
 
-  },
-  computed: {
-    getUserIdFromDisplayName: function() {
-      return 'alex'
-    }
   }
 };
 </script>
