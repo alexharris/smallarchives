@@ -1,12 +1,17 @@
 <template>
-  <b-row>
-    <b-table striped hover :items="archives" :fields="fields">
-      <template slot="actions" scope="row">
-        <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
-        <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
-      </template>
-    </b-table>
-  </b-row>
+  <div>
+    <b-row class="mb-3">
+      <b-button href="/admin/add-archive" variant="primary">New Archive</b-button>
+    </b-row>
+    <b-row>
+      <b-table striped hover :items="archives" :fields="fields">
+        <template slot="actions" scope="row">
+          <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
+          <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
+        </template>
+      </b-table>
+    </b-row>
+  </div>
 </template>
 
 <script>

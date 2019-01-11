@@ -4,7 +4,7 @@
       <h2>
         Add Archive
       </h2>
-      <b-jumbotron>
+
         <b-form @submit="onSubmit">
           <b-form-group id="fieldsetHorizontal"
                     horizontal
@@ -23,7 +23,6 @@
           </b-form-group>
           <b-button type="submit" variant="primary">Save</b-button>
         </b-form>
-      </b-jumbotron>
     </b-col>
   </b-row>
 </template>
@@ -80,9 +79,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .jumbotron {
-    padding: 2rem;
-  }
-</style>
