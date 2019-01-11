@@ -25,7 +25,8 @@
     methods: {
       login: function() {
 
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(
           (user) => {
             this.$store.dispatch('setUser')
             this.$router.replace('admin/archives')

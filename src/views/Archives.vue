@@ -1,13 +1,11 @@
 <template>
   <b-row>
-    <b-col cols="12">
-      <b-table striped hover :items="archives" :fields="fields">
-        <template slot="actions" scope="row">
-          <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
-          <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
-        </template>
-      </b-table>
-    </b-col>
+    <b-table striped hover :items="archives" :fields="fields">
+      <template slot="actions" scope="row">
+        <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
+        <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
+      </template>
+    </b-table>
   </b-row>
 </template>
 

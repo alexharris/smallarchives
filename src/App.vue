@@ -1,23 +1,23 @@
 <template>
 	<div id="app"> 
-    	<b-navbar variant="dark" type="dark" toggleable="md">
-        	<b-navbar-brand href="#">Memory Palace</b-navbar-brand>
-        	
-        	<b-navbar-nav class="ml-auto">
-         		<b-nav-item-dropdown right v-if="user">
-            		<!-- Using button-content slot -->
-            		<template slot="button-content">
-              			{{displayName}}
-            		</template>
-            		<b-dropdown-item href="/admin/archives">Dashboard</b-dropdown-item>
-            		<b-dropdown-item href="/admin/profile">Profile</b-dropdown-item>
-            		<b-dropdown-item @click="this.logout">Logout</b-dropdown-item>
-          		</b-nav-item-dropdown>
-        	</b-navbar-nav>      
-        </b-navbar>  	
-		<b-container> 		
-			<router-view/>
-		</b-container>   
+  	<b-navbar variant="faded" type="light" toggleable="md">
+      	<b-navbar-brand href="#">Memory Palace</b-navbar-brand>
+      	
+      	<b-navbar-nav class="ml-auto">
+       		<b-nav-item-dropdown right v-if="user">
+          		<!-- Using button-content slot -->
+          		<template slot="button-content">
+            			{{displayName}}
+          		</template>
+          		<b-dropdown-item href="/admin/archives">Dashboard</b-dropdown-item>
+          		<b-dropdown-item href="/admin/profile">Profile</b-dropdown-item>
+          		<b-dropdown-item @click="this.logout">Logout</b-dropdown-item>
+        		</b-nav-item-dropdown>
+      	</b-navbar-nav>      
+      </b-navbar>  	
+  		<b-container> 		
+  			<router-view/>
+  		</b-container>   
   	</div>
 </template>
 
@@ -55,6 +55,11 @@ export default {
     this.setUser();
   }
 }
-
-
 </script>
+
+<style scoped>
+  nav {
+    border-bottom: 1px solid #000;
+    margin-bottom: 10px;
+  }
+</style>

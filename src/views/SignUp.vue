@@ -1,18 +1,29 @@
 <template>
   <div class="sign-up">   
-    <p>Let's create a new account !</p>
+    <h3>Create new account</h3>
+    <template v-if="error">
+      <b-alert variant="danger" show>{{error}}</b-alert>
+    </template>     
+    
     <b-form-group label="Username:" label-for="displayName">
-      <b-form-input id="displayName" type="text" v-model="displayName" placeholder="Username"></b-form-input>
+      <b-form-input id="displayName" type="text" v-model.trim="displayName" placeholder="Username"></b-form-input>   
+      <b-form-text id="inputLiveHelp">
+        <!-- this is a form text block (formerly known as help block) -->
+        This is the name by which your archives will be accessed.
+      </b-form-text>      
     </b-form-group>     
     <b-form-group label="Email Address:" label-for="loginEmail">
-      <b-form-input id="loginEmail" type="text" v-model="email" placeholder="Email"></b-form-input>
+      <b-form-input id="loginEmail" type="text" v-model="email" placeholder="Email"></b-form-input>       
     </b-form-group>
     <b-form-group label="Password:" label-for="loginPassword">
       <b-form-input id="loginPassword" type="password" v-model="password" placeholder="Password"></b-form-input>
     </b-form-group> 
-    <b-button @click="checkUsername">Sign Up</b-button>
+
+    <b-button @click="checkUsername" size="lg" variant="outline-primary">Sign Up</b-button>
     <p>or go back to <router-link to="/login">login</router-link>.</p>
   </div>
+    
+
 </template>
 
  <script>
@@ -23,7 +34,8 @@
       return {
         email: '',
         password: '',
-        displayName: ''
+        displayName: '',
+        error: null
       }
     },
     methods: {
@@ -35,7 +47,7 @@
           if(querySnapshot.empty == true) {
             this.signUp()
           } else {
-            console.log('already exists!')
+            this.returnError('This username is taken!');
           }
         })
         .catch(function(error) {
@@ -73,10 +85,19 @@
             
           },
           (err) => {
-            alert('Oops. ' + err.message)
+            this.returnError(err.message)
           }
         );
-      }
-    }
+      },
+      returnError(errorMessage) {
+        this.error = errorMessage
+      }       
+    },
+    computed: {
+      nameState () {
+        return this.displayName.length > 2 ? true : false
+      },
+              
+    }    
   }
 </script>
