@@ -20,7 +20,12 @@
                     label="Enter Description">
             <b-form-input id="desc" v-model.trim="archive.desc"></b-form-input>
           </b-form-group>
-          </b-form-group>
+          <template>
+            <div>
+              <b-form-file v-model="file" placeholder="Choose a file..."></b-form-file>
+              <div class="mt-3">Selected file: {{file && file.name}}</div>
+            </div>
+          </template>          
           <b-button type="submit" variant="primary">Save</b-button>
         </b-form>
     </b-col>
@@ -30,10 +35,7 @@
 <script>
 
 import firebase from 'firebase'
-
-
-// userRef = firebase.firestore().collection("users").doc(this.uid);
-// console.log(userRef);
+import UploadAsset from '../components/UploadAsset'
 
 export default {
   name: 'AddArchive',
@@ -41,7 +43,8 @@ export default {
     return {
       ref: firebase.firestore().collection('archives'),
       archive: {},
-      uid: ''
+      uid: '',
+      file: null,
     }
   },
   created() {
@@ -51,18 +54,31 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      // Add a new document to Archives > {user id} > UserArchives
+      
+      //-------------
+      // UPLOAD IMAGE
+      //-------------
+      var file = this.file // use the Blob or File API
 
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").add({
-        title: this.archive.title,
-        desc: this.archive.desc
-      }).catch((error) => {
-        alert("Error adding document: ", error);
+      firebase.storage().ref(this.uid + '/' + file.name).put(file).then(function(snapshot) {
+        console.log('Uploaded a blob or file!');
       });
 
       this.$router.push({
         name: 'Archives'
       })
+
+      //-------------
+      // ADD ARCHIVE DATA
+      //-------------
+
+      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").add({
+        title: this.archive.title,
+        desc: this.archive.desc,
+        file: file.name
+      }).catch((error) => {
+        alert("Error adding document: ", error);
+      });      
 
       // this.ref.add(this.archive).then((docRef) => {
       //   this.archive.title = ''

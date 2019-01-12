@@ -5,17 +5,20 @@
 
         <b-link href="/archives">Back to archives</b-link>
 
-      <b-jumbotron>
+
         <template slot="header">
           {{archive.title}}
         </template>
         <template slot="lead">
           <p>{{archive.desc}}</p>
         </template>
+        <ListAssets />  
+        <hr class="my-4">
+        <UploadAsset />   
         <hr class="my-4">
         <b-btn class="edit-btn" variant="success" @click.stop="editarchive(key)">Edit</b-btn>
         <b-btn variant="danger" @click.stop="deletearchive(key)">Delete</b-btn>
-      </b-jumbotron>
+ 
     </b-col>
   </b-row>
 </template>
@@ -23,9 +26,15 @@
 <script>
 
 import firebase from 'firebase'
+import ListAssets from '../components/ListAssets'
+import UploadAsset from '../components/UploadAsset'
 
 export default {
   name: 'ShowArchive',
+  components: {
+    UploadAsset,
+    ListAssets
+  },  
   data () {
     return {
       key: '',

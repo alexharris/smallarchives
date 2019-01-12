@@ -1,13 +1,10 @@
 <template>
   <div>
 
-
-
           <h1>{{archive.title}}</h1>
           <p>{{archive.desc}}</p>
 
-          <p>{{key}}</p>
-
+          <DisplayArchiveItems />
 
   <a href="" @click.stop="goToUser()">Back to {{ this.username }}'s profile</a>
 </div>
@@ -16,6 +13,7 @@
 <script>
 
 import firebase from 'firebase'
+import DisplayArchiveItems from '../components/displayArchiveItems'
 
 export default {
   name: 'PublicArchive',
@@ -26,6 +24,9 @@ export default {
       archive: {},
       username:''
     }
+  },
+  components: {
+    DisplayArchiveItems
   },
   created () {
     this.username = this.$route.params.username
