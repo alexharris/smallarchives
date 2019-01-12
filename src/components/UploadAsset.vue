@@ -7,8 +7,20 @@
     <!-- Modal Component -->
     <b-modal id="modal1" ref="myModalRef" title="Bootstrap-Vue" @ok="onSubmit">
       <b-form >
-        <b-form-file v-model="file" placeholder="Choose a file..."></b-form-file>
-        <div class="mt-3">Selected file: {{file && file.name}}</div>
+        <b-form-group id="assetTitle"
+                      horizontal
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Enter Title">
+          <b-form-input id="assetTitle" v-model="assetTitle"></b-form-input>
+        </b-form-group> 
+        <b-form-group id="uploadAsset"
+                      horizontal
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Upload Asset">
+          <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
+        </b-form-group>
       </b-form>
     </b-modal>
   </div>    
@@ -21,10 +33,6 @@
 
 import firebase from 'firebase'
 
-
-// userRef = firebase.firestore().collection("users").doc(this.uid);
-// console.log(userRef);
-
 export default {
   name: 'UploadAsset',
   data () {
@@ -32,7 +40,8 @@ export default {
       ref: firebase.firestore().collection('archives'),
       archive: {},
       uid: '',
-      file: null
+      file: null,
+      assetTitle: ''
     }
   },
   created() {
@@ -47,14 +56,20 @@ export default {
       // UPLOAD IMAGE
       //-------------
       var file = this.file // use the Blob or File API
+      var assetTitle = this.assetTitle
 
       firebase.storage().ref(this.uid + '/' + file.name).put(file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
         this.$refs.myModalRef.hide()
       });
 
+      //-------------
+      // ADD ARCHIVE DATA
+      //-------------      
+
       firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
-        file: file.name
+        file: file.name,
+        assetTitle: assetTitle
       }).catch((error) => {
         alert("Error adding document: ", error);
       });          
