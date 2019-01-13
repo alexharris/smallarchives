@@ -2,10 +2,11 @@
 
   <template>
   <div>
-    <b-btn v-b-modal.modal1>Add Image</b-btn>
-
+    <!-- <b-btn v-b-modal.modal1>Add Image</b-btn> -->
+<b-btn @click.stop="goBackOne">Back</b-btn>
+<hr class="my-4" />
     <!-- Modal Component -->
-    <b-modal id="modal1" ref="myModalRef" title="Bootstrap-Vue" @ok="onSubmit">
+    <!-- <b-modal id="modal1" ref="myModalRef" title="Bootstrap-Vue" @ok="onSubmit"> -->
       <b-form >
         <b-form-group id="assetTitle"
                       horizontal
@@ -21,8 +22,10 @@
                       label="Upload Asset">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
         </b-form-group>
+        <hr class="my-4">
+        <b-btn  variant="outline-primary" @click.stop="onSubmit">Submit</b-btn>
       </b-form>
-    </b-modal>
+    <!-- </b-modal> -->
   </div>    
 
 
@@ -60,21 +63,27 @@ export default {
 
       firebase.storage().ref(this.uid + '/' + file.name).put(file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
-        this.$refs.myModalRef.hide()
+        //-------------
+        // ADD ARCHIVE DATA
+        //-------------      
+
+        firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
+          file: file.name,
+          assetTitle: assetTitle
+        }).catch((error) => {
+          alert("Error adding document: ", error);
+        });  
+
+        this.goBackOne();
+        
+
       });
 
-      //-------------
-      // ADD ARCHIVE DATA
-      //-------------      
-
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
-        file: file.name,
-        assetTitle: assetTitle
-      }).catch((error) => {
-        alert("Error adding document: ", error);
-      });          
 
 
+    },
+    goBackOne() {
+      this.$router.go(-1)
     }    
   }
 }

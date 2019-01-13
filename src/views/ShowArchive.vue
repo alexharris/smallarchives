@@ -1,24 +1,24 @@
 <template>
   <b-row>
     <b-col cols="12">
+      <b-btn href="/archives" variant="outline-secondary">Back</b-btn>&nbsp;
+      <b-btn class="float-right" variant="outline-primary" @click.stop="editarchive(key)">Edit</b-btn>   
+      <hr my="4" />      
+      <h1>{{archive.title}}</h1>
+      <p>{{archive.desc}}</p>
+      <hr class="my-4" />          
+      
+          
+      
 
+    <b-row class="my-4">
+        <b-col><h2>Items</h2></b-col>
+        <b-col><b-btn @click.stop="addItemButton(key)" variant="outline-primary" class="float-right">Add Item</b-btn></b-col>
+    </b-row>
 
-        <b-link href="/archives">Back to archives</b-link>
-
-
-        <template slot="header">
-          {{archive.title}}
-        </template>
-        <template slot="lead">
-          <p>{{archive.desc}}</p>
-        </template>
-        <ListAssets />  
-        <hr class="my-4">
-        <UploadAsset />   
-        <hr class="my-4">
-        <b-btn class="edit-btn" variant="success" @click.stop="editarchive(key)">Edit</b-btn>
-        <b-btn variant="danger" @click.stop="deletearchive(key)">Delete</b-btn>
- 
+      <ListAssets />  
+      
+    
     </b-col>
   </b-row>
 </template>
@@ -27,12 +27,10 @@
 
 import firebase from 'firebase'
 import ListAssets from '../components/ListAssets'
-import UploadAsset from '../components/UploadAsset'
 
 export default {
   name: 'ShowArchive',
   components: {
-    UploadAsset,
     ListAssets
   },  
   data () {
@@ -59,14 +57,11 @@ export default {
         params: { id: id }
       })
     },
-    deletearchive (id) {
-      firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(() => {
-        this.$router.push({
-          name: 'Archives'
-        })
-      }).catch((error) => {
-        alert("Error removing document: ", error);
-      });
+    addItemButton (id) {
+      this.$router.push({
+        name: 'UploadAsset',
+        params: { id: id }
+      })
     }
   }
 }

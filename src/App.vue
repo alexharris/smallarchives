@@ -2,7 +2,7 @@
 	<div id="app"> 
   	<b-navbar variant="faded" type="light" toggleable="sm">
       <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
-      	<b-navbar-brand href="#">Memory Palace</b-navbar-brand>
+      	<b-navbar-brand href="#">SmallArchives</b-navbar-brand>
       	<b-collapse is-nav id="nav_collapse">
         	<b-navbar-nav class="ml-auto">
             <b-nav-item href="/">Home</b-nav-item> 

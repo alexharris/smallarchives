@@ -3,12 +3,17 @@
     <b-col cols="12">
 
 
-    <table id="example-1">
+    <table bordered="true" id="example-1" class="table table-striped table-bordered">
       <tr v-for="item in renderedAssets">
         <td>{{item.assetTitle}}</td>
         <td>{{item.assetName}}</td>
-        <td><img :src="item.assetSrc" /></td>
-        <td>Edit</td>
+        <td>{{item.assetId}}</td>
+        <!-- <td><img :src="item.assetSrc" /></td> -->
+        <td >
+          
+
+          <b-btn variant="outline-secondary" size="sm" class="float-right mr-2" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
+        </td>
       </tr>
     </table>  
 
@@ -26,10 +31,15 @@ export default {
     return {
       assets: [],
       renderedAssets: [],
+      uid: ''
     }
   },
   created() {
     this.createAssetArray()
+
+    var currentUser = firebase.auth().currentUser;
+    this.uid = currentUser.uid;
+   
   },
   methods: {
     // This function creates an array called 'assets' that contains 
@@ -52,7 +62,8 @@ export default {
             // filename: doc.data().file
             filePath: firebase.auth().currentUser.uid + '/' + doc.data().file,
             fileName: doc.data().file,
-            assetTitle: doc.data().assetTitle
+            assetTitle: doc.data().assetTitle,
+            assetId: doc.id
           });
         });
         this.renderAssetArray()
@@ -69,13 +80,46 @@ export default {
           this.renderedAssets.push({
             assetSrc: url,
             assetName: doc.fileName,
-            assetTitle: doc.assetTitle
+            assetTitle: doc.assetTitle,
+            assetId: doc.assetId
           })
         }).catch(function(error) {
           console.log(error.message)
         })
       })
-    }     
+    },
+    itemEdit (assetTitle, assetId) {
+      this.$router.push({
+        name: 'EditAsset',
+        params: { archive_id: this.$route.params.id, asset_id: assetId }
+      })
+    },    
+    itemDelete (assetName, assetId) {
+      // Delete item from storage
+      console.log(this.uid)
+      console.log(assetName)
+      console.log(this.uid + '/' + assetName)
+
+      firebase.storage().ref().child(this.uid + '/' + assetName).delete().then(function() {
+        // File deleted successfully
+        console.log('file deleted successful')
+        // Delete item from database
+        firebase.firestore().collection('archives').doc(this.uid).collection('userarchives').doc(this.$route.params.id).collection('assets').doc(assetId).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+      }).catch(function(error) {
+        // Uh-oh, an error occurred!
+      });      
+
+      
+      
+
+
+      
+    },
+    
   }
 }
 </script>

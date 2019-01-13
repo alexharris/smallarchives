@@ -1,16 +1,28 @@
 <template>
   <div>
-    <b-row class="mb-3">
-      <b-button href="/admin/add-archive" variant="primary">New Archive</b-button>
-    </b-row>
-    <b-row>
-      <b-table striped hover :items="archives" :fields="fields">
-        <template slot="actions" scope="row">
-          <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
-          <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
-        </template>
-      </b-table>
-    </b-row>
+    <div v-if="archives.length == 0">
+      <b-jumbotron>
+        <h3>Welcome to Memory Palace</h3>
+        <p>You have no archives at this time. Create a new one to get started</p>
+        <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
+
+      </b-jumbotron>      
+
+    </div>
+    <div v-else>
+      <b-row class="mb-3">
+        <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
+      </b-row>
+      <b-row>
+        <b-table hover :items="archives" :fields="fields">
+          <template slot="actions" scope="row">
+            <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
+            <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
+          </template>
+        </b-table>
+      </b-row>
+    </div>
+
   </div>
 </template>
 
