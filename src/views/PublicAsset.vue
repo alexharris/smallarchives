@@ -23,6 +23,19 @@
 			<b-col cols="12" class="col-md-6">
 				<p>Asset ID: {{asset.assetId}}</p>
 				<p>Filename: {{asset.assetName}}</p>
+				<h4>Custom Fields</h4>
+				<table class="table-bordered table">
+					<thead>
+						<tr>
+						  <th scope="col">Field</th>
+						  <th scope="col">Value</th>
+						</tr>
+					</thead>					
+					<tr v-for="item in asset.customFields">
+						<td>{{item.fieldLabel}}</td>
+						<td>{{item.fieldValue}}</td>
+					</tr>
+				</table>
 			</b-col>
 		</b-row>
 	</div>
@@ -39,7 +52,8 @@ export default {
 	        assetTitle: '',
 	        assetName: '',
 	        assetId: '',
-	        filePath: ''			
+	        filePath: '',
+	        customFields: ''			
   		},
   		assetSrc: '',
   		uid: ''
@@ -82,6 +96,8 @@ export default {
 	        this.asset.assetTitle = doc.data().assetTitle
 	        this.asset.assetName = doc.data().file
 	        this.asset.assetId = doc.id
+	        this.asset.customFields = doc.data().customFields
+	        console.log(doc.data().customFields)
 
 	        this.getAssetSrc()
 	      } else {

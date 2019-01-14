@@ -5,6 +5,13 @@
     <!-- <b-btn v-b-modal.modal1>Add Image</b-btn> -->
     <b-btn @click.stop="goBackOne">Back</b-btn>
     <hr class="my-4" />
+    <template v-if="errors.length > 0">
+      <b-alert variant="danger" show>
+        <ul>
+          <li v-for="error in errors">{{error}}</li>
+        </ul>
+      </b-alert>
+    </template> 
     <!-- Modal Component -->
     <!-- <b-modal id="modal1" ref="myModalRef" title="Bootstrap-Vue" @ok="onSubmit"> -->
       <b-form>
@@ -39,7 +46,7 @@
 
             <hr class="my-4" />
           </li>  
-          <b-btn  variant="outline-primary" @click.stop="addNewCustomField">Add Item</b-btn>
+          <b-btn  variant="outline-primary" @click.stop="addNewCustomField">Add Custom Item</b-btn>
 
         </ul>  
         <hr class="my-4">
@@ -60,18 +67,14 @@ export default {
   name: 'UploadAsset',
   data () {
     return {
-      ref: firebase.firestore().collection('archives'),
+      ref: '',
+      errors: [],
       archive: {},
       uid: '',
       file: null,
       customFieldLabel: '',
       assetTitle: '',
-      customFields: [
-        {
-          fieldLabel: '',
-          fieldValue: ''
-        },                
-      ]
+      customFields: []
   
     }
   },
@@ -83,45 +86,41 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
 
+      // empty the error variable to get rid of old errors
+      this.errors = []
 
-        firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
-          // file: this.file.name,
-          assetTitle: this.assetTitle,
-          customFields: this.customFields
+      // check the form for completeness
+      if (!this.assetTitle) { // title is mandatory
+        this.errors.push('Title required')
+      } 
+      if (!this.file){ //file is mandatory, for now
+        this.errors.push('File required')
+      }
 
-        }).catch((error) => {
-          alert("Error adding document: ", error);
-        });       
-
-
-
-      // if(this.file != null) {
-      //   this.uploadFile().then(() => {
-      //     this.goBackOne();
-      //   })
-      // }
-      
-    
-    },
-    uploadFile() {
       //-------------
       // UPLOAD IMAGE
       //-------------
       var file = this.file // use the Blob or File API
-      var assetTitle = this.assetTitle
 
       firebase.storage().ref(this.uid + '/' + file.name).put(file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
-        //-------------
-        // ADD ARCHIVE DATA
-        //-------------      
+      });   
+    
+      //-------------
+      // ADD ARCHIVE DATA
+      //-------------      
+      if (this.file != null && this.assetTitle != null) { // check for any errors
+        // If nothing is wrong, add the title, asset and custom fields
         firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
           file: file.name,
-          assetTitle: assetTitle
+          assetTitle: this.assetTitle,
+          customFields: this.customFields
         }).catch((error) => {
           alert("Error adding document: ", error);
-        }); 
-      });
+        }).then(() => {
+          console.log('go back one')
+        })
+      }
     },
     addNewCustomField () {
       this.customFields.push({fieldLabel: '', fieldValue: '' });
