@@ -1,19 +1,24 @@
 <template>
   <div>
-
+      <b-row class="justify-content-end">
+        <b-col cols="12" class="col-md-8 float-right my-5">
           <h1>{{archive.title}}</h1>
           <p>{{archive.desc}}</p>
-<hr class="my-4">
-          <PublicDisplayAssets />
-<hr class="my-4">
-  <!-- <a href="" @click.stop="goToUser()">Back to {{ this.username }}'s profile</a> -->
-</div>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <PublicListAssets />
+          <!-- <a href="" @click.stop="goToUser()">Back to {{ this.username }}'s profile</a> -->
+        </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
 
 import firebase from 'firebase'
-import PublicDisplayAssets from '../components/PublicDisplayAssets'
+import PublicListAssets from '../components/PublicListAssets'
 
 export default {
   name: 'PublicArchive',
@@ -26,7 +31,7 @@ export default {
     }
   },
   components: {
-    PublicDisplayAssets
+    PublicListAssets
   },
   created () {
     this.getUidFromUsername()

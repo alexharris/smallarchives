@@ -78,10 +78,13 @@ export default {
       const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.archive_id).collection('assets').doc(assetId);
 
       ref.delete().then(() => {
-          console.log("Document successfully deleted!");
+          console.log("Document successfully deleted from database");
           //Then, delete the item from storage
-          firebase.storage().ref().child(firebase.auth().currentUser.uid + '/' + this.asset.assetName).delete().then(function() {
+          firebase.storage().ref().child(firebase.auth().currentUser.uid + '/' + this.asset.assetName).delete().then(() => {
             // File deleted successfully
+            console.log("Document successfully deleted from storage");
+            this.$router.push({ name: 'ShowArchive', params: { id: this.$route.params.archive_id }})
+
           }).catch(function(error) {
             // Uh-oh, an error occurred!
           });

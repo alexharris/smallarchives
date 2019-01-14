@@ -1,22 +1,22 @@
 <template>
   <b-row>
     <b-col cols="12">
-
-
-    <table bordered="true" id="example-1" class="table table-striped table-bordered">
-      <tr v-for="item in renderedAssets">
-        <td>{{item.assetTitle}}</td>
-        <td>{{item.assetName}}</td>
-        <td>{{item.assetId}}</td>
-        <!-- <td><img :src="item.assetSrc" /></td> -->
-        <td >
-          
-
-          <b-btn variant="outline-secondary" size="sm" class="float-right mr-2" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
-        </td>
-      </tr>
-    </table>  
-
+      <div v-if="assets.length == 0">
+          <p>This archive has no items.</p>    
+      </div>
+      <div v-else>      
+        <table bordered="true" id="example-1" class="table table-striped table-bordered">
+          <tr v-for="item in renderedAssets">
+            <td>{{item.assetTitle}}</td>
+            <td>{{item.assetName}}</td>
+            <td>{{item.assetId}}</td>
+            <!-- <td><img :src="item.assetSrc" /></td> -->
+            <td >
+              <b-btn variant="outline-secondary" class="float-right mr-2" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
+            </td>
+          </tr>
+        </table> 
+      </div> 
     </b-col>
   </b-row>
 </template>
@@ -93,33 +93,7 @@ export default {
         name: 'EditAsset',
         params: { archive_id: this.$route.params.id, asset_id: assetId }
       })
-    },    
-    itemDelete (assetName, assetId) {
-      // Delete item from storage
-      console.log(this.uid)
-      console.log(assetName)
-      console.log(this.uid + '/' + assetName)
-
-      firebase.storage().ref().child(this.uid + '/' + assetName).delete().then(function() {
-        // File deleted successfully
-        console.log('file deleted successful')
-        // Delete item from database
-        firebase.firestore().collection('archives').doc(this.uid).collection('userarchives').doc(this.$route.params.id).collection('assets').doc(assetId).delete().then(function() {
-            console.log("Document successfully deleted!");
-        }).catch(function(error) {
-            console.error("Error removing document: ", error);
-        });
-      }).catch(function(error) {
-        // Uh-oh, an error occurred!
-      });      
-
-      
-      
-
-
-      
-    },
-    
+    }
   }
 }
 </script>

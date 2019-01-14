@@ -3,11 +3,11 @@
   <template>
   <div>
     <!-- <b-btn v-b-modal.modal1>Add Image</b-btn> -->
-<b-btn @click.stop="goBackOne">Back</b-btn>
-<hr class="my-4" />
+    <b-btn @click.stop="goBackOne">Back</b-btn>
+    <hr class="my-4" />
     <!-- Modal Component -->
     <!-- <b-modal id="modal1" ref="myModalRef" title="Bootstrap-Vue" @ok="onSubmit"> -->
-      <b-form >
+      <b-form>
         <b-form-group id="assetTitle"
                       horizontal
                       :label-cols="4"
@@ -22,8 +22,28 @@
                       label="Upload Asset">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
         </b-form-group>
+        <hr class="my-4" />
+        <h3>Custom Fields</h3>
+        <ul>
+          <li bg-variant="light" v-for="(customField,fieldId) in customFields">
+            <div>
+              <b-form-group label="Label"
+                            label-for="customFieldLabel">
+                <b-form-input id="customFieldLabel" v-model="customField.fieldLabel"></b-form-input>
+              </b-form-group>
+              <b-form-group label="Value"
+                            label-for="customFieldValue">
+                <b-form-input id="customFieldValue" v-model="customField.fieldValue"></b-form-input>
+              </b-form-group>
+            </div>
+
+            <hr class="my-4" />
+          </li>  
+          <b-btn  variant="outline-primary" @click.stop="addNewCustomField">Add Item</b-btn>
+
+        </ul>  
         <hr class="my-4">
-        <b-btn  variant="outline-primary" @click.stop="onSubmit">Submit</b-btn>
+        <b-btn  variant="outline-primary" @click.stop="onSubmit">Save</b-btn>
       </b-form>
     <!-- </b-modal> -->
   </div>    
@@ -44,7 +64,15 @@ export default {
       archive: {},
       uid: '',
       file: null,
-      assetTitle: ''
+      customFieldLabel: '',
+      assetTitle: '',
+      customFields: [
+        {
+          fieldLabel: '',
+          fieldValue: ''
+        },                
+      ]
+  
     }
   },
   created() {
@@ -54,7 +82,28 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+
+
+        firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
+          // file: this.file.name,
+          assetTitle: this.assetTitle,
+          customFields: this.customFields
+
+        }).catch((error) => {
+          alert("Error adding document: ", error);
+        });       
+
+
+
+      // if(this.file != null) {
+      //   this.uploadFile().then(() => {
+      //     this.goBackOne();
+      //   })
+      // }
       
+    
+    },
+    uploadFile() {
       //-------------
       // UPLOAD IMAGE
       //-------------
@@ -66,21 +115,16 @@ export default {
         //-------------
         // ADD ARCHIVE DATA
         //-------------      
-
         firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
           file: file.name,
           assetTitle: assetTitle
         }).catch((error) => {
           alert("Error adding document: ", error);
-        });  
-
-        this.goBackOne();
-        
-
+        }); 
       });
-
-
-
+    },
+    addNewCustomField () {
+      this.customFields.push({fieldLabel: '', fieldValue: '' });
     },
     goBackOne() {
       this.$router.go(-1)

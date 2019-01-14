@@ -60,7 +60,15 @@ export default {
 }
 </script>
 
-<style scoped>
+
+
+<style>
+  h1,h2,h3,h4,h5 {
+    font-family: 'Times', sans-serif !important;
+  }
+  body {
+    font-family: arial, sans-serif !important;
+  }
   nav {
     border-bottom: 1px solid #000;
     margin-bottom: 10px;

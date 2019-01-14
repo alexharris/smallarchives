@@ -1,19 +1,31 @@
 <template>
-	<div>
-      <b-card v-for="item in renderedAssets"
-        :img-src="item.assetSrc"
-        img-top
-        style="float: left; width: 30%; height: 350px; margin-right: 10px;"
-        class="mb-2"
-        border-variant="secondary"        
-      >
-        <p class="card-text">
-          {{item.assetTitle}}
-        </p>
-<!--         <td>{{item.assetTitle}}</td>
-        <td>{{item.assetName}}</td>
-        <td><img :src="item.assetSrc" /></td> -->
-      </b-card>
+  <b-row>
+    <b-col cols="12">
+      <div v-if="assets.length == 0">
+          <p>This archive has no items.</p>    
+      </div>
+      <div v-else>      
+        <table bordered="true" id="example-1" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">ID</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tr v-for="item in renderedAssets">
+            <td>{{item.assetTitle}}</td>
+            <td>{{item.assetId}}</td>
+            <td >
+              <b-btn variant="outline-secondary" @click.stop="editAsset(item.assetId)">Details</b-btn>          
+            </td>
+          </tr>
+        </table> 
+      </div> 
+    </b-col>
+  </b-row>
+
+
 	</div>
 </template>
 
@@ -73,7 +85,8 @@ export default {
             // filename: doc.data().file
             filePath: this.uid + '/' + doc.data().file,
             fileName: doc.data().file,
-            assetTitle: doc.data().assetTitle
+            assetTitle: doc.data().assetTitle,
+            assetId: doc.id
           });
         });
         this.renderAssetArray()
@@ -90,14 +103,20 @@ export default {
           this.renderedAssets.push({
             assetSrc: url,
             assetName: doc.fileName,
-            assetTitle: doc.assetTitle
+            assetTitle: doc.assetTitle,
+            assetId: doc.assetId
           })
         }).catch(function(error) {
           console.log(error.message)
         })
       })
     },
-      	
+    editAsset: function(assetId) {
+      this.$router.push({
+        name: 'PublicAsset',
+        params: { username: this.$route.params.username, archive_id: this.$route.params.id, asset_id: assetId }
+      })
+    },    
   },
   created() {
     this.getUidFromUsername()

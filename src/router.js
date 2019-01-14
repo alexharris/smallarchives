@@ -9,7 +9,7 @@ import SignUp from "@/views/SignUp.vue";
 import Profile from "@/views/Profile.vue";
 import EditUserProfile from "@/views/EditUserProfile.vue";
 
-import Archives from '@/views/Archives'
+import ListArchives from '@/views/ListArchives'
 import ShowArchive from '@/views/ShowArchive'
 import AddArchive from '@/views/AddArchive'
 import EditArchive from '@/views/EditArchive'
@@ -18,6 +18,7 @@ import EditAsset from '@/views/EditAsset'
 
 import PublicProfile from '@/views/PublicProfile'
 import PublicArchive from '@/views/PublicArchive'
+import PublicAsset from '@/views/PublicAsset'
 
 Vue.use(Router);
 
@@ -36,8 +37,8 @@ const router = new Router({
       children: [      
         {
           path: '/admin/archives',
-          name: 'Archives',
-          component: Archives
+          name: 'ListArchives',
+          component: ListArchives
         },
         {
           path: '/admin/show-archive/:id',
@@ -96,6 +97,11 @@ const router = new Router({
       name: 'PublicArchive',
       component: PublicArchive
     },
+    {
+      path: '/u/:username/:archive_id/:asset_id',
+      name: 'PublicAsset',
+      component: PublicAsset
+    },    
     {
       path: '*',
       redirect: '/admin'
