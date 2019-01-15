@@ -17,7 +17,7 @@
                   :label-cols="4"
                   breakpoint="md"
                   label="Enter Description">
-          <b-form-textarea id="desc" v-model.trim="archive.desc"></b-form-textarea>
+          <b-form-textarea id="desc" v-model="archive.desc"></b-form-textarea>
         </b-form-group>         
         <b-button type="submit" variant="primary">Save</b-button>
       </b-form>

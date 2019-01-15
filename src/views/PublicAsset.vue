@@ -86,13 +86,13 @@ export default {
     },     	
     getAssetDetails: function() {
         
-	    const ref = firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets').doc(this.$route.params.asset_id);
+	    const ref = firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets').doc(this.$route.params.asset_id);
 
 	    // get the fields from the database and assign to asset array
 	    ref.get().then((doc) => {
 	      if (doc.exists) {
 
-	      	this.asset.filePath = this.uid + '/' + doc.data().file
+	      	this.asset.filePath = this.uid + '/' + this.$route.params.archive_id + '/' + doc.data().file
 	        this.asset.assetTitle = doc.data().assetTitle
 	        this.asset.assetName = doc.data().file
 	        this.asset.assetId = doc.id

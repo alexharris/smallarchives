@@ -9,13 +9,11 @@
           <thead>
             <tr>
               <th scope="col">Title</th>
-              <th scope="col">ID</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tr v-for="item in renderedAssets">
             <td>{{item.assetTitle}}</td>
-            <td>{{item.assetId}}</td>
             <td >
               <b-btn variant="outline-secondary" @click.stop="editAsset(item.assetId)">Details</b-btn>          
             </td>
@@ -83,7 +81,7 @@ export default {
           // doc.data() is never undefined for query doc snapshots
           this.assets.push({
             // filename: doc.data().file
-            filePath: this.uid + '/' + doc.data().file,
+            filePath: this.uid + '/' + this.$route.params.id + '/' + doc.data().file,
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
             assetId: doc.id

@@ -51,7 +51,7 @@
         <b-alert show variant="danger">
           <h4>Delete</h4>
           <p>Warning: Deleting this asset is permanent and you can't get it back</p>
-          <b-btn variant="danger" @click.stop="deleteCustomField(asset.assetId)">Delete</b-btn>
+          <b-btn variant="danger" @click.stop="itemDelete(asset.assetId)">Delete</b-btn>
         </b-alert>
       </b-form>
     </b-col>

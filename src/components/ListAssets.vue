@@ -9,7 +9,6 @@
           <tr v-for="item in renderedAssets">
             <td>{{item.assetTitle}}</td>
             <td>{{item.assetName}}</td>
-            <td>{{item.assetId}}</td>
             <!-- <td><img :src="item.assetSrc" /></td> -->
             <td >
               <b-btn variant="outline-secondary" class="float-right mr-2" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
@@ -60,7 +59,7 @@ export default {
           // doc.data() is never undefined for query doc snapshots
           this.assets.push({
             // filename: doc.data().file
-            filePath: firebase.auth().currentUser.uid + '/' + doc.data().file,
+            filePath: firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file,
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
             assetId: doc.id
