@@ -9,12 +9,12 @@ import SignUp from "@/views/SignUp.vue";
 import Profile from "@/views/Profile.vue";
 import EditUserProfile from "@/views/EditUserProfile.vue";
 
-import ListArchives from '@/views/ListArchives'
+import AdminListArchives from '@/views/AdminListArchives'
 import ShowArchive from '@/views/ShowArchive'
-import AddArchive from '@/views/AddArchive'
+import AdminAddArchive from '@/views/AdminAddArchive'
 import EditArchive from '@/views/EditArchive'
 import AdminAddAsset from '@/views/AdminAddAsset'
-import EditAsset from '@/views/EditAsset'
+import AdminEditAsset from '@/views/AdminEditAsset'
 
 import PublicProfile from '@/views/PublicProfile'
 import PublicArchive from '@/views/PublicArchive'
@@ -37,8 +37,8 @@ const router = new Router({
       children: [      
         {
           path: '/admin/archives',
-          name: 'ListArchives',
-          component: ListArchives
+          name: 'AdminListArchives',
+          component: AdminListArchives
         },
         {
           path: '/admin/show-archive/:id',
@@ -52,8 +52,8 @@ const router = new Router({
         },         
         {
           path: '/admin/add-archive',
-          name: 'addArchive',
-          component: AddArchive           
+          name: 'AdminAddArchive',
+          component: AdminAddArchive           
         },
         {
           path: '/admin/edit-archive/:id',
@@ -62,8 +62,8 @@ const router = new Router({
         },
         {
           path: '/admin/edit-asset/:archive_id/:asset_id',
-          name: 'EditAsset',
-          component: EditAsset
+          name: 'AdminEditAsset',
+          component: AdminEditAsset
         },        
         {
           path: "/admin/profile",

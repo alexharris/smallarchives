@@ -40,7 +40,7 @@ export default {
     renderedAssets: [],
   	}
   },
-  methods: {
+  methods: {  
     getUidFromUsername() {
 
       // get the user id based on the displayname from the route

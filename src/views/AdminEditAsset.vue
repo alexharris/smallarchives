@@ -14,21 +14,34 @@
                   label="Enter Title">
           <b-form-input id="title" v-model.trim="asset.assetTitle"></b-form-input>
         </b-form-group> 
+        <b-form-group id="fieldsetHorizontal"
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Enter Description">
+          <b-form-textarea id="title" v-model.trim="asset.assetDescription"></b-form-textarea>
+        </b-form-group>         
+        <hr my="4" />
         <h4>Custom Fields</h4>
-        <table class="table-bordered table">
-          <thead>
-            <tr>
-              <th scope="col">Field</th>
-              <th scope="col">Value</th>
-              <th scope="col">Action</th>
+        <div v-if="asset.customFields == 0">
+          <p>This item has no custom fields.</p>    
+        </div>
+        <div v-else> 
+          <table class="table-bordered table">
+            <thead>
+              <tr>
+                <th scope="col">Field</th>
+                <th scope="col">Value</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>          
+            <tr v-for="(item,itemId) in asset.customFields">
+              <td>{{item.fieldLabel}}</td>
+              <td>{{item.fieldValue}}</td>
+              <td><b-btn @click.stop="deleteCustomField(itemId)">Delete</b-btn></td>
             </tr>
-          </thead>          
-          <tr v-for="(item,itemId) in asset.customFields">
-            <td>{{item.fieldLabel}}</td>
-            <td>{{item.fieldValue}}</td>
-            <td><b-btn @click.stop="deleteCustomField(itemId)">Delete</b-btn></td>
-          </tr>
-        </table> 
+          </table> 
+        </div>
         <div>
           <b-btn v-b-toggle.collapse1 variant="primary">Add Custom Field</b-btn>
           <b-collapse id="collapse1" class="mt-2">
@@ -63,7 +76,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'EditAsset',
+  name: 'AdminEditAsset',
   data () {
     return {
       key: this.$route.params.id,
@@ -71,6 +84,7 @@ export default {
         assetTitle: {},
         assetName: '',
         assetId: '',
+        assetDescription: '',
         customFields: ''
       },
       newCustomField: {
@@ -93,6 +107,7 @@ export default {
         this.asset.assetTitle = doc.data().assetTitle
         this.asset.assetName = doc.data().file
         this.asset.assetId = doc.id,
+        this.asset.assetDescription = doc.data().assetDescription,
         this.asset.customFields = doc.data().customFields
       } else {
         console.log("No such document!");
@@ -107,7 +122,8 @@ export default {
 
       ref.update({
         assetTitle: this.asset.assetTitle,
-        customFields: this.asset.customFields
+        customFields: this.asset.customFields,
+        assetDescription: this.asset.assetDescription
 
       }).then(() => {
         console.log('asset updated!')

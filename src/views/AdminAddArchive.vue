@@ -29,7 +29,7 @@
 
 import firebase from 'firebase'
 export default {
-  name: 'AddArchive',
+  name: 'AdminAddArchive',
   data () {
     return {
       ref: firebase.firestore().collection('archives'),
@@ -52,13 +52,14 @@ export default {
       firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").add({
         title: this.archive.title,
         desc: this.archive.desc,
+        dateCreated: new Date()
       }).catch((error) => {
         alert("Error adding document: ", error);
       });
 
 
       this.$router.push({
-        name: 'Archives',
+        name: 'Admin',
       }) 
 
     }

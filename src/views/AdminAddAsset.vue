@@ -1,6 +1,4 @@
-
-
-  <template>
+<template>
     <div>
       <b-btn @click.stop="goBackOne">Back</b-btn>
       <hr class="my-4" />
@@ -97,7 +95,6 @@ export default {
   created() {
     var currentUser = firebase.auth().currentUser
     this.uid = currentUser.uid
-    this.creationDate = Date.toString()
   },  
   methods: {
     onSubmit (evt) {

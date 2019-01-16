@@ -4,7 +4,7 @@
       <div v-if="assets.length == 0">
           <p>This archive has no items.</p>    
       </div>
-      <div v-else>      
+      <div v-else>  
         <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">
           <thead>
             <tr>
@@ -48,6 +48,13 @@ export default {
    
   },
   methods: {
+    getFormattedDate (dateCreated) {
+      var day = dateCreated.getDate()
+      var month = dateCreated.getMonth() + 1
+      var year = dateCreated.getFullYear()
+      var formattedDate = month + '-' + day + '-' + year
+      return formattedDate
+    },  
     // This function creates an array called 'assets' that contains 
     // all of the images that have been upload to a particular archive.
     // These fields include:
@@ -70,7 +77,7 @@ export default {
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
             assetId: doc.id,
-            assetCreationDate: doc.data().assetCreationDate
+            assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate)
           });
         });
         this.renderAssetArray()
@@ -98,7 +105,7 @@ export default {
     },
     itemEdit (assetTitle, assetId) {
       this.$router.push({
-        name: 'EditAsset',
+        name: 'AdminEditAsset',
         params: { archive_id: this.$route.params.id, asset_id: assetId }
       })
     }

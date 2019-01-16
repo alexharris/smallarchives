@@ -2,7 +2,7 @@
   <div>
     <div v-if="archives.length == 0">
       <b-jumbotron>
-        <h3>Welcome to Memory Palace</h3>
+        <h3>Welcome to Small Archives</h3>
         <p>You have no archives at this time. Create a new one to get started</p>
         <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
 
@@ -31,13 +31,14 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'Archives',
+  name: 'AdminListArchives',
 
   data () {
     return {
       fields: {
         title: { label: 'Title', sortable: true, 'class': 'text-left' },
-        actions: { label: 'Action', 'class': 'text-center' }
+        actions: { label: 'Action', 'class': 'text-center' },
+        dateCreated: {label: 'Created'}
       },
       archives: [],
       errors: [],
@@ -46,12 +47,17 @@ export default {
     }
   },
   created () {
+
+    
+
     this.ref.onSnapshot((querySnapshot) => {
       this.archives = [];
       querySnapshot.forEach((doc) => {
+
         this.archives.push({
           key: doc.id,
-          title: doc.data().title
+          title: doc.data().title,
+          dateCreated: this.getFormattedDate(doc.data().dateCreated)
         });
       });
     });
@@ -72,12 +78,19 @@ export default {
    
   },
   methods: {
+    getFormattedDate (dateCreated) {
+      var day = dateCreated.getDate()
+      var month = dateCreated.getMonth() + 1
+      var year = dateCreated.getFullYear()
+      var formattedDate = month + '-' + day + '-' + year
+      return formattedDate
+    },
     details (archive) {
       this.$router.push({ name: 'ShowArchive', params: { id: archive.key }})
     },
     linkToPublicView (archive) {
       this.$router.push({ name: 'PublicArchive', params: { id: archive.key, username: this.displayName }})
-    }  
+    }
   },
 }
 </script>

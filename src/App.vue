@@ -5,7 +5,6 @@
       	<b-navbar-brand href="#">SmallArchives</b-navbar-brand>
       	<b-collapse is-nav id="nav_collapse">
         	<b-navbar-nav class="ml-auto">
-            <b-nav-item href="/">Home</b-nav-item> 
          		<b-nav-item-dropdown right v-if="user">
             		<!-- Using button-content slot -->
             		<template slot="button-content">
