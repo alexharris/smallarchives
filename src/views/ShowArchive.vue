@@ -59,7 +59,7 @@ export default {
     },
     addItemButton (id) {
       this.$router.push({
-        name: 'UploadAsset',
+        name: 'AdminAddAsset',
         params: { id: id }
       })
     }

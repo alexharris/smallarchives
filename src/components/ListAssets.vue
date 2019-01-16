@@ -5,13 +5,20 @@
           <p>This archive has no items.</p>    
       </div>
       <div v-else>      
-        <table bordered="true" id="example-1" class="table table-striped table-bordered">
+        <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Date Added</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>          
           <tr v-for="item in renderedAssets">
             <td>{{item.assetTitle}}</td>
-            <td>{{item.assetName}}</td>
+            <td>{{item.assetCreationDate}}</td>
             <!-- <td><img :src="item.assetSrc" /></td> -->
             <td >
-              <b-btn variant="outline-secondary" class="float-right mr-2" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
+              <b-btn variant="outline-secondary" class="float-right mr-2 btn-sm" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
             </td>
           </tr>
         </table> 
@@ -62,7 +69,8 @@ export default {
             filePath: firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file,
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
-            assetId: doc.id
+            assetId: doc.id,
+            assetCreationDate: doc.data().assetCreationDate
           });
         });
         this.renderAssetArray()
@@ -80,7 +88,8 @@ export default {
             assetSrc: url,
             assetName: doc.fileName,
             assetTitle: doc.assetTitle,
-            assetId: doc.assetId
+            assetId: doc.assetId,
+            assetCreationDate: doc.assetCreationDate
           })
         }).catch(function(error) {
           console.log(error.message)

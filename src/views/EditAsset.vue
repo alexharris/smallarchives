@@ -142,9 +142,10 @@ export default {
       ref.delete().then(() => {
           console.log("Document successfully deleted from database");
           //Then, delete the item from storage
-          firebase.storage().ref().child(firebase.auth().currentUser.uid + '/' + this.asset.assetName).delete().then(() => {
+          firebase.storage().ref().child(firebase.auth().currentUser.uid + '/' + this.$route.params.archive_id + '/' + this.asset.assetName).delete().then(() => {
             // File deleted successfully
             console.log("Document successfully deleted from storage");
+            console.log(this.$route.params.archive_id)
             this.$router.push({ name: 'ShowArchive', params: { id: this.$route.params.archive_id }})
 
           }).catch(function(error) {

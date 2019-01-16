@@ -75,7 +75,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'UploadAsset',
+  name: 'AdminAddAsset',
   data () {
     return {
       ref: '',
@@ -113,6 +113,8 @@ export default {
       if (!this.file){ //file is mandatory, for now
         this.errors.push('File required')
       }
+
+      this.assetCreationDate = new Date();
 
       //-------------
       // UPLOAD IMAGE 

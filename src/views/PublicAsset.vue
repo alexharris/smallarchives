@@ -23,7 +23,7 @@
 			<b-col cols="12" class="col-md-6">
 				<p>Asset ID: {{asset.assetId}}</p>
 				<p>Filename: {{asset.assetName}}</p>
-				<h4>Custom Fields</h4>
+				<h4>Item Details</h4>
 				<table class="table-bordered table">
 					<thead>
 						<tr>

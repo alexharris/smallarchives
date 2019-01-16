@@ -5,7 +5,7 @@
           <p>This archive has no items.</p>    
       </div>
       <div v-else>      
-        <table bordered="true" id="example-1" class="table table-striped table-bordered">
+        <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">
           <thead>
             <tr>
               <th scope="col">Title</th>

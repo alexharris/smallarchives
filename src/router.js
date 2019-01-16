@@ -13,7 +13,7 @@ import ListArchives from '@/views/ListArchives'
 import ShowArchive from '@/views/ShowArchive'
 import AddArchive from '@/views/AddArchive'
 import EditArchive from '@/views/EditArchive'
-import UploadAsset from '@/views/UploadAsset'
+import AdminAddAsset from '@/views/AdminAddAsset'
 import EditAsset from '@/views/EditAsset'
 
 import PublicProfile from '@/views/PublicProfile'
@@ -46,9 +46,9 @@ const router = new Router({
           component: ShowArchive
         }, 
         {
-          path: '/admin/upload-asset/:id',
-          name: 'UploadAsset',
-          component: UploadAsset
+          path: '/admin/add-asset/:id',
+          name: 'AdminAddAsset',
+          component: AdminAddAsset
         },         
         {
           path: '/admin/add-archive',
