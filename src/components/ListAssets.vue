@@ -5,20 +5,22 @@
           <p>This archive has no items.</p>    
       </div>
       <div v-else>  
-        <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">
-          <thead>
+        <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm" >
+          <thead class="thead-dark">
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Date Added</th>
-              <th scope="col">Actions</th>
+              <th scope="col">Asset Type</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>          
           <tr v-for="item in renderedAssets">
             <td>{{item.assetTitle}}</td>
             <td>{{item.assetCreationDate}}</td>
+            <td>{{item.assetType}}</td>
             <!-- <td><img :src="item.assetSrc" /></td> -->
             <td >
-              <b-btn variant="outline-secondary" class="float-right mr-2 btn-sm" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
+              <b-btn variant="outline-secondary" class="mr-2 btn-sm" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
             </td>
           </tr>
         </table> 
@@ -68,18 +70,34 @@ export default {
       firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).collection("userarchives").doc(this.$route.params.id).collection('assets')
       .get()
       .then((querySnapshot) => {
-        // console.log(querySnapshot.data().file)
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
+          // get the full file path and make it blank if it doesnt exist
+          if(doc.data().file != '') {
+            var fullFilePath = firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file
+          } else {
+            var fullFilePath = ''
+          }
+
+          // if(doc.data().file != '') {
+          //   var fullFilePath = firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file
+          // } else {
+          //   var fullFilePath = ''
+          // }
+          console.log(fullFilePath)
           this.assets.push({
             // filename: doc.data().file
-            filePath: firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file,
+            filePath: fullFilePath,
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
             assetId: doc.id,
-            assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate)
+            assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate),
+            assetText: doc.data().assetText,
+            assetType: doc.data().assetType
           });
+
         });
+        
         this.renderAssetArray()
       });       
     },
@@ -90,17 +108,28 @@ export default {
     renderAssetArray: function() {
 
       this.assets.forEach((doc) => {
-        firebase.storage().ref().child(doc.filePath).getDownloadURL().then((url) => {
+        if(doc.filePath != '') {
+          firebase.storage().ref().child(doc.filePath).getDownloadURL().then((url) => {
+            this.renderedAssets.push({
+              assetSrc: url,
+              assetName: doc.fileName,
+              assetTitle: doc.assetTitle,
+              assetType: doc.assetType,
+              assetId: doc.assetId,
+              assetCreationDate: doc.assetCreationDate
+            })
+          })           
+        } else {
           this.renderedAssets.push({
-            assetSrc: url,
+            assetSrc: '',
+            assetText: doc.assetText,
             assetName: doc.fileName,
             assetTitle: doc.assetTitle,
+            assetType: doc.assetType,
             assetId: doc.assetId,
             assetCreationDate: doc.assetCreationDate
           })
-        }).catch(function(error) {
-          console.log(error.message)
-        })
+        }
       })
     },
     itemEdit (assetTitle, assetId) {

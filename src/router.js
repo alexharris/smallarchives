@@ -16,6 +16,7 @@ import EditArchive from '@/views/EditArchive'
 import AdminAddAsset from '@/views/AdminAddAsset'
 import AdminEditAsset from '@/views/AdminEditAsset'
 
+import PublicHome from '@/views/PublicHome'
 import PublicProfile from '@/views/PublicProfile'
 import PublicArchive from '@/views/PublicArchive'
 import PublicAsset from '@/views/PublicAsset'
@@ -101,10 +102,15 @@ const router = new Router({
       path: '/u/:username/:archive_id/:asset_id',
       name: 'PublicAsset',
       component: PublicAsset
-    },    
+    },   
+    {
+      path: '/',
+      name: 'PublicHome',
+      component: PublicHome
+    },        
     {
       path: '*',
-      redirect: '/admin'
+      redirect: '/'
     }   
   ]
 });

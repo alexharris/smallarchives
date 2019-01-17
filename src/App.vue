@@ -1,8 +1,8 @@
 <template>
 	<div id="app"> 
-  	<b-navbar variant="faded" type="light" toggleable="sm">
+  	<b-navbar variant="faded" type="light" toggleable="sm" class="mb-5">
       <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
-      	<b-navbar-brand href="#">SmallArchives</b-navbar-brand>
+      	<b-navbar-brand href="/">Small Archives.</b-navbar-brand>
       	<b-collapse is-nav id="nav_collapse">
         	<b-navbar-nav class="ml-auto">
          		<b-nav-item-dropdown right v-if="user">
@@ -14,6 +14,9 @@
             		<b-dropdown-item href="/admin/profile">Profile</b-dropdown-item>
             		<b-dropdown-item @click="this.logout">Logout</b-dropdown-item>
           		</b-nav-item-dropdown>
+              <b-nav-item right v-else>
+                <b-link @click.stop="goToLogin">Login</b-link>
+              </b-nav-item>              
         	</b-navbar-nav>     
         </b-collapse> 
       </b-navbar>  	
@@ -48,7 +51,12 @@ export default {
     },
    setUser: function() {
       this.$store.dispatch('setUser');
-    }    
+    },
+    goToLogin: function() {
+      this.$router.push({
+        name: 'login'
+      })      
+    }  
   },
   created() {
     // when the app is created run the set user method
@@ -62,7 +70,7 @@ export default {
 
 
 <style>
-  h1,h2,h3,h4,h5 {
+  h1,h2,h3,h4,h5, .navbar-brand {
     font-family: 'Times', sans-serif !important;
   }
   body {
@@ -71,5 +79,8 @@ export default {
   nav {
     border-bottom: 1px solid #000;
     margin-bottom: 10px;
+  }
+  img {
+    max-width: 100%;
   }
 </style>

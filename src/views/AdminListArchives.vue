@@ -14,10 +14,10 @@
         <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
       </b-row>
       <b-row>
-        <b-table hover :items="archives" :fields="fields">
+        <b-table hover :items="archives" :fields="fields" class="table-bordered" head-variant="dark">
           <template slot="actions" scope="row">
-            <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>&nbsp;
-            <b-btn size="sm" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
+            <b-btn size="sm" variant="outline-secondary" @click.stop="details(row.item)">Details</b-btn>&nbsp;
+            <b-btn size="sm" variant="outline-secondary" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
           </template>
         </b-table>
       </b-row>
@@ -37,8 +37,8 @@ export default {
     return {
       fields: {
         title: { label: 'Title', sortable: true, 'class': 'text-left' },
-        actions: { label: 'Action', 'class': 'text-center' },
-        dateCreated: {label: 'Created'}
+        dateCreated: {label: 'Created'},
+        actions: { label: 'Action'}
       },
       archives: [],
       errors: [],

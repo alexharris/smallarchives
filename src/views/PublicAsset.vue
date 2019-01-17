@@ -16,13 +16,26 @@
 
 			<b-col cols="12" class="col-md-6">
 
-
-				<img :src="assetSrc" />
-
+				<div v-if="asset.assetType == 'image'">
+					<img :src="assetSrc" />
+				</div>
+				<div v-if="asset.assetType == 'audio'">
+					<figure>
+					    <audio
+					        controls
+					        :src="assetSrc">
+					            Your browser does not support the
+					            <code>audio</code> element.
+					    </audio>
+					</figure>
+				</div>	
+				<div v-if="asset.assetType == 'text'">
+					<blockquote class="blockquote">{{asset.assetText}}</blockquote>
+				</div>							
 			</b-col>
 			<b-col cols="12" class="col-md-6">
 				<p>Asset ID: {{asset.assetId}}</p>
-				<p>Filename: {{asset.assetName}}</p>
+				<p>Type: {{asset.assetType}}</p>
 				<h4>Item Details</h4>
 				<table class="table-bordered table">
 					<thead>
@@ -95,9 +108,10 @@ export default {
 	      	this.asset.filePath = this.uid + '/' + this.$route.params.archive_id + '/' + doc.data().file
 	        this.asset.assetTitle = doc.data().assetTitle
 	        this.asset.assetName = doc.data().file
+	        this.asset.assetType = doc.data().assetType
+	        this.asset.assetText = doc.data().assetText
 	        this.asset.assetId = doc.id
 	        this.asset.customFields = doc.data().customFields
-	        console.log(doc.data().customFields)
 
 	        this.getAssetSrc()
 	      } else {
@@ -106,7 +120,9 @@ export default {
 	    });      
     },  
     getAssetSrc: function() {
+    	
         firebase.storage().ref().child(this.asset.filePath).getDownloadURL().then((url) => {
+        	console.log(url)
             this.assetSrc = url
         }).catch(function(error) {
           console.log(error.message)
@@ -128,5 +144,8 @@ export default {
 <style scoped>
 img {
 	max-width: 100%;
+}
+blockquote {
+	font-size: 2.5em;
 }
 </style>

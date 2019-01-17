@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBackOne">Back</b-btn>
+      <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
       <hr class="my-4" />
       <h1>{{asset.assetTitle}}</h1>      
       <hr class="my-4" />

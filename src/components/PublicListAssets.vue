@@ -9,11 +9,15 @@
           <thead>
             <tr>
               <th scope="col">Title</th>
+              <th scope="col">Date Added</th>
+              <th scope="col">Asset Type</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tr v-for="item in renderedAssets">
             <td>{{item.assetTitle}}</td>
+            <td>{{item.assetCreationDate}}</td>
+            <td>{{item.assetType}}</td>
             <td >
               <b-btn variant="outline-secondary" @click.stop="editAsset(item.assetId)">Details</b-btn>          
             </td>
@@ -41,6 +45,13 @@ export default {
   	}
   },
   methods: {  
+    getFormattedDate (dateCreated) {
+      var day = dateCreated.getDate()
+      var month = dateCreated.getMonth() + 1
+      var year = dateCreated.getFullYear()
+      var formattedDate = month + '-' + day + '-' + year
+      return formattedDate
+    },      
     getUidFromUsername() {
 
       // get the user id based on the displayname from the route
@@ -50,7 +61,6 @@ export default {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             // Assign the user id from the document to the uid variable
-
             this.uid = doc.id
             
         });
@@ -73,20 +83,31 @@ export default {
     //
     // It then calls renderAssetArray to turn this data into something renderable
     createAssetArray: function() {
+        
       firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets')
       .get()
       .then((querySnapshot) => {
-        // console.log(querySnapshot.data().file)
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
+          // get the full file path and make it blank if it doesnt exist
+          if(doc.data().file != '') {
+            var fullFilePath = this.uid + '/' + this.$route.params.id + '/' + doc.data().file
+          } else {
+            var fullFilePath = ''
+          }
           this.assets.push({
             // filename: doc.data().file
-            filePath: this.uid + '/' + this.$route.params.id + '/' + doc.data().file,
+            filePath: fullFilePath,
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
-            assetId: doc.id
+            assetId: doc.id,
+            assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate),
+            assetText: doc.data().assetText,
+            assetType: doc.data().assetType
           });
+
         });
+        
         this.renderAssetArray()
       });       
     },
@@ -97,16 +118,28 @@ export default {
     renderAssetArray: function() {
 
       this.assets.forEach((doc) => {
-        firebase.storage().ref().child(doc.filePath).getDownloadURL().then((url) => {
+        if(doc.filePath != '') {
+          firebase.storage().ref().child(doc.filePath).getDownloadURL().then((url) => {
+            this.renderedAssets.push({
+              assetSrc: url,
+              assetName: doc.fileName,
+              assetTitle: doc.assetTitle,
+              assetType: doc.assetType,
+              assetId: doc.assetId,
+              assetCreationDate: doc.assetCreationDate
+            })
+          })           
+        } else {
           this.renderedAssets.push({
-            assetSrc: url,
+            assetSrc: '',
+            assetText: doc.assetText,
             assetName: doc.fileName,
             assetTitle: doc.assetTitle,
-            assetId: doc.assetId
+            assetType: doc.assetType,
+            assetId: doc.assetId,
+            assetCreationDate: doc.assetCreationDate
           })
-        }).catch(function(error) {
-          console.log(error.message)
-        })
+        }
       })
     },
     editAsset: function(assetId) {

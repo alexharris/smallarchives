@@ -19,8 +19,8 @@
       <b-form-input id="loginPassword" type="password" v-model="password" placeholder="Password"></b-form-input>
     </b-form-group> 
 
-    <b-button @click="checkUsername" size="lg" variant="outline-primary">Sign Up</b-button>
-    <p>or go back to <router-link to="/login">login</router-link>.</p>
+    <b-button @click="checkUsername" variant="outline-primary">Sign Up</b-button>
+    <!-- <p class="mt-5">or go back to <router-link to="/login">login</router-link>.</p> -->
   </div>
     
 

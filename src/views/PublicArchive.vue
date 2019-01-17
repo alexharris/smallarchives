@@ -1,7 +1,7 @@
 <template>
   <div>
-      <b-row class="justify-content-end">
-        <b-col cols="12" class="col-md-8 float-right my-5">
+      <b-row>
+        <b-col cols="12" class="col-md-8 my-5">
           <h1>{{archive.title}}</h1>
           <p>{{archive.desc}}</p>
         </b-col>
