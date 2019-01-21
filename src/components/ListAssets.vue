@@ -79,12 +79,6 @@ export default {
             var fullFilePath = ''
           }
 
-          // if(doc.data().file != '') {
-          //   var fullFilePath = firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file
-          // } else {
-          //   var fullFilePath = ''
-          // }
-          console.log(fullFilePath)
           this.assets.push({
             // filename: doc.data().file
             filePath: fullFilePath,

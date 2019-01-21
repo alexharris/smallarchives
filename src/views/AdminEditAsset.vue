@@ -3,7 +3,7 @@
     <b-col cols="12">
       <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
       <hr class="my-4" />
-      <h1>{{asset.assetTitle}}</h1>      
+      <h1>Edit Asset</h1>      
       <hr class="my-4" />
       {{asset.assetName}}
       <b-form @submit="onSubmit">
@@ -20,47 +20,10 @@
                   breakpoint="md"
                   label="Enter Description">
           <b-form-textarea id="title" v-model.trim="asset.assetDescription"></b-form-textarea>
-        </b-form-group>         
-        <hr my="4" />
-        <h4>Custom Fields</h4>
-        <div v-if="asset.customFields == 0">
-          <p>This item has no custom fields.</p>    
-        </div>
-        <div v-else> 
-          <table class="table-bordered table">
-            <thead>
-              <tr>
-                <th scope="col">Field</th>
-                <th scope="col">Value</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>          
-            <tr v-for="(item,itemId) in asset.customFields">
-              <td>{{item.fieldLabel}}</td>
-              <td>{{item.fieldValue}}</td>
-              <td><b-btn @click.stop="deleteCustomField(itemId)">Delete</b-btn></td>
-            </tr>
-          </table> 
-        </div>
-        <div>
-          <b-btn v-b-toggle.collapse1 variant="primary">Add Custom Field</b-btn>
-          <b-collapse id="collapse1" class="mt-2">
-            <b-card>
-              <b-form-group label="Label"
-                            label-for="customFieldLabel">
-                <b-form-input id="customFieldLabel" v-model="newCustomField.fieldLabel"></b-form-input>
-              </b-form-group>
-              <b-form-group label="Value"
-                            label-for="customFieldValue">
-                <b-form-input id="customFieldValue" v-model="newCustomField.fieldValue"></b-form-input>
-              </b-form-group>
-              <b-btn variant="primary" @click.stop="addCustomField()">Add</b-btn>
-            </b-card>
-          </b-collapse>
-        </div>               
+        </b-form-group>                      
         <hr class="my-4" />            
         <b-button type="submit" variant="primary">Save</b-button>
-        <hr my="4" />
+        <hr class="my-4" />
         <b-alert show variant="danger">
           <h4>Delete</h4>
           <p>Warning: Deleting this asset is permanent and you can't get it back</p>

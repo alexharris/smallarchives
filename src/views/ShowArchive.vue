@@ -1,7 +1,8 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn href="/archives" variant="outline-secondary">Back</b-btn>&nbsp;
+      <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
+      <b-btn class="float-right" variant="outline-primary" @click.stop="linkToPublicView(key)">View</b-btn>  
       <b-btn class="float-right" variant="outline-primary" @click.stop="editarchive(key)">Edit</b-btn>   
       <hr my="4" />      
       <h1>{{archive.title}}</h1>
@@ -27,6 +28,7 @@
 
 import firebase from 'firebase'
 import ListAssets from '../components/ListAssets'
+
 
 export default {
   name: 'ShowArchive',
@@ -57,12 +59,21 @@ export default {
         params: { id: id }
       })
     },
+    linkToPublicView (id) {
+      this.$router.push({
+        name: 'PublicArchive',
+        params: { id: id, username: this.$store.getters.getUser.displayName }
+      })
+    },    
     addItemButton (id) {
       this.$router.push({
         name: 'AdminAddAsset',
         params: { id: id }
       })
-    }
+    },
+    goBackOne() {
+      this.$router.go(-1)
+    },    
   }
 }
 </script>

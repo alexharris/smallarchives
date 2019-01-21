@@ -2,14 +2,14 @@
 	<div>
 		<b-row>
 			<b-col>
-				<b-btn @click.stop="goBackOne">Back</b-btn>
+				<b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
 				<hr class="my-4" />
 			</b-col>
 		</b-row>
 		<b-row>
 			<b-col>
-				<h1>{{asset.assetTitle}}</h1>
-				<hr class="my-4" />	
+				<h1 class="my-4">{{asset.assetTitle}}</h1>
+
 			</b-col>
 		</b-row>
 		<b-row>
@@ -31,26 +31,27 @@
 				</div>	
 				<div v-if="asset.assetType == 'text'">
 					<blockquote class="blockquote">{{asset.assetText}}</blockquote>
-				</div>							
+				</div>	
+				<p class="my-4">
+					Media type: {{asset.assetType}}
+				</p>						
 			</b-col>
 			<b-col cols="12" class="col-md-6">
-				<p>Asset ID: {{asset.assetId}}</p>
-				<p>Type: {{asset.assetType}}</p>
-				<h4>Item Details</h4>
-				<table class="table-bordered table">
-					<thead>
-						<tr>
-						  <th scope="col">Field</th>
-						  <th scope="col">Value</th>
-						</tr>
-					</thead>					
-					<tr v-for="item in asset.customFields">
-						<td>{{item.fieldLabel}}</td>
-						<td>{{item.fieldValue}}</td>
-					</tr>
-				</table>
+				<p>{{asset.assetDescription}}</p>
+				<p>
+				<strong>Creator:</strong> {{asset.assetCreator}} <br />
+				<strong>Location:</strong> {{asset.assetLocation}} <br />
+				<strong>Format:</strong> {{asset.assetFormat}}
+				</p>
 			</b-col>
 		</b-row>
+		<b-row>
+			<b-col>
+				<hr class="my-4" />	
+				<p>Added on: {{asset.assetCreationDate}}</p>
+				
+			</b-col>
+		</b-row>	
 	</div>
 </template>
 
@@ -74,6 +75,13 @@ export default {
   },
 
   methods: {
+    getFormattedDate (dateCreated) {
+      var day = dateCreated.getDate()
+      var month = dateCreated.getMonth() + 1
+      var year = dateCreated.getFullYear()
+      var formattedDate = month + '-' + day + '-' + year
+      return formattedDate
+    },       	
     getUidFromUsername() {
 
       // get the user id based on the displayname from the route
@@ -111,7 +119,11 @@ export default {
 	        this.asset.assetType = doc.data().assetType
 	        this.asset.assetText = doc.data().assetText
 	        this.asset.assetId = doc.id
-	        this.asset.customFields = doc.data().customFields
+	        this.asset.assetDescription = doc.data().assetDescription
+	        this.asset.assetLocation = doc.data().assetLocation
+	        this.asset.assetCreator = doc.data().assetCreator
+	        this.asset.assetFormat = doc.data().assetFormat
+	        this.asset.assetCreationDate = this.getFormattedDate(doc.data().assetCreationDate)
 
 	        this.getAssetSrc()
 	      } else {

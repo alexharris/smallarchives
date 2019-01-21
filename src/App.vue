@@ -32,13 +32,12 @@ import firebase from 'firebase'
 export default {
   name: "App",
   computed: {
-	user() {
+    user() {
     	return this.$store.getters.getUser;
     },
     displayName: function() {
-
-		return this.$store.getters.getUser.email;
-    },   
+		  return this.$store.getters.getUser.email;
+    }
   }, 
   methods: {
     logout: function() {

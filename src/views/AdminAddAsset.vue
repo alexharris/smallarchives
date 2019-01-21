@@ -9,7 +9,9 @@
           </ul>
         </b-alert>
       </template>
-  
+      <h1>Add New Item</h1>
+      <hr class="my-4" />
+      <h2>Basic Info</h2>
       <b-form>
         <b-form-group id="assetTitle"
                       :label-cols="4"
@@ -22,13 +24,13 @@
                       breakpoint="md"
                       label="Enter Description">
           <b-form-textarea id="assetDescription" v-model="assetDescription"></b-form-textarea>
-        </b-form-group>  
-        <hr class="my-4" />
-        <h4>Add Asset</h4>
+        </b-form-group> 
+      <hr class="my-4" />
+      <h2>Media</h2>         
         <b-form-group id="assetTitle"
                       :label-cols="4"
                       breakpoint="md"
-                      label="Select Item Type">        
+                      label="Select Media Type">        
           <template>
             <div>
               <b-form-select v-model="selectedAssetType">
@@ -54,46 +56,33 @@
                       v-if="selectedAssetType === 'audio'">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
         </b-form-group>        
-        <b-form-group id="assetDescription"
+        <b-form-group id="assetText"
                       :label-cols="4"
                       breakpoint="md"
                       label="Text"
                       v-if="selectedAssetType === 'text'">
-          <b-form-textarea id="assetDescription" v-model="text"></b-form-textarea>
+          <b-form-textarea id="assetText" v-model="text"></b-form-textarea>
         </b-form-group>         
         <hr class="my-4" />
-        <h4>Custom Fields</h4>
-        <table class="table-bordered table">
-          <thead>
-            <tr>
-              <th scope="col">Field</th>
-              <th scope="col">Value</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>          
-          <tr v-for="(item,itemId) in customFields">
-            <td>{{item.fieldLabel}}</td>
-            <td>{{item.fieldValue}}</td>
-            <td><b-btn @click.stop="deleteCustomField(itemId)" variant="outline-danger">Delete</b-btn></td>
-          </tr>
-        </table> 
-        <div>
-          <b-btn v-b-toggle.collapse1 variant="outline-secondary">Add Custom Field</b-btn>
-          <b-collapse id="collapse1" class="mt-2">
-            <b-card>
-              <b-form-group label="Label"
-                            label-for="customFieldLabel">
-                <b-form-input id="customFieldLabel" v-model="newCustomField.fieldLabel"></b-form-input>
-              </b-form-group>
-              <b-form-group label="Value"
-                            label-for="customFieldValue">
-                <b-form-input id="customFieldValue" v-model="newCustomField.fieldValue"></b-form-input>
-              </b-form-group>
-              <b-btn  @click.stop="addCustomField()" variant="outline-primary">Add</b-btn>
-            </b-card>
-          </b-collapse>
-        </div>
-        <hr class="my-4" />
+        <h2>Metadata</h2>
+        <b-form-group id="assetLocation"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Enter Location">
+          <b-form-input id="assetLocation" v-model="assetLocation"></b-form-input>
+        </b-form-group> 
+        <b-form-group id="assetCreator"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Enter Creator">
+          <b-form-input id="assetCreator" v-model="assetCreator"></b-form-input>
+        </b-form-group> 
+        <b-form-group id="assetFormat"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Enter Format">
+          <b-form-input id="assetFormat" v-model="assetFormat"></b-form-input>
+        </b-form-group>                         
         <b-btn  variant="primary" @click.stop="onSubmit">Submit</b-btn>
       </b-form>
     </div>    
@@ -117,13 +106,11 @@ export default {
       customFieldLabel: '',
       assetTitle: '',
       assetDescription: '',
-      customFields: [],
-      newCustomField: {
-        fieldLabel:'',
-        fieldValue:''
-      },      
       selectedAssetType: '',
-      assetCreationDate: ''
+      assetCreationDate: '',
+      assetFormat: '',
+      assetLocation: '',
+      assetCreator:''
     }
   },
   created() {
@@ -176,31 +163,24 @@ export default {
         file = {}
         file.name = ''
       }
-      
-      //-------------
-      // ADD ARCHIVE DATA
-      //-------------      
-      if (this.assetTitle != null) { // check for any errors
-        // If nothing is wrong, add the title, asset and custom fields
-        firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
-          file: file.name,
-          assetTitle: this.assetTitle,
-          customFields: this.customFields,
-          assetDescription: this.assetDescription,
-          assetCreationDate: this.assetCreationDate,
-          assetType: this.selectedAssetType,
-          assetText: this.text
-        }).catch((error) => {
-          alert("Error adding document: ", error);
-        }).then(() => {
-          this.$router.go(-1)
-        })
-      }
-    },
-    addCustomField () {
-      this.customFields.push({fieldLabel: this.newCustomField.fieldLabel, fieldValue: this.newCustomField.fieldValue });
-      this.newCustomField.fieldLabel = ''
-      this.newCustomField.fieldValue = ''
+
+
+      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
+        file: file.name,
+        assetTitle: this.assetTitle,
+        assetDescription: this.assetDescription,
+        assetCreationDate: this.assetCreationDate,
+        assetType: this.selectedAssetType,
+        assetText: this.text,
+        assetCreator: this.assetCreator,
+        assetFormat: this.assetFormat,
+        assetLocation: this.assetLocation
+        
+      }).catch((error) => {
+        alert("Error adding document: ", error);
+      })
+
+
     },  
     goBackOne() {
       this.$router.go(-1)

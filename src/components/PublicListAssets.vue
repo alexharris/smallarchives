@@ -1,26 +1,30 @@
-<template>
+<template
+
+>
   <b-row>
     <b-col cols="12">
       <div v-if="assets.length == 0">
           <p>This archive has no items.</p>    
       </div>
-      <div v-else>      
+      <div v-else>    
         <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">
           <thead>
             <tr>
               <th scope="col">Title</th>
+              <th scope="col">Object Type</th>
               <th scope="col">Date Added</th>
-              <th scope="col">Asset Type</th>
-              <th scope="col">Actions</th>
+              
+              <!-- <th scope="col">Actions</th> -->
             </tr>
           </thead>
           <tr v-for="item in renderedAssets">
-            <td>{{item.assetTitle}}</td>
+            <td><b-link @click.stop="editAsset(item.assetId)">{{item.assetTitle}}</b-link></td>
+            <td><div>{{item.assetFormat}}</div></td>
             <td>{{item.assetCreationDate}}</td>
-            <td>{{item.assetType}}</td>
-            <td >
-              <b-btn variant="outline-secondary" @click.stop="editAsset(item.assetId)">Details</b-btn>          
-            </td>
+            
+<!--             <td >
+              <b-btn variant="outline-secondary" size="sm" @click.stop="editAsset(item.assetId)">Details</b-btn>          
+            </td> -->
           </tr>
         </table> 
       </div> 
@@ -83,11 +87,12 @@ export default {
     //
     // It then calls renderAssetArray to turn this data into something renderable
     createAssetArray: function() {
-        
+
       firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+
           // doc.data() is never undefined for query doc snapshots
           // get the full file path and make it blank if it doesnt exist
           if(doc.data().file != '') {
@@ -103,7 +108,8 @@ export default {
             assetId: doc.id,
             assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate),
             assetText: doc.data().assetText,
-            assetType: doc.data().assetType
+            assetType: doc.data().assetType,
+            assetFormat: doc.data().assetFormat
           });
 
         });
@@ -126,7 +132,8 @@ export default {
               assetTitle: doc.assetTitle,
               assetType: doc.assetType,
               assetId: doc.assetId,
-              assetCreationDate: doc.assetCreationDate
+              assetCreationDate: doc.assetCreationDate,
+              assetFormat: doc.assetFormat
             })
           })           
         } else {
@@ -137,7 +144,8 @@ export default {
             assetTitle: doc.assetTitle,
             assetType: doc.assetType,
             assetId: doc.assetId,
-            assetCreationDate: doc.assetCreationDate
+            assetCreationDate: doc.assetCreationDate,
+            assetFormat: doc.assetFormat
           })
         }
       })

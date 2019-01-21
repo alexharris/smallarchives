@@ -9,6 +9,8 @@
       <b-row>
         <b-col>
           <PublicListAssets />
+<!--           <PublicListFacets /> -->
+
           <!-- <a href="" @click.stop="goToUser()">Back to {{ this.username }}'s profile</a> -->
         </b-col>
     </b-row>
