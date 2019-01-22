@@ -22,7 +22,6 @@ export const store = new Vuex.Store({
       state.user = firebase.auth().currentUser;
     },
     setAssetCount: (state, payload) => {
-      console.log(payload)
       state.assetCount = payload
     }       
   },

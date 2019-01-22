@@ -9,6 +9,7 @@
       </b-row>
       <b-row>
         <b-col>
+          <ArchiveHeaderImage />
           <PublicListAssets />
 <!--           <PublicListFacets /> -->
 
@@ -22,6 +23,7 @@
 
 import firebase from 'firebase'
 import PublicListAssets from '../components/PublicListAssets'
+import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 
 export default {
   name: 'PublicArchive',
@@ -30,12 +32,17 @@ export default {
       uid: '',
       key: '',
       archive: {},
-      username:'',
-      assetCount: this.$store.getters.getAssetCount
+      username:''
     }
   },
   components: {
-    PublicListAssets
+    PublicListAssets,
+    ArchiveHeaderImage
+  },
+  computed: {
+    assetCount() {
+      return this.$store.getters.getAssetCount
+    }
   },
   created () {
     this.getUidFromUsername()

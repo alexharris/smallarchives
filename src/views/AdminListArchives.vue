@@ -10,6 +10,7 @@
 
     </div>
     <div v-else>
+      <ArchiveHeaderImage />
       <b-row class="mb-3">
         <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
       </b-row>
@@ -29,10 +30,13 @@
 <script>
 
 import firebase from 'firebase'
+import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 
 export default {
   name: 'AdminListArchives',
-
+  components: {
+    ArchiveHeaderImage
+  },
   data () {
     return {
       fields: {
