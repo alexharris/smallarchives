@@ -4,6 +4,7 @@
         <b-col cols="12" class="col-md-8 my-5">
           <h1>{{archive.title}}</h1>
           <p>{{archive.desc}}</p>
+          <p>Number of records: {{assetCount}}</p>
         </b-col>
       </b-row>
       <b-row>
@@ -29,7 +30,8 @@ export default {
       uid: '',
       key: '',
       archive: {},
-      username:''
+      username:'',
+      assetCount: this.$store.getters.getAssetCount
     }
   },
   components: {

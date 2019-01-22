@@ -113,8 +113,11 @@ export default {
           });
 
         });
-        
+        //get the array ready for rendering
         this.renderAssetArray()
+
+        //tell the parent about how many assets there are
+        this.$store.commit('setAssetCount', this.assets.length)
       });       
     },
     // This function takes the array of assets that have been added to this archive, 
