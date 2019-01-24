@@ -1,6 +1,6 @@
 <template>
     <div>
-      <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
+      <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
       <hr class="my-4" />
       <template v-if="errors.length > 0">
         <b-alert variant="danger" show>
@@ -94,7 +94,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'AdminAddAsset',
+  name: 'AdminCreateAsset',
   data () {
     return {
       ref: '',
@@ -139,13 +139,13 @@ export default {
 
       if(file != null) {
         // Check to see if a file exists before uploading, by trying to get the download URL
-        firebase.storage().ref(this.uid + '/' + this.$route.params.id + '/' + file.name).getDownloadURL().then((url) => {
+        firebase.storage().ref(this.uid + '/archive_' + this.$route.params.id + '/assets/' + file.name).getDownloadURL().then((url) => {
           // this means we got a URL, which means it exists, which means we throw an error
           this.errors.push('This archive already contains a file with this name!')
         }).catch((error) => {
           // but if a not found error message returns, it means it wasnt found, which means we should upload it
           console.log(error.code)
-         firebase.storage().ref(this.uid + '/' + this.$route.params.id + '/' + file.name).put(file).then((snapshot) => {
+         firebase.storage().ref(this.uid + '/archive_' + this.$route.params.id + '/assets/' + file.name).put(file).then((snapshot) => {
             console.log('Uploaded a blob or file!');
             this.addArchiveDataToDatabase()
           });
@@ -178,12 +178,14 @@ export default {
         
       }).catch((error) => {
         alert("Error adding document: ", error);
+      }).then(() => {
+        this.goBack()
       })
 
 
     },  
-    goBackOne() {
-      this.$router.go(-1)
+    goBack() {
+      this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.id }})
     }    
   }
 }

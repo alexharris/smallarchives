@@ -90,7 +90,7 @@ export default {
 
       }).then(() => {
         console.log('asset updated!')
-        this.$router.push({ name: 'ShowArchive', params: { id: this.$route.params.archive_id }})
+        this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
       })
     },
     deleteCustomField(assetId) {
@@ -125,7 +125,7 @@ export default {
             // File deleted successfully
             console.log("Document successfully deleted from storage");
             console.log(this.$route.params.archive_id)
-            this.$router.push({ name: 'ShowArchive', params: { id: this.$route.params.archive_id }})
+            this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
 
           }).catch(function(error) {
             // Uh-oh, an error occurred!

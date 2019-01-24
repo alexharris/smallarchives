@@ -113,7 +113,7 @@ export default {
 	    ref.get().then((doc) => {
 	      if (doc.exists) {
 
-	      	this.asset.filePath = this.uid + '/' + this.$route.params.archive_id + '/' + doc.data().file
+	      	this.asset.filePath = this.uid + '/archive_' + this.$route.params.archive_id + '/assets/thumb_' + doc.data().file
 	        this.asset.assetTitle = doc.data().assetTitle
 	        this.asset.assetName = doc.data().file
 	        this.asset.assetType = doc.data().assetType

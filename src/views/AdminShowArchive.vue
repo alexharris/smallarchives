@@ -31,7 +31,7 @@ import ListAssets from '../components/ListAssets'
 
 
 export default {
-  name: 'ShowArchive',
+  name: 'AdminShowArchive',
   components: {
     ListAssets
   },  
@@ -55,7 +55,7 @@ export default {
   methods: {
     editarchive (id) {
       this.$router.push({
-        name: 'EditArchive',
+        name: 'AdminEditArchive',
         params: { id: id }
       })
     },
@@ -67,7 +67,7 @@ export default {
     },    
     addItemButton (id) {
       this.$router.push({
-        name: 'AdminAddAsset',
+        name: 'AdminCreateAsset',
         params: { id: id }
       })
     },

@@ -53,7 +53,7 @@
 
 import firebase from 'firebase'
 export default {
-  name: 'AdminAddArchive',
+  name: 'AdminCreateArchive',
   data () {
     return {
       ref: firebase.firestore().collection('archives'),
@@ -74,7 +74,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      
+        
       // Check for errors in the form
       this.errors = [] //clear old error array
       //check for completeness

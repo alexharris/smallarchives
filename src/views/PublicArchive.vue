@@ -2,6 +2,7 @@
   <div>
       <b-row>
         <b-col cols="12" class="col-md-8 my-5">
+          <ArchiveHeaderImage />
           <h1>{{archive.title}}</h1>
           <p>{{archive.desc}}</p>
           <p>Number of records: {{assetCount}}</p>
@@ -9,7 +10,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <ArchiveHeaderImage />
+          
           <PublicListAssets />
 <!--           <PublicListFacets /> -->
 

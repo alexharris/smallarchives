@@ -3,17 +3,21 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import Admin from "@/views/Admin.vue";
-
 import Login from "@/views/Login.vue";
-import SignUp from "@/views/SignUp.vue";
-import Profile from "@/views/Profile.vue";
+
+// User
+import UserSignUp from "@/views/UserSignUp.vue";
+import UserProfile from "@/views/UserProfile.vue";
 import EditUserProfile from "@/views/EditUserProfile.vue";
 
+// Admin
 import AdminListArchives from '@/views/AdminListArchives'
-import ShowArchive from '@/views/ShowArchive'
-import AdminAddArchive from '@/views/AdminAddArchive'
-import EditArchive from '@/views/EditArchive'
-import AdminAddAsset from '@/views/AdminAddAsset'
+import AdminShowArchive from '@/views/AdminShowArchive'
+import AdminCreateArchive from '@/views/AdminCreateArchive'
+import AdminEditArchive from '@/views/AdminEditArchive'
+
+
+import AdminCreateAsset from '@/views/AdminCreateAsset'
 import AdminEditAsset from '@/views/AdminEditAsset'
 
 import PublicHome from '@/views/PublicHome'
@@ -43,23 +47,23 @@ const router = new Router({
         },
         {
           path: '/admin/show-archive/:id',
-          name: 'ShowArchive',
-          component: ShowArchive
+          name: 'AdminShowArchive',
+          component: AdminShowArchive
         }, 
         {
           path: '/admin/add-asset/:id',
-          name: 'AdminAddAsset',
-          component: AdminAddAsset
+          name: 'AdminCreateAsset',
+          component: AdminCreateAsset
         },         
         {
           path: '/admin/add-archive',
-          name: 'AdminAddArchive',
-          component: AdminAddArchive           
+          name: 'AdminCreateArchive',
+          component: AdminCreateArchive           
         },
         {
           path: '/admin/edit-archive/:id',
-          name: 'EditArchive',
-          component: EditArchive
+          name: 'AdminEditArchive',
+          component: AdminEditArchive
         },
         {
           path: '/admin/edit-asset/:archive_id/:asset_id',
@@ -68,12 +72,12 @@ const router = new Router({
         },        
         {
           path: "/admin/profile",
-          name: "Profile",
-          component: Profile
+          name: "UserProfile",
+          component: UserProfile
         },   
         {
           path: "/admin/edit-profile",
-          name: "EditProfile",
+          name: "EditUserProfile",
           component: EditUserProfile
         },                         
       ]      
@@ -85,8 +89,8 @@ const router = new Router({
     },     
     {
       path: "/sign-up",
-      name: "SignUp",
-      component: SignUp
+      name: "UserSignUp",
+      component: UserSignUp
     },
     {
       path: "/u/:username",

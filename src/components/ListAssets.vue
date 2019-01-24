@@ -74,7 +74,7 @@ export default {
           // doc.data() is never undefined for query doc snapshots
           // get the full file path and make it blank if it doesnt exist
           if(doc.data().file != '') {
-            var fullFilePath = firebase.auth().currentUser.uid + '/' + this.$route.params.id + '/' + doc.data().file
+            var fullFilePath = firebase.auth().currentUser.uid + '/archive_' + this.$route.params.id + '/assets/' + doc.data().file
           } else {
             var fullFilePath = ''
           }

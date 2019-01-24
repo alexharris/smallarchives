@@ -10,7 +10,6 @@
 
     </div>
     <div v-else>
-      <ArchiveHeaderImage />
       <b-row class="mb-3">
         <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
       </b-row>
@@ -90,7 +89,7 @@ export default {
       return formattedDate
     },
     details (archive) {
-      this.$router.push({ name: 'ShowArchive', params: { id: archive.key }})
+      this.$router.push({ name: 'AdminShowArchive', params: { id: archive.key }})
     },
     linkToPublicView (archive) {
       this.$router.push({ name: 'PublicArchive', params: { id: archive.key, username: this.displayName }})
