@@ -46,7 +46,7 @@ const router = new Router({
           component: AdminListArchives
         },
         {
-          path: '/admin/show-archive/:id',
+          path: '/admin/show-archive/:archive_id',
           name: 'AdminShowArchive',
           component: AdminShowArchive
         }, 
@@ -61,7 +61,7 @@ const router = new Router({
           component: AdminCreateArchive           
         },
         {
-          path: '/admin/edit-archive/:id',
+          path: '/admin/edit-archive/:archive_id',
           name: 'AdminEditArchive',
           component: AdminEditArchive
         },
@@ -98,7 +98,7 @@ const router = new Router({
       component: PublicProfile
     },   
     {
-      path: '/u/:username/:id',
+      path: '/u/:username/:archive_id',
       name: 'PublicArchive',
       component: PublicArchive
     },

@@ -23,8 +23,10 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 import PublicListAssets from '../components/PublicListAssets'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
+
 
 export default {
   name: 'PublicArchive',
@@ -46,37 +48,27 @@ export default {
     }
   },
   created () {
+
     this.getUidFromUsername()
+    
+      
   },
   methods: {
-    getUidFromUsername() {
-      this.username = this.$route.params.username
-      // get the user id based on the displayname from the route
-      firebase.firestore().collection('users').where("displayName", "==", this.$route.params.username)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // Assign the user id from thd document to the uid variable
-            this.uid = doc.id
-            // Pass the id to getArchiveDetails to populate this archives details
-            this.getArchiveDetails(doc.id)
-        });
-      })
-      .catch(function(error) {
-          console.log("Error getting documents: ", error);
-      });      
+    async getUidFromUsername() {
+      this.uid = await sa.getUidFromUsername('alex')
+      this.getArchiveDetails()
     },
     getArchiveDetails: function() {
-      const ref = firebase.firestore().collection('archives').doc(this.uid).collection('userarchives').doc(this.$route.params.id);
-
-      ref.get().then((doc) => {
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+      console.log(uid,archiveId)
+      sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
         if (doc.exists) {
 
           this.key = doc.id;
           this.archive = doc.data();
         } else {
-          alert("No such document!");
+          console.log("No such document!");
         }
       });
     },

@@ -92,6 +92,7 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 
 export default {
   name: 'AdminCreateAsset',
@@ -164,8 +165,11 @@ export default {
         file.name = ''
       }
 
+      var uid = this.uid
+      var assetId = this.$route.params.id
 
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').add({
+
+      sa.assetCollectionDbRef(uid, assetId).add({
         file: file.name,
         assetTitle: this.assetTitle,
         assetDescription: this.assetDescription,

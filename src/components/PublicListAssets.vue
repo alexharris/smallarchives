@@ -88,7 +88,7 @@ export default {
     // It then calls renderAssetArray to turn this data into something renderable
     createAssetArray: function() {
 
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets')
+      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

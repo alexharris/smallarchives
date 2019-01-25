@@ -52,11 +52,14 @@
 <script>
 
 import firebase from 'firebase'
+
+import sa from '../sa'
+
 export default {
   name: 'AdminCreateArchive',
   data () {
     return {
-      ref: firebase.firestore().collection('archives'),
+      ref: firebase.firestore().collection('archives'), // this can prob be deleted
       archive: {
         title: '',
         desc: ''
@@ -74,6 +77,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+
         
       // Check for errors in the form
       this.errors = [] //clear old error array
@@ -89,9 +93,7 @@ export default {
       // ADD ARCHIVE DATA
       //-------------
 
-      console.log(this.uid)
-
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").add({
+      sa.archiveCollectionDbRef(this.uid).add({
         title: this.archive.title,
         desc: this.archive.desc,
         headerImage: this.archiveHeaderImage.name,

@@ -29,6 +29,7 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 
 export default {
@@ -51,9 +52,9 @@ export default {
   },
   created () {
 
-    
+    var uid = firebase.auth().currentUser.uid
 
-    this.ref.onSnapshot((querySnapshot) => {
+    sa.archiveCollectionDbRef(uid).onSnapshot((querySnapshot) => {
       this.archives = [];
       querySnapshot.forEach((doc) => {
 

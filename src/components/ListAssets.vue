@@ -67,14 +67,14 @@ export default {
     // It then calls renderAssetArray to turn this data into something renderable
     createAssetArray: function() {
         
-      firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).collection("userarchives").doc(this.$route.params.id).collection('assets')
+      firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           // get the full file path and make it blank if it doesnt exist
           if(doc.data().file != '') {
-            var fullFilePath = firebase.auth().currentUser.uid + '/archive_' + this.$route.params.id + '/assets/' + doc.data().file
+            var fullFilePath = firebase.auth().currentUser.uid + '/archive_' + this.$route.params.archive_id + '/assets/' + doc.data().file
           } else {
             var fullFilePath = ''
           }

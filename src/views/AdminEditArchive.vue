@@ -39,6 +39,7 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 
 export default {
   name: 'AdminEditArchive',
@@ -50,8 +51,12 @@ export default {
     }
   },
   created () {
-    const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.id);
-    ref.get().then((doc) => {
+
+    // get existing data
+    var uid = firebase.auth().currentUser.uid
+    var archiveId = this.$route.params.archive_id
+
+    sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
       if (doc.exists) {
         this.archive = doc.data();
       } else {
@@ -63,11 +68,13 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
 
-      const updateRef = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.id);
-      updateRef.set(this.archive).then((docRef) => {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id      
+
+      sa.archiveDocumentDbRef(uid, archiveId).set(this.archive).then((docRef) => {
         this.key = ''
         this.archive.title = ''
-        this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.id }})
+        this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
       })
       .catch((error) => {
         alert("Error adding document: ", error);
@@ -78,31 +85,40 @@ export default {
     },
     deletearchive (id) {
 
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id      
 
-      //First, get all of the assets associated with the archive
-      firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).collection('assets').get().then((querySnapshot) => {
+      /**
+      * 1. Get all of the assets associated with this archive
+      * 2. Delete the images from storage associated with this archive
+      * 3. Delete the asset's data
+      * 4. Delete the archive itself
+      */
+
+      // 1: get all of the assets associated with the archive
+      sa.assetCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            //then go through each one and delete that file from storage
-              var file = doc.data().file;
-              //get the path where we store images for assets in storage
-              var ref = firebase.storage().ref(this.uid + '/archive_' + this.$route.params.id + '/assets/')
-              //delete this one
-              ref.child(file).delete().then(() =>
-              {
-                console.log('Delete thumb version')
-                // delete the thumb version as well
-                ref.child('thumb_' + file).delete()
-                console.log(file + ' deleted')
-              }).catch((error) => {
-                console.log(error)
-              })
+            // 2: Go through each one, get associated filename, and delete that file from storage
+            var file = doc.data().file;
+            // Get the path where we store images for assets in storage
+            var ref = firebase.storage().ref(this.uid + '/archive_' + this.$route.params.archive_id + '/assets/')
+            // Delete the main image
+            ref.child(file).delete().then(() =>
+            {
+              // Delete the thumb version as well
+              ref.child('thumb_' + file).delete()
+            }).catch((error) => {
+              console.log(error)
+            })
           });
       }).then((doc) => {
-        firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(function() {
-              console.log("Document successfully deleted!");
-          }).catch(function(error) {
-              console.error("Error removing document: ", error);
-          });
+        // 3: Delete the assets from the db
+        console.log(doc)
+        // firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(function() {
+        //       console.log("Document successfully deleted!");
+        //   }).catch(function(error) {
+        //       console.error("Error removing document: ", error);
+        //   });
       })
 
       // firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(() => {

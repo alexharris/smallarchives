@@ -59,7 +59,7 @@ export default {
 
     createFacetArray: function() {
                 
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets')
+      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -75,8 +75,8 @@ export default {
     countFacetArray: function() {
 
       this.uniqueFacetArray.forEach((facet) => {
-        console.log(firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets'));
-        var item = firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.id).collection('assets').where("assetType", "==", "text");
+
+        var item = firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets').where("assetType", "==", "text");
         console.log(item.assetTitle)
       })
       

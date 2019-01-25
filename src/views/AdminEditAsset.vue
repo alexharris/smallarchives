@@ -37,6 +37,7 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 
 export default {
   name: 'AdminEditAsset',
@@ -48,12 +49,9 @@ export default {
         assetName: '',
         assetId: '',
         assetDescription: '',
-        customFields: ''
+
       },
-      newCustomField: {
-        fieldLabel:'',
-        fieldValue:''
-      }
+      uid: ''
     }
   },
   created () {
@@ -61,17 +59,17 @@ export default {
     // Get the initial data
     //-------------
 
-    // build the ref
-    const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.archive_id).collection('assets').doc(this.$route.params.asset_id);
+    var uid = firebase.auth().currentUser.uid
+    var archiveId = this.$route.params.archive_id
+    var assetId = this.$route.params.asset_id
 
-    // get the fields from the database and assign to asset array
-    ref.get().then((doc) => {
+    // build the ref
+    sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
       if (doc.exists) {
         this.asset.assetTitle = doc.data().assetTitle
         this.asset.assetName = doc.data().file
-        this.asset.assetId = doc.id,
-        this.asset.assetDescription = doc.data().assetDescription,
-        this.asset.customFields = doc.data().customFields
+        this.asset.assetId = doc.id
+        this.asset.assetDescription = doc.data().assetDescription
       } else {
         console.log("No such document!");
       }
@@ -81,11 +79,13 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
 
-      const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.archive_id).collection('assets').doc(this.$route.params.asset_id);
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+      var assetId = this.$route.params.asset_id
 
-      ref.update({
+      // build the ref
+      sa.assetDocumentDbRef(uid, archiveId, assetId).update({
         assetTitle: this.asset.assetTitle,
-        customFields: this.asset.customFields,
         assetDescription: this.asset.assetDescription
 
       }).then(() => {
@@ -93,32 +93,14 @@ export default {
         this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
       })
     },
-    deleteCustomField(assetId) {
-
-      // var customFields;
-
-      // const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.archive_id).collection('assets').doc(this.$route.params.asset_id);
-      // // get the fields from the database and assign to asset array
-      // ref.get().then((doc) => {
-      //   if (doc.exists) {
-      //     customFields = doc.data().customFields
-      this.asset.customFields.splice(assetId, 1)
-      //   } else {
-      //     console.log("No such document!");
-      //   }
-      // }).then(() => {
-      //   this.asset.customFields = customFields
-      //   ref.update({
-      //     customFields: customFields
-      //   })
-      // }); 
-
-    },
     itemDelete(assetId) {
       //Delete the item from the database
-      const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.archive_id).collection('assets').doc(assetId);
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+      var assetId = this.$route.params.asset_id
 
-      ref.delete().then(() => {
+      // build the ref
+      sa.assetDocumentDbRef(uid, archiveId, assetId).delete().then(() => {
           console.log("Document successfully deleted from database");
           //Then, delete the item from storage
           firebase.storage().ref().child(firebase.auth().currentUser.uid + '/' + this.$route.params.archive_id + '/' + this.asset.assetName).delete().then(() => {
@@ -136,12 +118,7 @@ export default {
       });
 
 
-    },
-    addCustomField () {
-      this.asset.customFields.push({fieldLabel: this.newCustomField.fieldLabel, fieldValue: this.newCustomField.fieldValue });
-      this.newCustomField.fieldLabel = ''
-      this.newCustomField.fieldValue = ''
-    },    
+    }, 
     goBackOne() {
       this.$router.go(-1)
     },         

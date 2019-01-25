@@ -27,6 +27,7 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 import ListAssets from '../components/ListAssets'
 
 
@@ -42,8 +43,10 @@ export default {
     }
   },
   created () {
-    const ref = firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(this.$route.params.id);
-    ref.get().then((doc) => {
+
+    var uid = firebase.auth().currentUser.uid
+    var archiveId = this.$route.params.id
+    sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
       if (doc.exists) {
         this.key = doc.id;
         this.archive = doc.data();
