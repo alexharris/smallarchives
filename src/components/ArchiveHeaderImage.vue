@@ -30,23 +30,27 @@ export default {
   methods: {
   	getHeaderFileName() {
 
-		const ref = firebase.firestore().collection('archives').doc(this.uid).collection('userarchives').doc(this.$route.params.id);
-		ref.get().then((doc) => {
-			if (doc.exists) {
-				this.headerFileName = doc.data().headerImage
-			} else {
-			  alert("No such document!");
-			}
-		}).then(() => {
-			this.getHeaderImage()
-		})		 
-  	},   	
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+
+  		sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
+  			if (doc.exists) {
+  				this.headerFileName = doc.data().headerImage
+          
+  			} else {
+  			  alert("No such document!");
+  			}
+  		}).then(() => {
+  			this.getHeaderImage()
+  		})		 
+    	},   	
   	getHeaderImage: function() {
 
+      console.log(this.headerFileName)
 
-  		var filePath = this.uid + '/archive_' + this.$route.params.id + '/thumb_' + this.headerFileName;
+  		var filePath = this.uid + '/archive_' + this.$route.params.archive_id + '/' + this.headerFileName;
 
-
+      console.log(filePath)
         firebase.storage().ref().child(filePath).getDownloadURL().then((url) => {
         	this.headerImage = url
         }).catch(function(error) {

@@ -45,7 +45,7 @@ export default {
   created () {
 
     var uid = firebase.auth().currentUser.uid
-    var archiveId = this.$route.params.id
+    var archiveId = this.$route.params.archive_id
     sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
       if (doc.exists) {
         this.key = doc.id;

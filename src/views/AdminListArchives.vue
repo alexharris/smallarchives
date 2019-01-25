@@ -90,10 +90,10 @@ export default {
       return formattedDate
     },
     details (archive) {
-      this.$router.push({ name: 'AdminShowArchive', params: { id: archive.key }})
+      this.$router.push({ name: 'AdminShowArchive', params: { archive_id: archive.key }})
     },
     linkToPublicView (archive) {
-      this.$router.push({ name: 'PublicArchive', params: { id: archive.key, username: this.displayName }})
+      this.$router.push({ name: 'PublicArchive', params: { archive_id: archive.key, username: this.displayName }})
     }
   },
 }
