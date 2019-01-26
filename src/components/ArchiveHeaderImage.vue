@@ -22,7 +22,6 @@ export default {
   	uid() {
   		return this.$store.getters.getUser.uid
   	},
-
   },
   created() {
   	this.getHeaderFileName();
@@ -46,12 +45,11 @@ export default {
     	},   	
   	getHeaderImage: function() {
 
-      console.log(this.headerFileName)
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+      var fileName = this.headerFileName
 
-  		var filePath = this.uid + '/archive_' + this.$route.params.archive_id + '/' + this.headerFileName;
-
-      console.log(filePath)
-        firebase.storage().ref().child(filePath).getDownloadURL().then((url) => {
+  		sa.archiveStorageRef(uid, archiveId, fileName, 'thumb_').getDownloadURL().then((url) => {
         	this.headerImage = url
         }).catch(function(error) {
           console.log(error.message)

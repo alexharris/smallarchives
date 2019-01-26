@@ -51,7 +51,7 @@ const router = new Router({
           component: AdminShowArchive
         }, 
         {
-          path: '/admin/add-asset/:id',
+          path: '/admin/add-asset/:archive_id',
           name: 'AdminCreateAsset',
           component: AdminCreateAsset
         },         

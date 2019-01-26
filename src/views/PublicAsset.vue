@@ -57,6 +57,7 @@
 
 <script>
 import firebase from 'firebase';
+import sa from '../sa'
 
 export default {
   name: "PublicAsset",  
@@ -73,7 +74,10 @@ export default {
   		uid: ''
   	}
   },
-
+  created() {
+  	this.getUidFromUsername()
+  	
+  },
   methods: {
     getFormattedDate (dateCreated) {
       var day = dateCreated.getDate()
@@ -82,35 +86,19 @@ export default {
       var formattedDate = month + '-' + day + '-' + year
       return formattedDate
     },       	
-    getUidFromUsername() {
-
-      // get the user id based on the displayname from the route
-      firebase.firestore().collection('users').where("displayName", "==", this.$route.params.username)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // Assign the user id from the document to the uid variable
-
-            this.uid = doc.id
-            
-        });
-
-        // when this is done, we can get the assets
-       this.getAssetDetails()
-      })
-      .catch(function(error) {
-          console.log("Error getting documents: ", error);
-      });  
-
-      
+    async getUidFromUsername() {
+      this.uid = await sa.getUidFromUsername('alex')
+      this.getAssetDetails()
     },     	
     getAssetDetails: function() {
+
+    	var uid = this.uid
+    	var archiveId = this.$route.params.archive_id
+    	var assetId = this.$route.params.asset_id
         
-	    const ref = firebase.firestore().collection("archives").doc(this.uid).collection("userarchives").doc(this.$route.params.archive_id).collection('assets').doc(this.$route.params.asset_id);
 
 	    // get the fields from the database and assign to asset array
-	    ref.get().then((doc) => {
+	    sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
 	      if (doc.exists) {
 
 	      	this.asset.filePath = this.uid + '/archive_' + this.$route.params.archive_id + '/assets/thumb_' + doc.data().file
@@ -145,10 +133,7 @@ export default {
 	},      
   },
   
-  created() {
-  	this.getUidFromUsername()
-  	
-  }
+
  
 };
 </script>

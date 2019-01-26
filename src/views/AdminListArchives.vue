@@ -46,7 +46,6 @@ export default {
       },
       archives: [],
       errors: [],
-      ref: firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives'),
       displayName: ''
     }
   },

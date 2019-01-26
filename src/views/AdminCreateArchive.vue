@@ -59,7 +59,6 @@ export default {
   name: 'AdminCreateArchive',
   data () {
     return {
-      ref: firebase.firestore().collection('archives'), // this can prob be deleted
       archive: {
         title: '',
         desc: ''

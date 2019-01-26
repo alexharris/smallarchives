@@ -114,20 +114,10 @@ export default {
       }).then((doc) => {
         // 3: Delete the assets from the db
         console.log(doc)
-        // firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(function() {
-        //       console.log("Document successfully deleted!");
-        //   }).catch(function(error) {
-        //       console.error("Error removing document: ", error);
-        //   });
+
       })
 
-      // firebase.firestore().collection('archives').doc(firebase.auth().currentUser.uid).collection('userarchives').doc(id).delete().then(() => {
-      //   this.$router.push({
-      //     name: 'Archives'
-      //   })
-      // }).catch((error) => {
-      //   alert("Error removing document: ", error);
-      // });
+
     },           
   }
 }
