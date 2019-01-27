@@ -61,7 +61,7 @@ export default {
     getArchiveDetails: function() {
       var uid = this.uid
       var archiveId = this.$route.params.archive_id
-      console.log(uid,archiveId)
+
       sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
         if (doc.exists) {
 

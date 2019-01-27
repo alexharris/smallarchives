@@ -78,14 +78,7 @@ export default {
   	this.getUidFromUsername()
   	
   },
-  methods: {
-    getFormattedDate (dateCreated) {
-      var day = dateCreated.getDate()
-      var month = dateCreated.getMonth() + 1
-      var year = dateCreated.getFullYear()
-      var formattedDate = month + '-' + day + '-' + year
-      return formattedDate
-    },       	
+  methods: {      	
     async getUidFromUsername() {
       this.uid = await sa.getUidFromUsername('alex')
       this.getAssetDetails()
@@ -100,8 +93,6 @@ export default {
 	    // get the fields from the database and assign to asset array
 	    sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
 	      if (doc.exists) {
-
-	      	this.asset.filePath = this.uid + '/archive_' + this.$route.params.archive_id + '/assets/thumb_' + doc.data().file
 	        this.asset.assetTitle = doc.data().assetTitle
 	        this.asset.assetName = doc.data().file
 	        this.asset.assetType = doc.data().assetType
@@ -111,7 +102,7 @@ export default {
 	        this.asset.assetLocation = doc.data().assetLocation
 	        this.asset.assetCreator = doc.data().assetCreator
 	        this.asset.assetFormat = doc.data().assetFormat
-	        this.asset.assetCreationDate = this.getFormattedDate(doc.data().assetCreationDate)
+	        this.asset.assetCreationDate = sa.getFormattedDate(doc.data().assetCreationDate)
 
 	        this.getAssetSrc()
 	      } else {
@@ -120,8 +111,13 @@ export default {
 	    });      
     },  
     getAssetSrc: function() {
+
+    	var uid = this.uid
+    	var archiveId = this.$route.params.archive_id
+    	var assetId = this.asset.assetId
+    	var fileName = this.asset.assetName
     	
-        firebase.storage().ref().child(this.asset.filePath).getDownloadURL().then((url) => {
+        sa.assetStorageRef(uid, archiveId, assetId, fileName).getDownloadURL().then((url) => {
         	console.log(url)
             this.assetSrc = url
         }).catch(function(error) {

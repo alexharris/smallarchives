@@ -60,7 +60,7 @@ export default {
         this.archives.push({
           key: doc.id,
           title: doc.data().title,
-          dateCreated: this.getFormattedDate(doc.data().dateCreated)
+          dateCreated: sa.getFormattedDate(doc.data().dateCreated)
         });
       });
     });
@@ -81,13 +81,6 @@ export default {
    
   },
   methods: {
-    getFormattedDate (dateCreated) {
-      var day = dateCreated.getDate()
-      var month = dateCreated.getMonth() + 1
-      var year = dateCreated.getFullYear()
-      var formattedDate = month + '-' + day + '-' + year
-      return formattedDate
-    },
     details (archive) {
       this.$router.push({ name: 'AdminShowArchive', params: { archive_id: archive.key }})
     },

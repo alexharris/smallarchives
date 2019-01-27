@@ -18,15 +18,15 @@ export default {
   		headerFileName: ''
   	}
   },
-  computed: {
-  	uid() {
-  		return this.$store.getters.getUser.uid
-  	},
-  },
   created() {
-  	this.getHeaderFileName();
+    this.getUidFromUsername()
+  	
   },
   methods: {
+    async getUidFromUsername() {
+      this.uid = await sa.getUidFromUsername('alex')
+      this.getHeaderFileName();
+    },    
   	getHeaderFileName() {
 
       var uid = this.uid

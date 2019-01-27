@@ -16,6 +16,7 @@
 <script>
 
 import firebase from 'firebase'
+import sa from '../sa'
 
 export default {
   name: "PublicProfile",
@@ -26,34 +27,28 @@ export default {
     }
   },
   created() {
-    // get the user id based on the displayname from the route
-    firebase.firestore().collection('users').where("displayName", "==", this.displayName)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          // Assign the user id from thd document to the uid variable
-          this.uid = doc.id
-          // Pass the id to getUserArchives to populate that users archives
-          this.getUserArchives(doc.id)
-      });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
+    this.getUidFromUsername()
   },
   computed: {
     displayName: function() {
       return this.$route.params.username
+    }  
+  },
+  methods: {
+    async getUidFromUsername() {
+      this.uid = await sa.getUidFromUsername('alex')
+      this.getUserArchives()
+    },       
+    details (item) {
+      this.$router.push({ name: 'PublicArchive', params: { archive_id: item.key, username: this.displayName }})
     },
     getUserArchives: function() {
-          // use the user id to get the archives associated with that user
-      firebase.firestore().collection("archives").doc(this.uid).collection("userarchives")
+
+      var uid = this.uid
+      sa.archiveCollectionDbRef(uid)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, " => ", doc.data());
           this.archives.push({
             key: doc.id,
             title: doc.data().title,
@@ -61,12 +56,7 @@ export default {
           });
         });
       });       
-    }   
-  },
-  methods: {
-    details (item) {
-      this.$router.push({ name: 'PublicArchive', params: { id: item.key, username: this.displayName }})
-    }
+    }     
   }   
 };
 </script>

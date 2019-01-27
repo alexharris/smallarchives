@@ -137,10 +137,13 @@ export default {
       //-------------
 
       var file = this.file // use the Blob or File API
+      var uid = this.uid
+      var archiveId = this.$route.params.id
+      var fileName = file.name
 
       if(file != null) {
         // Check to see if a file exists before uploading, by trying to get the download URL
-        firebase.storage().ref(this.uid + '/archive_' + this.$route.params.id + '/assets/' + file.name).getDownloadURL().then((url) => {
+        sa.archiveStorageRef(uid, archiveId, fileName).getDownloadURL().then((url) => {
           // this means we got a URL, which means it exists, which means we throw an error
           this.errors.push('This archive already contains a file with this name!')
         }).catch((error) => {

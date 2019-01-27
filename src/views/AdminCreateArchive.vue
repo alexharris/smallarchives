@@ -52,7 +52,6 @@
 <script>
 
 import firebase from 'firebase'
-
 import sa from '../sa'
 
 export default {
@@ -118,16 +117,20 @@ export default {
       var file = this.archiveHeaderImage // use the Blob or File API
 
       if(file != null) {
-        // Check to see if a file exists before uploading, by trying to get the download URL
-        var storageFolder = 'archive_' + archiveId
 
-        firebase.storage().ref(this.uid + '/' + storageFolder + '/' + file.name).getDownloadURL().then((url) => {
+        var uid = this.uid
+        var achiveId = archiveId
+        var fileName = file.name
+
+        // Check to see if a file exists before uploading, by trying to get the download URL
+
+        sa.archiveStorageRef(uid, archiveId, fileName).getDownloadURL().then((url) => {
           // this means we got a URL, which means it exists, which means we throw an error
           this.errors.push('This archive already contains a file with this name!')
         }).catch((error) => {
           // but if a not found error message returns, it means it wasnt found, which means we should upload it
           console.log(error.code)
-         firebase.storage().ref(this.uid + '/' + storageFolder + '/' + file.name).put(file).then((snapshot) => {
+         sa.archiveStorageRef(uid, archiveId, fileName).put(file).then((snapshot) => {
             console.log('Uploaded a blob or file!');
           });
         })

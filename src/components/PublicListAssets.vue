@@ -52,14 +52,7 @@ export default {
   created() {
     this.getUidFromUsername()
   },    
-  methods: {  
-    getFormattedDate (dateCreated) {
-      var day = dateCreated.getDate()
-      var month = dateCreated.getMonth() + 1
-      var year = dateCreated.getFullYear()
-      var formattedDate = month + '-' + day + '-' + year
-      return formattedDate
-    },      
+  methods: {     
     async getUidFromUsername() {
       this.uid = await sa.getUidFromUsername('alex')
       this.createAssetArray()
@@ -77,7 +70,7 @@ export default {
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
             assetId: doc.id,
-            assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate),
+            assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
             assetText: doc.data().assetText,
             assetType: doc.data().assetType,
             assetFormat: doc.data().assetFormat

@@ -50,13 +50,6 @@ export default {
    
   },
   methods: {
-    getFormattedDate (dateCreated) {
-      var day = dateCreated.getDate()
-      var month = dateCreated.getMonth() + 1
-      var year = dateCreated.getFullYear()
-      var formattedDate = month + '-' + day + '-' + year
-      return formattedDate
-    },
     createAssetArray: function() {
 
       var uid = firebase.auth().currentUser.uid
@@ -70,7 +63,7 @@ export default {
             fileName: doc.data().file,
             assetTitle: doc.data().assetTitle,
             assetId: doc.id,
-            assetCreationDate: this.getFormattedDate(doc.data().assetCreationDate),
+            assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
             assetText: doc.data().assetText,
             assetType: doc.data().assetType
           });
