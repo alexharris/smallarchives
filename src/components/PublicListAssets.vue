@@ -54,7 +54,8 @@ export default {
   },    
   methods: {     
     async getUidFromUsername() {
-      this.uid = await sa.getUidFromUsername('alex')
+      var username = this.$route.params.username
+      this.uid = await sa.getUidFromUsername(username)
       this.createAssetArray()
     },
     createAssetArray: function() {

@@ -105,7 +105,7 @@ export default {
       file: null,
       text: '',
       customFieldLabel: '',
-      assetTitle: '',
+      assetTitle: null,
       assetDescription: '',
       selectedAssetType: '',
       assetCreationDate: '',
@@ -122,12 +122,14 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
 
+
       // empty the error variable to get rid of old errors
       this.errors = []
 
       // check the form for completeness
       if (!this.assetTitle) { // title is mandatory
         this.errors.push('Title required')
+        return
       } 
 
       this.assetCreationDate = new Date();
@@ -136,20 +138,29 @@ export default {
       // UPLOAD IMAGE 
       //-------------
 
-      var file = this.file // use the Blob or File API
-      var uid = this.uid
-      var archiveId = this.$route.params.id
-      var fileName = file.name
 
-      if(file != null) {
+      // Check to see if a file has been uploaded
+      if(this.file != null) {
+
+        var file = this.file // use the Blob or File API
+        var uid = this.uid
+        var archiveId = this.$route.params.id
+        var fileName = this.file.name
         // Check to see if a file exists before uploading, by trying to get the download URL
-        sa.archiveStorageRef(uid, archiveId, fileName).getDownloadURL().then((url) => {
+        sa.archiveStorageRef(uid, archiveId,'', fileName).getDownloadURL().then((url) => {
           // this means we got a URL, which means it exists, which means we throw an error
           this.errors.push('This archive already contains a file with this name!')
         }).catch((error) => {
+
           // but if a not found error message returns, it means it wasnt found, which means we should upload it
-          console.log(error.code)
-         firebase.storage().ref(this.uid + '/archive_' + this.$route.params.id + '/assets/' + file.name).put(file).then((snapshot) => {
+
+          var file = this.file // use the Blob or File API
+          var uid = this.uid
+          var archiveId = this.$route.params.archive_id
+          var archiveId = this.$route.params.archive_id
+          var fileName = this.file.name
+
+          sa.assetStorageRef(uid, archiveId,'', fileName).put(file).then((snapshot) => {
             console.log('Uploaded a blob or file!');
             this.addArchiveDataToDatabase()
           });
@@ -173,7 +184,7 @@ export default {
 
 
       sa.assetCollectionDbRef(uid, assetId).add({
-        file: file.name,
+        assetFileName: file.name,
         assetTitle: this.assetTitle,
         assetDescription: this.assetDescription,
         assetCreationDate: this.assetCreationDate,

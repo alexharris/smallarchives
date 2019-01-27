@@ -12,11 +12,19 @@
         <b-col>
           
           <PublicListAssets />
-<!--           <PublicListFacets /> -->
 
-          <!-- <a href="" @click.stop="goToUser()">Back to {{ this.username }}'s profile</a> -->
+          
         </b-col>
-    </b-row>
+      </b-row>
+      <hr class="my-4" />
+      <b-row class="my-5">
+        <b-col>
+          <div>This Small Archive was created by <a href="" @click.stop="goToUser()">{{ this.username }}</a></div>
+        </b-col>
+      </b-row>      
+
+
+
   </div>
 </template>
 
@@ -35,7 +43,7 @@ export default {
       uid: '',
       key: '',
       archive: {},
-      username:''
+      username: this.$route.params.username
     }
   },
   components: {
@@ -48,14 +56,12 @@ export default {
     }
   },
   created () {
-
     this.getUidFromUsername()
-    
-      
   },
   methods: {
     async getUidFromUsername() {
-      this.uid = await sa.getUidFromUsername('alex')
+      var username = this.$route.params.username
+      this.uid = await sa.getUidFromUsername(username)
       this.getArchiveDetails()
     },
     getArchiveDetails: function() {

@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="12">
-        <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
+        <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
         <hr class="my-4" />
         <template v-if="errors.length > 0">
           <b-alert variant="danger" show>
@@ -14,11 +14,11 @@
       </b-col>
     </b-row>
     <b-row>
-
       <b-col cols="12">
         <h2>
           Add Archive
         </h2>
+        <hr class="my-4" />
         <b-form @submit="onSubmit">
           <b-form-group id="fieldsetHorizontal"
                     horizontal
@@ -135,6 +135,11 @@ export default {
           });
         })
       }  
+    },
+    goBack() {
+        this.$router.push({
+          name: 'AdminListArchives',
+        }) 
     }
   }
 }

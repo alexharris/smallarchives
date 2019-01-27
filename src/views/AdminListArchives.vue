@@ -11,7 +11,7 @@
     </div>
     <div v-else>
       <b-row class="mb-3">
-        <b-button href="/admin/add-archive" variant="outline-primary">New Archive</b-button>
+        <b-button href="/admin/add-archive" class="float-right" variant="outline-primary">Add Archive</b-button>
       </b-row>
       <b-row>
         <b-table hover :items="archives" :fields="fields" class="table-bordered" head-variant="dark">

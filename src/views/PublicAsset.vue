@@ -80,7 +80,8 @@ export default {
   },
   methods: {      	
     async getUidFromUsername() {
-      this.uid = await sa.getUidFromUsername('alex')
+      var username = this.$route.params.username
+      this.uid = await sa.getUidFromUsername(username)
       this.getAssetDetails()
     },     	
     getAssetDetails: function() {
@@ -94,7 +95,7 @@ export default {
 	    sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
 	      if (doc.exists) {
 	        this.asset.assetTitle = doc.data().assetTitle
-	        this.asset.assetName = doc.data().file
+	        this.asset.assetFileName = doc.data().assetFileName
 	        this.asset.assetType = doc.data().assetType
 	        this.asset.assetText = doc.data().assetText
 	        this.asset.assetId = doc.id
@@ -115,7 +116,7 @@ export default {
     	var uid = this.uid
     	var archiveId = this.$route.params.archive_id
     	var assetId = this.asset.assetId
-    	var fileName = this.asset.assetName
+    	var fileName = 'thumb_' + this.asset.assetFileName
     	
         sa.assetStorageRef(uid, archiveId, assetId, fileName).getDownloadURL().then((url) => {
         	console.log(url)
