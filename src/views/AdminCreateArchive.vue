@@ -85,7 +85,12 @@ export default {
         return
       }
 
-      // this.archiveCreationDate = new Date()
+      // Fake set the image name field if no image is added
+      if(this.archiveHeaderImage === null) {
+        this.archiveHeaderImage = {
+          name: ''
+        }
+      }
 
       //-------------
       // ADD ARCHIVE DATA
@@ -99,10 +104,9 @@ export default {
       }).catch((error) => {
         alert("Error adding document: ", error);
       }).then((docRef) => {
-        if(this.archiveHeaderImage != null) {
+        if(this.archiveHeaderImage.name != '') {
           this.addArchiveHeaderImage(docRef.id)
         }
-        
       }).then(() => {
         this.$router.push({
           name: 'Admin',

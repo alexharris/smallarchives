@@ -16,7 +16,7 @@
       <b-row>
         <b-table hover :items="archives" :fields="fields" class="table-bordered" head-variant="dark">
           <template slot="actions" scope="row">
-            <b-btn size="sm" variant="outline-secondary" @click.stop="details(row.item)">Details</b-btn>&nbsp;
+            <b-btn size="sm" variant="outline-secondary" @click.stop="details(row.item.key)">Details</b-btn>&nbsp;
             <b-btn size="sm" variant="outline-secondary" @click.stop="linkToPublicView(row.item)">View</b-btn>&nbsp;
           </template>
         </b-table>
@@ -81,8 +81,8 @@ export default {
    
   },
   methods: {
-    details (archive) {
-      this.$router.push({ name: 'AdminShowArchive', params: { archive_id: archive.key }})
+    details (archiveId) {
+      this.$router.push({ name: 'AdminShowArchive', params: { archive_id: archiveId }})
     },
     linkToPublicView (archive) {
       this.$router.push({ name: 'PublicArchive', params: { archive_id: archive.key, username: this.displayName }})

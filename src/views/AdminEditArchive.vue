@@ -29,11 +29,14 @@
         <b-alert show variant="danger">
           <h4>Delete</h4>
           <p>Warning: Deleting this archive is permanent and you can't get it back</p>
+         
           <b-btn variant="danger" @click.stop="deletearchive(key)">Delete</b-btn>
         </b-alert>
       </b-form>
+      Archive ID: {{key}}
     </b-col>
   </b-row>
+   
 </template>
 
 <script>
@@ -45,7 +48,7 @@ export default {
   name: 'AdminEditArchive',
   data () {
     return {
-      key: this.$route.params.id,
+      key: this.$route.params.archive_id,
       archive: {},
       uid: this.$store.getters.getUser.uid
     }
@@ -111,11 +114,39 @@ export default {
               console.log(error)
             })
           });
-      }).then((doc) => {
+      }).then(() => {
         // 3: Delete the assets from the db
-        console.log(doc)
+        console.log()
+
+      }).then(() => {
+        // 4. Delete the archive itself
+
+        var fileName = this.archive.headerImage
+
+        // Delete the archive from the db
+        sa.archiveDocumentDbRef(uid, archiveId).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+
+        // Delete the header image from storage
+        sa.archiveStorageRef(uid, archiveId, fileName, 'thumb_').delete().then(function() {
+            console.log("Header image thumb successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing header image thumb: ", error);
+        });        
+
+        // Delete the header image from storage
+        sa.archiveStorageRef(uid, archiveId, fileName).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+
 
       })
+      
 
 
     },           
