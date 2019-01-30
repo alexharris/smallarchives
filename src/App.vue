@@ -2,7 +2,7 @@
 	<div id="app"> 
   	<b-navbar variant="faded" type="light" toggleable="sm" class="mb-5">
       <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
-      	<b-navbar-brand href="/">Small Archives.</b-navbar-brand>
+      	<b-navbar-brand href="/">SMALL ARCHIVES.</b-navbar-brand>
       	<b-collapse is-nav id="nav_collapse">
         	<b-navbar-nav class="ml-auto">
          		<b-nav-item-dropdown right v-if="user">
@@ -67,13 +67,13 @@ export default {
 </script>
 
 
-
 <style>
   h1,h2,h3,h4,h5, .navbar-brand {
-    font-family: 'Times', sans-serif !important;
+    font-family: 'Acme', sans-serif !important;
   }
   body {
     font-family: arial, sans-serif !important;
+    background: #ecebcf;
   }
   nav {
     border-bottom: 1px solid #000;

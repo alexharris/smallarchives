@@ -143,6 +143,7 @@ var sa = {
 	* @param username - The username
 	*/
 	getUidFromUsername(username) {
+
 		return new Promise(resolve => {
 		firebase.firestore().collection('users').where("displayName", "==", username)
 		.get()
@@ -163,7 +164,50 @@ var sa = {
 		var year = dateCreated.getFullYear()
 		var formattedDate = month + '-' + day + '-' + year
 		return formattedDate
-	},     
+	},  
+	/**
+	* Add header image to an archive
+	* @param uid - The ID of the user who created this archive
+	* @param archiveId - The archive ID
+	* @param file - the file to be uploaded
+	*/  
+	addArchiveHeaderImage (uid, archiveId, file) {
+
+		sa.archiveDocumentDbRef(uid, archiveId).update({
+			headerImage: file.name
+		})
+
+		sa.archiveStorageRef(uid, archiveId, file.name).put(file).then(() => {
+			console.log('Uploaded a blob or file!');
+		});
+	},
+	/**
+	* Delete header image from an archive
+	* @param uid - The ID of the user who created this archive
+	* @param archiveId - The archive ID
+	* @param fileName - the name of the file to be deleted
+	*/  
+	deleteArchiveHeaderImage (uid, archiveId, fileName) {
+
+		// set the header image refernce in db to blank
+		sa.archiveDocumentDbRef(uid, archiveId).update({
+			headerImage: ''
+		})
+
+        // Delete the header image thumb from storage
+        sa.archiveStorageRef(uid, archiveId, fileName, 'thumb_').delete().then(function() {
+            console.log("Header image thumb successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing header image thumb: ", error);
+        });        
+
+        // Delete the header image from storage
+        sa.archiveStorageRef(uid, archiveId, fileName).delete().then(function() {
+            console.log("Header image successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing main image from storage: ", error);
+        });
+	}, 
 }
 
 export default sa

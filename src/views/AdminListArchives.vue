@@ -46,7 +46,7 @@ export default {
       },
       archives: [],
       errors: [],
-      displayName: ''
+      displayName: this.$store.getters.getUser.displayName
     }
   },
   created () {
@@ -63,22 +63,7 @@ export default {
           dateCreated: sa.getFormattedDate(doc.data().dateCreated)
         });
       });
-    });
-
-    // //get the doc for the current user
-    var userRef = firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid);
-    // get the display name from the uid
-    userRef.get().then((doc) => {
-      if (doc.exists) {
-        this.displayName = doc.data().displayName
-      } else {
-        console.log("No such document!");
-      }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
-
-   
+    });   
   },
   methods: {
     details (archiveId) {

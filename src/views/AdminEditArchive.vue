@@ -3,27 +3,51 @@
     <b-col cols="12">
       <b-btn @click.stop="goBackOne">Back</b-btn>
       <hr class="my-4" />
+      <h4>Basic Info</h4>      
       <b-form @submit="onSubmit">
         <b-form-group id="fieldsetHorizontal"
                   horizontal
                   :label-cols="4"
                   breakpoint="md"
-                  label="Enter Title">
+                  label="Title">
           <b-form-input id="title" v-model.trim="archive.title"></b-form-input>
         </b-form-group>
         <b-form-group id="fieldsetHorizontal"
                   horizontal
                   :label-cols="4"
                   breakpoint="md"
-                  label="Enter Description">
+                  label="Description">
           <b-form-textarea id="textarea1"
                            v-model="archive.desc"
                            placeholder="Enter something"
                            :rows="3"
                            :max-rows="6">
           </b-form-textarea>
+          </b-form-group>
+          <h4>Header Image</h4>  
+          Original Header Image: {{originalHeaderImage}}<br/>
+          Header Image: {{archive.headerImage}}<br/>
+          New Header Image: {{newHeaderImage.name}}<br />
+          <div v-if="archive.headerImage">
+            <ArchiveHeaderImage />
+            <b-button @click.stop="archive.headerImage = ''" variant="primary">Remove</b-button>
+          </div>
+          <div v-else>
+            <b-form-group id="uploadAsset"
+                          :label-cols="4"
+                          breakpoint="md"
+                          label="Upload Image">
+
+              <b-form-file id="uploadAsset" 
+                           v-model="newHeaderImage" 
+                           placeholder="Choose a file..."
+                           :rows="3"
+                           :max-rows="6" 
+              ></b-form-file>
+            </b-form-group> 
+          </div>
         </b-form-group>   
-    
+        <hr my="4" />
         <b-button type="submit" variant="primary">Update</b-button>
         <hr my="4" />
         <b-alert show variant="danger">
@@ -43,14 +67,20 @@
 
 import firebase from 'firebase'
 import sa from '../sa'
+import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 
 export default {
   name: 'AdminEditArchive',
+  components: {
+    ArchiveHeaderImage
+  },
   data () {
     return {
       key: this.$route.params.archive_id,
       archive: {},
-      uid: this.$store.getters.getUser.uid
+      uid: this.$store.getters.getUser.uid,
+      originalHeaderImage: '',
+      newHeaderImage: ''
     }
   },
   created () {
@@ -62,6 +92,7 @@ export default {
     sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
       if (doc.exists) {
         this.archive = doc.data();
+        this.originalHeaderImage = doc.data().headerImage
       } else {
         alert("No such document!");
       }
@@ -74,17 +105,48 @@ export default {
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id      
 
-      sa.archiveDocumentDbRef(uid, archiveId).set(this.archive).then((docRef) => {
-        this.key = ''
-        this.archive.title = ''
-        this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
-      })
-      .catch((error) => {
+      sa.archiveDocumentDbRef(uid, archiveId).update({
+        title: this.archive.title,
+        desc: this.archive.desc
+      }).catch((error) => {
         alert("Error adding document: ", error);
-      });
+      }).then(() => {
+        if(this.newHeaderImage != '') { // if there is a new header image
+          console.log('new header image')
+          // delete the original if it exists
+          if(this.originalHeaderImage != '') {
+            sa.deleteArchiveHeaderImage (uid, archiveId, this.originalHeaderImage)
+          }
+
+          // add the new
+          sa.addArchiveHeaderImage(uid,archiveId,this.newHeaderImage)
+          
+          
+        } else if(this.originalHeaderImage == this.archive.headerImage) {
+          console.log('same image, leave it alone')
+        } else {
+          console.log('delete the image and dont upload a new one')
+          // delete the original
+          sa.deleteArchiveHeaderImage (uid, archiveId, this.originalHeaderImage)
+        }
+      }).then(() => {
+        this.$router.push({
+          name: 'AdminListArchives',
+        }) 
+      })
     },
     goBackOne() {
       this.$router.go(-1)
+    },
+    deleteHeaderImage() {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id  
+      var fileName = this.archive.headerImage
+
+      sa.deleteArchiveHeaderImage(uid, archiveId, fileName)
+
+      this.archive.headerImage = ''
+
     },
     deletearchive (id) {
 
@@ -121,8 +183,6 @@ export default {
       }).then(() => {
         // 4. Delete the archive itself
 
-        var fileName = this.archive.headerImage
-
         // Delete the archive from the db
         sa.archiveDocumentDbRef(uid, archiveId).delete().then(function() {
             console.log("Document successfully deleted!");
@@ -130,19 +190,8 @@ export default {
             console.error("Error removing document: ", error);
         });
 
-        // Delete the header image from storage
-        sa.archiveStorageRef(uid, archiveId, fileName, 'thumb_').delete().then(function() {
-            console.log("Header image thumb successfully deleted!");
-        }).catch(function(error) {
-            console.error("Error removing header image thumb: ", error);
-        });        
 
-        // Delete the header image from storage
-        sa.archiveStorageRef(uid, archiveId, fileName).delete().then(function() {
-            console.log("Document successfully deleted!");
-        }).catch(function(error) {
-            console.error("Error removing document: ", error);
-        });
+        
 
 
       })
