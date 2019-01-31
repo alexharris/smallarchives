@@ -69,7 +69,7 @@ export default {
 
 <style>
   h1,h2,h3,h4,h5, .navbar-brand {
-    font-family: 'Acme', sans-serif !important;
+    font-family: 'Times', sans-serif !important;
   }
   body {
     font-family: arial, sans-serif !important;

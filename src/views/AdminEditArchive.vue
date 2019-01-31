@@ -121,7 +121,6 @@ export default {
           // add the new
           sa.addArchiveHeaderImage(uid,archiveId,this.newHeaderImage)
           
-          
         } else if(this.originalHeaderImage == this.archive.headerImage) {
           console.log('same image, leave it alone')
         } else {
@@ -138,20 +137,12 @@ export default {
     goBackOne() {
       this.$router.go(-1)
     },
-    deleteHeaderImage() {
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id  
-      var fileName = this.archive.headerImage
-
-      sa.deleteArchiveHeaderImage(uid, archiveId, fileName)
-
-      this.archive.headerImage = ''
-
-    },
     deletearchive (id) {
 
+
+
       var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id      
+      var archiveId = this.$route.params.archive_id     
 
       /**
       * 1. Get all of the assets associated with this archive
@@ -164,24 +155,28 @@ export default {
       sa.assetCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             // 2: Go through each one, get associated filename, and delete that file from storage
-            var file = doc.data().file;
-            // Get the path where we store images for assets in storage
-            var ref = firebase.storage().ref(this.uid + '/archive_' + this.$route.params.archive_id + '/assets/')
-            // Delete the main image
-            ref.child(file).delete().then(() =>
-            {
-              // Delete the thumb version as well
-              ref.child('thumb_' + file).delete()
-            }).catch((error) => {
-              console.log(error)
-            })
+
+            // If this record has an assetFileName
+            if(doc.data().assetFileName != '') {
+              // Delete the main image
+              sa.assetStorageRef(uid, archiveId, doc.id, doc.data().assetFileName).delete()
+              // Delete the thumbnail
+              sa.assetStorageRef(uid, archiveId, doc.id, doc.data().assetFileName, 'thumb_').delete()
+            }
+            // Delete the asset record
+            sa.assetDocumentDbRef(uid, archiveId, doc.id).delete().then(function() { 
+              console.log("Asset successfully deleted!");
+            }).catch(function(error) {
+              console.error("Error removing asset: ", error);
+            });
           });
-      }).then(() => {
-        // 3: Delete the assets from the db
-        console.log()
 
       }).then(() => {
+
         // 4. Delete the archive itself
+
+        // First the images from storage
+        sa.deleteArchiveHeaderImage (uid, archiveId, this.originalHeaderImage)
 
         // Delete the archive from the db
         sa.archiveDocumentDbRef(uid, archiveId).delete().then(function() {
@@ -190,9 +185,8 @@ export default {
             console.error("Error removing document: ", error);
         });
 
-
-        
-
+        // delete the containing folder
+        sa.archiveDocumentDbRef(uid, archiveId).parent().delete()
 
       })
       

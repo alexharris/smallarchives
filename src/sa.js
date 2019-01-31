@@ -123,10 +123,10 @@ var sa = {
 	* Prefix options: 'thumb_'
 	*/
 	assetStorageRef(uid, archiveId, assetId, fileName, prefix = '') {
-		console.log(uid)
-		console.log(archiveId)
-		console.log(assetId)
-		console.log(fileName)
+		// console.log(uid)
+		// console.log(archiveId)
+		// console.log(assetId)
+		// console.log(fileName)
 		var filePath = uid + '/archive_' + archiveId + '/assets/' + prefix + fileName
 		return firebase.storage().ref().child(filePath)
 	},    
