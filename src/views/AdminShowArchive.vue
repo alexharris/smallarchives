@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
+      <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
       <b-btn class="float-right" variant="outline-primary" @click.stop="linkToPublicView(key)">View</b-btn>  
       <b-btn class="float-right" variant="outline-primary" @click.stop="editarchive(key)">Edit</b-btn>   
       <hr my="4" />      
@@ -74,8 +74,8 @@ export default {
         params: { id: id }
       })
     },
-    goBackOne() {
-      this.$router.go(-1)
+    goBack() {
+      this.$router.push({ name: 'AdminListArchives', params: { archive_id: this.$route.params.archive_id }})
     },    
   }
 }

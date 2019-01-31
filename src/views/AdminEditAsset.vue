@@ -1,26 +1,55 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
+      <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
       <hr class="my-4" />
       <h1>Edit Asset</h1>      
       <hr class="my-4" />
-      {{asset.assetName}}
+      <h2>Details</h2>
+
+      Type: {{asset.assetType}} <br />
+      Creation Date: {{asset.assetCreationDate}} <br />
+      Filename: {{asset.assetFileName}} <br />
+
+      
+      <hr class="my-4" />
+      <h2>Metadata</h2>
       <b-form @submit="onSubmit">
-        <b-form-group id="fieldsetHorizontal"
+        <b-form-group 
                   horizontal
                   :label-cols="4"
                   breakpoint="md"
-                  label="Enter Title">
-          <b-form-input id="title" v-model.trim="asset.assetTitle"></b-form-input>
+                  label="Title">
+          <b-form-input v-model.trim="asset.assetTitle"></b-form-input>
         </b-form-group> 
-        <b-form-group id="fieldsetHorizontal"
+        <b-form-group 
                   horizontal
                   :label-cols="4"
                   breakpoint="md"
-                  label="Enter Description">
-          <b-form-textarea id="title" v-model.trim="asset.assetDescription"></b-form-textarea>
-        </b-form-group>                      
+                  label="Description">
+          <b-form-textarea v-model.trim="asset.assetDescription"></b-form-textarea>
+        </b-form-group>  
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Creator">
+          <b-form-input v-model.trim="asset.assetCreator"></b-form-input>
+        </b-form-group>  
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Format">
+          <b-form-input v-model.trim="asset.assetFormat"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Location">
+          <b-form-input v-model.trim="asset.assetLocation"></b-form-input>          
+        </b-form-group>                                              
         <hr class="my-4" />            
         <b-button type="submit" variant="primary">Save</b-button>
         <hr class="my-4" />
@@ -45,11 +74,13 @@ export default {
     return {
       key: this.$route.params.id,
       asset: {
-        assetTitle: {},
-        assetName: '',
+        assetTitle: '',
+        assetFileName: '',
         assetId: '',
         assetDescription: '',
-
+        assetFormat:'',
+        assetCreator:'',
+        assetLocation:''
       },
       uid: ''
     }
@@ -66,10 +97,16 @@ export default {
     // build the ref
     sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
       if (doc.exists) {
+        this.asset.assetCreationDate = doc.data().assetCreationDate
+        this.asset.assetCreator = doc.data().assetCreator
         this.asset.assetTitle = doc.data().assetTitle
-        this.asset.assetName = doc.data().file
+        this.asset.assetFileName = doc.data().assetFileName
+        this.asset.assetFormat = doc.data().assetFormat
+        this.asset.assetLocation = doc.data().assetLocation
         this.asset.assetId = doc.id
+        this.asset.assetText = doc.data().assetText
         this.asset.assetDescription = doc.data().assetDescription
+        this.asset.assetType = doc.data().assetType
       } else {
         console.log("No such document!");
       }
@@ -86,8 +123,10 @@ export default {
       // build the ref
       sa.assetDocumentDbRef(uid, archiveId, assetId).update({
         assetTitle: this.asset.assetTitle,
-        assetDescription: this.asset.assetDescription
-
+        assetDescription: this.asset.assetDescription,
+        assetCreator: this.asset.assetCreator,
+        assetFormat: this.asset.assetFormat,
+        assetLocation: this.asset.assetLocation
       }).then(() => {
         console.log('asset updated!')
         this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
@@ -98,30 +137,22 @@ export default {
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id
       var assetId = this.$route.params.asset_id
+      var fileName = this.asset.assetFileName
 
-      // build the ref
-      sa.assetDocumentDbRef(uid, archiveId, assetId).delete().then(() => {
-          console.log("Document successfully deleted from database");
-          //Then, delete the item from storage
-          firebase.storage().ref().child(firebase.auth().currentUser.uid + '/' + this.$route.params.archive_id + '/' + this.asset.assetName).delete().then(() => {
-            // File deleted successfully
-            console.log("Document successfully deleted from storage");
-            console.log(this.$route.params.archive_id)
-            this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
+      // delete the main asset image
+      sa.assetStorageRef(uid, archiveId, assetId, fileName).delete()
+      // delete the thumb derivative
+      sa.assetStorageRef(uid, archiveId, assetId, fileName, 'thumb_').delete()
+      // delete the document
+      sa.assetDocumentDbRef(uid, archiveId, assetId).delete()
 
-          }).catch(function(error) {
-            // Uh-oh, an error occurred!
-          });
-
-      }).catch(function(error) {
-          console.error("Error removing document: ", error);
-      });
+      this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
 
 
     }, 
-    goBackOne() {
-      this.$router.go(-1)
-    },         
+    goBack() {
+      this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
+    }           
   }
 }
 </script>

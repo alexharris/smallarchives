@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBackOne">Back</b-btn>
+      <b-btn @click.stop="goBack">Back</b-btn>
       <hr class="my-4" />
       <h4>Basic Info</h4>      
       <b-form @submit="onSubmit">
@@ -134,8 +134,8 @@ export default {
         }) 
       })
     },
-    goBackOne() {
-      this.$router.go(-1)
+    goBack() {
+      this.$router.push({ name: 'AdminShowArchive', params: { archive_id: this.$route.params.archive_id }})
     },
     deletearchive (id) {
 

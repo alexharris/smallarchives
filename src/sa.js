@@ -9,35 +9,7 @@
 // import sa from '../sa'
 //
 //-----------------------
-// Archive
-// - Create
-// -- AdminCreateArchive
-// - Read
-// -- AdminShowArchive
-// - Update
-// -- AdminEditArchive
-// - Delete
-// -- AdminEditArchive
-// - List
-// -- AdminListArchives
-// Asset
-// - Create
-// -- AdminCreateAsset
-// - Read
-// -- xx
-// - Update
-// -- AdminEditAsset
-// - Delete
-// -- AdminEditAsset
-// User
-// - Create
-// -- UserSignUp
-// - Read
-// -- UserProfile
-// - Update
-// -- EditUserProfile
-// - Delete
-// -- DeleteUser
+
 
 import firebase from 'firebase'
 
@@ -129,8 +101,7 @@ var sa = {
 		// console.log(fileName)
 		var filePath = uid + '/archive_' + archiveId + '/assets/' + prefix + fileName
 		return firebase.storage().ref().child(filePath)
-	},    
-
+	},
 	/**
 	*,--. ,--.  ,--.  ,--.,--.,--.  ,--.  ,--.              
 	*|  | |  |,-'  '-.`--'|  |`--',-'  '-.`--' ,---.  ,---. 
