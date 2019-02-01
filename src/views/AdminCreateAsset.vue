@@ -4,6 +4,7 @@
       <hr class="my-4" />
       <template v-if="errors.length > 0">
         <b-alert variant="danger" show>
+          <h3>Errors</h3>
           <ul>
             <li v-for="error in errors">{{error}}</li>
           </ul>
@@ -111,7 +112,8 @@ export default {
       assetCreationDate: '',
       assetFormat: '',
       assetLocation: '',
-      assetCreator:''
+      assetCreator:'',
+      formErrors: false
     }
   },
   created() {
@@ -128,9 +130,56 @@ export default {
 
       // check the form for completeness
       if (!this.assetTitle) { // title is mandatory
-        this.errors.push('Title required')
-        return
+        this.errors.push('A title is required')
       } 
+
+      if(this.selectedAssetType === '') {
+        this.errors.push('Media is required')
+      }
+
+      // TEXT ERRORS
+      // A text item must have some text
+      // Test to make sure HTML etc is escaped?
+      // Set a character length?
+      // Do links work?
+      if(this.selectedAssetType === 'text' && this.text === '') {
+        this.errors.push('Media type "text" is selected, but no text is entered')
+      }
+
+      // IMAGE ERRORS
+      // An image file must exist
+      if(this.selectedAssetType === 'image' && this.file === null) {
+        this.errors.push('Media type "image" is selected, but no image is uploaded')
+      }
+      // It must be jpg, tif, png, or jpg
+      if(this.selectedAssetType == 'image') {
+        if(this.file.type != 'image/jpeg' || this.file.type != 'image/tiff' || this.file.type != 'image/png' || this.file.type != 'image/gif') {
+          this.errors.push('Image files must be one of the following types: JPG, TIF, PNG, GIF')
+        }
+      }   
+      // Set a maximum filesize   
+      if(this.selectedAssetType === 'image' && this.file.size >= 5000000) {
+        this.errors.push('Image files must be less than 5MB')
+      }      
+
+      // AUDIO ERRORS
+      // Audo file must exist
+      // It must be of type wav, mp3, ogg
+      // Set a maximum filesize
+      if(this.selectedAssetType === 'audio' && this.file === null) {
+        this.errors.push('Media type "audio" is selected, but no audio is uploaded')
+      } 
+      // Audio files must be less than 10MB in size
+      if(this.selectedAssetType === 'audio' && this.file.size >= 5000000) {
+        this.errors.push('Audio files must be less than 5MB')
+      }   
+
+      // It must be wav, mp3, ogg, or m4a
+      if(this.selectedAssetType == 'image') {
+        if(this.file.type != 'audio/x-wav' || this.file.type != 'audio/x-m4a' || this.file.type != 'video/ogg' || this.file.type != 'audio/mpeg') {
+          this.errors.push('Audio files must be one of the following types: WAV, MP3, OGG, M4A')
+        }
+      }             
 
       this.assetCreationDate = new Date();
 
@@ -140,34 +189,37 @@ export default {
 
 
       // Check to see if a file has been uploaded
-      if(this.file != null) {
+      if(!(this.errors.length > 0)) {
 
-        var file = this.file // use the Blob or File API
-        var uid = this.uid
-        var archiveId = this.$route.params.id
-        var fileName = this.file.name
-        // Check to see if a file exists before uploading, by trying to get the download URL
-        sa.archiveStorageRef(uid, archiveId,'', fileName).getDownloadURL().then((url) => {
-          // this means we got a URL, which means it exists, which means we throw an error
-          this.errors.push('This archive already contains a file with this name!')
-        }).catch((error) => {
-
-          // but if a not found error message returns, it means it wasnt found, which means we should upload it
+        if(this.file != null) {
 
           var file = this.file // use the Blob or File API
           var uid = this.uid
-          var archiveId = this.$route.params.archive_id
-          var archiveId = this.$route.params.archive_id
+          var archiveId = this.$route.params.id
           var fileName = this.file.name
+          // Check to see if a file exists before uploading, by trying to get the download URL
+          sa.archiveStorageRef(uid, archiveId,'', fileName).getDownloadURL().then((url) => {
+            // this means we got a URL, which means it exists, which means we throw an error
+            this.errors.push('This archive already contains a file with this name!')
+          }).catch((error) => {
 
-          sa.assetStorageRef(uid, archiveId,'', fileName).put(file).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
-            this.addArchiveDataToDatabase()
-          });
-        })
-      } else {
-        this.addArchiveDataToDatabase()
-      }
+            // but if a not found error message returns, it means it wasnt found, which means we should upload it
+
+            var file = this.file // use the Blob or File API
+            var uid = this.uid
+            var archiveId = this.$route.params.archive_id
+            var archiveId = this.$route.params.archive_id
+            var fileName = this.file.name
+
+            sa.assetStorageRef(uid, archiveId,'', fileName).put(file).then((snapshot) => {
+              console.log('Uploaded a blob or file!');
+              this.addArchiveDataToDatabase()
+            });
+          })
+        } else {
+          this.addArchiveDataToDatabase()
+        }
+      }   
     },
     addArchiveDataToDatabase() {
 
