@@ -13,6 +13,14 @@ export default {
   components: {
     UserNav
   }, 
+  computed: {
+    user() {
+    	return this.$store.getters.getUser;
+    },
+    displayName: function() {
+		  return this.$store.getters.getUser.email;
+    }
+  },   
 }
 
 </script>

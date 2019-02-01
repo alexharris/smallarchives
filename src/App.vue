@@ -1,6 +1,6 @@
 <template>
 	<div id="app"> 
-  	<b-navbar variant="faded" type="light" toggleable="sm" class="mb-5">
+  	<b-navbar variant="faded" type="light" toggleable="sm" class="mb-5" v-if="user">
       <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
       	<b-navbar-brand href="/">SMALL ARCHIVES.</b-navbar-brand>
       	<b-collapse is-nav id="nav_collapse">
@@ -20,7 +20,7 @@
         	</b-navbar-nav>     
         </b-collapse> 
       </b-navbar>  	
-  		<b-container> 		
+  		<b-container class="wrapper"> 		
   			<router-view/>
   		</b-container>   
   	</div>
@@ -79,6 +79,11 @@ export default {
     border-bottom: 1px solid #000;
     margin-bottom: 10px;
   }
+
+  .wrapper {
+    padding-top: 100px;
+  }
+
   img {
     max-width: 100%;
   }
