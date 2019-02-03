@@ -2,14 +2,13 @@
 	<div>
 		<b-row>
 			<b-col>
-				<b-btn @click.stop="goBackOne" variant="outline-secondary">Back</b-btn>
+				<b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
 				<hr class="my-4" />
 			</b-col>
 		</b-row>
 		<b-row>
 			<b-col>
 				<h1 class="my-4">{{asset.assetTitle}}</h1>
-
 			</b-col>
 		</b-row>
 		<b-row>
@@ -28,10 +27,13 @@
 					            <code>audio</code> element.
 					    </audio>
 					</figure>
-				</div>	
-				<div v-if="asset.assetType == 'text'">
+				</div>
+				<div v-if="asset.assetType === 'text'">
 					<blockquote class="blockquote">{{asset.assetText}}</blockquote>
-				</div>	
+				</div>
+				<div v-if="asset.assetType === 'youtube'">					
+					<iframe width="560" height="315" v-bind:src="asset.assetYoutubeId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>					
+				</div>						
 				<p class="my-4">
 					Media type: {{asset.assetType}}
 				</p>						
@@ -59,6 +61,7 @@
 import firebase from 'firebase';
 import sa from '../sa'
 
+
 export default {
   name: "PublicAsset",  
   data() {
@@ -68,7 +71,7 @@ export default {
 	        assetName: '',
 	        assetId: '',
 	        filePath: '',
-	        customFields: ''			
+	        customFields: ''	
   		},
   		assetSrc: '',
   		uid: ''
@@ -98,6 +101,7 @@ export default {
 	        this.asset.assetFileName = doc.data().assetFileName
 	        this.asset.assetType = doc.data().assetType
 	        this.asset.assetText = doc.data().assetText
+	        this.asset.assetYoutubeId = 'https://www.youtube.com/embed/' + doc.data().assetYoutubeId
 	        this.asset.assetId = doc.id
 	        this.asset.assetDescription = doc.data().assetDescription
 	        this.asset.assetLocation = doc.data().assetLocation
@@ -116,17 +120,16 @@ export default {
     	var uid = this.uid
     	var archiveId = this.$route.params.archive_id
     	var assetId = this.asset.assetId
-    	var fileName = 'thumb_' + this.asset.assetFileName
-    	
+		var fileName = this.asset.assetFileName
+  
         sa.assetStorageRef(uid, archiveId, assetId, fileName).getDownloadURL().then((url) => {
-        	console.log(url)
             this.assetSrc = url
         }).catch(function(error) {
           console.log(error.message)
         })
     },    	
-	goBackOne() {
-	  this.$router.go(-1)
+	goBack() {
+	  this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
 	},      
   },
   

@@ -139,15 +139,24 @@ export default {
       var assetId = this.$route.params.asset_id
       var fileName = this.asset.assetFileName
 
-      // delete the main asset image
-      sa.assetStorageRef(uid, archiveId, assetId, fileName).delete()
-      // delete the thumb derivative
-      sa.assetStorageRef(uid, archiveId, assetId, fileName, 'thumb_').delete()
+      console.log(fileName)
+      //Check to see if there are assets to delete
+
+      console.log(this.asset.assetType)
+      if(this.asset.assetType === 'image') {
+        // delete the thumb derivative
+        sa.assetStorageRef(uid, archiveId, assetId, fileName, 'thumb_').delete()
+      }
+
+      if(this.asset.assetType === 'image' || this.asset.assetType === 'audio') {
+        // delete the main asset image
+        sa.assetStorageRef(uid, archiveId, assetId, fileName).delete()
+      }
+
       // delete the document
       sa.assetDocumentDbRef(uid, archiveId, assetId).delete()
 
       this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
-
 
     }, 
     goBack() {

@@ -39,6 +39,7 @@
                 <option value="image">Image</option>
                 <option value="audio">Audio</option>
                 <option value="text">Text</option>
+                <option value="youtube">Youtube</option>
               </b-form-select>
             </div>
           </template>   
@@ -63,7 +64,14 @@
                       label="Text"
                       v-if="selectedAssetType === 'text'">
           <b-form-textarea id="assetText" v-model="text"></b-form-textarea>
-        </b-form-group>         
+        </b-form-group>
+        <b-form-group id="assetYoutubeId"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Youtube Video ID"
+                      v-if="selectedAssetType === 'youtube'">
+          <b-form-input id="assetText" v-model="assetYoutubeId"></b-form-input>
+        </b-form-group>                  
         <hr class="my-4" />
         <h2>Metadata</h2>
         <b-form-group id="assetLocation"
@@ -105,6 +113,7 @@ export default {
       uid: '',
       file: null,
       text: '',
+      assetYoutubeId: '',
       customFieldLabel: '',
       assetTitle: null,
       assetDescription: '',
@@ -151,9 +160,10 @@ export default {
       if(this.selectedAssetType === 'image' && this.file === null) {
         this.errors.push('Media type "image" is selected, but no image is uploaded')
       }
+
       // It must be jpg, tif, png, or jpg
       if(this.selectedAssetType == 'image') {
-        if(this.file.type != 'image/jpeg' || this.file.type != 'image/tiff' || this.file.type != 'image/png' || this.file.type != 'image/gif') {
+        if(this.file.type != 'image/jpeg' && this.file.type != 'image/tiff' && this.file.type != 'image/png' && this.file.type != 'image/gif') {
           this.errors.push('Image files must be one of the following types: JPG, TIF, PNG, GIF')
         }
       }   
@@ -175,8 +185,8 @@ export default {
       }   
 
       // It must be wav, mp3, ogg, or m4a
-      if(this.selectedAssetType == 'image') {
-        if(this.file.type != 'audio/x-wav' || this.file.type != 'audio/x-m4a' || this.file.type != 'video/ogg' || this.file.type != 'audio/mpeg') {
+      if(this.selectedAssetType == 'audio') {
+        if(this.file.type != 'audio/x-wav' && this.file.type != 'audio/x-m4a' && this.file.type != 'video/ogg' && this.file.type != 'audio/mpeg') {
           this.errors.push('Audio files must be one of the following types: WAV, MP3, OGG, M4A')
         }
       }             
@@ -242,6 +252,7 @@ export default {
         assetCreationDate: this.assetCreationDate,
         assetType: this.selectedAssetType,
         assetText: this.text,
+        assetYoutubeId: this.assetYoutubeId,
         assetCreator: this.assetCreator,
         assetFormat: this.assetFormat,
         assetLocation: this.assetLocation

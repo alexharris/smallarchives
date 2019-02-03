@@ -4,7 +4,9 @@
   <b-row>
     <b-col cols="12">
       <div v-if="assets.length == 0">
+        <b-jumbotron>
           <p>This archive has no items.</p>
+        </b-jumbotron>
       </div>
       <div v-else>
         <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">

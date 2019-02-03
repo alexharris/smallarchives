@@ -1,19 +1,22 @@
 <template>
   <div>
       <b-row>
-        <b-col cols="12" class="col-md-8 my-5">
+        <b-col cols="2" class="col-md-2 my-5">
           <ArchiveHeaderImage />
+        </b-col>
+        <b-col cols="7" class="col-md-7 my-5">
           <h1>{{archive.title}}</h1>
           <p>{{archive.desc}}</p>
+          
+        </b-col>
+        <b-col cols="3" class="col-md-3 my-5">
           <p>Number of records: {{assetCount}}</p>
+          <p>Created on: {{creationDate}}</p>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          
           <PublicListAssets />
-
-          
         </b-col>
       </b-row>
       <hr class="my-4" />
@@ -43,7 +46,8 @@ export default {
       uid: '',
       key: '',
       archive: {},
-      username: this.$route.params.username
+      username: this.$route.params.username,
+      creationDate: ''
     }
   },
   components: {
@@ -73,6 +77,7 @@ export default {
 
           this.key = doc.id;
           this.archive = doc.data();
+          this.creationDate = sa.getFormattedDate(doc.data().dateCreated)
         } else {
           console.log("No such document!");
         }
