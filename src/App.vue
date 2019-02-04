@@ -73,7 +73,6 @@ export default {
   }
   body {
     font-family: arial, sans-serif !important;
-    background: #ecebcf;
   }
   nav {
     border-bottom: 1px solid #000;

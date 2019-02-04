@@ -130,6 +130,9 @@ var sa = {
 	* @param dateCreated - The timestamp value
 	*/  
 	getFormattedDate (dateCreated) {
+
+		dateCreated = dateCreated.toDate()
+
 		var day = dateCreated.getDate()
 		var month = dateCreated.getMonth() + 1
 		var year = dateCreated.getFullYear()

@@ -28,6 +28,9 @@
 					    </audio>
 					</figure>
 				</div>
+				<div v-if="asset.assetType == 'pdf'">
+					<a :href="assetSrc"><font-awesome-icon icon="file-alt" size="7x" /><br />{{asset.assetFileName}}</a>
+				</div>				
 				<div v-if="asset.assetType === 'text'">
 					<blockquote class="blockquote">{{asset.assetText}}</blockquote>
 				</div>
@@ -63,7 +66,7 @@ import sa from '../sa'
 
 
 export default {
-  name: "PublicAsset",  
+  name: "PublicAsset", 
   data() {
   	return {
   		asset: {

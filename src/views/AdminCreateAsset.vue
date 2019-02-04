@@ -38,6 +38,7 @@
                 <!-- these options will appear after the ones from 'options' prop -->
                 <option value="image">Image</option>
                 <option value="audio">Audio</option>
+                <option value="pdf">PDF</option>
                 <option value="text">Text</option>
                 <option value="youtube">Youtube</option>
               </b-form-select>
@@ -57,7 +58,14 @@
                       label="Upload Audio Asset" 
                       v-if="selectedAssetType === 'audio'">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
-        </b-form-group>        
+        </b-form-group>  
+        <b-form-group id="uploadAsset"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Upload PDF Asset" 
+                      v-if="selectedAssetType === 'pdf'">
+          <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
+        </b-form-group>                
         <b-form-group id="assetText"
                       :label-cols="4"
                       breakpoint="md"
@@ -189,7 +197,11 @@ export default {
         if(this.file.type != 'audio/x-wav' && this.file.type != 'audio/x-m4a' && this.file.type != 'video/ogg' && this.file.type != 'audio/mpeg') {
           this.errors.push('Audio files must be one of the following types: WAV, MP3, OGG, M4A')
         }
-      }             
+      }  
+
+      // NEED TO ADD
+      // YOUTUBE ERRORS
+      // PDF ERRORS           
 
       this.assetCreationDate = new Date();
 
