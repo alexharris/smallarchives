@@ -46,8 +46,14 @@
 				<p>
 				<strong>Creator:</strong> {{asset.assetCreator}} <br />
 				<strong>Location:</strong> {{asset.assetLocation}} <br />
-				<strong>Format:</strong> {{asset.assetFormat}}
+				<strong>Format:</strong> {{asset.assetFormat}}<br />
+				<strong>Lat, long:</strong> {{asset.assetLocationLat}}, {{asset.assetLocationLong}}
 				</p>
+				{{latLongArray}}
+			  <l-map :zoom=13 :center="latLongArray">
+			    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
+			    <l-marker :lat-lng="latLongArray"></l-marker>
+			  </l-map>				
 			</b-col>
 		</b-row>
 		<b-row>
@@ -63,10 +69,18 @@
 <script>
 import firebase from 'firebase';
 import sa from '../sa'
+import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+
+
 
 
 export default {
   name: "PublicAsset", 
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker
+  },  
   data() {
   	return {
   		asset: {
@@ -74,11 +88,19 @@ export default {
 	        assetName: '',
 	        assetId: '',
 	        filePath: '',
-	        customFields: ''	
+	        customFields: '',
+	        assetLocationLat: '',
+	        assetLocationLong: ''	
   		},
   		assetSrc: '',
-  		uid: ''
+  		uid: '',
+  		
   	}
+  },
+  computed: {
+  	latLongArray: function() {
+  		return [this.asset.assetLocationLat, this.asset.assetLocationLong]
+	},
   },
   created() {
   	this.getUidFromUsername()
@@ -90,6 +112,7 @@ export default {
       this.uid = await sa.getUidFromUsername(username)
       this.getAssetDetails()
     },     	
+
     getAssetDetails: function() {
 
     	var uid = this.uid
@@ -108,6 +131,8 @@ export default {
 	        this.asset.assetId = doc.id
 	        this.asset.assetDescription = doc.data().assetDescription
 	        this.asset.assetLocation = doc.data().assetLocation
+	        this.asset.assetLocationLat = doc.data().assetLocationLat
+	        this.asset.assetLocationLong = doc.data().assetLocationLong
 	        this.asset.assetCreator = doc.data().assetCreator
 	        this.asset.assetFormat = doc.data().assetFormat
 	        this.asset.assetCreationDate = sa.getFormattedDate(doc.data().assetCreationDate)
@@ -147,5 +172,9 @@ img {
 }
 blockquote {
 	font-size: 2.5em;
+}
+
+.vue2leaflet-map {
+	height: 500px;
 }
 </style>

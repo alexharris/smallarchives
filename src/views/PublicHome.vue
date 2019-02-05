@@ -2,7 +2,7 @@
   <div class="about my-5 pb-5">
     <b-row class="justify-content-md-center">
     	<b-col cols="8">  	
-    		<h1 class="my-5 pt-5">Small Archives.</h1>
+    		<h1 class="my-5 pt-5">SMALL ARCHIVES.</h1>
     		
     		<p>Small Archives is creating a platform to easily organize and provide access to information and materials.</p>
         <hr class="my-4" />

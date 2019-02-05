@@ -68,11 +68,26 @@ export default {
 
 
 <style>
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 400;
+  src: url("./assets/Inter-Regular.woff2") format("woff2"),
+       url("./assets/Inter-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 800;
+  src: url("./assets/Inter-ExtraBold.woff2") format("woff2"),
+       url("./assets/Inter-ExtraBold.woff") format("woff");
+}
   h1,h2,h3,h4,h5, .navbar-brand {
-    font-family: 'Times', sans-serif !important;
+    font-family: 'Inter', sans-serif !important;
   }
   body {
-    font-family: arial, sans-serif !important;
+    font-family: 'Inter', sans-serif !important;
   }
   nav {
     border-bottom: 1px solid #000;

@@ -87,6 +87,8 @@
                       breakpoint="md"
                       label="Enter Location">
           <b-form-input id="assetLocation" v-model="assetLocation"></b-form-input>
+          <b-form-input id="assetLocation" v-model="assetLocationLat"></b-form-input>
+          <b-form-input id="assetLocation" v-model="assetLocationLong"></b-form-input>
         </b-form-group> 
         <b-form-group id="assetCreator"
                       :label-cols="4"
@@ -129,6 +131,8 @@ export default {
       assetCreationDate: '',
       assetFormat: '',
       assetLocation: '',
+      assetLocationLat: '',
+      assetLocationLong: '',
       assetCreator:'',
       formErrors: false
     }
@@ -254,10 +258,10 @@ export default {
       }
 
       var uid = this.uid
-      var assetId = this.$route.params.id
+      var archiveId = this.$route.params.archive_id
 
 
-      sa.assetCollectionDbRef(uid, assetId).add({
+      sa.assetCollectionDbRef(uid, archiveId).add({
         assetFileName: file.name,
         assetTitle: this.assetTitle,
         assetDescription: this.assetDescription,
@@ -267,7 +271,9 @@ export default {
         assetYoutubeId: this.assetYoutubeId,
         assetCreator: this.assetCreator,
         assetFormat: this.assetFormat,
-        assetLocation: this.assetLocation
+        assetLocation: this.assetLocation,
+        assetLocationLat: this.assetLocationLat,
+        assetLocationLong: this.assetLocationLong
         
       }).catch((error) => {
         alert("Error adding document: ", error);
