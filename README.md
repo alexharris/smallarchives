@@ -32,3 +32,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### Stuff
 
 Get username: this.$store.getters.getUser.displayName
+
+### Firebase Deployment
+
+This site has two firebase instances, dev and prod. To switch between the two:
+
+1. Make sure that the correct config is uncommented in main.js
+2. Set the correct deploy path with `firebase use`:
+- `firebase use default` for production
+- `firebase use dev` for dev

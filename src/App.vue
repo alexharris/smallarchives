@@ -1,8 +1,9 @@
 <template>
 	<div id="app"> 
-  	<b-navbar variant="faded" type="light" toggleable="sm" class="mb-5" v-if="user">
-      <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
-      	<b-navbar-brand href="/">SMALL ARCHIVES.</b-navbar-brand>
+    <div>
+  	  <b-navbar variant="faded" type="light" toggleable="sm" class="mb-5" v-if="user">
+        <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
+      	<b-navbar-brand href="/">SMALL ARCHIVES</b-navbar-brand>
       	<b-collapse is-nav id="nav_collapse">
         	<b-navbar-nav class="ml-auto">
          		<b-nav-item-dropdown right v-if="user">
@@ -20,10 +21,11 @@
         	</b-navbar-nav>     
         </b-collapse> 
       </b-navbar>  	
-  		<b-container class="wrapper"> 		
+  		<b-container class="wrapper" v-cloak> 		
   			<router-view/>
   		</b-container>   
   	</div>
+  </div>
 </template>
 
 <script>
@@ -89,6 +91,7 @@ export default {
   body {
     font-family: 'Inter', sans-serif !important;
   }
+
   nav {
     border-bottom: 1px solid #000;
     margin-bottom: 10px;
@@ -100,5 +103,13 @@ export default {
 
   img {
     max-width: 100%;
+  }
+
+  .dashed-top-border {
+    border-top: 1px dashed #000;
+  }
+
+  a svg:hover {
+    color: #474747;
   }
 </style>

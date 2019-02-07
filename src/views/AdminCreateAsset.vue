@@ -1,6 +1,6 @@
 <template>
     <div>
-      <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
+      <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
       <hr class="my-4" />
       <template v-if="errors.length > 0">
         <b-alert variant="danger" show>
@@ -12,8 +12,14 @@
       </template>
       <h1>Add New Item</h1>
       <hr class="my-4" />
-      <h2>Basic Info</h2>
-      <b-form>
+            <b-form>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Basic Info</h2> 
+      <p>Basic info about this asset</p>
+    </div>
+    <div class="col-8">
         <b-form-group id="assetTitle"
                       :label-cols="4"
                       breakpoint="md"
@@ -26,15 +32,21 @@
                       label="Enter Description">
           <b-form-textarea id="assetDescription" v-model="assetDescription"></b-form-textarea>
         </b-form-group> 
-      <hr class="my-4" />
-      <h2>Media</h2>         
+    </div>
+  </div>
+  <hr class="my-4" />
+  <div class="row">
+    <div class="col">
+      <h2>Media</h2> 
+    </div>
+    <div class="col-8">
         <b-form-group id="assetTitle"
                       :label-cols="4"
                       breakpoint="md"
                       label="Select Media Type">        
           <template>
             <div>
-              <b-form-select v-model="selectedAssetType">
+              <b-form-select v-model="selectedAssetMediaType">
                 <!-- these options will appear after the ones from 'options' prop -->
                 <option value="image">Image</option>
                 <option value="audio">Audio</option>
@@ -49,60 +61,105 @@
                       :label-cols="4"
                       breakpoint="md"
                       label="Upload Image" 
-                      v-if="selectedAssetType === 'image'">
+                      v-if="selectedAssetMediaType === 'image'">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
         </b-form-group>
         <b-form-group id="uploadAsset"
                       :label-cols="4"
                       breakpoint="md"
                       label="Upload Audio Asset" 
-                      v-if="selectedAssetType === 'audio'">
+                      v-if="selectedAssetMediaType === 'audio'">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
         </b-form-group>  
         <b-form-group id="uploadAsset"
                       :label-cols="4"
                       breakpoint="md"
                       label="Upload PDF Asset" 
-                      v-if="selectedAssetType === 'pdf'">
+                      v-if="selectedAssetMediaType === 'pdf'">
           <b-form-file id="uploadAsset" v-model="file" placeholder="Choose a file..."></b-form-file>
         </b-form-group>                
         <b-form-group id="assetText"
                       :label-cols="4"
                       breakpoint="md"
                       label="Text"
-                      v-if="selectedAssetType === 'text'">
+                      v-if="selectedAssetMediaType === 'text'">
           <b-form-textarea id="assetText" v-model="text"></b-form-textarea>
         </b-form-group>
         <b-form-group id="assetYoutubeId"
                       :label-cols="4"
                       breakpoint="md"
                       label="Youtube Video ID"
-                      v-if="selectedAssetType === 'youtube'">
+                      v-if="selectedAssetMediaType === 'youtube'">
           <b-form-input id="assetText" v-model="assetYoutubeId"></b-form-input>
-        </b-form-group>                  
-        <hr class="my-4" />
-        <h2>Metadata</h2>
+        </b-form-group> 
+    </div>
+  </div>  
+  <hr class="my-4" />   
+  <div class="row">
+    <div class="col">
+      <h2>Metadata</h2> 
+    </div>
+    <div class="col-8">
+        <b-form-group id="assetType"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Select Asset Type">        
+          <template>
+            <div>
+              <b-form-select v-model="selectedAssetType">
+                <!-- these options will appear after the ones from 'options' prop -->
+                <option value="collection">Collection</option>
+                <option value="dataset">Dataset</option>
+                <option value="event">Event</option>
+                <option value="image">Image</option>
+                <option value="interactiveresource">Interactive Resource</option>
+                <option value="movingimage">Moving Image</option>
+                <option value="physicalobject">Physical Object</option>
+                <option value="service">Service</option>
+                <option value="software">Software</option>
+                <option value="sound">Sound</option>
+                <option value="stillimage">Still Image</option>
+                <option value="text">Text</option>
+              </b-form-select>
+            </div>
+          </template>   
+        </b-form-group>       
         <b-form-group id="assetLocation"
                       :label-cols="4"
                       breakpoint="md"
                       label="Enter Location">
           <b-form-input id="assetLocation" v-model="assetLocation"></b-form-input>
-          <b-form-input id="assetLocation" v-model="assetLocationLat"></b-form-input>
-          <b-form-input id="assetLocation" v-model="assetLocationLong"></b-form-input>
+        
+        
         </b-form-group> 
-        <b-form-group id="assetCreator"
+        <div class="form-row">
+          <div class="col">
+            <label for="inputEmail4">Latitude</label>
+            <b-form-input id="assetLocation" v-model="assetLocationLat"></b-form-input>
+          </div>
+          <div class="col">
+            <label for="inputEmail4">Longitude</label>
+            <b-form-input id="assetLocation" v-model="assetLocationLong"></b-form-input>
+          </div>
+        </div>          
+        <b-form-group id="assetContributor"
                       :label-cols="4"
                       breakpoint="md"
-                      label="Enter Creator">
-          <b-form-input id="assetCreator" v-model="assetCreator"></b-form-input>
+                      label="Contributor">
+          <b-form-input id="assetContributor" v-model="assetContributor"></b-form-input>
         </b-form-group> 
-        <b-form-group id="assetFormat"
-                      :label-cols="4"
-                      breakpoint="md"
-                      label="Enter Format">
-          <b-form-input id="assetFormat" v-model="assetFormat"></b-form-input>
-        </b-form-group>                         
-        <b-btn  variant="primary" @click.stop="onSubmit">Submit</b-btn>
+    </div>
+  </div>
+</div>     
+  <hr class="my-4" />         
+  <div v-if="!loading">
+    <b-btn variant="primary" @click.stop="onSubmit">Submit</b-btn>
+  </div>
+  <div v-else>
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
       </b-form>
     </div>    
   </template>
@@ -127,14 +184,17 @@ export default {
       customFieldLabel: '',
       assetTitle: null,
       assetDescription: '',
-      selectedAssetType: '',
+      selectedAssetMediaType: '',
+      assetMediaType: '',
       assetCreationDate: '',
-      assetFormat: '',
+      selectedAssetType: '',
+      assetType: '',
       assetLocation: '',
       assetLocationLat: '',
       assetLocationLong: '',
-      assetCreator:'',
-      formErrors: false
+      assetContributor:'',
+      formErrors: false,
+      loading: null
     }
   },
   created() {
@@ -146,6 +206,8 @@ export default {
       evt.preventDefault()
 
 
+
+
       // empty the error variable to get rid of old errors
       this.errors = []
 
@@ -154,7 +216,7 @@ export default {
         this.errors.push('A title is required')
       } 
 
-      if(this.selectedAssetType === '') {
+      if(this.selectedAssetMediaType === '') {
         this.errors.push('Media is required')
       }
 
@@ -163,24 +225,24 @@ export default {
       // Test to make sure HTML etc is escaped?
       // Set a character length?
       // Do links work?
-      if(this.selectedAssetType === 'text' && this.text === '') {
+      if(this.selectedAssetMediaType === 'text' && this.text === '') {
         this.errors.push('Media type "text" is selected, but no text is entered')
       }
 
       // IMAGE ERRORS
       // An image file must exist
-      if(this.selectedAssetType === 'image' && this.file === null) {
+      if(this.selectedAssetMediaType === 'image' && this.file === null) {
         this.errors.push('Media type "image" is selected, but no image is uploaded')
       }
 
       // It must be jpg, tif, png, or jpg
-      if(this.selectedAssetType == 'image') {
+      if(this.selectedAssetMediaType == 'image') {
         if(this.file.type != 'image/jpeg' && this.file.type != 'image/tiff' && this.file.type != 'image/png' && this.file.type != 'image/gif') {
           this.errors.push('Image files must be one of the following types: JPG, TIF, PNG, GIF')
         }
       }   
       // Set a maximum filesize   
-      if(this.selectedAssetType === 'image' && this.file.size >= 5000000) {
+      if(this.selectedAssetMediaType === 'image' && this.file.size >= 5000000) {
         this.errors.push('Image files must be less than 5MB')
       }      
 
@@ -188,16 +250,16 @@ export default {
       // Audo file must exist
       // It must be of type wav, mp3, ogg
       // Set a maximum filesize
-      if(this.selectedAssetType === 'audio' && this.file === null) {
+      if(this.selectedAssetMediaType === 'audio' && this.file === null) {
         this.errors.push('Media type "audio" is selected, but no audio is uploaded')
       } 
       // Audio files must be less than 10MB in size
-      if(this.selectedAssetType === 'audio' && this.file.size >= 5000000) {
+      if(this.selectedAssetMediaType === 'audio' && this.file.size >= 5000000) {
         this.errors.push('Audio files must be less than 5MB')
       }   
 
       // It must be wav, mp3, ogg, or m4a
-      if(this.selectedAssetType == 'audio') {
+      if(this.selectedAssetMediaType == 'audio') {
         if(this.file.type != 'audio/x-wav' && this.file.type != 'audio/x-m4a' && this.file.type != 'video/ogg' && this.file.type != 'audio/mpeg') {
           this.errors.push('Audio files must be one of the following types: WAV, MP3, OGG, M4A')
         }
@@ -214,9 +276,12 @@ export default {
       //-------------
 
 
-      // Check to see if a file has been uploaded
+      
       if(!(this.errors.length > 0)) {
 
+        this.loading = true
+        
+        // Check to see if a file has been uploaded
         if(this.file != null) {
 
           var file = this.file // use the Blob or File API
@@ -262,18 +327,26 @@ export default {
 
 
       sa.assetCollectionDbRef(uid, archiveId).add({
-        assetFileName: file.name,
+        
+        // DCMI Stuff
         assetTitle: this.assetTitle,
         assetDescription: this.assetDescription,
-        assetCreationDate: this.assetCreationDate,
+        assetContributor: this.assetContributor,
         assetType: this.selectedAssetType,
+
+        // Media Stuff
+        assetMediaType: this.selectedAssetMediaType,
+        assetFileName: file.name,
         assetText: this.text,
         assetYoutubeId: this.assetYoutubeId,
-        assetCreator: this.assetCreator,
-        assetFormat: this.assetFormat,
+        
+        // Location Stuff
         assetLocation: this.assetLocation,
         assetLocationLat: this.assetLocationLat,
-        assetLocationLong: this.assetLocationLong
+        assetLocationLong: this.assetLocationLong,
+
+        // Other Stuff
+        assetCreationDate: this.assetCreationDate
         
       }).catch((error) => {
         alert("Error adding document: ", error);

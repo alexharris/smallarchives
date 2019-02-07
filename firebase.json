@@ -21,7 +21,7 @@
     "rules": "storage.rules"
   }
   //,
-  //commented out to not automatically run link when deploying
+  //commented out to not automatically run lint when deploying
   // "functions": {
   //   "predeploy": [
   //     "npm --prefix \"$RESOURCE_DIR\" run lint"

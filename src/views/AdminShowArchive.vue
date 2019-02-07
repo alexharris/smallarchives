@@ -1,9 +1,9 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
-      <b-btn class="float-right" variant="outline-primary" @click.stop="linkToPublicView(key)">View</b-btn>  
-      <b-btn class="float-right" variant="outline-primary" @click.stop="editarchive(key)">Edit</b-btn>   
+      <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
+      <b-btn class="float-right" variant="outline-dark" @click.stop="linkToPublicView(key)">View</b-btn>
+      <b-btn class="float-right mr-2" variant="outline-dark" @click.stop="editarchive(key)">Edit</b-btn>   
       <hr my="4" />      
       <h1>{{archive.title}}</h1>
       <p>{{archive.desc}}</p>
@@ -14,7 +14,7 @@
 
     <b-row class="my-4">
         <b-col><h2>Items</h2></b-col>
-        <b-col><b-btn @click.stop="addItemButton(key)" variant="outline-primary" class="float-right">Add Item</b-btn></b-col>
+        <b-col><b-btn @click.stop="addItemButton(key)" variant="primary" class="float-right">Add Item</b-btn></b-col>
     </b-row>
 
       <ListAssets />  

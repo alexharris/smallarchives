@@ -1,24 +1,21 @@
 <template>
 	<div>
-		<b-row>
-			<b-col>
-				<b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
-				<hr class="my-4" />
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
-				<h1 class="my-4">{{asset.assetTitle}}</h1>
-			</b-col>
-		</b-row>
-		<b-row>
+		<div class="row justify-content-center">
+			<div class="col-8">
+<!-- 				<b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn> -->
+				<a @click.stop="goBack" class="float-right"><font-awesome-icon icon="times-circle" size="2x" /></a><br />
+				<hr class="my-4 dashed-top-border" />
+			</div>
+		</div>
 
-			<b-col cols="12" class="col-md-6">
+		<div class="row justify-content-center">
 
-				<div v-if="asset.assetType == 'image'">
+			<div class="col-8 asset-pane my-4">
+
+				<div v-if="asset.assetMediaType == 'image'">
 					<img :src="assetSrc" />
 				</div>
-				<div v-if="asset.assetType == 'audio'">
+				<div v-if="asset.assetMediaType == 'audio'">
 					<figure>
 					    <audio
 					        controls
@@ -28,41 +25,50 @@
 					    </audio>
 					</figure>
 				</div>
-				<div v-if="asset.assetType == 'pdf'">
-					<a :href="assetSrc"><font-awesome-icon icon="file-alt" size="7x" /><br />{{asset.assetFileName}}</a>
+				<div v-if="asset.assetMediaType == 'pdf'" class="pdf-download">
+					<p>{{asset.assetFileName}}</p>
+					<a :href="assetSrc"><font-awesome-icon icon="file-download" size="6x" /> </a>
 				</div>				
-				<div v-if="asset.assetType === 'text'">
-					<blockquote class="blockquote">{{asset.assetText}}</blockquote>
+				<div v-if="asset.assetMediaType === 'text'">
+					<p class="lead">{{asset.assetText}}</p>
 				</div>
-				<div v-if="asset.assetType === 'youtube'">					
+				<div v-if="asset.assetMediaType === 'youtube'" class="video-wrapper">					
 					<iframe width="560" height="315" v-bind:src="asset.assetYoutubeId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>					
-				</div>						
-				<p class="my-4">
-					Media type: {{asset.assetType}}
-				</p>						
-			</b-col>
-			<b-col cols="12" class="col-md-6">
+				</div>												
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-8">
+				<h1 class="my-4 h4">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
+
+				
+				<h3 class="h5">Metadata</h3>
 				<p>
-				<strong>Creator:</strong> {{asset.assetCreator}} <br />
-				<strong>Location:</strong> {{asset.assetLocation}} <br />
+				<strong>Media type:</strong> {{asset.assetMediaType}} <br />
+				<strong>Contributor:</strong> {{asset.assetContributor}} <br />
 				<strong>Format:</strong> {{asset.assetFormat}}<br />
-				<strong>Lat, long:</strong> {{asset.assetLocationLat}}, {{asset.assetLocationLong}}
 				</p>
-				{{latLongArray}}
-			  <l-map :zoom=13 :center="latLongArray">
-			    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
-			    <l-marker :lat-lng="latLongArray"></l-marker>
-			  </l-map>				
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
+				
+
+				<div v-if="asset.assetLocation != ''">
+					<h3 class="h5">Location</h3>
+					<p>{{asset.assetLocation}}</p>
+				  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetLocationLat != '' && asset.assetLocationLat != ''">
+				    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
+				    <l-marker :lat-lng="latLongArray"></l-marker>
+
+				  </l-map>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-8">
 				<hr class="my-4" />	
 				<p>Added on: {{asset.assetCreationDate}}</p>
 				
-			</b-col>
-		</b-row>	
+			</div>
+		</div>	
 	</div>
 </template>
 
@@ -123,19 +129,25 @@ export default {
 	    // get the fields from the database and assign to asset array
 	    sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
 	      if (doc.exists) {
+	      	// DCMI Fields
 	        this.asset.assetTitle = doc.data().assetTitle
+	        this.asset.assetDescription = doc.data().assetDescription
+	        this.asset.assetContributor = doc.data().assetContributor
+			this.asset.assetFormat = doc.data().assetFormat
+
+			// Media Fields
 	        this.asset.assetFileName = doc.data().assetFileName
-	        this.asset.assetType = doc.data().assetType
+	        this.asset.assetMediaType = doc.data().assetMediaType
 	        this.asset.assetText = doc.data().assetText
 	        this.asset.assetYoutubeId = 'https://www.youtube.com/embed/' + doc.data().assetYoutubeId
 	        this.asset.assetId = doc.id
-	        this.asset.assetDescription = doc.data().assetDescription
+	        
 	        this.asset.assetLocation = doc.data().assetLocation
 	        this.asset.assetLocationLat = doc.data().assetLocationLat
 	        this.asset.assetLocationLong = doc.data().assetLocationLong
-	        this.asset.assetCreator = doc.data().assetCreator
-	        this.asset.assetFormat = doc.data().assetFormat
 	        this.asset.assetCreationDate = sa.getFormattedDate(doc.data().assetCreationDate)
+	        
+	        
 
 	        this.getAssetSrc()
 	      } else {
@@ -170,11 +182,35 @@ export default {
 img {
 	max-width: 100%;
 }
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 blockquote {
 	font-size: 2.5em;
 }
 
+.asset-pane audio {
+	width: 100%;
+}
+
+.asset-pane .pdf-download {
+	text-align: center;
+
+}
+
 .vue2leaflet-map {
-	height: 500px;
+	height: 300px;
 }
 </style>

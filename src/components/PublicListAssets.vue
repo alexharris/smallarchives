@@ -21,7 +21,7 @@
           </thead>
           <tr v-for="item in assets">
             <td><b-link @click.stop="editAsset(item.assetId)">{{item.assetTitle}}</b-link></td>
-            <td><div>{{item.assetFormat}}</div></td>
+            <td><div>{{item.assetMediaType}}</div></td>
             <td>{{item.assetCreationDate}}</td>
             
 <!--             <td >
@@ -75,7 +75,7 @@ export default {
             assetId: doc.id,
             assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
             assetText: doc.data().assetText,
-            assetType: doc.data().assetType,
+            assetMediaType: doc.data().assetMediaType,
             assetFormat: doc.data().assetFormat
           });
         });

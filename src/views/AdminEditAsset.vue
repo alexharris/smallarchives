@@ -1,15 +1,19 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn>
+      <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
       <hr class="my-4" />
       <h1>Edit Asset</h1>      
       <hr class="my-4" />
       <h2>Details</h2>
 
-      Type: {{asset.assetType}} <br />
+      Type: {{asset.assetMediaType}} <br />
+      <div v-if="asset.assetMediaType != 'text' && asset.assetMediaType != 'youtube'">
+        Filename: {{asset.assetFileName}} <br />
+      </div>
+
       Creation Date: {{asset.assetCreationDate}} <br />
-      Filename: {{asset.assetFileName}} <br />
+      
 
       
       <hr class="my-4" />
@@ -34,7 +38,7 @@
                   :label-cols="4"
                   breakpoint="md"
                   label="Creator">
-          <b-form-input v-model.trim="asset.assetCreator"></b-form-input>
+          <b-form-input v-model.trim="asset.assetContributor"></b-form-input>
         </b-form-group>  
         <b-form-group 
                   horizontal
@@ -49,6 +53,20 @@
                   breakpoint="md"
                   label="Location">
           <b-form-input v-model.trim="asset.assetLocation"></b-form-input>          
+        </b-form-group>     
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Location Latitude">
+          <b-form-input v-model.trim="asset.assetLocationLat"></b-form-input>          
+        </b-form-group>     
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Location Longitude">
+          <b-form-input v-model.trim="asset.assetLocationLong"></b-form-input>          
         </b-form-group>                                              
         <hr class="my-4" />            
         <b-button type="submit" variant="primary">Save</b-button>
@@ -79,7 +97,7 @@ export default {
         assetId: '',
         assetDescription: '',
         assetFormat:'',
-        assetCreator:'',
+        assetContributor:'',
         assetLocation:''
       },
       uid: ''
@@ -97,16 +115,18 @@ export default {
     // build the ref
     sa.assetDocumentDbRef(uid, archiveId, assetId).get().then((doc) => {
       if (doc.exists) {
-        this.asset.assetCreationDate = doc.data().assetCreationDate
-        this.asset.assetCreator = doc.data().assetCreator
+        this.asset.assetCreationDate = sa.getFormattedDate(doc.data().assetCreationDate)
+        this.asset.assetContributor = doc.data().assetContributor
         this.asset.assetTitle = doc.data().assetTitle
         this.asset.assetFileName = doc.data().assetFileName
         this.asset.assetFormat = doc.data().assetFormat
         this.asset.assetLocation = doc.data().assetLocation
+        this.asset.assetLocationLat = doc.data().assetLocationLat
+        this.asset.assetLocationLong = doc.data().assetLocationLong
         this.asset.assetId = doc.id
         this.asset.assetText = doc.data().assetText
         this.asset.assetDescription = doc.data().assetDescription
-        this.asset.assetType = doc.data().assetType
+        this.asset.assetMediaType = doc.data().assetMediaType
       } else {
         console.log("No such document!");
       }
@@ -124,9 +144,11 @@ export default {
       sa.assetDocumentDbRef(uid, archiveId, assetId).update({
         assetTitle: this.asset.assetTitle,
         assetDescription: this.asset.assetDescription,
-        assetCreator: this.asset.assetCreator,
+        assetContributor: this.asset.assetContributor,
         assetFormat: this.asset.assetFormat,
-        assetLocation: this.asset.assetLocation
+        assetLocation: this.asset.assetLocation,
+        assetLocationLat: this.asset.assetLocationLat,
+        assetLocationLong: this.asset.assetLocationLong
       }).then(() => {
         console.log('asset updated!')
         this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
@@ -142,13 +164,13 @@ export default {
       console.log(fileName)
       //Check to see if there are assets to delete
 
-      console.log(this.asset.assetType)
-      if(this.asset.assetType === 'image') {
+      console.log(this.asset.assetMediaType)
+      if(this.asset.assetMediaType === 'image') {
         // delete the thumb derivative
         sa.assetStorageRef(uid, archiveId, assetId, fileName, 'thumb_').delete()
       }
 
-      if(this.asset.assetType === 'image' || this.asset.assetType === 'audio') {
+      if(this.asset.assetMediaType === 'image' || this.asset.assetMediaType === 'audio' || this.asset.assetMediaType === 'pdf') {
         // delete the main asset image
         sa.assetStorageRef(uid, archiveId, assetId, fileName).delete()
       }

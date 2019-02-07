@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "pico-archive"
+    "default": "pico-archive",
+    "dev": "smallarchives-bf331"
   }
 }

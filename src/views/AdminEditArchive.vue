@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <b-btn @click.stop="goBack">Back</b-btn>
+      <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
       <hr class="my-4" />
       <h4>Basic Info</h4>      
       <b-form @submit="onSubmit">
@@ -24,13 +24,14 @@
                            :max-rows="6">
           </b-form-textarea>
           </b-form-group>
+          <hr class="my-4" />
           <h4>Header Image</h4>  
-          Original Header Image: {{originalHeaderImage}}<br/>
+ <!--          Original Header Image: {{originalHeaderImage}}<br/>
           Header Image: {{archive.headerImage}}<br/>
-          New Header Image: {{newHeaderImage.name}}<br />
-          <div v-if="archive.headerImage">
+          New Header Image: {{newHeaderImage.name}}<br /> -->
+          <div v-if="archive.headerImage" class="my-4">
             <ArchiveHeaderImage />
-            <b-button @click.stop="archive.headerImage = ''" variant="primary">Remove</b-button>
+            <b-button @click.stop="archive.headerImage = ''" variant="outline-secondary" class="my-4">Remove</b-button>
           </div>
           <div v-else>
             <b-form-group id="uploadAsset"
@@ -48,7 +49,7 @@
           </div>
         </b-form-group>   
         <hr my="4" />
-        <b-button type="submit" variant="primary">Update</b-button>
+        <b-button type="submit" class="btn-lg" variant="primary">Update Archive</b-button>
         <hr my="4" />
         <b-alert show variant="danger">
           <h4>Delete</h4>
