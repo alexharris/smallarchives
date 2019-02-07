@@ -147,7 +147,73 @@
                       breakpoint="md"
                       label="Contributor">
           <b-form-input id="assetContributor" v-model="assetContributor"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetDate"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Date">
+          <b-form-input id="assetDate" v-model="assetDate"></b-form-input>
+        </b-form-group>        
+        <b-form-group id="assetCoverage"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Coverage">
+          <b-form-input id="assetCoverage" v-model="assetCoverage"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetCreator"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Creator">
+          <b-form-input id="assetCreator" v-model="assetCreator"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetFormat"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Format">
+          <b-form-input id="assetFormat" v-model="assetFormat"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetIdentifier"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Identifier">
+          <b-form-input id="assetIdentifier" v-model="assetIdentifier"></b-form-input>
         </b-form-group> 
+        <b-form-group id="assetLanguage"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Language">
+          <b-form-input id="assetLanguage" v-model="assetLanguage"></b-form-input>
+        </b-form-group>   
+        <b-form-group id="assetPublisher"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Publisher">
+          <b-form-input id="assetPublisher" v-model="assetPublisher"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetRelation"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Relation">
+          <b-form-input id="assetRelation" v-model="assetRelation"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetRights"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Rights">
+          <b-form-input id="assetRights" v-model="assetRights"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetSource"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Source">
+          <b-form-input id="assetSource" v-model="assetSource"></b-form-input>
+        </b-form-group>
+        <b-form-group id="assetSubject"
+                      :label-cols="4"
+                      breakpoint="md"
+                      label="Subject">
+          <b-form-input id="assetSubject" v-model="assetSubject"></b-form-input>
+        </b-form-group>                                             
     </div>
   </div>
 </div>     
@@ -193,6 +259,17 @@ export default {
       assetLocationLat: '',
       assetLocationLong: '',
       assetContributor:'',
+      assetDate:'',
+      assetCoverage:'',
+      assetCreator:'',
+      assetFormat:'',
+      assetIdentifier:'',
+      assetLanguage:'',
+      assetPublisher:'',
+      assetRelation:'',
+      assetRights:'',
+      assetSource:'',
+      assetSubject:'',
       formErrors: false,
       loading: null
     }
@@ -204,9 +281,6 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-
-
-
 
       // empty the error variable to get rid of old errors
       this.errors = []
@@ -332,7 +406,19 @@ export default {
         assetTitle: this.assetTitle,
         assetDescription: this.assetDescription,
         assetContributor: this.assetContributor,
+        assetCoverage: this.assetCoverage,
+        assetCreator: this.assetCreator,
+        assetDate: this.assetDate,
+        assetFormat: this.assetFormat,
+        assetIdentifier: this.assetIdentifier,
+        assetLanguage: this.assetLanguage,
+        assetPublisher: this.assetPublisher,
+        assetRelation: this.assetRelation,
+        assetRights: this.assetRights,
+        assetSource: this.assetSource,
+        assetSubject: this.assetSubject,
         assetType: this.selectedAssetType,
+
 
         // Media Stuff
         assetMediaType: this.selectedAssetMediaType,

@@ -47,7 +47,16 @@
 				<p>
 				<strong>Media type:</strong> {{asset.assetMediaType}} <br />
 				<strong>Contributor:</strong> {{asset.assetContributor}} <br />
+				<strong>Creator:</strong> {{asset.assetCreator}} <br />
+				<strong>Coverage:</strong> {{asset.assetCoverage}} <br />
 				<strong>Format:</strong> {{asset.assetFormat}}<br />
+				<strong>Identifier:</strong> {{asset.assetIdentifier}}<br />
+				<strong>Language:</strong> {{asset.assetLanguage}}<br />
+				<strong>Publisher:</strong> {{asset.assetPublisher}}<br />
+				<strong>Relation:</strong> {{asset.assetRelation}}<br />
+				<strong>Rights:</strong> {{asset.assetRights}}<br />
+				<strong>Source:</strong> {{asset.assetSource}}<br />
+				<strong>Subject:</strong> {{asset.assetSubject}}<br />
 				</p>
 				
 
@@ -133,7 +142,16 @@ export default {
 	        this.asset.assetTitle = doc.data().assetTitle
 	        this.asset.assetDescription = doc.data().assetDescription
 	        this.asset.assetContributor = doc.data().assetContributor
+	        this.asset.assetCreator = doc.data().assetCreator
+	        this.asset.assetCoverage = doc.data().assetCoverage
 			this.asset.assetFormat = doc.data().assetFormat
+			this.asset.assetIdentifier = doc.data().assetIdentifier
+			this.asset.assetLanguage = doc.data().assetLanguage
+			this.asset.assetPublisher = doc.data().assetPublisher
+			this.asset.assetRelation = doc.data().assetRelation
+			this.asset.assetRights = doc.data().assetRights
+			this.asset.assetSource = doc.data().assetSource
+			this.asset.assetSubject = doc.data().assetSubject				
 
 			// Media Fields
 	        this.asset.assetFileName = doc.data().assetFileName

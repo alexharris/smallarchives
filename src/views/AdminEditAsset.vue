@@ -37,8 +37,29 @@
                   horizontal
                   :label-cols="4"
                   breakpoint="md"
-                  label="Creator">
+                  label="Contributor">
           <b-form-input v-model.trim="asset.assetContributor"></b-form-input>
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Coverage">
+          <b-form-input v-model.trim="asset.assetCoverage"></b-form-input>
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Date">
+          <b-form-input v-model.trim="asset.assetDate"></b-form-input>
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Creator">
+          <b-form-input v-model.trim="asset.assetCreator"></b-form-input>
         </b-form-group>  
         <b-form-group 
                   horizontal
@@ -47,6 +68,55 @@
                   label="Format">
           <b-form-input v-model.trim="asset.assetFormat"></b-form-input>          
         </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Identifier">
+          <b-form-input v-model.trim="asset.assetIdentifier"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Language">
+          <b-form-input v-model.trim="asset.assetLanguage"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Publisher">
+          <b-form-input v-model.trim="asset.assetPublisher"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Relation">
+          <b-form-input v-model.trim="asset.assetRelation"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Rights">
+          <b-form-input v-model.trim="asset.assetRights"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Source">
+          <b-form-input v-model.trim="asset.assetSource"></b-form-input>          
+        </b-form-group>
+        <b-form-group 
+                  horizontal
+                  :label-cols="4"
+                  breakpoint="md"
+                  label="Subject">
+          <b-form-input v-model.trim="asset.assetSubject"></b-form-input>          
+        </b-form-group>                                          
         <b-form-group 
                   horizontal
                   :label-cols="4"
@@ -97,7 +167,17 @@ export default {
         assetId: '',
         assetDescription: '',
         assetFormat:'',
+        assetIdentifier:'',
+        assetLanguage:'',
+        assetPublisher:'',
+        assetRelation:'',
+        assetRights:'',
+        assetSource:'',
+        assetSubject:'',
         assetContributor:'',
+        assetCoverage:'',
+        assetCreator:'',
+        assetDate:'',
         assetLocation:''
       },
       uid: ''
@@ -117,9 +197,19 @@ export default {
       if (doc.exists) {
         this.asset.assetCreationDate = sa.getFormattedDate(doc.data().assetCreationDate)
         this.asset.assetContributor = doc.data().assetContributor
+        this.asset.assetCoverage = doc.data().assetCoverage
+        this.asset.assetCreator = doc.data().assetCreator
+        this.asset.assetDate = doc.data().assetDate
         this.asset.assetTitle = doc.data().assetTitle
         this.asset.assetFileName = doc.data().assetFileName
         this.asset.assetFormat = doc.data().assetFormat
+        this.asset.assetIdentifier = doc.data().assetIdentifier
+        this.asset.assetLanguage = doc.data().assetLanguage
+        this.asset.assetPublisher = doc.data().assetPublisher
+        this.asset.assetRelation = doc.data().assetRelation
+        this.asset.assetRights = doc.data().assetRights
+        this.asset.assetSource = doc.data().assetSource
+        this.asset.assetSubject = doc.data().assetSubject
         this.asset.assetLocation = doc.data().assetLocation
         this.asset.assetLocationLat = doc.data().assetLocationLat
         this.asset.assetLocationLong = doc.data().assetLocationLong
@@ -145,7 +235,17 @@ export default {
         assetTitle: this.asset.assetTitle,
         assetDescription: this.asset.assetDescription,
         assetContributor: this.asset.assetContributor,
+        assetCoverage: this.asset.assetCoverage,
+        assetCreator: this.asset.assetCreator,
+        assetDate: this.asset.assetDate,
         assetFormat: this.asset.assetFormat,
+        assetIdentifier: this.asset.assetIdentifier,
+        assetLanguage: this.asset.assetLanguage,
+        assetPublisher: this.asset.assetPublisher,
+        assetRelation: this.asset.assetRelation,
+        assetRights: this.asset.assetRights,
+        assetSource: this.asset.assetSource,
+        assetSubject: this.asset.assetSubject,
         assetLocation: this.asset.assetLocation,
         assetLocationLat: this.asset.assetLocationLat,
         assetLocationLong: this.asset.assetLocationLong
