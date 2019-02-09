@@ -1,26 +1,28 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
-  	  <b-navbar variant="faded" type="light" toggleable="sm" v-if="user">
-        <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
-      	<b-navbar-brand href="/">SMALL ARCHIVES</b-navbar-brand>
-      	<b-collapse is-nav id="nav_collapse">
-        	<b-navbar-nav class="ml-auto">
-         		<b-nav-item-dropdown right v-if="user">
-            		<!-- Using button-content slot -->
-            		<template slot="button-content">
-              			{{displayName}}
-            		</template>
-            		<b-dropdown-item href="/admin/archives">Dashboard</b-dropdown-item>
-            		<b-dropdown-item href="/admin/profile">Profile</b-dropdown-item>
-            		<b-dropdown-item @click="this.logout">Logout</b-dropdown-item>
-          		</b-nav-item-dropdown>
-              <b-nav-item right v-else>
-                <b-link @click.stop="goToLogin">Login</b-link>
-              </b-nav-item>              
-        	</b-navbar-nav>     
-        </b-collapse> 
-      </b-navbar> 
+  	  <nav class="navbar navbar-expand-lg">
+      	<a class="navbar-brand" href="/">SMALL ARCHIVES</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav" v-if="user">
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/archives">{{displayName}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="this.logout">Logout</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav" v-else>
+            <li class="nav-item">
+              <a class="nav-link" @click.stop="goToLogin">Login</a>
+            </li>                        
+          </ul>
+        </div>           
+
+      </nav> 
       </header> 	
   		<div class="container wrapper flex-shrink-0" v-cloak> 		
   			<router-view/>       
@@ -28,7 +30,7 @@
       <footer class="footer mt-auto py-3">
         <div class="container">
 
-            <a href="/">Create Small Archives</a>.
+            <a href="/Contact">Contact</a>.
         </div>
       </footer>        
 
@@ -100,6 +102,7 @@ export default {
 
   body {
     font-family: 'Inter', sans-serif !important;
+    background-color: #fffade !important;
   }
 
   nav {
@@ -116,7 +119,7 @@ export default {
   }
 
   header {
-    background-color: #fff;
+    background-color: #fffade;
   }
 
   img {
@@ -132,6 +135,6 @@ export default {
   }
 
   footer {
-    background-color: #f5f5f5;
+    border-top: 1px solid #000;
   }
 </style>

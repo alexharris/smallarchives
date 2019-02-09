@@ -5,6 +5,7 @@ import Router from "vue-router";
 import Admin from "@/views/Admin.vue";
 import Login from "@/views/Login.vue";
 
+
 // User
 import UserSignUp from "@/views/UserSignUp.vue";
 import UserProfile from "@/views/UserProfile.vue";
@@ -24,6 +25,7 @@ import PublicHome from '@/views/PublicHome'
 import PublicProfile from '@/views/PublicProfile'
 import PublicArchive from '@/views/PublicArchive'
 import PublicAsset from '@/views/PublicAsset'
+import PublicContact from '@/views/PublicContact'
 
 Vue.use(Router);
 
@@ -82,6 +84,11 @@ const router = new Router({
         },                         
       ]      
     },
+    {
+      path: "/contact",
+      name: "PublicContact",
+      component: PublicContact
+    },     
     {
       path: "/login",
       name: "login",

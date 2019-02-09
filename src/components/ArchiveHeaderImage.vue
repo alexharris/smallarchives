@@ -1,5 +1,5 @@
 <template>
-	<div> 
+	<div class="header-image-container"> 
 		<img :src="headerImage" />
 	</div>
 </template>
@@ -70,3 +70,7 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+
+</style>

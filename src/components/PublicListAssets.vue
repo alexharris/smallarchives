@@ -1,15 +1,14 @@
 <template
 
 >
-  <b-row>
-    <b-col cols="12">
+<div>
       <div v-if="assets.length == 0">
         <b-jumbotron>
           <p>This archive has no items.</p>
         </b-jumbotron>
       </div>
       <div v-else>
-        <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">Title</th>
@@ -24,14 +23,10 @@
             <td><div>{{item.assetMediaType}}</div></td>
             <td>{{item.assetCreationDate}}</td>
             
-<!--             <td >
-              <b-btn variant="outline-secondary" size="sm" @click.stop="editAsset(item.assetId)">Details</b-btn>
-            </td> -->
           </tr>
         </table>
       </div>
-    </b-col>
-  </b-row>
+
 
 
 	</div>

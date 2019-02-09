@@ -1,33 +1,33 @@
 <template>
   <div>
-      <b-row>
-        <b-col cols="2" class="col-md-2 my-5">
-          <ArchiveHeaderImage />
-        </b-col>
-        <b-col cols="7" class="col-md-7 my-5">
-          <h1>{{archive.title}}</h1>
-          <p>{{archive.desc}}</p>
+    <div class="row mb-5 pb-4 no-gutters archive-header">
+      <div class="col-12 col-md-4 col-lg-3 mb-3 px-4 justify-content-center">
+        <ArchiveHeaderImage />
+      </div>
+
+<!--       <div class="col-12 col-lg-6 mb-4 p-4 archive-details">
+
+        <div class="card border-dark mb-3">
           
-        </b-col>
-        <b-col cols="3" class="col-md-3 my-5">
-          <p>Number of records: {{assetCount}}</p>
-          <p>Created on: {{creationDate}}</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <PublicListAssets />
-        </b-col>
-      </b-row>
-      <hr class="my-4" />
-      <b-row class="my-5">
-        <b-col>
-          <div>This Small Archive was created by <a href="" @click.stop="goToUser()">{{ this.username }}</a></div>
-        </b-col>
-      </b-row>      
+          <div class="card-body text-dark">
+            <h5 class="card-title">Archive details</h5>
+            <p class="card-text">This archive contains {{assetCount}} items. It was created on {{creationDate}} by <a href="" @click.stop="goToUser()">{{ this.username }}</a>.</p>
+          </div>
+        </div>       
+      </div> -->
+      <div class="col-12 col-md-8 col-lg-9 mb-3 px-4">
+        <h1 class="h1 pb-3">{{archive.title}}</h1>
+        <p>{{archive.desc}}</p>
+        <div class="card border-dark mt-5 bg-transparent">
+          <div class="card-body text-dark ">
+            <!-- <h5 class="card-title">Archive details</h5> -->
+            <p class="card-text">This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</p>
+          </div>
+        </div>          
+      </div>        
+    </div>
 
-
-
+    <PublicListAssets />
   </div>
 </template>
 
@@ -89,3 +89,12 @@ export default {
   }
 }
 </script>
+
+<style>
+  .archive-header {
+    /*border-bottom: 1px solid #000;*/
+  }
+  .archive-details {
+    /*background-color: #fbfbfb;*/
+  }
+</style>

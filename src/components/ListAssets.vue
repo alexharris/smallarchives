@@ -1,6 +1,5 @@
 <template>
-  <b-row>
-    <b-col cols="12">
+  <div>
       <div v-if="assets.length == 0">
           <p>This archive has no items.</p>    
       </div>
@@ -24,8 +23,7 @@
           </tr>
         </table> 
       </div> 
-    </b-col>
-  </b-row>
+  </div>
 </template>
 
 <script>
