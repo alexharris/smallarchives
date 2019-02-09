@@ -1,6 +1,6 @@
 <template>
-	<div id="app"> 
-    <div>
+	<div id="app" class="d-flex flex-column h-100"> 
+      <header>
   	  <b-navbar variant="faded" type="light" toggleable="sm" class="mb-5" v-if="user">
         <b-navbar-toggle target="nav_collapse" right></b-navbar-toggle>
       	<b-navbar-brand href="/">SMALL ARCHIVES</b-navbar-brand>
@@ -20,11 +20,19 @@
               </b-nav-item>              
         	</b-navbar-nav>     
         </b-collapse> 
-      </b-navbar>  	
-  		<b-container class="wrapper" v-cloak> 		
-  			<router-view/>
-  		</b-container>   
-  	</div>
+      </b-navbar> 
+      </header> 	
+  		<div class="container wrapper flex-shrink-0" v-cloak> 		
+  			<router-view/>       
+  		</div>  
+      <footer class="footer mt-auto py-3">
+        <div class="container">
+
+            <a href="/">Create Small Archives</a>.
+        </div>
+      </footer>        
+
+
   </div>
 </template>
 
@@ -111,5 +119,9 @@ export default {
 
   a svg:hover {
     color: #474747;
+  }
+
+  footer {
+    background-color: #f5f5f5;
   }
 </style>

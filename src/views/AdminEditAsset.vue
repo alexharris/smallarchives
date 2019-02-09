@@ -116,14 +116,7 @@
                   breakpoint="md"
                   label="Subject">
           <b-form-input v-model.trim="asset.assetSubject"></b-form-input>          
-        </b-form-group>                                          
-        <b-form-group 
-                  horizontal
-                  :label-cols="4"
-                  breakpoint="md"
-                  label="Location">
-          <b-form-input v-model.trim="asset.assetLocation"></b-form-input>          
-        </b-form-group>     
+        </b-form-group>                                             
         <b-form-group 
                   horizontal
                   :label-cols="4"

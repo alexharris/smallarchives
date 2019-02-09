@@ -60,10 +60,10 @@
 				</p>
 				
 
-				<div v-if="asset.assetLocation != ''">
-					<h3 class="h5">Location</h3>
-					<p>{{asset.assetLocation}}</p>
-				  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetLocationLat != '' && asset.assetLocationLat != ''">
+				<div v-if="asset.assetCoverage != ''">
+					<h3 class="h5">Coverage</h3>
+					<p>{{asset.assetCoverage}}</p>
+				  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetCoverageLat != '' && asset.assetCoverageLong != ''">
 				    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
 				    <l-marker :lat-lng="latLongArray"></l-marker>
 
@@ -104,8 +104,8 @@ export default {
 	        assetId: '',
 	        filePath: '',
 	        customFields: '',
-	        assetLocationLat: '',
-	        assetLocationLong: ''	
+	        assetCoverageLat: '',
+	        assetCoverageLong: ''	
   		},
   		assetSrc: '',
   		uid: '',
@@ -114,7 +114,7 @@ export default {
   },
   computed: {
   	latLongArray: function() {
-  		return [this.asset.assetLocationLat, this.asset.assetLocationLong]
+  		return [this.asset.assetCoverageLat, this.asset.assetCoverageLong]
 	},
   },
   created() {
@@ -160,9 +160,8 @@ export default {
 	        this.asset.assetYoutubeId = 'https://www.youtube.com/embed/' + doc.data().assetYoutubeId
 	        this.asset.assetId = doc.id
 	        
-	        this.asset.assetLocation = doc.data().assetLocation
-	        this.asset.assetLocationLat = doc.data().assetLocationLat
-	        this.asset.assetLocationLong = doc.data().assetLocationLong
+	        this.asset.assetCoverageLat = doc.data().assetCoverageLat
+	        this.asset.assetCoverageLong = doc.data().assetCoverageLong
 	        this.asset.assetCreationDate = sa.getFormattedDate(doc.data().assetCreationDate)
 	        
 	        
