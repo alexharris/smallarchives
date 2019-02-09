@@ -3,9 +3,7 @@
 >
 <div>
       <div v-if="assets.length == 0">
-        <b-jumbotron>
           <p>This archive has no items.</p>
-        </b-jumbotron>
       </div>
       <div v-else>
         <table class="table">

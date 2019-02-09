@@ -1,50 +1,50 @@
 <template>
   <div>
-    <b-row>
-      <b-col cols="12">
-        <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
+    <div class="row">
+      <div class="col-12">
+        <div class="btn btn-dark" @click.stop="goBack">Back</div>
         <hr class="my-4" />
         <template v-if="errors.length > 0">
-          <b-alert variant="danger" show>
+          <div class="alert alert-danger" role="alert" show>
             <ul>
               <li v-for="error in errors">{{error}}</li>
             </ul>
-          </b-alert>
+          </div>
         </template>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="12">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
         <h2>
           Add Archive
         </h2>
         <hr class="my-4" />
-        <b-form @submit="onSubmit">
-          <b-form-group id="fieldsetHorizontal"
-                    horizontal
-                    :label-cols="4"
-                    breakpoint="md"
-                    label="Enter Title">
-            <b-form-input id="title" v-model.trim="archive.title"></b-form-input>
-          </b-form-group>
-          <b-form-group id="fieldsetHorizontal"
-                    horizontal
-                    :label-cols="4"
-                    breakpoint="md"
-                    label="Enter Description">
-            <b-form-textarea id="desc" v-model="archive.desc"></b-form-textarea>
-          </b-form-group>   
-          <b-form-group id="uploadAsset"
-                        :label-cols="4"
-                        breakpoint="md"
-                        label="Upload Image" 
-                        >
-            <b-form-file id="uploadAsset" v-model="archiveHeaderImage" placeholder="Choose a file..."></b-form-file>
-          </b-form-group>              
-          <b-button type="submit" variant="primary">Submit</b-button>
-        </b-form>
-      </b-col>
-    </b-row>
+        <form @submit="onSubmit">
+          <!-- Title -->
+          <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="inputTitle" placeholder="Archive title" v-model="archive.title">
+            </div>
+          </div>
+          <!-- Description -->
+          <div class="form-group row">
+            <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="inputTitle" placeholder="Archive description" v-model="archive.desc"></textarea>
+            </div>
+          </div>   
+          <!-- Header image --> 
+          <div class="form-group row">
+            <label for="selectHeaderImage" class="col-sm-2 col-form-label">Select Header Image</label>
+            <div class="col-sm-10">
+              <input type="file" id="selectHeaderImage" v-on:change="handleFileChange">
+            </div>
+          </div>                                           
+          <div class="btn btn-primary" type="submit" @click="onSubmit">Submit</div>
+        </form>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -73,6 +73,9 @@ export default {
     this.uid = currentUser.uid;
   },
   methods: {
+    handleFileChange(e, index) {
+      this.file = e.target.files[0]
+    },      
     onSubmit (evt) {
       evt.preventDefault()
 

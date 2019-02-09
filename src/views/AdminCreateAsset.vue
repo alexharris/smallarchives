@@ -229,7 +229,7 @@
        </div>
 <div v-if="!loading">
   <hr class="my-4" />
-  <b-btn variant="primary btn-lg" @click.stop="onSubmit">Submit</b-btn>
+  <div class="btn btn-primary btn-lg" @click.stop="onSubmit">Submit</div>
 </div>
 <div v-else>
   <div class="spinner-border" role="status">
