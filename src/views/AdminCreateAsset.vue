@@ -347,7 +347,7 @@
       }
 
       // It must be jpg, tif, png, or jpg
-      console.log(this.file.type)
+
       if(this.selectedAssetMediaType === 'image' && this.file.type != null) {
         if(this.file.type != 'image/jpeg' && this.file.type != 'image/tiff' && this.file.type != 'image/png' && this.file.type != 'image/gif') {
           this.errors.push('Image files must be one of the following types: JPG, TIF, PNG, GIF')

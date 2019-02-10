@@ -21,11 +21,11 @@
             </tr>
           </thead>          
           <tr v-for="item in archives">
-            <td><b-link @click.stop="editAsset(item.assetId)">{{item.title}}</b-link></td>
+            <td>{{item.title}}</td>
             <td><div>{{item.dateCreated}}</div></td>
             <td>
-              <div class="btn" @click.stop="details(row.item.key)">Details</div>
-            <div class="btn" @click.stop="linkToPublicView(row.item)">View</div></td>
+              <a class="btn" @click.stop="details(item.key)">Details</a>
+            <a class="btn" @click.stop="linkToPublicView(item)">View</a></td>
             
           </tr>
         </table>
