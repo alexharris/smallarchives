@@ -5,14 +5,9 @@
 </template>
 
 <script>
-import UserNav from '../components/UserNav'
-
 
 export default {
   name: "Admin",
-  components: {
-    UserNav
-  }, 
   computed: {
     user() {
     	return this.$store.getters.getUser;

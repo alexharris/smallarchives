@@ -2,24 +2,31 @@
   <div class="sign-up">   
     <h3>Create new account</h3>
     <template v-if="error">
-      <b-alert variant="danger" show>{{error}}</b-alert>
-    </template>     
-    
-    <b-form-group label="Username:" label-for="displayName">
-      <b-form-input id="displayName" type="text" v-model.trim="displayName" placeholder="Username"></b-form-input>   
-      <b-form-text id="inputLiveHelp">
-        <!-- this is a form text block (formerly known as help block) -->
-        This is the name by which your archives will be accessed.
-      </b-form-text>      
-    </b-form-group>     
-    <b-form-group label="Email Address:" label-for="loginEmail">
-      <b-form-input id="loginEmail" type="text" v-model="email" placeholder="Email"></b-form-input>       
-    </b-form-group>
-    <b-form-group label="Password:" label-for="loginPassword">
-      <b-form-input id="loginPassword" type="password" v-model="password" placeholder="Password"></b-form-input>
-    </b-form-group> 
+      <div class="alert alert-danger" show>{{error}}</div>
+    </template>   
+    <!-- Username -->
+    <div class="form-group row">
+      <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+      <div class="col-sm-10">
+        <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName">
+      </div>
+    </div>
+    <!-- Email -->
+    <div class="form-group row">
+      <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-10">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+      </div>
+    </div>
+    <!-- Password -->
+    <div class="form-group row">
+      <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+      <div class="col-sm-10">
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+      </div>
+    </div>                 
 
-    <b-button @click="checkUsername" variant="outline-primary">Sign Up</b-button>
+    <div class="btn btn-info" @click="checkUsername">Sign Up</div>
     <!-- <p class="mt-5">or go back to <router-link to="/login">login</router-link>.</p> -->
   </div>
     

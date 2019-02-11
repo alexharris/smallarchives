@@ -1,27 +1,24 @@
 <template>
-  <b-row>
-    <b-col cols="12">
-      <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
-      <b-btn class="float-right" variant="outline-dark" @click.stop="linkToPublicView(key)">View</b-btn>
-      <b-btn class="float-right mr-2" variant="outline-dark" @click.stop="editarchive(key)">Edit</b-btn>   
+  <div class="row">
+    <div class="col-12">
+      <div class="btn btn-dark" @click.stop="goBack">Back</div>
+      <div class="btn btn-outline-dark float-right" @click.stop="linkToPublicView(key)">View</div>
+      <div class="btn btn-outline-dark float-right mr-2" @click.stop="editarchive(key)">Edit</div>   
       <hr my="4" />      
       <h1>{{archive.title}}</h1>
       <p>{{archive.desc}}</p>
       <hr class="my-4" />          
-      
-          
-      
 
-    <b-row class="my-4">
-        <b-col><h2>Items</h2></b-col>
-        <b-col><b-btn @click.stop="addItemButton(key)" variant="primary" class="float-right">Add Item</b-btn></b-col>
-    </b-row>
-
+      <div class="row my-4">
+          <div class="col"><h2>Items</h2></div>
+          <div class="col">
+            <div class="btn btn-primary float-right" @click.stop="addItemButton(key)">Add Item</div>
+          </div>
+      </div>
       <ListAssets />  
-      
-    
-    </b-col>
-  </b-row>
+
+    </div>
+  </div>
 </template>
 
 <script>

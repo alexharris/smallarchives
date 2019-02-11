@@ -1,66 +1,54 @@
 <template>
-  <b-row>
-    <b-col cols="12">
-      <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
+  <div class="row">
+    <div class="col-12">
+      <div class="btn btn-dark" @click.stop="goBack">Back</div>
       <hr class="my-4" />
       <h4>Basic Info</h4>      
-      <b-form @submit="onSubmit">
-        <b-form-group id="fieldsetHorizontal"
-                  horizontal
-                  :label-cols="4"
-                  breakpoint="md"
-                  label="Title">
-          <b-form-input id="title" v-model.trim="archive.title"></b-form-input>
-        </b-form-group>
-        <b-form-group id="fieldsetHorizontal"
-                  horizontal
-                  :label-cols="4"
-                  breakpoint="md"
-                  label="Description">
-          <b-form-textarea id="textarea1"
-                           v-model="archive.desc"
-                           placeholder="Enter something"
-                           :rows="3"
-                           :max-rows="6">
-          </b-form-textarea>
-          </b-form-group>
-          <hr class="my-4" />
-          <h4>Header Image</h4>  
- <!--          Original Header Image: {{originalHeaderImage}}<br/>
-          Header Image: {{archive.headerImage}}<br/>
-          New Header Image: {{newHeaderImage.name}}<br /> -->
-          <div v-if="archive.headerImage" class="my-4">
-            <ArchiveHeaderImage />
-            <b-button @click.stop="archive.headerImage = ''" variant="outline-secondary" class="my-4">Remove</b-button>
+      <form @submit="onSubmit">
+        <!-- Coverage -->
+        <div class="form-group row">
+          <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+          <div class="col-sm-10">
+            <input class="form-control" id="inputTitle" placeholder="Archive Title" v-model="archive.title">
           </div>
-          <div v-else>
-            <b-form-group id="uploadAsset"
-                          :label-cols="4"
-                          breakpoint="md"
-                          label="Upload Image">
+        </div> 
+        <!-- Desc -->
+        <div class="form-group row">
+          <label for="inputDesc" class="col-sm-2 col-form-label">Title</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" id="inputDesc" placeholder="Archive Description" v-model="archive.desc"></textarea>
+          </div>
+        </div>   
 
-              <b-form-file id="uploadAsset" 
-                           v-model="newHeaderImage" 
-                           placeholder="Choose a file..."
-                           :rows="3"
-                           :max-rows="6" 
-              ></b-form-file>
-            </b-form-group> 
+        <div v-if="archive.headerImage" class="my-4">
+          <div class="row">
+            <div class="col-sm-2">Header Image</div>
+            <div class="cols-m-10">
+              <ArchiveHeaderImage />
+              <div @click.stop="archive.headerImage = ''" class="btn btn-info my-4">Remove</div>
+            </div>
           </div>
-        </b-form-group>   
+        </div>
+        <div v-else>
+          <div class="form-group row">
+            <label for="inputFile" class="col-sm-2 col-form-label">Header Image</label>
+            <input type="file" id="inputFile" v-on:change="handleFileChange">
+          </div>
+        </div>
+      </form>   
+      <hr my="4" />
+        <div class="btn btn-lg btn-primary" type="submit">Update Archive</div>
         <hr my="4" />
-        <b-button type="submit" class="btn-lg" variant="primary">Update Archive</b-button>
-        <hr my="4" />
-        <b-alert show variant="danger">
+        <div class="alert alert-danger" show>
           <h4>Delete</h4>
           <p>Warning: Deleting this archive is permanent and you can't get it back</p>
          
-          <b-btn variant="danger" @click.stop="deletearchive(key)">Delete</b-btn>
-        </b-alert>
-      </b-form>
+          <div class="btn btn-danger" @click.stop="deletearchive(key)">Delete</div>
+        </div>
+      </form>
       Archive ID: {{key}}
-    </b-col>
-  </b-row>
+    </div>
+  </div>
    
 </template>
 
@@ -100,6 +88,9 @@ export default {
     });
   },
   methods: {
+    handleFileChange(e, index) {
+      this.newHeaderImage = e.target.files[0]
+    },     
     onSubmit (evt) {
       evt.preventDefault()
 

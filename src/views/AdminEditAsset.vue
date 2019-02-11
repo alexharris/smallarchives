@@ -1,14 +1,14 @@
 <template>
-  <b-row>
-    <b-col cols="12">
-    <div class="row">
-      <div class="col-sm-9">
-        <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="btn btn-dark" @click.stop="goBack" variant="dark">Back</div>
+        </div>
+        <div class="col-sm-3">
+          <switcher v-model="helpSwitcherValue" />    
+        </div>
       </div>
-      <div class="col-sm-3">
-        <switcher v-model="helpSwitcherValue" />    
-      </div>
-    </div>
       <hr class="my-4" />
       <h1>Edit Asset</h1>      
       <hr class="my-4" />
@@ -189,14 +189,14 @@
                                 
         <hr class="my-4" />            
 
-        <b-alert show variant="danger">
+        <div class="alert alert-danger" show>
           <h4>Delete</h4>
           <p>Warning: Deleting this asset is permanent and you can't get it back</p>
-          <b-btn variant="danger" @click.stop="itemDelete(assetId)">Delete</b-btn>
-        </b-alert>
-      </b-form>
-    </b-col>
-  </b-row>
+          <div class="btn btn-danger" @click.stop="itemDelete(assetId)">Delete</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

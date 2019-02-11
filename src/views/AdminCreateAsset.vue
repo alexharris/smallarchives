@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-sm-9">
-        <b-btn @click.stop="goBack" variant="dark">Back</b-btn>
+        <div class="btn btn-dark" @click.stop="goBack">Back</div>
       </div>
       <div class="col-sm-3">
         <switcher v-model="helpSwitcherValue" />    
@@ -10,12 +10,12 @@
     </div>
     <hr class="my-4" />
     <template v-if="errors.length > 0">
-      <b-alert variant="danger" show>
+      <div class="alert alert-danger" show>
         <h3>Errors</h3>
         <ul>
           <li v-for="error in errors">{{error}}</li>
         </ul>
-      </b-alert>
+      </div>
     </template>
     <h1 class="h4">Add New Item</h1>
     <hr class="my-4" />

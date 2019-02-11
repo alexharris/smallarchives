@@ -2,7 +2,6 @@
 	<div>
 		<div class="row justify-content-center">
 			<div class="col-8">
-<!-- 				<b-btn @click.stop="goBack" variant="outline-secondary">Back</b-btn> -->
 				<a @click.stop="goBack" class="float-right"><font-awesome-icon icon="times-circle" size="2x" /></a><br />
 				<hr class="my-4 dashed-top-border" />
 			</div>

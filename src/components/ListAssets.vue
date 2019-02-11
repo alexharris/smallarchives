@@ -18,7 +18,7 @@
             <td>{{item.assetCreationDate}}</td>
             <td>{{item.assetType}}</td>
             <td >
-              <b-btn variant="outline-secondary" class="mr-2 btn-sm" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</b-btn>          
+              <div class="btn btn-outline-secondary mr-2 btn-sm" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</div>          
             </td>
           </tr>
         </table> 

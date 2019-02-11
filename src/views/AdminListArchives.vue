@@ -7,7 +7,7 @@
     </div>
     <div v-else>
       <div class="row mb-3">
-        <b-button href="/admin/add-archive" class="float-right" variant="primary">Add Archive</b-button>
+        <div class="btn btn-primary float-right" href="/admin/add-archive">Add Archive</div>
       </div>
       <div class="row">
         <table class="table">

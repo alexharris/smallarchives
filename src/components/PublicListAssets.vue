@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tr v-for="item in assets">
-            <td><b-link @click.stop="editAsset(item.assetId)">{{item.assetTitle}}</b-link></td>
+            <td><a @click.stop="editAsset(item.assetId)">{{item.assetTitle}}</a></td>
             <td><div>{{item.assetMediaType}}</div></td>
             <td>{{item.assetCreationDate}}</td>
             
