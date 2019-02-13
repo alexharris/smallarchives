@@ -1,38 +1,32 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
-  	  <nav class="navbar navbar-expand-lg">
-      	<a class="navbar-brand" href="/">SMALL ARCHIVES</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav" v-if="user">
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/archives">{{displayName}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click="this.logout">Logout</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav" v-else>
-            <li class="nav-item">
-              <a class="nav-link" @click.stop="goToLogin">Login</a>
-            </li>                        
-          </ul>
-        </div>           
-
-      </nav> 
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto" v-if="user">
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/archives">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="this.logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>      
       </header> 	
   		<div class="container wrapper flex-shrink-0" v-cloak> 		
   			<router-view/>       
   		</div>  
-      <footer class="footer mt-auto py-3">
+<!--       <footer class="footer mt-auto py-3">
         <div class="container-fluid">
 
             <a href="/Contact">Contact</a>.
         </div>
-      </footer>        
+      </footer>    -->     
 
 
   </div>

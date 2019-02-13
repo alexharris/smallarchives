@@ -1,22 +1,28 @@
 <template>
   <div class="login">  
-    <h3 class="mb-3">Log In</h3>
-      <form>
-        <div class="form-group row">
-          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+    
+    <div class="row justify-content-sm-center">
+
+      <div class="col-6">
+              <h3 class="mb-5">Log in</h3>
+        <form>
+          <div class="form-group row">
+            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
-          </div>
-        </div>        
-        <div class="btn btn-primary" type="submit" @click.stop="login">Submit</div>
-      </form>
-      <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link></p>    
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+            </div>
+          </div>        
+          <div class="btn btn-primary" type="submit" @click.stop="login">Submit</div>
+        </form>
+        <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link></p>    
+      </div>
+    </div>
   </div>
 </template>
 

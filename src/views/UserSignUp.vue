@@ -1,6 +1,9 @@
 <template>
-  <div class="sign-up">   
-    <h3>Create new account</h3>
+  <div class="sign-up">  
+       <div class="row justify-content-sm-center">
+
+      <div class="col-6">
+    <h3 class="mb-5">Sign up</h3>
     <template v-if="error">
       <div class="alert alert-danger" show>{{error}}</div>
     </template>   
@@ -27,9 +30,10 @@
     </div>                 
 
     <div class="btn btn-info" @click="checkUsername">Sign Up</div>
-    <!-- <p class="mt-5">or go back to <router-link to="/login">login</router-link>.</p> -->
+    <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
   </div>
-    
+    </div>
+  </div>
 
 </template>
 
@@ -70,13 +74,18 @@
               displayName:  this.displayName,
               // photoURL: "https://example.com/jane-q-user/profile.jpg"
             }).then(() => {
-              // Update successful.       
+              // Update successful. 
+
               //Also add the username to the users table
               firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
                   displayName: this.displayName
               })
               .then(() => {
                   console.log("Document successfully written!");
+                  // start tracking number of assets
+                  firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).set({
+                      numberOfItems: 0
+                  })                  
                   // tell the store to check about the user
                   this.$store.dispatch('setUser')
                   //then redirect user to home         

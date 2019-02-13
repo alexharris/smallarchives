@@ -14,7 +14,7 @@
         </div> 
         <!-- Desc -->
         <div class="form-group row">
-          <label for="inputDesc" class="col-sm-2 col-form-label">Title</label>
+          <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
           <div class="col-sm-10">
             <textarea class="form-control" id="inputDesc" placeholder="Archive Description" v-model="archive.desc"></textarea>
           </div>
@@ -36,14 +36,14 @@
           </div>
         </div>
       </form>   
-      <hr my="4" />
-        <div class="btn btn-lg btn-primary" type="submit">Update Archive</div>
-        <hr my="4" />
+      <hr class="my-4" />
+        <a class="btn btn-lg btn-warning" type="submit">Update Archive</a>
+        <hr class="my-4" />
         <div class="alert alert-danger" show>
           <h4>Delete</h4>
           <p>Warning: Deleting this archive is permanent and you can't get it back</p>
          
-          <div class="btn btn-danger" @click.stop="deletearchive(key)">Delete</div>
+          <a class="btn btn-outline-danger" @click.stop="deletearchive(key)">Delete</a>
         </div>
       </form>
       Archive ID: {{key}}
@@ -62,14 +62,15 @@ export default {
   name: 'AdminEditArchive',
   components: {
     ArchiveHeaderImage
-  },
+  }, 
   data () {
     return {
       key: this.$route.params.archive_id,
       archive: {},
       uid: this.$store.getters.getUser.uid,
       originalHeaderImage: '',
-      newHeaderImage: ''
+      newHeaderImage: '',
+      numberOfItems: 0
     }
   },
   created () {
@@ -143,11 +144,15 @@ export default {
       * 4. Delete the archive itself
       */
 
+      
+
       // 1: get all of the assets associated with the archive
       sa.assetCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             // 2: Go through each one, get associated filename, and delete that file from storage
-
+            
+            this.numberOfItems = this.numberOfItems + 1 // track number of items to delete from total
+  
             // If this record has an assetFileName
             if(doc.data().assetFileName != '') {
               // Delete the main image
@@ -166,6 +171,22 @@ export default {
       }).then(() => {
 
         // 4. Delete the archive itself
+        var numberOfItems;
+        // Keep track of the number of items this user has
+        sa.userArchivesDocumentDbRef(uid).get().then((doc) => {
+            if (doc.exists) {
+                numberOfItems = doc.data().numberOfItems - this.numberOfItems
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).then(() => {
+          sa.userArchivesDocumentDbRef(uid).set({
+            numberOfItems: numberOfItems
+          })        
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
 
         // First the images from storage
         sa.deleteArchiveHeaderImage (uid, archiveId, this.originalHeaderImage)
@@ -178,13 +199,17 @@ export default {
         });
 
         // delete the containing folder
-        sa.archiveDocumentDbRef(uid, archiveId).parent().delete()
-
+        // was this doing something?
+        // sa.archiveDocumentDbRef(uid, archiveId).parent().delete()
+        
+        //reroute
+        this.$router.push({ name: 'AdminListArchives'})
       })
       
 
 
     },           
-  }
+  },
+ 
 }
 </script>

@@ -1,37 +1,71 @@
 <template>
-  <div >
-    <div v-if="archives.length == 0">
-        <h3>Welcome to Small Archives</h3>
-        <p>You have no archives at this time. Create a new one to get started</p>
-        <div class="btn" href="/admin/add-archive">New Archive</div>   
-    </div>
-    <div v-else>
-      <div class="row mb-3">
-        <div class="btn btn-primary float-right" href="/admin/add-archive">Add Archive</div>
+  <div class="row justify-content-center">
+    
+      <template v-if="archives.length == 0">
+        <div class="col-8">
+          <h3>Welcome to Small Archives</h3>
+          <p>You have no archives at this time. Create a new one to get started</p>
+          <a class="btn btn-warning" href="/admin/add-archive">New Archive</a>   
+        </div>
+      </template>
+      <template v-else>
+        <div class="col-12">
+          <div class="card-deck  mb-5">
+            <div class="card border-warning ml-0 bg-transparent" style="max-width: 18rem;">
+              <div class="card-header">Account Info</div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li><strong>Username:</strong> {{displayName}}</li>
+                  <li><strong>Joined:</strong> join date</li>
+                  <li><strong>User ID:</strong> 23efd232d </li>
+                </ul>
+              </div>
+            </div>
+  
+            <div class="card border-warning  bg-transparent" style="max-width: 18rem;">
+              <div class="card-header">Stats</div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6">
+                    Archives<br/>
+                    <span class="display-4">{{this.archives.length}}</span>
+                  </div>
+                  <div class="col-6">
+                    Items<br/>
+                    <span class="display-4">{{numberOfItems}}</span>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          
+          <div class="row">
+            <h2 class="mb-4">Your Archives</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Date Created</th>
+                  <th scope="col">Actions</th>
+                  
+                  <!-- <th scope="col">Actions</th> -->
+                </tr>
+              </thead>          
+              <tr v-for="item in archives">
+                <td>{{item.title}}</td>
+                <td><div>{{item.dateCreated}}</div></td>
+                <td>
+                  <a class="btn" @click.stop="details(item.key)">Details</a>
+                <a class="btn" @click.stop="linkToPublicView(item)">View</a></td>
+                
+              </tr>
+            </table>
+          </div>
+          <div class="row mb-3">
+            <a class="btn btn-warning float-right" href="/admin/add-archive">Add Archive</a>
+          </div>          
       </div>
-      <div class="row">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Date Created</th>
-              <th scope="col">Actions</th>
-              
-              <!-- <th scope="col">Actions</th> -->
-            </tr>
-          </thead>          
-          <tr v-for="item in archives">
-            <td>{{item.title}}</td>
-            <td><div>{{item.dateCreated}}</div></td>
-            <td>
-              <a class="btn" @click.stop="details(item.key)">Details</a>
-            <a class="btn" @click.stop="linkToPublicView(item)">View</a></td>
-            
-          </tr>
-        </table>
-      </div>
-    </div>
-
+    </template>
   </div>
 </template>
 
@@ -55,12 +89,15 @@ export default {
       },
       archives: [],
       errors: [],
-      displayName: this.$store.getters.getUser.displayName
+      displayName: this.$store.getters.getUser.displayName,
+      numberOfItems: 0
     }
   },
   created () {
 
     var uid = firebase.auth().currentUser.uid
+
+    this.getNumberOfItems()
 
     sa.archiveCollectionDbRef(uid).onSnapshot((querySnapshot) => {
       this.archives = [];
@@ -69,7 +106,8 @@ export default {
         this.archives.push({
           key: doc.id,
           title: doc.data().title,
-          dateCreated: sa.getFormattedDate(doc.data().dateCreated)
+          dateCreated: sa.getFormattedDate(doc.data().dateCreated),
+          assets: sa.assetCollectionDbRef(uid,doc.id)
         });
       });
     });   
@@ -80,11 +118,14 @@ export default {
     },
     linkToPublicView (archive) {
       this.$router.push({ name: 'PublicArchive', params: { archive_id: archive.key, username: this.displayName }})
-    }
-  },
+    },
+    getNumberOfItems () {
+  
+      sa.userArchivesDocumentDbRef(firebase.auth().currentUser.uid).onSnapshot((doc) => {
+        this.numberOfItems = doc.data().numberOfItems;
+      });
+      
+    }    
+  }
 }
 </script>
-
-<style>
-  [v-cloak] { display: none; }
-</style>

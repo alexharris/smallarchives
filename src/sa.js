@@ -62,7 +62,14 @@ var sa = {
 	*/
 	assetDocumentDbRef(uid, archiveId, assetId) {
 		return firebase.firestore().collection('archives').doc(uid).collection('userarchives').doc(archiveId).collection('assets').doc(assetId);
-	}, 
+	},
+	/**
+	* Returns a reference to a specific, existing user archive record
+	* @param uid - The logged in user's ID
+	*/
+	userArchivesDocumentDbRef(uid) {
+		return firebase.firestore().collection('archives').doc(uid)
+	}, 	
 	/**
 	* ,---.   ,--.                                      
 	*'   .-',-'  '-. ,---. ,--.--. ,--,--. ,---.  ,---. 
@@ -181,7 +188,7 @@ var sa = {
         }).catch(function(error) {
             console.error("Error removing main image from storage: ", error);
         });
-	}, 
+	},  	
 }
 
 export default sa
