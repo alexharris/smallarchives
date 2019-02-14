@@ -16,8 +16,8 @@
               <div class="card-body">
                 <ul class="list-unstyled">
                   <li><strong>Username:</strong> {{displayName}}</li>
-                  <li><strong>Joined:</strong> join date</li>
-                  <li><strong>User ID:</strong> 23efd232d </li>
+                  <li><strong>Joined:</strong> {{joinDate}}</li>
+                  <li><strong>ID:</strong><small> {{uid}} </small></li>
                 </ul>
               </div>
             </div>
@@ -41,7 +41,7 @@
           </div>          
           <div class="row">
             <h2 class="mb-4">Your Archives</h2>
-            <table class="table">
+            <table class="table table-dark">
               <thead>
                 <tr>
                   <th scope="col">Title</th>
@@ -55,8 +55,8 @@
                 <td>{{item.title}}</td>
                 <td><div>{{item.dateCreated}}</div></td>
                 <td>
-                  <a class="btn" @click.stop="details(item.key)">Details</a>
-                <a class="btn" @click.stop="linkToPublicView(item)">View</a></td>
+                  <a class="btn btn-outline-warning btn-sm mr-2" @click.stop="details(item.key)">Details</a>
+                <a class="btn btn-outline-warning btn-sm" @click.stop="linkToPublicView(item)">View</a></td>
                 
               </tr>
             </table>
@@ -90,10 +90,13 @@ export default {
       archives: [],
       errors: [],
       displayName: this.$store.getters.getUser.displayName,
-      numberOfItems: 0
+      numberOfItems: 0,
+      joinDate: firebase.auth().currentUser.metadata.creationTime,
+      uid: firebase.auth().currentUser.uid
     }
   },
   created () {
+
 
     var uid = firebase.auth().currentUser.uid
 

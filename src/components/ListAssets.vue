@@ -4,8 +4,8 @@
           <p>This archive has no items.</p>    
       </div>
       <div v-else>  
-        <table bordered="true" id="example-1" class="table table-striped table-bordered table-sm" >
-          <thead class="thead-dark">
+        <table bordered="true" id="example-1" class="table table-dark table-sm" >
+          <thead>
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Date Added</th>
@@ -18,7 +18,7 @@
             <td>{{item.assetCreationDate}}</td>
             <td>{{item.assetType}}</td>
             <td >
-              <div class="btn btn-outline-secondary mr-2 btn-sm" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</div>          
+              <a class="btn mr-2 btn-sm btn-outline-warning" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</a>          
             </td>
           </tr>
         </table> 

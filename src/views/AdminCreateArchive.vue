@@ -15,9 +15,9 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <h2>
+        <h1 class="h4">
           Add Archive
-        </h2>
+        </h1>
         <hr class="my-4" />
         <form @submit="onSubmit">
           <!-- Title -->
@@ -40,8 +40,9 @@
             <div class="col-sm-10">
               <input type="file" id="selectHeaderImage" v-on:change="handleFileChange">
             </div>
-          </div>                                           
-          <div class="btn btn-primary" type="submit" @click="onSubmit">Submit</div>
+          </div> 
+          <hr class="my-4" />                                          
+          <div class="btn btn-warning" type="submit" @click="onSubmit">Submit</div>
         </form>
       </div>
     </div>

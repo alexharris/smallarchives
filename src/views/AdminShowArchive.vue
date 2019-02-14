@@ -4,15 +4,15 @@
       <div class="btn btn-dark" @click.stop="goBack">Back</div>
       <div class="btn btn-outline-dark float-right" @click.stop="linkToPublicView(key)">View</div>
       <div class="btn btn-outline-dark float-right mr-2" @click.stop="editarchive(key)">Edit</div>   
-      <hr my="4" />      
-      <h1>{{archive.title}}</h1>
-      <p>{{archive.desc}}</p>
+      <hr class="my-4" />      
+      <h1 class="h5">Title: {{archive.title}}</h1>
+      <p class="lead">Description: {{archive.desc}}</p>
       <hr class="my-4" />          
 
       <div class="row my-4">
           <div class="col"><h2>Items</h2></div>
           <div class="col">
-            <div class="btn btn-primary float-right" @click.stop="addItemButton(key)">Add Item</div>
+            <div class="btn btn-warning float-right" @click.stop="addItemButton(key)">Add Item</div>
           </div>
       </div>
       <ListAssets />  

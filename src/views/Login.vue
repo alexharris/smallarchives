@@ -18,7 +18,7 @@
               <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
             </div>
           </div>        
-          <div class="btn btn-primary" type="submit" @click.stop="login">Submit</div>
+          <div class="btn btn-warning" type="submit" @click.stop="login">Submit</div>
         </form>
         <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link></p>    
       </div>

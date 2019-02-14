@@ -6,7 +6,7 @@
           <p>This archive has no items.</p>
       </div>
       <div v-else>
-        <table class="table">
+        <table class="table table-dark">
           <thead>
             <tr>
               <th scope="col">Title</th>
@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tr v-for="item in assets">
-            <td><a @click.stop="editAsset(item.assetId)">{{item.assetTitle}}</a></td>
+            <td><a href="" @click.stop="viewSingleAsset(item.assetId)">{{item.assetTitle}}</a></td>
             <td><div>{{item.assetMediaType}}</div></td>
             <td>{{item.assetCreationDate}}</td>
             
@@ -76,7 +76,7 @@ export default {
         this.$store.commit('setAssetCount', this.assets.length)
       });
     },
-    editAsset: function(assetId) {
+    viewSingleAsset: function(assetId) {
       this.$router.push({
         name: 'PublicAsset',
         params: { username: this.$route.params.username, archive_id: this.$route.params.archive_id, asset_id: assetId }
@@ -88,6 +88,7 @@ export default {
 </script>
 
 <style scoped>
+
   img {
     height: 300px;
   }

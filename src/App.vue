@@ -21,12 +21,12 @@
   		<div class="container wrapper flex-shrink-0" v-cloak> 		
   			<router-view/>       
   		</div>  
-<!--       <footer class="footer mt-auto py-3">
+      <footer class="footer mt-auto py-3" v-if="user">
         <div class="container-fluid">
 
             <a href="/Contact">Contact</a>.
         </div>
-      </footer>    -->     
+      </footer>        
 
 
   </div>
@@ -97,14 +97,38 @@ export default {
   body {
     font-family: 'Inter', sans-serif !important;
     background-color: #fffade !important;
+
   }
 
   nav {
     border-bottom: 1px solid #000;
   }
 
+  .table-dark {
+    color: #000;
+    background-color: #fffade;
+    border: 1px solid #ffc107;
+    border-top: 1px solid #ffc107;
+  }
+
+  .table-dark thead th {
+    background-color: #f7f2d7 !important;
+    border:0;
+    border-bottom: 1px solid #d8d4bc;
+    font-weight: 400;
+  }
+
+  .table-dark td {
+    border: 1px solid #ffc107;
+  }
+
+  hr {
+    border-top: 1px solid #000 !important;
+  }
+
   .wrapper {
     padding-top: 100px;
+    padding-bottom: 100px;
   }
   @media only screen and (max-device-width: 385px) { 
     .wrapper {

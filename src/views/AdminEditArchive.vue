@@ -3,9 +3,11 @@
     <div class="col-12">
       <div class="btn btn-dark" @click.stop="goBack">Back</div>
       <hr class="my-4" />
-      <h4>Basic Info</h4>      
-      <form @submit="onSubmit">
-        <!-- Coverage -->
+      <h1 class="h4">Basic Info</h1>   
+      <hr class="my-4" /> 
+      <form>
+      
+        <!-- Title -->
         <div class="form-group row">
           <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
           <div class="col-sm-10">
@@ -19,7 +21,7 @@
             <textarea class="form-control" id="inputDesc" placeholder="Archive Description" v-model="archive.desc"></textarea>
           </div>
         </div>   
-
+        <!-- Header Image -->
         <div v-if="archive.headerImage" class="my-4">
           <div class="row">
             <div class="col-sm-2">Header Image</div>
@@ -34,19 +36,33 @@
             <label for="inputFile" class="col-sm-2 col-form-label">Header Image</label>
             <input type="file" id="inputFile" v-on:change="handleFileChange">
           </div>
-        </div>
+        </div>        
       </form>   
       <hr class="my-4" />
-        <a class="btn btn-lg btn-warning" type="submit">Update Archive</a>
-        <hr class="my-4" />
-        <div class="alert alert-danger" show>
-          <h4>Delete</h4>
-          <p>Warning: Deleting this archive is permanent and you can't get it back</p>
-         
-          <a class="btn btn-outline-danger" @click.stop="deletearchive(key)">Delete</a>
-        </div>
-      </form>
-      Archive ID: {{key}}
+      <a class="btn btn-lg btn-warning" type="submit" v-on:click="onSubmit">Update Archive</a>
+      <hr class="my-4" />
+      <div class="col-12" >
+        <div class=" card-deck">
+            <!--  Card one -->
+            <div class="card border-warning ml-0 bg-transparent">
+              <div class="card-header">Archive Info</div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li><strong>Created:</strong> {{dateCreated}}</li>
+                  <li><strong>ID:</strong> {{key}}</li>
+                </ul>
+              </div>
+            </div>
+            <!-- Card two -->
+            <div class="card border-danger ml-0 bg-transparent">
+              <div class="card-header">Delete</div>
+              <div class="card-body">
+                <p>Warning: Deleting this archive is permanent and you can't get it back</p>
+                <a class="btn btn-outline-danger" @click.stop="deletearchive(key)">Delete</a>
+              </div>
+            </div>          
+        </div> 
+      </div>       
     </div>
   </div>
    
@@ -70,7 +86,8 @@ export default {
       uid: this.$store.getters.getUser.uid,
       originalHeaderImage: '',
       newHeaderImage: '',
-      numberOfItems: 0
+      numberOfItems: 0,
+      dateCreated: ''
     }
   },
   created () {
@@ -82,6 +99,7 @@ export default {
     sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
       if (doc.exists) {
         this.archive = doc.data();
+        this.dateCreated = sa.getFormattedDate(doc.data().dateCreated)
         this.originalHeaderImage = doc.data().headerImage
       } else {
         alert("No such document!");

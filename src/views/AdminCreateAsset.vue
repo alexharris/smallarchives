@@ -17,7 +17,7 @@
         </ul>
       </div>
     </template>
-    <h1 class="h4">Add New Item</h1>
+    <h1 class="h4">Add Item</h1>
     <hr class="my-4" />
     <form class="needs-validation">
       <div class="container">

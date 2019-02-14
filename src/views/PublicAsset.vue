@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<div class="row justify-content-center">
-			<div class="col-8">
-				<a @click.stop="goBack" class="float-right"><font-awesome-icon icon="times-circle" size="2x" /></a><br />
-				<hr class="my-4 dashed-top-border" />
+			<div class="col-12">
+				<a @click.stop="goBack" class="float-right"><font-awesome-icon icon="times" size="2x" /></a><br />
+
 			</div>
 		</div>
 
@@ -35,14 +35,17 @@
 					<iframe width="560" height="315" v-bind:src="asset.assetYoutubeId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>					
 				</div>												
 			</div>
-		</div>
-		<div class="row justify-content-center">
-			<div class="col-8">
+
+			<div class="col-4">
 				<h1 class="my-4 h4">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
 
 				
-				<h3 class="h5">Metadata</h3>
+
+
+            <div class="card border-warning ml-0 bg-transparent">
+              <div class="card-header">Metadata</div>
+              <div class="card-body">
 				<p>
 				<strong>Media type:</strong> {{asset.assetMediaType}} <br />
 				<strong>Contributor:</strong> {{asset.assetContributor}} <br />
@@ -57,23 +60,25 @@
 				<strong>Source:</strong> {{asset.assetSource}}<br />
 				<strong>Subject:</strong> {{asset.assetSubject}}<br />
 				</p>
+              </div>
+            </div>				
 				
 
-				<div v-if="asset.assetCoverage != ''">
-					<h3 class="h5">Coverage</h3>
-					<p>{{asset.assetCoverage}}</p>
-				  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetCoverageLat != '' && asset.assetCoverageLong != ''">
-				    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
-				    <l-marker :lat-lng="latLongArray"></l-marker>
+			<div v-if="asset.assetCoverage != ''" class="my-4">
+			  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetCoverageLat != '' && asset.assetCoverageLong != ''">
+			    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
+			    <l-marker :lat-lng="latLongArray"></l-marker>
 
-				  </l-map>
-				</div>
+			  </l-map>
 			</div>
+			<p>Added on: {{asset.assetCreationDate}}</p>
+			</div>
+
 		</div>
 		<div class="row justify-content-center">
-			<div class="col-8">
+			<div class="col-12">
 				<hr class="my-4" />	
-				<p>Added on: {{asset.assetCreationDate}}</p>
+				
 				
 			</div>
 		</div>	

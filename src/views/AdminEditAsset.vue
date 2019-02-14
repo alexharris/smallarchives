@@ -10,20 +10,53 @@
         </div>
       </div>
       <hr class="my-4" />
-      <h1>Edit Asset</h1>      
+      <h1 class="h4">Edit Asset</h1>      
       <hr class="my-4" />
-      <h2>Details</h2>
+      <h2 class="h5">Media Details</h2>
+      <p><small>The media associated with this item is immutable for now. Delete this item and create a new one if a new media representation is needed.</small></p>
+      <div class="row">
+        <div class="col-2">
+          Type
+        </div>
+        <div class="col-10">
+          {{assetMediaType}}
+        </div>        
+        <div class="col-2">
+          Media
+        </div>
+        <div class="col-10">
 
-      Type: {{assetMediaType}} <br />
-      <div v-if="assetMediaType != 'text' && assetMediaType != 'youtube'">
-        Filename: {{assetFileName}} <br />
+          <div v-if="assetMediaType == 'image'">
+            <img :src="assetSrc" />
+          </div>
+          <div v-if="assetMediaType == 'audio'">
+            <figure>
+                <audio
+                    controls
+                    :src="assetSrc">
+                        Your browser does not support the
+                        <code>audio</code> element.
+                </audio>
+            </figure>
+          </div>
+          <div v-if="assetMediaType == 'pdf'" class="pdf-download">
+            <p>{{assetFileName}}</p>
+            <a :href="assetSrc"><font-awesome-icon icon="file-download" size="6x" /> </a>
+          </div>        
+          <div v-if="assetMediaType === 'text'">
+            <p>{{assetText}}</p>
+          </div>
+          <div v-if="assetMediaType === 'youtube'" class="video-wrapper">         
+            <iframe width="560" height="315" v-bind:src="assetYoutubeId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>          
+          </div>                        
+        </div>
       </div>
-
-      Creation Date: {{assetCreationDate}} <br />
       
       <hr class="my-4" />
-    <form class="needs-validation">
-      <div class="container">
+      
+      <form class="needs-validation">
+       
+          <h2 class="h5">Basic Info</h2>
             <!-- Title -->
             <div class="form-group row">
               <label for="inputTitle" class="col-sm-2 col-form-label">Title *</label>
@@ -44,6 +77,7 @@
               </div>
             </div>
             <hr class="my-4" />          
+            <h2 class="h5">Metadata</h2>
             <!-- Asset Type -->
             <div class="form-group row">
               <label for="inputAssetType" class="col-sm-2 col-form-label">Asset Type</label>
@@ -174,26 +208,40 @@
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The topic of the resource.</small>
               </div>
             </div>                                                                                                          
-       </div>
-<div v-if="!loading">
-  <hr class="my-4" />
-  <div class="btn btn-primary btn-lg" @click.stop="onSubmit">Submit</div>
-</div>
-<div v-else>
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
-</form>      
-
-                                
-        <hr class="my-4" />            
-
-        <div class="alert alert-danger" show>
-          <h4>Delete</h4>
-          <p>Warning: Deleting this asset is permanent and you can't get it back</p>
-          <div class="btn btn-danger" @click.stop="itemDelete(assetId)">Delete</div>
+   
+        <div v-if="!loading">
+          <hr class="my-4" />
+          <div class="btn btn-warning btn-lg" @click.stop="onSubmit">Submit</div>
         </div>
+        <div v-else>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        </form>                      
+        <hr class="my-4" />  
+        <div class="col-12" >
+          <div class=" card-deck">
+            <!--  Card one -->
+            <div class="card border-warning ml-0 bg-transparent">
+              <div class="card-header">Item Info</div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li><strong>Created:</strong> {{assetCreationDate}}</li>
+                  <li><strong>ID:</strong> {{this.$route.params.asset_id}}</li>
+                </ul>
+              </div>
+            </div>
+            <!-- Card two -->
+            <div class="card border-danger ml-0 bg-transparent">
+              <div class="card-header">Delete</div>
+              <div class="card-body">
+                <p>Warning: Deleting this item is permanent and you can't get it back</p>
+                <a class="btn btn-outline-danger" @click.stop="itemDelete(assetId)">Delete</a>
+              </div>
+            </div> 
+          </div>         
+        </div>                 
       </div>
     </div>
   </div>
@@ -236,6 +284,7 @@ export default {
       assetCreationDate:'',
       selectedAssetMediaType: '',
       assetType: '',
+      assetSrc: '',
       uid: '',
       formErrors: false,
       loading: null,
@@ -286,9 +335,27 @@ export default {
       } else {
         console.log("No such document!");
       }
+    }).then(() => {
+      this.getAssetSrc()
     });
+
+    
+
   },
   methods: {
+    getAssetSrc() {
+
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+      var assetId = this.$route.params.asset_id
+      var fileName = this.assetFileName
+
+      sa.assetStorageRef(uid, archiveId, assetId, fileName, 'thumb_').getDownloadURL().then((url) => {
+        this.assetSrc = url
+      }).catch(function(error) {
+        console.log(error.message)
+      })
+    },     
     onSubmit (evt) {
       evt.preventDefault()
 

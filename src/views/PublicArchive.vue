@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row mb-5 pb-4 no-gutters archive-header">
-      <div class="col-12 col-md-4 col-lg-3 mb-3 px-4 justify-content-center">
+      <div class="col-12 col-md-4 col-lg-3 mb-3 pr-md-4 justify-content-center" v-if="headerImage != ''">
         <ArchiveHeaderImage />
       </div>
 
@@ -15,7 +15,7 @@
           </div>
         </div>       
       </div> -->
-      <div class="col-12 col-md-8 col-lg-9 mb-3 px-4">
+      <div class="col-12 col-md-8 col-lg-9 mb-3">
         <h1 class="h1 pb-3">{{archive.title}}</h1>
         <p>{{archive.desc}}</p>
         <div class="card border-dark mt-5 bg-transparent">
@@ -47,7 +47,8 @@ export default {
       key: '',
       archive: {},
       username: this.$route.params.username,
-      creationDate: ''
+      creationDate: '',
+      headerImage: ''
     }
   },
   components: {
@@ -78,6 +79,7 @@ export default {
           this.key = doc.id;
           this.archive = doc.data();
           this.creationDate = sa.getFormattedDate(doc.data().dateCreated)
+          this.headerImage = doc.data().headerImage
         } else {
           console.log("No such document!");
         }
@@ -91,10 +93,21 @@ export default {
 </script>
 
 <style>
-  .archive-header {
-    /*border-bottom: 1px solid #000;*/
+  .table-dark {
+    color: #000;
+    background-color: #fffade;
+    border: 1px solid #000;
+    border-top: 1px solid #000;
   }
-  .archive-details {
-    /*background-color: #fbfbfb;*/
+
+  .table-dark thead th {
+    background-color: #f7f2d7 !important;
+    border:0;
+    border-bottom: 1px solid #d8d4bc;
+    font-weight: 400;
+  }
+
+  .table-dark td {
+    border: 1px solid #000;
   }
 </style>
