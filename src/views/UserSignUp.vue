@@ -8,10 +8,11 @@
       <div class="alert alert-danger" show>{{error}}</div>
     </template>   
     <!-- Username -->
+    <form>
     <div class="form-group row">
       <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
       <div class="col-sm-10">
-        <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName">
+        <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
       </div>
     </div>
     <!-- Email -->
@@ -29,7 +30,8 @@
       </div>
     </div>                 
 
-    <div class="btn btn-info" @click="checkUsername">Sign Up</div>
+    <div class="btn btn-warning" @click="checkUsername">Sign Up</div>
+    </form>
     <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
   </div>
     </div>
@@ -51,19 +53,23 @@
     },
     methods: {
       checkUsername: function() {
-
-        firebase.firestore().collection('users').where("displayName", "==", this.displayName)
-        .get()
-        .then((querySnapshot) => {
-          if(querySnapshot.empty == true) {
-            this.signUp()
-          } else {
-            this.returnError('This username is taken!');
-          }
-        })
-        .catch(function(error) {
-            console.log("Error getting documents: ", error);
-        });        
+        if(this.displayName != '') {
+          firebase.firestore().collection('users').where("displayName", "==", this.displayName)
+          .get()
+          .then((querySnapshot) => {
+            if(querySnapshot.empty == true) {
+              this.signUp()
+            } else {
+              this.returnError('This username is taken!');
+            }
+          })
+          .catch(function(error) {
+              console.log("Error getting documents: ", error);
+          }); 
+        } else {
+          this.returnError('Please select a username');
+        }
+       
         
       },
       signUp: function() {

@@ -69,7 +69,7 @@ var sa = {
 	*/
 	userArchivesDocumentDbRef(uid) {
 		return firebase.firestore().collection('archives').doc(uid)
-	}, 	
+	}, 		 
 	/**
 	* ,---.   ,--.                                      
 	*'   .-',-'  '-. ,---. ,--.--. ,--,--. ,---.  ,---. 
@@ -131,7 +131,7 @@ var sa = {
 			});
 		})
 		})
-	},
+	}, 		
 	/**
 	* Returns a formatted date when given a timestamp
 	* @param dateCreated - The timestamp value

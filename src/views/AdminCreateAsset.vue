@@ -49,7 +49,7 @@
                   <option value="image">Image</option>
                   <option value="audio">Audio</option>
                   <option value="pdf">PDF</option>
-                  <option value="text">Text</option>
+                  <!-- <option value="text">Text</option> -->
                   <option value="youtube">Youtube</option>
                 </select>
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A name given to the resource.</small>

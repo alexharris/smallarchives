@@ -1,5 +1,5 @@
 <template>
-  <div id="admin"> 
+  <div> 
     <router-view/>
   </div>
 </template>
@@ -15,7 +15,11 @@ export default {
     displayName: function() {
 		  return this.$store.getters.getUser.email;
     }
-  },   
+  },  
+  beforeCreate: function() {
+    document.body.className = 'admin';
+  }
 }
 
 </script>
+

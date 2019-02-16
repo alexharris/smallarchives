@@ -6,11 +6,11 @@
           <p>This archive has no items.</p>
       </div>
       <div v-else>
-        <table class="table table-dark">
+        <table class="table table-public">
           <thead>
             <tr>
               <th scope="col">Title</th>
-              <th scope="col">Object Type</th>
+              <th scope="col">Item Type</th>
               <th scope="col">Date Added</th>
               
               <!-- <th scope="col">Actions</th> -->
@@ -18,7 +18,7 @@
           </thead>
           <tr v-for="item in assets">
             <td><a href="" @click.stop="viewSingleAsset(item.assetId)">{{item.assetTitle}}</a></td>
-            <td><div>{{item.assetMediaType}}</div></td>
+            <td><div>{{item.assetType}}</div></td>
             <td>{{item.assetCreationDate}}</td>
             
           </tr>
@@ -68,8 +68,7 @@ export default {
             assetId: doc.id,
             assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
             assetText: doc.data().assetText,
-            assetMediaType: doc.data().assetMediaType,
-            assetFormat: doc.data().assetFormat
+            assetType: doc.data().assetType,
           });
         });
         //tell the parent about how many assets there are

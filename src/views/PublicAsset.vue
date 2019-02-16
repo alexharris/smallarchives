@@ -9,7 +9,7 @@
 
 		<div class="row justify-content-center">
 
-			<div class="col-8 asset-pane my-4">
+			<div class="col-lg-8 asset-pane my-4">
 
 				<div v-if="asset.assetMediaType == 'image'">
 					<img :src="assetSrc" />
@@ -26,7 +26,8 @@
 				</div>
 				<div v-if="asset.assetMediaType == 'pdf'" class="pdf-download">
 					<p>{{asset.assetFileName}}</p>
-					<a :href="assetSrc"><font-awesome-icon icon="file-download" size="6x" /> </a>
+<!-- 					<a :href="assetSrc"><font-awesome-icon icon="file-download" size="6x" /> </a> -->
+					<div id="pdfViewer"></div>
 				</div>				
 				<div v-if="asset.assetMediaType === 'text'">
 					<p class="lead">{{asset.assetText}}</p>
@@ -36,14 +37,14 @@
 				</div>												
 			</div>
 
-			<div class="col-4">
+			<div class="col-lg-4">
 				<h1 class="my-4 h4">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
 
 				
 
 
-            <div class="card border-warning ml-0 bg-transparent">
+            <div class="card ml-0 bg-transparent">
               <div class="card-header">Metadata</div>
               <div class="card-body">
 				<p>
@@ -71,15 +72,10 @@
 
 			  </l-map>
 			</div>
+			<div class="my-4">
 			<p>Added on: {{asset.assetCreationDate}}</p>
+			From the collection: <a href="" @click.stop="goBack">{{archiveTitle}}</a>
 			</div>
-
-		</div>
-		<div class="row justify-content-center">
-			<div class="col-12">
-				<hr class="my-4" />	
-				
-				
 			</div>
 		</div>	
 	</div>
@@ -88,6 +84,7 @@
 <script>
 import firebase from 'firebase';
 import sa from '../sa'
+import PDF from 'pdfobject';
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 
 
@@ -112,6 +109,7 @@ export default {
 	        assetCoverageLong: ''	
   		},
   		assetSrc: '',
+  		archiveTitle: '',
   		uid: '',
   		
   	}
@@ -119,11 +117,11 @@ export default {
   computed: {
   	latLongArray: function() {
   		return [this.asset.assetCoverageLat, this.asset.assetCoverageLong]
-	},
+	}
   },
   created() {
   	this.getUidFromUsername()
-  	
+  
   },
   methods: {      	
     async getUidFromUsername() {
@@ -131,6 +129,7 @@ export default {
       this.uid = await sa.getUidFromUsername(username)
       this.getAssetDetails()
     },     	
+  
 
     getAssetDetails: function() {
 
@@ -171,10 +170,13 @@ export default {
 	        
 
 	        this.getAssetSrc()
+	        
 	      } else {
 	        console.log("No such document!");
 	      }
-	    });      
+	    }).then(() => {
+	    	this.getArchiveTitle()
+	    })    
     },  
     getAssetSrc: function() {
 
@@ -187,8 +189,26 @@ export default {
             this.assetSrc = url
         }).catch(function(error) {
           console.log(error.message)
-        })
-    },    	
+        }).then(() => {
+	    	if(this.asset.assetMediaType === 'pdf') {
+	    		PDF.embed(this.assetSrc, "#pdfViewer");	
+	    	}  			
+	    }); 
+    },   
+    getArchiveTitle: function() {
+		var uid = this.uid
+    	var archiveId = this.$route.params.archive_id
+    	sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
+		    if (doc.exists) {
+		    	this.archiveTitle = doc.data().title
+		    } else {
+		        // doc.data() will be undefined in this case
+		        console.log("No such document!");
+		    }
+		}).catch(function(error) {
+		    console.log("Error getting document:", error);
+		})
+	},  
 	goBack() {
 	  this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
 	},      
@@ -200,6 +220,11 @@ export default {
 </script>
 
 <style scoped>
+
+
+.pdfobject-container { height: 50rem; border: 1rem solid rgba(0,0,0,.1); }
+
+
 img {
 	max-width: 100%;
 }
@@ -226,10 +251,6 @@ blockquote {
 	width: 100%;
 }
 
-.asset-pane .pdf-download {
-	text-align: center;
-
-}
 
 .vue2leaflet-map {
 	height: 300px;

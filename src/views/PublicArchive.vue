@@ -1,33 +1,22 @@
 <template>
   <div>
-    <div class="row mb-5 pb-4 no-gutters archive-header">
-      <div class="col-12 col-md-4 col-lg-3 mb-3 pr-md-4 justify-content-center" v-if="headerImage != ''">
-        <ArchiveHeaderImage />
-      </div>
-
-<!--       <div class="col-12 col-lg-6 mb-4 p-4 archive-details">
-
-        <div class="card border-dark mb-3">
-          
-          <div class="card-body text-dark">
-            <h5 class="card-title">Archive details</h5>
-            <p class="card-text">This archive contains {{assetCount}} items. It was created on {{creationDate}} by <a href="" @click.stop="goToUser()">{{ this.username }}</a>.</p>
+    <div class="row mb-5 pb-4">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4 mb-4 justify-content-md-center" v-if="headerImage != ''">
+            <ArchiveHeaderImage />
+          </div>  
+          <div class="col-12 col-md-8 mb-4">      
+            <h1 class="h1 pb-3">{{archive.title}}</h1>
+            <p>{{archive.desc}}</p>
+            <p><small>This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</small></p>            
           </div>
-        </div>       
-      </div> -->
-      <div class="col-12 col-md-8 col-lg-9 mb-3">
-        <h1 class="h1 pb-3">{{archive.title}}</h1>
-        <p>{{archive.desc}}</p>
-        <div class="card border-dark mt-5 bg-transparent">
-          <div class="card-body text-dark ">
-            <!-- <h5 class="card-title">Archive details</h5> -->
-            <p class="card-text">This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</p>
-          </div>
-        </div>          
+        </div>
+        <PublicListAssets />        
       </div>        
     </div>
 
-    <PublicListAssets />
+
   </div>
 </template>
 
