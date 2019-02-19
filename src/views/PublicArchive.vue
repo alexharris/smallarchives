@@ -2,17 +2,25 @@
   <div>
     <div class="row mb-5 pb-4">
       <div class="col-12">
-        <div class="row">
-          <div class="col-12 col-md-4 mb-4 justify-content-md-center" v-if="headerImage != ''">
+        <div class="row mb-5 pb-5">
+          <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
             <ArchiveHeaderImage />
           </div>  
-          <div class="col-12 col-md-8 mb-4">      
+          <div class="col-12 col-md-9 mb-4">      
             <h1 class="h1 pb-3">{{archive.title}}</h1>
             <p>{{archive.desc}}</p>
             <p><small>This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</small></p>            
           </div>
         </div>
-        <PublicListAssets />        
+        <div class="row">
+          <div class="col-12">
+            <switcher v-model="switcherValue" />
+            <div class="visual-label">List/Grid</div> 
+          </div>
+        </div>
+        <hr />
+        <PublicListAssets v-if="switcherValue"/>  
+        <PublicGridAssets v-if="!switcherValue"/>        
       </div>        
     </div>
 
@@ -25,7 +33,9 @@
 import firebase from 'firebase'
 import sa from '../sa'
 import PublicListAssets from '../components/PublicListAssets'
+import PublicGridAssets from '../components/PublicGridAssets'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
+import Switcher from '../components/Switcher'
 
 
 export default {
@@ -37,12 +47,15 @@ export default {
       archive: {},
       username: this.$route.params.username,
       creationDate: '',
-      headerImage: ''
+      headerImage: '',
+      switcherValue: false
     }
   },
   components: {
     PublicListAssets,
-    ArchiveHeaderImage
+    PublicGridAssets,
+    ArchiveHeaderImage,
+    Switcher
   },
   computed: {
     assetCount() {

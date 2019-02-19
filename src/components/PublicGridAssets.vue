@@ -1,0 +1,175 @@
+<template
+
+>
+<div>
+    <div v-if="assets.length == 0">
+        <p>This archive has no items.</p>
+    </div>
+    <div v-else>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 col-lg-4 col-xl-3 grid-item mb-3" v-for="item in assets">
+            <div class="media-display">
+              <div v-if="item.assetMediaType === 'image'">       
+                <img :src="item.assetSrc" />
+              </div>
+              <div v-if="item.assetMediaType === 'pdf'">      
+              <div class="pdf-placeholder"> PDF </div>
+                <!-- <font-awesome-icon :icon="['far', 'file']" size="10x" /> -->
+              </div>
+              <div v-if="item.assetMediaType === 'audio'">       
+                <figure>
+                    <audio
+                        controls
+                        :src="item.assetSrc">
+                            Your browser does not support the
+                            <code>audio</code> element.
+                    </audio>
+                </figure>
+              </div> 
+              <div v-if="item.assetMediaType === 'youtube'">       
+                <img :src="youtubeThumbnail(item)" />
+              </div>                                 
+            </div>
+            <div class="grid-title">
+              <small>{{item.assetType}}</small>
+              <p class="my-2"><a href="" @click.stop="viewSingleAsset(item.assetId)">{{truncatedTitle(item.assetTitle, 50)}}</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	</div>
+</div>
+</template>
+
+<script>
+import firebase from 'firebase';
+import sa from '../sa'
+
+export default {
+  name: "PublicGridAssets",
+  data() {
+  	return {
+  	uid: '',
+		url: '',
+    assets: [],
+    renderedAssets: []
+  	}
+  },
+  created() {
+    this.getUidFromUsername()
+  },    
+  methods: {     
+    async getUidFromUsername() {
+      var username = this.$route.params.username
+      this.uid = await sa.getUidFromUsername(username)
+      this.createAssetArray()
+      
+    },
+    createAssetArray: function() {
+
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+      var assetSrcUrl = ''
+
+      sa.assetCollectionDbRef(uid, archiveId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var imagePrefix = '';
+
+          if(doc.data().assetMediaType === 'image') {
+            imagePrefix = 'thumb_'
+          } else {
+            imagePrefix = ''
+          }
+          // get the asset source for thumbnail image
+          sa.assetStorageRef(uid, archiveId, doc.id, doc.data().assetFileName, imagePrefix).getDownloadURL().then((url) => {
+            console.log(url)
+            assetSrcUrl = url
+          }).catch(function(error) {
+            assetSrcUrl = ''
+            console.log(error.message)
+          }).then(() => {
+            this.assets.push({
+              fileName: doc.data().file,
+              assetTitle: doc.data().assetTitle,
+              assetId: doc.id,
+              assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
+              assetText: doc.data().assetText,
+              assetType: doc.data().assetType,
+              assetMediaType: doc.data().assetMediaType,
+              assetFileName: doc.data().assetFileName,
+              assetYoutubeId: doc.data().assetYoutubeId,
+              assetSrc: assetSrcUrl
+            });    
+            //tell the parent about how many assets there are
+            this.$store.commit('setAssetCount', this.assets.length)                    
+          })
+
+
+        
+        });
+
+      })
+    },       
+    viewSingleAsset: function(assetId) {
+      this.$router.push({
+        name: 'PublicAsset',
+        params: { username: this.$route.params.username, archive_id: this.$route.params.archive_id, asset_id: assetId }
+      })
+    },
+    truncatedTitle: function(string, length) {
+      return sa.truncateString(string,length)
+    },
+    youtubeThumbnail: function(item) {
+      return 'https://img.youtube.com/vi/' + item.assetYoutubeId + '/sddefault.jpg';
+    }     
+       
+  
+  }
+
+
+}
+</script>
+
+<style scoped lang="scss">
+
+
+  audio {
+    width: 100%;
+    top: 50px;
+    position: relative;
+  }
+
+  .grid-item {
+    height: 400;
+    padding: 30px;
+
+  }
+
+  .grid-title {
+    height: 90px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #000;
+  }
+
+  .pdf-placeholder {
+    position: relative;
+    border: 1px solid #000;
+    top: 60px;
+    left: 60px;
+    width: 100px;
+    padding: 10px 0;
+  }
+
+  .media-display {
+    margin: 20px 0;
+    height: 200px;
+    text-align: center;
+    img {
+      max-height: 200px
+    }
+  }
+</style>

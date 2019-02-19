@@ -96,7 +96,7 @@ var sa = {
 	* Returns a file from storage from the path [user_id]/archive_[archive_id]/assets/filename
 	* @param uid - The ID of the user who created this archive
 	* @param archiveId - The id of the archive
-	* @param assetId - The id of the asset
+	* @param assetId - The id of the asset (this might not be necessary?)
 	* @param fileName - The filename of the uploaded file
 	* @param prefix - Different file sizes get prefixes, for instance "thumb_" for thumbnail. Leave blank for original.
 	* Prefix options: 'thumb_'
@@ -145,7 +145,19 @@ var sa = {
 		var year = dateCreated.getFullYear()
 		var formattedDate = month + '-' + day + '-' + year
 		return formattedDate
-	},  
+	}, 
+	/**
+	* Returns a truncated string
+	* @param string - The string to be truncated
+	* @param integer - The length the string is to be truncated to
+	*/  	 
+    truncateString(string, length){
+      if ( string.length > length ) {
+        return string.substring(0,length) + '...'
+      } else {
+        return string
+      }
+    },   	
 	/**
 	* Add header image to an archive
 	* @param uid - The ID of the user who created this archive
@@ -188,6 +200,7 @@ var sa = {
         }).catch(function(error) {
             console.error("Error removing main image from storage: ", error);
         });
+
 	},  	
 }
 

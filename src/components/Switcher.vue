@@ -3,7 +3,7 @@
 		<div class="switcher">
 	      <input type="checkbox" id="switch" :checked="shouldBeChecked" :value="value" @change="updateInput"/><label for="switch">Toggle</label>
 	    </div>
-		<div class="visual-label">Metadata Hints</div>	    
+		   
     </div> 
 </template>
 

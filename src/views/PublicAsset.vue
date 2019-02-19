@@ -44,38 +44,38 @@
 				
 
 
-            <div class="card ml-0 bg-transparent">
-              <div class="card-header">Metadata</div>
-              <div class="card-body">
-				<p>
-				<strong>Media type:</strong> {{asset.assetMediaType}} <br />
-				<strong>Contributor:</strong> {{asset.assetContributor}} <br />
-				<strong>Creator:</strong> {{asset.assetCreator}} <br />
-				<strong>Coverage:</strong> {{asset.assetCoverage}} <br />
-				<strong>Format:</strong> {{asset.assetFormat}}<br />
-				<strong>Identifier:</strong> {{asset.assetIdentifier}}<br />
-				<strong>Language:</strong> {{asset.assetLanguage}}<br />
-				<strong>Publisher:</strong> {{asset.assetPublisher}}<br />
-				<strong>Relation:</strong> {{asset.assetRelation}}<br />
-				<strong>Rights:</strong> {{asset.assetRights}}<br />
-				<strong>Source:</strong> {{asset.assetSource}}<br />
-				<strong>Subject:</strong> {{asset.assetSubject}}<br />
-				</p>
-              </div>
-            </div>				
+	            <div class="card ml-0 bg-transparent">
+	              <div class="card-header">Metadata</div>
+	              <div class="card-body">
+					<p>
+					<strong>Media type:</strong> {{asset.assetMediaType}} <br />
+					<strong>Contributor:</strong> {{asset.assetContributor}} <br />
+					<strong>Creator:</strong> {{asset.assetCreator}} <br />
+					<strong>Coverage:</strong> {{asset.assetCoverage}} <br />
+					<strong>Format:</strong> {{asset.assetFormat}}<br />
+					<strong>Identifier:</strong> {{asset.assetIdentifier}}<br />
+					<strong>Language:</strong> {{asset.assetLanguage}}<br />
+					<strong>Publisher:</strong> {{asset.assetPublisher}}<br />
+					<strong>Relation:</strong> {{asset.assetRelation}}<br />
+					<strong>Rights:</strong> {{asset.assetRights}}<br />
+					<strong>Source:</strong> {{asset.assetSource}}<br />
+					<strong>Subject:</strong> {{asset.assetSubject}}<br />
+					</p>
+	              </div>
+	            </div>				
 				
 
-			<div v-if="asset.assetCoverage != ''" class="my-4">
-			  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetCoverageLat != '' && asset.assetCoverageLong != ''">
-			    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
-			    <l-marker :lat-lng="latLongArray"></l-marker>
+				<div v-if="asset.assetCoverage != ''" class="my-4">
+				  <l-map :zoom=13 :center="latLongArray" v-if="asset.assetCoverageLat != '' && asset.assetCoverageLong != ''">
+				    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
+				    <l-marker :lat-lng="latLongArray"></l-marker>
 
-			  </l-map>
-			</div>
-			<div class="my-4">
-			<p>Added on: {{asset.assetCreationDate}}</p>
-			From the collection: <a href="" @click.stop="goBack">{{archiveTitle}}</a>
-			</div>
+				  </l-map>
+				</div>
+				<div class="my-4">
+					<p>Added on: {{asset.assetCreationDate}}</p>
+					From the collection: <a href="" @click.stop="goBack">{{archiveTitle}}</a>
+				</div>
 			</div>
 		</div>	
 	</div>
