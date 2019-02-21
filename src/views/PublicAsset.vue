@@ -127,6 +127,10 @@ export default {
     async getUidFromUsername() {
       var username = this.$route.params.username
       this.uid = await sa.getUidFromUsername(username)
+      // send to 404 when no UID matches
+      if(this.uid === false) {
+        this.$router.push('/404')
+      }         
       this.getAssetDetails()
     },     	
   
@@ -172,7 +176,7 @@ export default {
 	        this.getAssetSrc()
 	        
 	      } else {
-	        console.log("No such document!");
+	        this.$router.push('/404')
 	      }
 	    }).then(() => {
 	    	this.getArchiveTitle()
@@ -203,7 +207,7 @@ export default {
 		    	this.archiveTitle = doc.data().title
 		    } else {
 		        // doc.data() will be undefined in this case
-		        console.log("No such document!");
+		        this.$router.push('/404')
 		    }
 		}).catch(function(error) {
 		    console.log("Error getting document:", error);

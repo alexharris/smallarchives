@@ -125,11 +125,15 @@ var sa = {
 		return new Promise(resolve => {
 		firebase.firestore().collection('users').where("displayName", "==", username)
 		.get()
-		.then((querySnapshot) => {
-			querySnapshot.forEach((doc) => {
-				resolve(doc.id)
-			});
-		})
+			.then((querySnapshot) => {
+				if(!querySnapshot.empty) {
+					querySnapshot.forEach((doc) => {
+						resolve(doc.id)	
+					});
+				} else {
+					resolve(false)
+				}
+			}) 
 		})
 	}, 		
 	/**

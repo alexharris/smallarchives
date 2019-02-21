@@ -2,7 +2,7 @@
   <div>
     <div class="row mb-5 pb-4">
       <div class="col-12">
-        <div class="row mb-5 pb-5">
+        <div class="row mb-5 py-3">
           <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
             <ArchiveHeaderImage />
           </div>  
@@ -69,6 +69,10 @@ export default {
     async getUidFromUsername() {
       var username = this.$route.params.username
       this.uid = await sa.getUidFromUsername(username)
+      // send to 404 when no UID matches
+      if(this.uid === false) {
+        this.$router.push('/404')
+      }      
       this.getArchiveDetails()
     },
     getArchiveDetails: function() {
@@ -83,7 +87,7 @@ export default {
           this.creationDate = sa.getFormattedDate(doc.data().dateCreated)
           this.headerImage = doc.data().headerImage
         } else {
-          console.log("No such document!");
+          this.$router.push('/404')
         }
       });
     },

@@ -38,6 +38,10 @@ export default {
     async getUidFromUsername() {
       var username = this.$route.params.username
       this.uid = await sa.getUidFromUsername(username)
+      // send to 404 when no UID matches
+      if(this.uid === false) {
+        this.$router.push('/404')
+      }
       this.getUserArchives()
     },       
     details (item) {

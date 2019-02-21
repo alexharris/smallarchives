@@ -100,7 +100,7 @@ export default {
   }
 
   body.admin {
-    background-color: #fffade !important;
+    /*background-color: #fffade !important;*/
   }
 
 

@@ -125,7 +125,10 @@ export default {
     getNumberOfItems () {
   
       sa.userArchivesDocumentDbRef(firebase.auth().currentUser.uid).onSnapshot((doc) => {
-        this.numberOfItems = doc.data().numberOfItems;
+        
+        if(doc.exists != false ) {
+          this.numberOfItems = doc.data().numberOfItems;
+        }
       });
       
     }    

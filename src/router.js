@@ -4,6 +4,7 @@ import Router from "vue-router";
 
 import Admin from "@/views/Admin.vue";
 import Login from "@/views/Login.vue";
+import NotFound from "@/views/NotFound.vue";
 
 
 // User
@@ -118,10 +119,16 @@ const router = new Router({
       path: '/',
       name: 'PublicHome',
       component: PublicHome
-    },        
+    },  
+    {
+      path: '/demo',
+      redirect: '/u/demo/7YUwCoXaIpMOmEKEKjyt'
+    },      
+    { path: '/404', 
+      component: NotFound },            
     {
       path: '*',
-      redirect: '/'
+      redirect: '/404'
     }   
   ]
 });

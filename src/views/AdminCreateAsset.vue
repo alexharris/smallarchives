@@ -101,18 +101,18 @@
               <label for="inputAssetType" class="col-sm-2 col-form-label">Asset Type</label>
               <div class="col-sm-10">
                 <select class="form-control" id="inputAssetType" v-model="selectedAssetType">
-                  <option value="collection">Collection</option>
-                  <option value="dataset">Dataset</option>
-                  <option value="event">Event</option>
-                  <option value="image">Image</option>
-                  <option value="interactiveresource">Interactive Resource</option>
-                  <option value="movingimage">Moving Image</option>
-                  <option value="physicalobject">Physical Object</option>
-                  <option value="service">Service</option>
-                  <option value="software">Software</option>
-                  <option value="sound">Sound</option>
-                  <option value="stillimage">Still Image</option>
-                  <option value="text">Text</option>
+                  <option value="Collection">Collection</option>
+                  <option value="Dataset">Dataset</option>
+                  <option value="Event">Event</option>
+                  <option value="Image">Image</option>
+                  <option value="Interactive Resource">Interactive Resource</option>
+                  <option value="Moving Image">Moving Image</option>
+                  <option value="Physical Object">Physical Object</option>
+                  <option value="Service">Service</option>
+                  <option value="Software">Software</option>
+                  <option value="Sound ">Sound</option>
+                  <option value="Still Image">Still Image</option>
+                  <option value="Text">Text</option>
                 </select>
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A name given to the resource.</small>
               </div>
@@ -471,12 +471,6 @@
       }).catch(function(error) {
           console.log("Error getting document:", error);
       });
-
-
-
-
-
-
 
       sa.assetCollectionDbRef(uid, archiveId).add({
 

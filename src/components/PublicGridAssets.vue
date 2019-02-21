@@ -11,10 +11,10 @@
           <div class="col-md-6 col-xs-12 col-lg-4 col-xl-3 grid-item mb-3" v-for="item in assets">
             <div class="media-display">
               <div v-if="item.assetMediaType === 'image'">       
-                <img :src="item.assetSrc" />
+                <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
               </div>
               <div v-if="item.assetMediaType === 'pdf'">      
-              <div class="pdf-placeholder"> PDF </div>
+              <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)">PDF</a> </div>
                 <!-- <font-awesome-icon :icon="['far', 'file']" size="10x" /> -->
               </div>
               <div v-if="item.assetMediaType === 'audio'">       
@@ -28,7 +28,7 @@
                 </figure>
               </div> 
               <div v-if="item.assetMediaType === 'youtube'">       
-                <img :src="youtubeThumbnail(item)" />
+                <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="youtubeThumbnail(item)" /></a>
               </div>                                 
             </div>
             <div class="grid-title">

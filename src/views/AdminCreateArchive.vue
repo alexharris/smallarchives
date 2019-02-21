@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     handleFileChange(e, index) {
-      this.file = e.target.files[0]
+      this.archiveHeaderImage = e.target.files[0]
     },      
     onSubmit (evt) {
       evt.preventDefault()
