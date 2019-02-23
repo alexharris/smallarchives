@@ -52,6 +52,7 @@
 					<strong>Contributor:</strong> {{asset.assetContributor}} <br />
 					<strong>Creator:</strong> {{asset.assetCreator}} <br />
 					<strong>Coverage:</strong> {{asset.assetCoverage}} <br />
+					<strong>Date:</strong> {{asset.assetDate}}<br />
 					<strong>Format:</strong> {{asset.assetFormat}}<br />
 					<strong>Identifier:</strong> {{asset.assetIdentifier}}<br />
 					<strong>Language:</strong> {{asset.assetLanguage}}<br />
@@ -151,6 +152,7 @@ export default {
 	        this.asset.assetContributor = doc.data().assetContributor
 	        this.asset.assetCreator = doc.data().assetCreator
 	        this.asset.assetCoverage = doc.data().assetCoverage
+	        this.asset.assetDate = doc.data().assetDate
 			this.asset.assetFormat = doc.data().assetFormat
 			this.asset.assetIdentifier = doc.data().assetIdentifier
 			this.asset.assetLanguage = doc.data().assetLanguage

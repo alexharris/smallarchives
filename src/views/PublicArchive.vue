@@ -12,10 +12,25 @@
             <p><small>This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</small></p>            
           </div>
         </div>
+        <nav class="navbar navbar-light bg-light">
+          <a class="btn btn-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Filter
+          </a>
+            <span class="navbar-text">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <div class="btn btn-secondary" @click="switcherValue = !switcherValue"> <font-awesome-icon icon="th" size="2x" /></div>
+                  <div class="btn btn-secondary" @click="switcherValue = !switcherValue"> <font-awesome-icon icon="th-list" size="2x" /></div>
+              </div>      
+            </span>  
+        </nav>        
+
         <div class="row">
           <div class="col-12">
-            <switcher v-model="switcherValue" />
-            <div class="visual-label">List/Grid</div> 
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+              </div>
+            </div> 
           </div>
         </div>
         <hr />
