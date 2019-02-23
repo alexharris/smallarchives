@@ -36,6 +36,7 @@ import sa from '../sa'
 
 export default {
   name: "DisplayArchiveItems",
+  props: ['filteredAssetType'],
   data() {
   	return {
   	uid: '',
@@ -44,6 +45,18 @@ export default {
     renderedAssets: [],
   	}
   },
+  watch: { 
+    //watch the filteredAssetType prop for changes, and requery the DB when it does
+    filteredAssetType: function(newVal, oldVal) { // watch it
+      
+      console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      if(newVal == "All") {
+        this.createAssetArray()
+      } else {
+        this.filterAssetArray()
+      }
+    }
+  },  
   created() {
     this.getUidFromUsername()
   },    
@@ -75,6 +88,29 @@ export default {
         this.$store.commit('setAssetCount', this.assets.length)
       });
     },
+    filterAssetArray: function() {
+
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+
+      // clear it so it resets each time this is called
+      this.assets = []
+
+      sa.assetCollectionDbRef(uid, archiveId).where('assetType', '==', this.filteredAssetType)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.assets.push({
+            fileName: doc.data().file,
+            assetTitle: doc.data().assetTitle,
+            assetId: doc.id,
+            assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
+            assetText: doc.data().assetText,
+            assetType: doc.data().assetType,
+          });
+        });
+      });
+    },    
     viewSingleAsset: function(assetId) {
       this.$router.push({
         name: 'PublicAsset',

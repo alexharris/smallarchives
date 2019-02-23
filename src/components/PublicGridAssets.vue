@@ -6,6 +6,7 @@
         <p>This archive has no items.</p>
     </div>
     <div v-else>
+              <hr class="my-4" />
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-12 col-lg-4 col-xl-3 grid-item mb-3" v-for="item in assets">
@@ -49,6 +50,7 @@ import sa from '../sa'
 
 export default {
   name: "PublicGridAssets",
+  props: ['filteredAssetType'],
   data() {
   	return {
   	uid: '',
@@ -57,6 +59,18 @@ export default {
     renderedAssets: []
   	}
   },
+  watch: { 
+    //watch the filteredAssetType prop for changes, and requery the DB when it does
+    filteredAssetType: function(newVal, oldVal) { // watch it
+      
+      console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+      if(newVal == "All") {
+        this.createAssetArray()
+      } else {
+        this.filterAssetArray()
+      }
+    }
+  },    
   created() {
     this.getUidFromUsername()
   },    
@@ -113,7 +127,58 @@ export default {
         });
 
       })
-    },       
+    },     
+    filterAssetArray: function() {
+
+
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+      var assetSrcUrl = ''
+
+       // clear it so it resets each time this is called
+      this.assets = []
+
+      sa.assetCollectionDbRef(uid, archiveId).where('assetType', '==', this.filteredAssetType)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var imagePrefix = '';
+
+          if(doc.data().assetMediaType === 'image') {
+            imagePrefix = 'thumb_'
+          } else {
+            imagePrefix = ''
+          }
+          // get the asset source for thumbnail image
+          sa.assetStorageRef(uid, archiveId, doc.id, doc.data().assetFileName, imagePrefix).getDownloadURL().then((url) => {
+            console.log(url)
+            assetSrcUrl = url
+          }).catch(function(error) {
+            assetSrcUrl = ''
+            console.log(error.message)
+          }).then(() => {
+            this.assets.push({
+              fileName: doc.data().file,
+              assetTitle: doc.data().assetTitle,
+              assetId: doc.id,
+              assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
+              assetText: doc.data().assetText,
+              assetType: doc.data().assetType,
+              assetMediaType: doc.data().assetMediaType,
+              assetFileName: doc.data().assetFileName,
+              assetYoutubeId: doc.data().assetYoutubeId,
+              assetSrc: assetSrcUrl
+            });    
+            //tell the parent about how many assets there are
+            this.$store.commit('setAssetCount', this.assets.length)                    
+          })
+
+
+        
+        });
+
+      })
+    },        
     viewSingleAsset: function(assetId) {
       this.$router.push({
         name: 'PublicAsset',

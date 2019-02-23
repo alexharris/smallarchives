@@ -17,25 +17,35 @@
             Filter
           </a>
             <span class="navbar-text">
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <div class="btn btn-secondary" @click="switcherValue = !switcherValue"> <font-awesome-icon icon="th" size="2x" /></div>
-                  <div class="btn btn-secondary" @click="switcherValue = !switcherValue"> <font-awesome-icon icon="th-list" size="2x" /></div>
+              <div class="btn-group btn-group-toggle">
+                <label for="grid" class="btn btn-secondary" v-bind:class="gridViewType">
+                  <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
+                </label>
+                <label for="list" class="btn btn-secondary" v-bind:class="listViewType">
+                  <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
+                </label>
               </div>      
             </span>  
-        </nav>        
 
-        <div class="row">
-          <div class="col-12">
-            <div class="collapse" id="collapseExample">
-              <div class="card card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              </div>
+        </nav>        
+        <div class="collapse" id="collapseExample">
+          <div class="row">
+            <div class="col-3">
+              <form>
+                <div class="form-group">
+                  <label for="itemTypeFilter">Item Type</label>
+                  <select class="custom-select" v-model="selectedAssetType">
+                    <option :selected="true">All</option>
+                    <option v-for="type in uniqueAssetTypes">{{type}}</option>
+                  </select>
+                </div>
+              </form>
             </div> 
           </div>
         </div>
-        <hr />
-        <PublicListAssets v-if="switcherValue"/>  
-        <PublicGridAssets v-if="!switcherValue"/>        
+
+        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType"/>  
+        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType"/>        
       </div>        
     </div>
 
@@ -63,7 +73,9 @@ export default {
       username: this.$route.params.username,
       creationDate: '',
       headerImage: '',
-      switcherValue: false
+      assets: [],
+      viewType: 'grid',
+      selectedAssetType: 'All',
     }
   },
   components: {
@@ -75,7 +87,20 @@ export default {
   computed: {
     assetCount() {
       return this.$store.getters.getAssetCount
-    }
+    },
+    uniqueAssetTypes() {
+      return [...new Set(this.assets.map(p => p.assetType))]
+    },
+    gridViewType() {
+      return {
+        active: this.viewType == 'grid'
+      }
+    },
+    listViewType() {
+      return {
+        active: this.viewType == 'list'
+      }
+    }    
   },
   created () {
     this.getUidFromUsername()
@@ -89,6 +114,7 @@ export default {
         this.$router.push('/404')
       }      
       this.getArchiveDetails()
+      this.createAssetArray()
     },
     getArchiveDetails: function() {
       var uid = this.uid
@@ -106,8 +132,33 @@ export default {
         }
       });
     },
+    createAssetArray: function() {
+
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+    console.log(this.selectedAssetType)
+      sa.assetCollectionDbRef(uid, archiveId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.assets.push({
+            fileName: doc.data().file,
+            assetTitle: doc.data().assetTitle,
+            assetId: doc.id,
+            assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
+            assetText: doc.data().assetText,
+            assetType: doc.data().assetType,
+          });
+        });
+        //tell the parent about how many assets there are
+        this.$store.commit('setAssetCount', this.assets.length)
+      });
+    },    
     goToUser: function(username) {
       this.$router.push({ name: 'PublicProfile', params: { username: this.username }})
+    },
+    switchViewType: function(e) {
+      console.log(e)
     }
   }
 }
