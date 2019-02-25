@@ -12,40 +12,55 @@
             <p><small>This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</small></p>            
           </div>
         </div>
-        <nav class="navbar navbar-light bg-light">
-          <a class="btn btn-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Filter
-          </a>
-            <span class="navbar-text">
-              <div class="btn-group btn-group-toggle">
-                <label for="grid" class="btn btn-secondary" v-bind:class="gridViewType">
-                  <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
-                </label>
-                <label for="list" class="btn btn-secondary" v-bind:class="listViewType">
-                  <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
-                </label>
-              </div>      
-            </span>  
-
+        <nav class="navbar nav-light">
+          <div class="btn-group btn-group-toggle">
+            <a class="btn btn-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Filter <font-awesome-icon icon="filter" size="1x" />
+            </a>
+          </div>
+          <span class="navbar-text">
+            <div class="btn-group btn-group-toggle">
+              <label for="grid" class="btn btn-secondary" v-bind:class="gridViewType">
+                <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
+              </label>
+              <label for="list" class="btn btn-secondary" v-bind:class="listViewType">
+                <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
+              </label>
+            </div>      
+          </span>  
         </nav>        
-        <div class="collapse" id="collapseExample">
-          <div class="row">
+        <div class="collapse card bg-light" id="collapseExample">
+          <div class="row card-body">
+
             <div class="col-3">
               <form>
-                <div class="form-group">
-                  <label for="itemTypeFilter">Item Type</label>
-                  <select class="custom-select" v-model="selectedAssetType">
-                    <option :selected="true">All</option>
-                    <option v-for="type in uniqueAssetTypes">{{type}}</option>
-                  </select>
+                <div class="form-group">                
+                  <div class="input-group input-group-sm">
+                   <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect02">Type</label>
+                    </div> 
+                    <select class="custom-select " v-model="selectedAssetType">
+                      <option :selected="true">All</option>
+                      <option v-for="type in uniqueAssetTypes">{{type}}</option>
+                    </select>
+                    <div class="input-group-append" v-if="selectedAssetType != 'All'">
+                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearFilter()"><font-awesome-icon icon="times" size="1x" /></button>
+                    </div>                                     
+                 
+                  </div>
                 </div>
               </form>
             </div> 
+            <div class="col-3">
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
+                <label class="form-check-label" for="exampleCheck1">Has location</label>
+              </div>              
+            </div>
           </div>
         </div>
-
-        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType"/>  
-        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType"/>        
+        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>  
+        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>        
       </div>        
     </div>
 
@@ -76,6 +91,7 @@ export default {
       assets: [],
       viewType: 'grid',
       selectedAssetType: 'All',
+      selectedHasLocation: false
     }
   },
   components: {
@@ -136,7 +152,7 @@ export default {
 
       var uid = this.uid
       var archiveId = this.$route.params.archive_id
-    console.log(this.selectedAssetType)
+
       sa.assetCollectionDbRef(uid, archiveId)
       .get()
       .then((querySnapshot) => {
@@ -159,6 +175,9 @@ export default {
     },
     switchViewType: function(e) {
       console.log(e)
+    },
+    clearFilter: function() {
+      this.selectedAssetType = 'All'
     }
   }
 }
@@ -181,5 +200,9 @@ export default {
 
   .table-dark td {
     border: 1px solid #000;
+  }
+
+  a svg:hover {
+    color: inherit;
   }
 </style>

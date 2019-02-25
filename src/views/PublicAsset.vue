@@ -44,23 +44,23 @@
 				
 
 
-	            <div class="card ml-0 bg-transparent">
+	            <div class="card ml-0 mt-5 bg-transparent">
 	              <div class="card-header">Metadata</div>
 	              <div class="card-body">
 					<p>
-					<strong>Media type:</strong> {{asset.assetMediaType}} <br />
-					<strong>Contributor:</strong> {{asset.assetContributor}} <br />
-					<strong>Creator:</strong> {{asset.assetCreator}} <br />
-					<strong>Coverage:</strong> {{asset.assetCoverage}} <br />
-					<strong>Date:</strong> {{asset.assetDate}}<br />
-					<strong>Format:</strong> {{asset.assetFormat}}<br />
-					<strong>Identifier:</strong> {{asset.assetIdentifier}}<br />
-					<strong>Language:</strong> {{asset.assetLanguage}}<br />
-					<strong>Publisher:</strong> {{asset.assetPublisher}}<br />
-					<strong>Relation:</strong> {{asset.assetRelation}}<br />
-					<strong>Rights:</strong> {{asset.assetRights}}<br />
-					<strong>Source:</strong> {{asset.assetSource}}<br />
-					<strong>Subject:</strong> {{asset.assetSubject}}<br />
+					<span v-if="asset.assetMediaType"><strong>Media type:</strong> {{asset.assetMediaType}} <br /></span>
+					<span v-if="asset.assetContributor"><strong>Contributor:</strong> {{asset.assetContributor}} <br /></span>
+					<span v-if="asset.assetCreator"><strong>Creator:</strong> {{asset.assetCreator}} <br /></span>
+					<span v-if="asset.assetCoverage"><strong>Coverage:</strong> {{asset.assetCoverage}} <br /></span>
+					<span v-if="asset.assetDate"><strong>Date:</strong> {{asset.assetDate}}<br /></span>
+					<span v-if="asset.assetFormat"><strong>Format:</strong> {{asset.assetFormat}}<br /></span>
+					<span v-if="asset.assetIdentifier"><strong>Identifier:</strong> {{asset.assetIdentifier}}<br /></span>
+					<span v-if="asset.assetLanguage"><strong>Language:</strong> {{asset.assetLanguage}}<br /></span>
+					<span v-if="asset.assetPublisher"><strong>Publisher:</strong> {{asset.assetPublisher}}<br /></span>
+					<span v-if="asset.assetRelation"><strong>Relation:</strong> {{asset.assetRelation}}<br /></span>
+					<span v-if="asset.assetRights"><strong>Rights:</strong> {{asset.assetRights}}<br /></span>
+					<span v-if="asset.assetSource"><strong>Source:</strong> {{asset.assetSource}}<br /></span>
+					<span v-if="asset.assetSubject"><strong>Subject:</strong> {{asset.assetSubject}}<br /></span>
 					</p>
 	              </div>
 	            </div>				
