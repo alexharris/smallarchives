@@ -14,16 +14,16 @@
         </div>
         <nav class="navbar nav-light">
           <div class="btn-group btn-group-toggle">
-            <a class="btn btn-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Filter <font-awesome-icon icon="filter" size="1x" />
             </a>
           </div>
           <span class="navbar-text">
             <div class="btn-group btn-group-toggle">
-              <label for="grid" class="btn btn-secondary" v-bind:class="gridViewType">
+              <label for="grid" class="btn btn-outline-secondary" v-bind:class="gridViewType">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
               </label>
-              <label for="list" class="btn btn-secondary" v-bind:class="listViewType">
+              <label for="list" class="btn btn-outline-secondary" v-bind:class="listViewType">
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
             </div>      

@@ -7,37 +7,44 @@
     </div>
     <div v-else>
       <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-12 col-lg-4 col-xl-3 grid-item mb-3" v-for="item in renderedAssets">
-            <div class="media-display">
-              <div v-if="item.assetMediaType === 'image'">       
-                <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
+          <div v-if="renderedAssets.length !== 0" class="row">
+            <div class="col-md-6 col-xs-12 col-lg-4 col-xl-3 grid-item mb-3" v-for="item in renderedAssets">
+              <div class="media-display">
+                <div v-if="item.assetMediaType === 'image'">       
+                  <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
+                </div>
+                <div v-if="item.assetMediaType === 'pdf'">      
+                <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)">PDF</a> </div>
+                  <!-- <font-awesome-icon :icon="['far', 'file']" size="10x" /> -->
+                </div>
+                <div v-if="item.assetMediaType === 'audio'">       
+                  <figure>
+                      <audio
+                          controls
+                          :src="item.assetSrc">
+                              Your browser does not support the
+                              <code>audio</code> element.
+                      </audio>
+                  </figure>
+                </div> 
+                <div v-if="item.assetMediaType === 'youtube'">       
+                  <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="youtubeThumbnail(item)" /></a>
+                </div>                                 
               </div>
-              <div v-if="item.assetMediaType === 'pdf'">      
-              <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)">PDF</a> </div>
-                <!-- <font-awesome-icon :icon="['far', 'file']" size="10x" /> -->
-              </div>
-              <div v-if="item.assetMediaType === 'audio'">       
-                <figure>
-                    <audio
-                        controls
-                        :src="item.assetSrc">
-                            Your browser does not support the
-                            <code>audio</code> element.
-                    </audio>
-                </figure>
-              </div> 
-              <div v-if="item.assetMediaType === 'youtube'">       
-                <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="youtubeThumbnail(item)" /></a>
-              </div>                                 
-            </div>
-            <div class="grid-title">
-              <small>{{item.assetType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.assetCoverageLat"/></small>
-              <p class="my-2"><a href="" @click.stop="viewSingleAsset(item.assetId)">{{truncatedTitle(item.assetTitle, 50)}}</a></p>
+              <div class="grid-title">
+                <small>{{item.assetType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.assetCoverageLat"/></small>
+                <p class="my-2"><a href="" @click.stop="viewSingleAsset(item.assetId)">{{truncatedTitle(item.assetTitle, 50)}}</a></p>
 
+              </div>
             </div>
           </div>
-        </div>
+          <div class="row" v-else>
+            <div class="col-12">
+              <p></p>
+              <p>There are no results. Please modify filters.</p>
+            </div>
+          </div>          
+
       </div>
     </div>
 	</div>
@@ -122,16 +129,27 @@ export default {
             });    
             //tell the parent about how many assets there are
             this.$store.commit('setAssetCount', this.assets.length)  
+
+            this.assets.sort(this.sortByDate)
+            console.log('---')
+            this.assets.forEach(function(item) {
+              console.log(item.assetTitle)
+            })
             // load rendered assets
-            this.renderedAssets = this.assets                  
+            this.renderedAssets = this.assets         
           })
-
-
-        
         });
 
       })
-    },     
+    },   
+    // this just does some quick sorting
+    sortByDate: function(a,b) {
+      if (a.assetTitle < b.assetTitle)
+        return -1;
+      if (a.assetTitle > b.assetTitle)
+        return 1;
+      return 0;
+    },      
     filterAssetArray: function() {
 
       this.renderedAssets = []

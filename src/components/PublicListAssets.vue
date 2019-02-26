@@ -6,23 +6,31 @@
           <p>This archive has no items.</p>
       </div>
       <div v-else>
-        <table class="table table-public">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Item Type</th>
-              <th scope="col">Date Added</th>
+        <div v-if="renderedAssets.length !== 0" class="row">
+          <table class="table table-public">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Item Type</th>
+                <th scope="col">Date Added</th>
+                
+                <!-- <th scope="col">Actions</th> -->
+              </tr>
+            </thead>
+            <tr v-for="item in renderedAssets">
+              <td><a href="" @click.stop="viewSingleAsset(item.assetId)">{{item.assetTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.assetCoverageLat"/></td>
+              <td><div>{{item.assetType}}</div></td>
+              <td>{{item.assetCreationDate}}</td>
               
-              <!-- <th scope="col">Actions</th> -->
             </tr>
-          </thead>
-          <tr v-for="item in renderedAssets">
-            <td><a href="" @click.stop="viewSingleAsset(item.assetId)">{{item.assetTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.assetCoverageLat"/></td>
-            <td><div>{{item.assetType}}</div></td>
-            <td>{{item.assetCreationDate}}</td>
-            
-          </tr>
-        </table>
+          </table>
+        </div>
+        <div class="row" v-else>
+          <div class="col-12">
+            <p></p>
+            <p>There are no results. Please modify filters.</p>
+          </div>
+        </div>          
       </div>
 
 
@@ -89,10 +97,22 @@ export default {
         });
         //tell the parent about how many assets there are
         this.$store.commit('setAssetCount', this.assets.length)
+
+        // sort the results
+        this.assets.sort(this.sortByTitle)
+
         // load rendered assets
         this.renderedAssets = this.assets     
       });
     },
+    // this just does some quick sorting
+    sortByTitle: function(a,b) {
+      if (a.assetTitle < b.assetTitle)
+        return -1;
+      if (a.assetTitle > b.assetTitle)
+        return 1;
+      return 0;
+    },       
     filterAssetArray: function() {
 
       this.renderedAssets = []
