@@ -18,7 +18,7 @@
           </div>
         </nav>      
       </header> 	
-  		<div class="container wrapper flex-shrink-0" v-cloak> 		
+  		<div class="container-fluid wrapper flex-shrink-0" v-cloak> 		
   			<router-view/>       
   		</div>  
 <!--       <footer class="footer py-3" v-if="user">
@@ -90,8 +90,8 @@ export default {
          url("./assets/Inter-ExtraBold.woff") format("woff");
   }
 
-  h1,h2,h3,h4,h5, .navbar-brand {
-    font-family: 'Inter', sans-serif !important;
+  h1,h2,h3,h4,h5 {
+    font-family: 'times', sans-serif !important;
   }
 
   body {
@@ -142,7 +142,7 @@ export default {
   }
 
   .wrapper {
-    padding-top: 100px;
+    padding-top: 40px;
     /*padding-bottom: 100px;*/
   }
   @media only screen and (max-device-width: 385px) { 

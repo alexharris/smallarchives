@@ -130,11 +130,8 @@ export default {
             //tell the parent about how many assets there are
             this.$store.commit('setAssetCount', this.assets.length)  
 
-            this.assets.sort(this.sortByDate)
-            console.log('---')
-            this.assets.forEach(function(item) {
-              console.log(item.assetTitle)
-            })
+            this.assets.sort(this.sortByTitle)
+
             // load rendered assets
             this.renderedAssets = this.assets         
           })
@@ -143,7 +140,7 @@ export default {
       })
     },   
     // this just does some quick sorting
-    sortByDate: function(a,b) {
+    sortByTitle: function(a,b) {
       if (a.assetTitle < b.assetTitle)
         return -1;
       if (a.assetTitle > b.assetTitle)
