@@ -41,9 +41,6 @@
 				<h1 class="my-4 h4">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
 
-				
-
-
 	            <div class="card ml-0 mt-5 bg-transparent">
 	              <div class="card-header">Metadata</div>
 	              <div class="card-body">

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="row mb-5 pb-4">
-      <div class="col-12">
+    <div class="row mb-5 px-5 pb-4 justify-content-center">
+      <div class="col-12 col-xl-10">
         <div class="row mb-5 py-3">
           <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
             <ArchiveHeaderImage />
@@ -26,6 +26,9 @@
               <label for="list" class="btn btn-outline-secondary" v-bind:class="listViewType">
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
+<!--               <label for="map" class="btn btn-outline-secondary" v-bind:class="mapViewType">
+                <input type="radio" id="map" value="map" v-model="viewType"> <font-awesome-icon icon="map-marker-alt" size="1x" />
+              </label>  -->             
             </div>      
           </span>  
         </nav>        
@@ -60,7 +63,8 @@
           </div>
         </div>
         <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>  
-        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>        
+        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>
+        <PublicMapAssets v-show="this.viewType == 'map'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>                   
       </div>        
     </div>
 
@@ -74,8 +78,10 @@ import firebase from 'firebase'
 import sa from '../sa'
 import PublicListAssets from '../components/PublicListAssets'
 import PublicGridAssets from '../components/PublicGridAssets'
+import PublicMapAssets from '../components/PublicMapAssets'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import Switcher from '../components/Switcher'
+
 
 
 export default {
@@ -97,8 +103,9 @@ export default {
   components: {
     PublicListAssets,
     PublicGridAssets,
+    PublicMapAssets,
     ArchiveHeaderImage,
-    Switcher
+    Switcher   
   },
   computed: {
     assetCount() {
@@ -116,7 +123,12 @@ export default {
       return {
         active: this.viewType == 'list'
       }
-    }    
+    },
+    mapViewType() {
+      return {
+        active: this.viewType == 'map'
+      }
+    }  
   },
   created () {
     this.getUidFromUsername()
@@ -184,7 +196,7 @@ export default {
 </script>
 
 <style>
-  .table-dark {
+/*  .table-dark {
     color: #000;
     background-color: #fffade;
     border: 1px solid #000;
@@ -200,7 +212,7 @@ export default {
 
   .table-dark td {
     border: 1px solid #000;
-  }
+  }*/
 
   a svg:hover {
     color: inherit;

@@ -1,13 +1,16 @@
 <template>
-  <div class="row">
+  <div class="row px-sm-5 justify-content-center">
     <div class="col-12">
       <div class="btn btn-dark" @click.stop="goBack">Back</div>
       <div class="btn btn-outline-dark float-right" @click.stop="linkToPublicView(key)">View</div>
       <div class="btn btn-outline-dark float-right mr-2" @click.stop="editarchive(key)">Edit</div>   
-      <hr class="my-4" />      
-      <h1 class="h5">Title: {{archive.title}}</h1>
-      <p class="lead">Description: {{archive.desc}}</p>
-      <hr class="my-4" />          
+      <hr class="my-4" />     
+      <div class="card"> 
+        <div class="card-body">
+          <p><strong>Title:</strong> {{archive.title}}</p>
+          <p><strong>Description:</strong> {{archive.desc}}</p>
+        </div>
+      </div>          
 
       <div class="row my-4">
           <div class="col"><h2>Items</h2></div>

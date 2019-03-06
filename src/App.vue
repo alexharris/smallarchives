@@ -1,12 +1,12 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
-        <nav class="navbar navbar-expand-lg navbar-light" v-if="user">
+        <nav class="navbar navbar-expand-lg navbar-light" >
           <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarText">
+          <div class="collapse navbar-collapse" id="navbarText" v-if="user">
             <ul class="navbar-nav mr-auto" v-if="user">
               <li class="nav-item">
                 <a class="nav-link" href="/admin/archives">Dashboard</a>
@@ -104,7 +104,7 @@ export default {
   }
 
 
-  .table-dark {
+/*  .table-dark {
     color: #000;
     background-color: #fffade;
     border: 1px solid #ffc107 !important;
@@ -135,7 +135,7 @@ export default {
 
   .table-public td {
     border: 1px solid #000;
-  }
+  }*/
 
   hr {
     border-top: 1px solid #000 !important;

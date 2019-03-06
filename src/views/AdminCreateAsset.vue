@@ -1,26 +1,40 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-sm-9">
-        <div class="btn btn-dark" @click.stop="goBack">Back</div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="btn btn-dark" @click.stop="goBack">Back</div>
+        </div>
+        <div class="col-3">
+            <div class="float-left"><span class="mr-2 pt-2">Metadata Hints</span>  <switcher class="float-right" v-model="helpSwitcherValue" /></div>
+        </div>
       </div>
-      <div class="col-sm-3">
-        <switcher v-model="helpSwitcherValue" />    
-      </div>
-    </div>
-    <hr class="my-4" />
-    <template v-if="errors.length > 0">
-      <div class="alert alert-danger" show>
-        <h3>Errors</h3>
-        <ul>
-          <li v-for="error in errors">{{error}}</li>
-        </ul>
-      </div>
-    </template>
-    <h1 class="h4">Add Item</h1>
-    <hr class="my-4" />
-    <form class="needs-validation">
-      <div class="container">
+
+     
+      <template v-if="errors.length > 0">
+        <div class="alert alert-danger" show>
+          <h3>Errors</h3>
+          <ul>
+            <li v-for="error in errors">{{error}}</li>
+          </ul>
+        </div>
+      </template>
+      <h1 class="h4">Add New Item</h1>
+      <hr class="my-4" />
+      <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="media-tab" data-toggle="tab" href="#media" role="tab" aria-controls="media" aria-selected="false">Media</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="metadata-tab" data-toggle="tab" href="#metadata" role="tab" aria-controls="metadata" aria-selected="false">Metadata</a>
+        </li>
+      </ul>
+      <form class="needs-validation">
+        <div id="myTabContent" class="tab-content my-5">
+          <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
             <!-- Title -->
             <div class="form-group row">
               <label for="inputTitle" class="col-sm-2 col-form-label">Title *</label>
@@ -39,8 +53,9 @@
                 <textarea class="form-control" id="inputDescription" placeholder="Description" v-model="assetDescription"></textarea>
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An account of the resource.</small>
               </div>
-            </div>
-            <hr class="my-4" />
+            </div>          
+          </div>
+          <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
             <!-- Media Type -->
             <div class="form-group row">
               <label for="inputMediaType" class="col-sm-2 col-form-label">Media Type *</label>
@@ -52,7 +67,7 @@
                   <!-- <option value="text">Text</option> -->
                   <option value="youtube">Youtube</option>
                 </select>
-                <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A name given to the resource.</small>
+                <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The media used to represent this resource.</small>
               </div>
             </div> 
             <!-- Media Type - Image -->
@@ -94,8 +109,9 @@
               <div class="col-sm-8">
                 <input class="form-control" id="selectYoutube" v-model="assetYoutubeId" v-bind:class="{'is-invalid': youtubeInvalid}" />
               </div>
-            </div>                                                            
-            <hr class="my-4" />             
+            </div>           
+          </div>
+          <div class="tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
             <!-- Asset Type -->
             <div class="form-group row">
               <label for="inputAssetType" class="col-sm-2 col-form-label">Asset Type</label>
@@ -114,14 +130,14 @@
                   <option value="Still Image">Still Image</option>
                   <option value="Text">Text</option>
                 </select>
-                <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A name given to the resource.</small>
+                <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The nature or genre of the resource.</small>
               </div>
             </div> 
             <!-- Contributor -->
             <div class="form-group row">
               <label for="inputContributor" class="col-sm-2 col-form-label">Contributor</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputContributor" placeholder="Contributor" v-model="assetContributor">
+                <input class="form-control" id="inputContributor" v-model="assetContributor">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An entity responsible for making contributions to the resource.</small>
               </div>
             </div>
@@ -129,7 +145,7 @@
             <div class="form-group row">
               <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputDate" placeholder="Date" v-model="assetDate">
+                <input class="form-control" id="inputDate" v-model="assetDate">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A point or period of time associated with an event in the lifecycle of the resource.</small>
               </div>
             </div>
@@ -137,7 +153,7 @@
             <div class="form-group row">
               <label for="inputCoverage" class="col-sm-2 col-form-label">Coverage</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputCoverage" placeholder="Coverage" v-model="assetCoverage">
+                <input class="form-control" id="inputCoverage" v-model="assetCoverage">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.</small>
               </div>
             </div> 
@@ -145,12 +161,12 @@
               <div class="col-sm-2">&nbsp;</div>
               <div class="form-group col-md-5">
                 <label for="inputLatitude">Latitude</label>
-                <input class="form-control" id="inputLatitude" v-model="assetCoverageLat" placeholder="Latitude">
+                <input class="form-control" id="inputLatitude" v-model="assetCoverageLat">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">Latitude.</small>
               </div>
               <div class="form-group col-md-5">
                 <label for="inputLongitude">Longitude</label>
-                <input class="form-control" id="inputLongitude" v-model="assetCoverageLong" plcaeholder="Longitude">
+                <input class="form-control" id="inputLongitude" v-model="assetCoverageLong">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">Longitude.</small>
               </div>
             </div>                        
@@ -158,7 +174,7 @@
             <div class="form-group row">
               <label for="inputCreator" class="col-sm-2 col-form-label">Creator</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputCreator" placeholder="Creator" v-model="assetCreator">
+                <input class="form-control" id="inputCreator" v-model="assetCreator">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An entity primarily responsible for making the resource.</small>
               </div>
             </div>  
@@ -166,7 +182,7 @@
             <div class="form-group row">
               <label for="inputFormat" class="col-sm-2 col-form-label">Format</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputFormat" placeholder="Format" v-model="assetFormat">
+                <input class="form-control" id="inputFormat" v-model="assetFormat">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The file format, physical medium, or dimensions of the resource.</small>
               </div>
             </div>
@@ -174,7 +190,7 @@
             <div class="form-group row">
               <label for="inputIdentifier" class="col-sm-2 col-form-label">Identifier</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputIdentifier" placeholder="Identifier" v-model="assetIdentifier">
+                <input class="form-control" id="inputIdentifier" v-model="assetIdentifier">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An unambiguous reference to the resource within a given context.</small>
               </div>
             </div>
@@ -182,7 +198,7 @@
             <div class="form-group row">
               <label for="inputLanguage" class="col-sm-2 col-form-label">Language</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputLanguage" placeholder="Language" v-model="assetLanguage">
+                <input class="form-control" id="inputLanguage" v-model="assetLanguage">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A language of the resource.</small>
               </div>
             </div>
@@ -190,7 +206,7 @@
             <div class="form-group row">
               <label for="inputPublisher" class="col-sm-2 col-form-label">Publisher</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputPublisher" placeholder="Publisher" v-model="assetPublisher">
+                <input class="form-control" id="inputPublisher" v-model="assetPublisher">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An entity responsible for making the resource available.</small>
               </div>
             </div>
@@ -198,7 +214,7 @@
             <div class="form-group row">
               <label for="inputRelation" class="col-sm-2 col-form-label">Relation</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputRelation" placeholder="Relation" v-model="assetRelation">
+                <input class="form-control" id="inputRelation" v-model="assetRelation">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A related resource.</small>
               </div>
             </div>
@@ -206,7 +222,7 @@
             <div class="form-group row">
               <label for="inputRights" class="col-sm-2 col-form-label">Rights</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputRights" placeholder="Rights" v-model="assetRights">
+                <input class="form-control" id="inputRights" v-model="assetRights">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">Information about rights held in and over the resource.</small>
               </div>
             </div>
@@ -214,7 +230,7 @@
             <div class="form-group row">
               <label for="inputSource" class="col-sm-2 col-form-label">Source</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputSource" placeholder="Source" v-model="assetSource">
+                <input class="form-control" id="inputSource" v-model="assetSource">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A related resource from which the described resource is derived.</small>
               </div>
             </div> 
@@ -222,22 +238,24 @@
             <div class="form-group row">
               <label for="inputSubject" class="col-sm-2 col-form-label">Subject</label>
               <div class="col-sm-10">
-                <input class="form-control" id="inputSubject" placeholder="Subject" v-model="assetSubject">
+                <input class="form-control" id="inputSubject" v-model="assetSubject">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The topic of the resource.</small>
               </div>
-            </div>                                                                                                          
-       </div>
-<div v-if="!loading">
-  <hr class="my-4" />
-  <div class="btn btn-primary btn-lg" @click.stop="onSubmit">Submit</div>
-</div>
-<div v-else>
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
-</form>
-</div>    
+            </div>            
+          </div>
+        </div>   
+        <hr class="my-4" />
+        <div v-if="!loading" class="my-5">
+          <div class="btn btn-primary btn-lg" @click.stop="onSubmit">Submit</div>
+        </div>
+        <div v-else>
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>    
 </template>
 
 

@@ -1,16 +1,11 @@
 <template>
   <div class="about">    
     <div>
-            <div class="row px-5 justify-content-center">
-                <div class="col-12 col-xl-8">  
-                    <p class="h3">Small Archives.</p>
-                </div>
-                     <!-- <img src="/img/small-archives-single-line.jpg"  />    -->             
-            </div>   
-            <div class="row justify-content-center my-5 px-5 py-5 newsletter-row">
+  
+            <div class="row justify-content-center my-5 px-sm-5 py-5 newsletter-row">
                 <div class="col-12 col-lg-6 col-xl-5 pr-5 mb-4">  
                     <h2 class="display-3"><strong>Simple online collections.</strong></h2>  
-                    <p class="lead">Create an archive, add media & metadata, and you're done.</p>                
+                    <p class="lead">Create an archive, add media & metadata, and share.</p>                
                 </div>
                 <div class="col-12 col-lg-6 col-xl-3  newsletter"> 
                     <div class="card bg-transparent">
@@ -32,7 +27,7 @@
                     </div>          
                 </div>
             </div>   
-            <div class="row px-5 justify-content-center example-row">
+            <div class="row px-sm-5 justify-content-center example-row">
                 <div class="col-12 col-lg-4 col-xl-3">
                     <h2 class="h2">Check it out.</h2>
                     <p>View an example of a small archive with our demo collection.</p>
@@ -44,8 +39,8 @@
                     </a>                    
                 </div>   
             </div>               
-            <div class="row my-5 px-5 justify-content-center cards-row">
-                <div class="col-12 col-xl-8">
+            <div class="row my-5 px-sm-5 justify-content-center cards-row">
+                <div class="col-12 col-xl-10">
                     <div class="card-deck">
                       <div class="card">
                         <p class="text-center mt-4"><font-awesome-icon class="text-center" icon="university" size="3x" /></p>
@@ -72,7 +67,7 @@
                     </div>                    
                 </div>             
             </div>
-            <div class="row my-5 px-5 justify-content-center">
+            <div class="row my-5 px-sm-5 justify-content-center">
                 <div class="col-12 col-xl-8">
                     <h2 class="h4">Get In Touch</h2>
                     <p>Questions, comments, concerns?</p>
@@ -130,7 +125,7 @@
     }*/
 
     .example-row {
-        background-color: #fffade;
+        background-color: #fdfdf6;
         padding-top: 6em;
         padding-bottom: 6em;
     }

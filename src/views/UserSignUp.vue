@@ -1,42 +1,40 @@
 <template>
   <div class="sign-up">  
-       <div class="row justify-content-sm-center">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <h3 class="mb-5">Sign up</h3>
+          <template v-if="error">
+            <div class="alert alert-danger" show>{{error}}</div>
+          </template>             
+          <form>
+            <!-- Username -->
+            <div class="form-group row">
+              <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+              <div class="col-sm-10">
+                <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
+              </div>
+            </div>
+            <!-- Email -->
+            <div class="form-group row">
+              <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+              </div>
+            </div>
+            <!-- Password -->
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+              </div>
+            </div>                 
 
-      <div class="col-6">
-    <h3 class="mb-5">Sign up</h3>
-    <template v-if="error">
-      <div class="alert alert-danger" show>{{error}}</div>
-    </template>   
-    <!-- Username -->
-    <form>
-    <div class="form-group row">
-      <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
+            <div class="btn btn-warning" @click="checkUsername">Sign Up</div>
+          </form>
+          <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
       </div>
     </div>
-    <!-- Email -->
-    <div class="form-group row">
-      <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-      <div class="col-sm-10">
-        <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
-      </div>
-    </div>
-    <!-- Password -->
-    <div class="form-group row">
-      <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-      <div class="col-sm-10">
-        <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
-      </div>
-    </div>                 
-
-    <div class="btn btn-warning" @click="checkUsername">Sign Up</div>
-    </form>
-    <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
   </div>
-    </div>
-  </div>
-
 </template>
 
  <script>
