@@ -2,7 +2,7 @@
 	<div>
 		<div class="row justify-content-center">
 			<div class="col-12">
-				<a @click.stop="goBack" class="float-right"><font-awesome-icon icon="times" size="2x" /></a><br />
+				<a @click.stop="goBack" class="float-right close-asset"><font-awesome-icon icon="times" size="2x" /></a><br />
 
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 					</figure>
 				</div>
 				<div v-if="asset.assetMediaType == 'pdf'" class="pdf-download">
-					<p>{{asset.assetFileName}}</p>
+					<!-- <p>{{asset.assetFileName}}</p> -->
 <!-- 					<a :href="assetSrc"><font-awesome-icon icon="file-download" size="6x" /> </a> -->
 					<div id="pdfViewer"></div>
 				</div>				
@@ -38,7 +38,8 @@
 			</div>
 
 			<div class="col-lg-4">
-				<h1 class="my-4 h4">{{asset.assetTitle}}</h1>
+				<a href="" @click.stop="goBack">{{archiveTitle}}</a>
+				<h1 class="my-4 h3">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
 
 	            <div class="card ml-0 mt-5 bg-transparent">
@@ -72,7 +73,6 @@
 				</div>
 				<div class="my-4">
 					<p>Added on: {{asset.assetCreationDate}}</p>
-					From the collection: <a href="" @click.stop="goBack">{{archiveTitle}}</a>
 				</div>
 			</div>
 		</div>	
@@ -222,8 +222,9 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+	$blue: #0011cf;
+    $pink: #fff4e6;
 
 .pdfobject-container { height: 50rem; border: 1rem solid rgba(0,0,0,.1); }
 
@@ -246,8 +247,20 @@ img {
     height: 100%;
 }
 
+.card {
+	border: 1px solid $blue;
+	& .card-header {
+		background-color: $pink;
+		border-bottom: 1px solid $blue;
+	}
+}
+
 blockquote {
 	font-size: 2.5em;
+}
+
+.asset-pane {
+	text-align: center
 }
 
 .asset-pane audio {
@@ -257,5 +270,9 @@ blockquote {
 
 .vue2leaflet-map {
 	height: 300px;
+}
+
+a.close-asset {
+	border: 0px;
 }
 </style>

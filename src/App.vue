@@ -1,7 +1,7 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
-        <nav class="navbar navbar-expand-lg navbar-light" >
+        <nav class="navbar navbar-expand-lg " >
           <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -73,7 +73,10 @@ export default {
 </script>
 
 
-<style>
+<style lang="scss">
+
+  $blue: #0011cf;
+  $pink: #fff4e6;
 
   @font-face {
     font-family: 'Inter';
@@ -91,54 +94,19 @@ export default {
   }
 
   h1,h2,h3,h4,h5 {
-    font-family: 'times', sans-serif !important;
+    font-family: 'inter', sans-serif !important;
   }
 
   body {
-    font-family: 'Inter', sans-serif !important;
-    background-color: #ffffff;
+    font-family: Georgia, sans-serif !important;
+    background-color: #fff4e6;
+    color: $blue;
+    font-size: 18px;
+    line-height: 35px;
   }
-
-  body.admin {
-    /*background-color: #fffade !important;*/
-  }
-
-
-/*  .table-dark {
-    color: #000;
-    background-color: #fffade;
-    border: 1px solid #ffc107 !important;
-  }
-
-  .table-public {
-    color: #000;
-    background-color: #ffffff;
-    border: 1px solid #000;
-  }
-
-  .table-dark thead th {
-    background-color: #f7f2d7 !important;
-    border:0;
-    border-bottom: 1px solid #ffc107 !important;
-    font-weight: 400;
-  }
-
-  .table-public thead th {
-    border-bottom: 1px solid #000 !important;
-    border-top: 1px solid #000 !important;
-    font-weight: 400;
-  }
-
-  .table-dark td {
-    border: 1px solid #ffc107 !important;
-  }
-
-  .table-public td {
-    border: 1px solid #000;
-  }*/
 
   hr {
-    border-top: 1px solid #000 !important;
+    border-top: 1px solid $blue !important;
   }
 
   .wrapper {
@@ -152,15 +120,44 @@ export default {
   }
 
   header {
-    background-color: #fffade;
+    // border-bottom: 2px solid $blue;
+    a.navbar-brand {
+      padding: 0;
+      color: $blue;
+      text-decoration: none;
+      border-bottom: 2px solid $blue;
+      &:hover {
+        text-decoration: none;
+        border-bottom: 2px solid $pink;
+      }
+    }
   }
 
   img {
     max-width: 100%;
   }
 
+  .img-link {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
   .dashed-top-border {
     border-top: 1px dashed #000;
+  }
+
+  a {
+    color: $blue;
+    border-bottom: 2px solid $blue;
+    padding-bottom: 4px;
+    &:hover {
+      padding-bottom: 4px;
+      text-decoration: none;
+      color: red;
+      border-bottom: 2px solid $pink;
+
+    }
   }
 
   a svg:hover {

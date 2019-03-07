@@ -16,6 +16,7 @@
           <div class="btn-group btn-group-toggle">
             <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Filter <font-awesome-icon icon="filter" size="1x" />
+              <!-- <font-awesome-icon icon="times" size="1x" /> -->
             </a>
           </div>
           <span class="navbar-text">
@@ -32,8 +33,8 @@
             </div>      
           </span>  
         </nav>        
-        <div class="collapse card bg-light" id="collapseExample">
-          <div class="row card-body">
+        <div class="collapse py-4" id="collapseExample">
+          <div class="row">
 
             <div class="col-3">
               <form>
@@ -195,26 +196,31 @@ export default {
 }
 </script>
 
-<style>
-/*  .table-dark {
-    color: #000;
-    background-color: #fffade;
-    border: 1px solid #000;
-    border-top: 1px solid #000;
-  }
+<style lang="scss">
 
-  .table-dark thead th {
-    background-color: #f7f2d7 !important;
-    border:0;
-    border-bottom: 1px solid #d8d4bc;
-    font-weight: 400;
-  }
-
-  .table-dark td {
-    border: 1px solid #000;
-  }*/
+  $blue: #0011cf;
+  $pink: #fff4e6;
 
   a svg:hover {
     color: inherit;
+  }
+
+  .btn-outline-secondary {
+    color: $blue;
+    border: 1px solid $blue;
+    &:not(:disabled):not(.disabled).active {
+      background-color: $blue;
+      color: $pink;
+    }
+    &:hover {
+        color: $pink;
+        background-color: $blue;
+        border: 1px solid $blue;
+    }
+  }
+
+  .collapse {
+    border-top: 2px solid $blue;
+    border-bottom: 2px solid $blue;
   }
 </style>

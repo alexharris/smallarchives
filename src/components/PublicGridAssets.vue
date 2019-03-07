@@ -14,7 +14,7 @@
                   <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
                 </div>
                 <div v-if="item.assetMediaType === 'pdf'">      
-                <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)">PDF</a> </div>
+                <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)"><img src="/img/pdf-page.svg" /></a> </div>
                   <!-- <font-awesome-icon :icon="['far', 'file']" size="10x" /> -->
                 </div>
                 <div v-if="item.assetMediaType === 'audio'">       
@@ -209,22 +209,20 @@ export default {
   .grid-title {
     height: 90px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #000;
   }
 
-  .pdf-placeholder {
-    position: relative;
-    border: 1px solid #000;
-    top: 60px;
-    left: 60px;
-    width: 100px;
-    padding: 10px 0;
-  }
+  // .pdf-placeholder {
+  //   position: relative;
+  //   border: 1px solid #000;
+  //   top: 60px;
+  //   left: 60px;
+  //   width: 100px;
+  //   padding: 10px 0;
+  // }
 
   .media-display {
     margin: 20px 0;
     height: 200px;
-    text-align: center;
     img {
       max-height: 200px
     }
