@@ -3,9 +3,10 @@
     <div>
   
             <div class="row justify-content-center my-5 px-sm-5 py-5 newsletter-row">
-                <div class="col-12 col-lg-7 col-xl-5 pr-5 mb-4">  
-                    <h2 class="display-3"><strong>Small Archives</strong></h2>  
-                    <p class="lead my-4">Create simple online collections. Add media, add metadata, and share.</p>                
+                <div class="col-12 col-lg-7 col-xl-6 pr-5 mb-4">  
+                    <h2 class="display-3"><strong>Small Archives</strong></h2> 
+
+                    <p class="lead my-4">Create simple online collections, add media & metadata, and share.</p>                
                 </div>
                 <div class="col-12 col-lg-5 col-xl-4 float-right  newsletter"> 
                     <div class="card bg-transparent">
@@ -134,28 +135,7 @@
         font-size: 1.6em;
         line-height: 1.4em;
     }
-
-    .btn-dark {
-        background-color: $blue;
-        color: $pink;
-        border: 1px solid $blue;
-        font-family: 'inter';
-        &:hover {
-            color: $blue;
-            background-color: $pink;
-        }
-    }
-
-    .btn-light {
-        background-color: $pink;
-        color: $blue;
-        border: 1px solid $pink;
-        font-family: 'inter';
-        &:hover {
-            color: $pink;
-            background-color: $blue;
-        }        
-    }    
+   
 
 
 

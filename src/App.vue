@@ -2,7 +2,7 @@
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
         <nav class="navbar navbar-expand-lg " >
-          <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
+          <a class="navbar-brand" href="/"><img src="/img/sa-logo.jpg" class="float-left logo mr-2" />SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -12,7 +12,7 @@
                 <a class="nav-link" href="/admin/archives">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="this.logout">Logout</a>
+                <a class="nav-link" href="" @click="this.logout">Logout</a>
               </li>
             </ul>
           </div>
@@ -77,6 +77,7 @@ export default {
 
   $blue: #0011cf;
   $pink: #fff4e6;
+  $red: #ff0000;
 
   @font-face {
     font-family: 'Inter';
@@ -130,6 +131,13 @@ export default {
         text-decoration: none;
         border-bottom: 2px solid $pink;
       }
+      .logo {
+        width: 30px;
+        height: 30px;
+      }
+    }
+    a {
+      border-bottom: 0px;
     }
   }
 
@@ -162,6 +170,101 @@ export default {
 
   a svg:hover {
     color: #474747;
+  }
+
+  .card {
+    border: 1px solid $blue;
+    background-color: transparent;
+    & .card-header {
+      background-color: $pink;
+      border-bottom: 1px solid $blue;
+      font-weight: 800;
+    }
+    & .card-footer {
+      background-color: $pink;
+      border-top: 1px solid $blue;
+    }
+  }  
+
+  .card.border-danger {
+    border: 1px solid $red;
+    background-color: transparent;
+    color: red;
+    & .card-header {
+      background-color: transparent;
+      border-bottom: 1px solid $red;
+            font-weight: 800;
+    }
+    & .card-footer {
+      background-color: $red;
+      border-top: 1px solid $red;
+    }
+  }  
+
+  .btn:hover {
+    cursor: pointer;
+  }
+
+  .btn.btn-outline-danger {
+      &:hover {
+          color: white !important;
+          border: 2px solid $red;
+      }
+  }  
+
+  .btn-dark {
+      background-color: $blue;
+      color: $pink;
+      border: 1px solid $blue;
+      font-family: 'inter';
+      &:hover {
+          color: $blue;
+          background-color: $pink;
+          border: 1px solid $blue;
+      }
+  }
+
+  .btn-outline-dark {
+    color: $blue;
+    border: 1px solid $blue;
+    &:not(:disabled):not(.disabled).active {
+      background-color: $blue;
+      color: $pink;
+    }
+    &:hover {
+        color: $pink;
+        background-color: $blue;
+        border: 1px solid $blue;
+    }
+  }  
+
+  .btn-light {
+      background-color: $pink;
+      color: $blue;
+      border: 1px solid $pink;
+      font-family: 'inter';
+      &:hover {
+          color: $pink;
+          background-color: $blue;
+      }        
+  }   
+
+  .table {
+    color: $blue;
+    & thead th {
+      border-bottom: 1px solid $blue;
+      border-top: 1px solid $blue;
+    }
+  }
+
+  .nav-tabs {
+    border-bottom: 1px solid $blue;
+    .nav-link.active {
+      color: $blue;
+      border: 1px solid $blue;
+      border-bottom: 0px;
+      background-color: transparent;
+    }
   }
 
   footer {

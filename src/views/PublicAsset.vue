@@ -38,7 +38,7 @@
 			</div>
 
 			<div class="col-lg-4">
-				<a href="" @click.stop="goBack">{{archiveTitle}}</a>
+				<font-awesome-icon icon="folder" size="1x" class="mr-2" /><a href="" @click.stop="goBack">{{archiveTitle}}</a>
 				<h1 class="my-4 h3">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
 
@@ -245,14 +245,6 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-}
-
-.card {
-	border: 1px solid $blue;
-	& .card-header {
-		background-color: $pink;
-		border-bottom: 1px solid $blue;
-	}
 }
 
 blockquote {

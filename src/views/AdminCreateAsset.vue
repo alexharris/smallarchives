@@ -9,7 +9,7 @@
             <div class="float-left"><span class="mr-2 pt-2">Metadata Hints</span>  <switcher class="float-right" v-model="helpSwitcherValue" /></div>
         </div>
       </div>
-
+<hr class="my-4" />
      
       <template v-if="errors.length > 0">
         <div class="alert alert-danger" show>
@@ -246,7 +246,7 @@
         </div>   
         <hr class="my-4" />
         <div v-if="!loading" class="my-5">
-          <div class="btn btn-primary btn-lg" @click.stop="onSubmit">Submit</div>
+          <div class="btn btn-dark btn-lg" @click.stop="onSubmit">Submit</div>
         </div>
         <div v-else>
           <div class="spinner-border" role="status">
@@ -394,7 +394,7 @@
         this.audioInvalid = false
       } 
 
-      // Audio files must be less than 10MB in size
+      // Audio files must be less than 5MB in size
       if(this.selectedAssetMediaType === 'audio' && this.file.size >= 5000000) {
         this.errors.push('Audio files must be less than 5MB')
         this.audioInvalid = true
@@ -412,9 +412,37 @@
         }
       }  
 
+      // PDF ERRORS
+      // PDF file must exist
+      // It must be of type PDF
+      // Set a maximum filesize
+      if(this.selectedAssetMediaType === 'pdf' && this.file === null) {
+        this.errors.push('Media type "PDF" is selected, but no pdf is uploaded')
+        this.pdfInvalid = true
+      }  else {
+        this.pdfInvalid = false
+      } 
+
+      // PDF files must be less than 5MB in size
+      if(this.selectedAssetMediaType === 'pdf' && this.file.size >= 5000000) {
+        this.errors.push('PDFs must be less than 10MB')
+        this.pdfInvalid = true
+      }  else {
+        this.pdfInvalid = false
+      }
+
+      // It must be PDF
+      if(this.selectedAssetMediaType == 'pdf') {
+        if(this.file.type != 'application/pdf') {
+          this.errors.push('The uploaded file must be a PDF')
+          this.pdfInvalid = true
+        }  else {
+          this.pdfInvalid = false
+        }
+      }        
+
       // NEED TO ADD
-      // YOUTUBE ERRORS
-      // PDF ERRORS           
+      // YOUTUBE ERRORS    
 
       this.assetCreationDate = new Date();
 

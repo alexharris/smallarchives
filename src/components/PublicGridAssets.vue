@@ -6,9 +6,9 @@
         <p>This archive has no items.</p>
     </div>
     <div v-else>
-      <div class="container">
+    
           <div v-if="renderedAssets.length !== 0" class="row px-n5">
-            <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3 grid-item mb-3" v-for="item in renderedAssets">
+            <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3 grid-item mb-3 p-md-4" v-for="item in renderedAssets">
               <div class="media-display">
                 <div v-if="item.assetMediaType === 'image'">       
                   <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
@@ -45,7 +45,7 @@
             </div>
           </div>          
 
-      </div>
+     
     </div>
 	</div>
 </div>
@@ -201,9 +201,7 @@ export default {
   }
 
   .grid-item {
-    height: 400;
-    padding: 30px;
-
+    height: 400px;
   }
 
   .grid-title {

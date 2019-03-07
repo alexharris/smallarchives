@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row mb-5 px-5 pb-4 justify-content-center">
+    <div class="row mb-5 px-md-5 pb-4 justify-content-center">
       <div class="col-12 col-xl-10">
         <div class="row mb-5 py-3">
           <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
@@ -35,7 +35,6 @@
         </nav>        
         <div class="collapse py-4" id="collapseExample">
           <div class="row">
-
             <div class="col-3">
               <form>
                 <div class="form-group">                
@@ -196,7 +195,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
   $blue: #0011cf;
   $pink: #fff4e6;

@@ -15,7 +15,7 @@
       <div class="row my-4">
           <div class="col"><h2>Items</h2></div>
           <div class="col">
-            <div class="btn btn-warning float-right" @click.stop="addItemButton(key)">Add Item</div>
+            <div class="btn btn-dark float-right" @click.stop="addItemButton(key)">Add Item</div>
           </div>
       </div>
       <ListAssets />  

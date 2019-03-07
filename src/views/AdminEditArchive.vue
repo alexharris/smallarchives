@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-12">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10">
       <div class="btn btn-dark" @click.stop="goBack">Back</div>
       <hr class="my-4" />
       <h1 class="h4">Basic Info</h1>   
@@ -11,14 +11,14 @@
         <div class="form-group row">
           <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
           <div class="col-sm-10">
-            <input class="form-control" id="inputTitle" placeholder="Archive Title" v-model="archive.title">
+            <input class="form-control" id="inputTitle" v-model="archive.title">
           </div>
         </div> 
         <!-- Desc -->
         <div class="form-group row">
           <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
           <div class="col-sm-10">
-            <textarea class="form-control" id="inputDesc" placeholder="Archive Description" v-model="archive.desc"></textarea>
+            <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
           </div>
         </div>   
         <!-- Header Image -->
@@ -39,12 +39,12 @@
         </div>        
       </form>   
       <hr class="my-4" />
-      <a class="btn btn-lg btn-warning" type="submit" v-on:click="onSubmit">Update Archive</a>
+      <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update Archive</button>
       <hr class="my-4" />
       <div class="col-12" >
         <div class=" card-deck">
             <!--  Card one -->
-            <div class="card border-warning ml-0 bg-transparent">
+            <div class="card ml-0 bg-transparent">
               <div class="card-header">Archive Info</div>
               <div class="card-body">
                 <ul class="list-unstyled">

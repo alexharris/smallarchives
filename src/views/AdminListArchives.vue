@@ -5,13 +5,13 @@
         <div class="col-8">
           <h3>Welcome to Small Archives</h3>
           <p>You have no archives at this time. Create a new one to get started.</p>
-          <a class="btn btn-warning" href="/admin/add-archive">New Archive</a>   
+          <a class="btn btn-dark" href="/admin/add-archive">New Archive</a>   
         </div>
       </template>
       <template v-else>
         <div class="col-12">
           <div class="row">
-            <div class="col-8">
+            <div class="col-12 col-md-8">
               <h4>Your Archives:</h4>
               <div v-for="item in archives" class="card mb-3">
                 <div class="card-header">{{item.title}}</div>
@@ -21,13 +21,13 @@
                   
                 </div>
                 <div class="card-footer">
-                  <button class="btn btn-dark btn-sm mr-2" @click.stop="details(item.key)">Details</button>
-                  <button class="btn btn-dark btn-sm" @click.stop="linkToPublicView(item)">View</button>
+                  <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="details(item.key)">Details</button>
+                  <button class="btn btn-outline-dark btn-sm" @click.stop="linkToPublicView(item)">View</button>
                 </div>
               </div>              
-              <a class="btn btn-warning btn-sm" href="/admin/add-archive">New Archive</a>
+              <a class="btn btn-dark btn-sm mb-4" href="/admin/add-archive">New Archive</a>
             </div>            
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <div class="card mb-3">
                 <div class="card-header">
                   Account Info
