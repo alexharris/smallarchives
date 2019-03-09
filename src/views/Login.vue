@@ -1,11 +1,5 @@
 <template>
-  <div class="login">  
-    <div class="row px-5 justify-content-center">
-        <div class="col-12 col-lg-9">  
-            <p class="h3">Small Archives.</p>
-            <h3 class="my-5">Log in</h3>
-        </div>         
-    </div>      
+  <div class="login">     
     <div class="row px-sm-5 justify-content-center">
       <div class="col-12 col-lg-5">
         
@@ -44,6 +38,11 @@
         password: ''
       }
     },
+    beforeCreate: function() {
+      if(firebase.auth().currentUser != null) {
+        this.$router.replace('admin')
+      }
+    },    
     methods: {
       login: function(e) {
         e.preventDefault();

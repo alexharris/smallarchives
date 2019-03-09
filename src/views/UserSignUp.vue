@@ -1,7 +1,7 @@
 <template>
   <div class="sign-up">  
     <div class="row justify-content-center">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6" v-if="notSignedUp">
         <h3 class="mb-5">Sign up</h3>
           <template v-if="error">
             <div class="alert alert-danger" show>{{error}}</div>
@@ -29,9 +29,13 @@
               </div>
             </div>                 
 
-            <div class="btn btn-warning" @click="checkUsername">Sign Up</div>
+            <div class="btn btn-dark" @click="checkUsername">Sign Up</div>
           </form>
           <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
+      </div>
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6" v-else>
+        <h2>you've got mail</h2>
+        <p>Thanks for signing up! We sent you an email with a link in it. Please click the link to verify the email address.</p>
       </div>
     </div>
   </div>
@@ -46,7 +50,13 @@
         email: '',
         password: '',
         displayName: '',
-        error: null
+        error: null,
+        notSignedUp: true
+      }
+    },
+    beforeCreate: function() {
+      if(firebase.auth().currentUser != null) {
+        this.$router.replace('admin')
       }
     },
     methods: {
@@ -89,11 +99,28 @@
                   // start tracking number of assets
                   firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).set({
                       numberOfItems: 0
-                  })                  
+                  })
+
+                  var newUser = firebase.auth().currentUser;
+
+                  this.notSignedUp = false
+
+                  //send verification email
+                  newUser.sendEmailVerification().then(function() {
+                    // Email sent.
+                    
+                  }).catch(function(error) {
+                    // An error happened.
+                  });
+
                   // tell the store to check about the user
                   this.$store.dispatch('setUser')
-                  //then redirect user to home         
-                  this.$router.replace('admin')
+
+
+                  
+
+                  // //then redirect user to home         
+                  // this.$router.replace('admin')
               })
               .catch(function(error) {
                   console.error("Error writing document: ", error);
@@ -116,7 +143,7 @@
     computed: {
       nameState () {
         return this.displayName.length > 2 ? true : false
-      },
+      }
               
     }    
   }

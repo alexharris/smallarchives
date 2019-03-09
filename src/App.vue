@@ -2,7 +2,7 @@
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
         <nav class="navbar navbar-expand-lg " >
-          <a class="navbar-brand" href="/"><img src="/img/sa-logo.jpg" class="float-left logo mr-2" />SMALL ARCHIVES</a>
+          <a class="navbar-brand" href="/"><img src="/img/sa-logo.svg" class="float-left logo mr-2" />SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -27,7 +27,6 @@
             <a href="/Contact">Contact</a>.
         </div>
       </footer>  -->       
-
 
   </div>
 </template>
@@ -126,7 +125,6 @@ export default {
       padding: 0;
       color: $blue;
       text-decoration: none;
-      border-bottom: 2px solid $blue;
       &:hover {
         text-decoration: none;
         border-bottom: 2px solid $pink;
