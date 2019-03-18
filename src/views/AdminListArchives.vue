@@ -1,5 +1,5 @@
 <template>
-  <div class="row px-sm-5 justify-content-center">
+  <div class="row">
     <div class="col-12">
       <div class="row">
         <div class="col-8" v-if="archives.length == 0">
@@ -10,18 +10,20 @@
         <div class="col-12 col-md-8" v-else>
           <h4>Your Archives:</h4>
           <div v-for="item in archives" class="card mb-3">
-            <div class="card-header">{{item.title}}</div>
+            <div class="card-header">{{item.title}} <button class="btn btn-outline-dark btn-sm mr-2 float-right" @click.stop="linkToPublicView(item)">View</button></div>
             <div class="card-body">
-              <p><strong>Description:</strong> {{item.desc}}</p>
-              <p><strong>Created:</strong> {{item.dateCreated}}</p>
+              <span><strong>Description:</strong> {{item.desc}}</span><br/>
+              <span><strong>Created:</strong> {{item.dateCreated}}</span>
               
             </div>
             <div class="card-footer">
               <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="details(item.key)">Details</button>
-              <button class="btn btn-outline-dark btn-sm" @click.stop="linkToPublicView(item)">View</button>
+              
+              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="editarchives(item.key)">Edit</button>
             </div>
-          </div>              
-          <a class="btn btn-dark btn-sm mb-4" href="/admin/add-archive">New Archive</a>
+          </div>         
+          <a v-if="archives.length <= 2 " class="btn btn-dark btn-sm mb-4" href="/admin/add-archive">New Archive</a>
+          <div v-else>You have reached the limit of 3 archives.</div>
         </div>            
         <div class="col-12 col-md-4">
           <div class="card mb-3">
@@ -146,7 +148,13 @@ export default {
                   }).catch(function(error) {
                     // An error happened.
                   });
-    }  
+    },
+    editarchive (id) {
+      this.$router.push({
+        name: 'AdminEditArchive',
+        params: { id: id }
+      })
+    },      
   },
   computed: {
     emailVerified () {

@@ -4,16 +4,20 @@
         <nav class="navbar navbar-expand-lg " >
           <a class="navbar-brand" href="/"><img src="/img/sa-logo.svg" class="float-left logo mr-2" />SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarText" v-if="user">
-            <ul class="navbar-nav mr-auto" v-if="user">
-              <li class="nav-item">
-                <a class="nav-link" href="/admin/archives">Dashboard</a>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item" v-if="user">
+                <a class="nav-link"  href="/admin/archives">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" @click="this.logout">Logout</a>
+                <a class="nav-link" href="/about">About</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/login" v-if="!user">Login</a>
+              </li>                
+              <li class="nav-item" v-if="user"><a class="nav-link" href="" @click="logout()">Logout</a></li>            
             </ul>
           </div>
         </nav>      
@@ -45,14 +49,6 @@ export default {
     }
   }, 
   methods: {
-    logout: function() {
-    	firebase.auth().signOut().then(() => {
-    		this.setUser()
-	      this.$router.push({
-	        name: 'login'
-	      })    		
-    	})
-    },
    setUser: function() {
       this.$store.dispatch('setUser');
     },
@@ -60,7 +56,15 @@ export default {
       this.$router.push({
         name: 'login'
       })      
-    }  
+    },
+    logout: function() {
+      firebase.auth().signOut().then(() => {
+        this.setUser()
+        this.$router.push({
+          name: 'login'
+        })        
+      })
+    },
   },
   created() {
     // when the app is created run the set user method
@@ -76,7 +80,7 @@ export default {
 
   $blue: #0011cf;
   $pink: #fff4e6;
-  $red: #ff0000;
+  $red: #824c71;
 
   @font-face {
     font-family: 'Inter';
@@ -95,6 +99,10 @@ export default {
 
   h1,h2,h3,h4,h5 {
     font-family: 'inter', sans-serif !important;
+  }
+
+  p {
+    margin: 2em 0;
   }
 
   body {
@@ -125,8 +133,10 @@ export default {
       padding: 0;
       color: $blue;
       text-decoration: none;
+      border-bottom: 2px solid $pink;
       &:hover {
         text-decoration: none;
+        color: $red;
         border-bottom: 2px solid $pink;
       }
       .logo {
@@ -134,10 +144,21 @@ export default {
         height: 30px;
       }
     }
-    a {
-      border-bottom: 0px;
+    .nav-item a {
+      padding-bottom: 8px;
+      border-bottom: 0;
+      &:hover {
+        padding-bottom: 8px;
+      }
     }
   }
+
+  .navbar-toggler-icon {
+    color: $blue;
+    padding-top: 4px;
+  }
+
+
 
   img {
     max-width: 100%;
@@ -160,9 +181,8 @@ export default {
     &:hover {
       padding-bottom: 4px;
       text-decoration: none;
-      color: red;
+      color: $red;
       border-bottom: 2px solid $pink;
-
     }
   }
 
@@ -187,7 +207,7 @@ export default {
   .card.border-danger {
     border: 1px solid $red;
     background-color: transparent;
-    color: red;
+    color: $red;
     & .card-header {
       background-color: transparent;
       border-bottom: 1px solid $red;
@@ -254,8 +274,8 @@ export default {
       border-top: 1px solid $blue;
     }
   }
-
-  .nav-tabs {
+ 
+ header .nav-tabs {
     border-bottom: 1px solid $blue;
     .nav-link.active {
       color: $blue;

@@ -26,7 +26,7 @@ import PublicHome from '@/views/PublicHome'
 import PublicProfile from '@/views/PublicProfile'
 import PublicArchive from '@/views/PublicArchive'
 import PublicAsset from '@/views/PublicAsset'
-import PublicContact from '@/views/PublicContact'
+import PublicAbout from '@/views/PublicAbout'
 
 Vue.use(Router);
 
@@ -86,9 +86,9 @@ const router = new Router({
       ]      
     },
     {
-      path: "/contact",
-      name: "PublicContact",
-      component: PublicContact
+      path: "/about",
+      name: "PublicAbout",
+      component: PublicAbout
     },     
     {
       path: "/login",

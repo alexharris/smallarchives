@@ -61,6 +61,8 @@
     },
     methods: {
       checkUsername: function() {
+        this.displayName = this.displayName.toLowerCase()
+        
         if(this.displayName != '') {
           firebase.firestore().collection('users').where("displayName", "==", this.displayName)
           .get()

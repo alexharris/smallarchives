@@ -35,11 +35,11 @@
         </nav>        
         <div class="collapse py-4" id="collapseExample">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-xs-3">
               <form>
                 <div class="form-group">                
                   <div class="input-group input-group-sm">
-                   <div class="input-group-prepend">
+                    <div class="input-group-prepend">
                       <label class="input-group-text" for="inputGroupSelect02">Type</label>
                     </div> 
                     <select class="custom-select " v-model="selectedAssetType">
@@ -48,13 +48,12 @@
                     </select>
                     <div class="input-group-append" v-if="selectedAssetType != 'All'">
                       <button class="btn btn-danger" type="button" id="button-addon1" @click="clearFilter()"><font-awesome-icon icon="times" size="1x" /></button>
-                    </div>                                     
-                 
+                    </div>
                   </div>
                 </div>
               </form>
             </div> 
-            <div class="col-3">
+            <div class="col-12 col-xs-3">
               <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
                 <label class="form-check-label" for="exampleCheck1">Has location</label>
