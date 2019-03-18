@@ -4,7 +4,7 @@
       <div class="col-12 col-xl-10">
         <div class="row mb-5 py-3">
           <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
-            <ArchiveHeaderImage />
+            <ArchiveHeaderImage v-bind:archiveId="this.archiveId"/>
           </div>  
           <div class="col-12 col-md-9 mb-4">      
             <h1 class="h1 pb-3">{{archive.title}}</h1>
@@ -90,6 +90,7 @@ export default {
       uid: '',
       key: '',
       archive: {},
+      archiveId: this.$route.params.archive_id, 
       username: this.$route.params.username,
       creationDate: '',
       headerImage: '',
@@ -145,9 +146,8 @@ export default {
     },
     getArchiveDetails: function() {
       var uid = this.uid
-      var archiveId = this.$route.params.archive_id
 
-      sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
+      sa.archiveDocumentDbRef(uid, this.archiveId).get().then((doc) => {
         if (doc.exists) {
 
           this.key = doc.id;
@@ -162,9 +162,8 @@ export default {
     createAssetArray: function() {
 
       var uid = this.uid
-      var archiveId = this.$route.params.archive_id
 
-      sa.assetCollectionDbRef(uid, archiveId)
+      sa.assetCollectionDbRef(uid, this.archiveId)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

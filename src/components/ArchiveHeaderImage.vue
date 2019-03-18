@@ -12,6 +12,7 @@ import sa from '../sa'
 
 export default {
   name: "ArchiveHeaderImage", 
+  props: ['archiveId'],
   data() {
   	return {
   		headerImage: '',
@@ -22,6 +23,12 @@ export default {
     this.getUidFromUsername()
   	
   },
+  watch: { 
+    //watch the archiveId prop for changes, and change value when it does
+    archiveId: function(newVal, oldVal) { // watch it
+      console.log(newVal)
+    },
+  },   
   methods: {
     async getUidFromUsername() {
       // this component is used on both the front end and back end, so it needs to check both the route and currentuser for username
@@ -38,7 +45,7 @@ export default {
   	getHeaderFileName() {
 
       var uid = this.uid
-      var archiveId = this.$route.params.archive_id
+      var archiveId = this.archiveId
 
   		sa.archiveDocumentDbRef(uid, archiveId).get().then((doc) => {
   			if (doc.exists) {
@@ -58,7 +65,7 @@ export default {
   	getHeaderImage: function() {
 
       var uid = this.uid
-      var archiveId = this.$route.params.archive_id
+      var archiveId = this.archiveId
       var fileName = this.headerFileName
 
   		sa.archiveStorageRef(uid, archiveId, fileName, 'thumb_').getDownloadURL().then((url) => {

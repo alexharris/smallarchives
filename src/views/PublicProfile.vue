@@ -1,15 +1,23 @@
 <template>
-  <div class="profile">
-    <h1>Profile</h1>
-    <ul>
-      <li>{{ displayName }}</li>
-      <li>{{ uid }}</li>
-    </ul>
-    <ul id="example-1">
-      <li v-for="item in archives">
-        <a href="#" @click.stop="details(item)">{{ item.title }}</a>
-      </li>
-    </ul>        
+  <div class="profile row justify-content-center">
+    <div class="col-10">
+      <h3 class="my-4">User Info</h3>
+      <ul>
+        <li><strong>Username:</strong> {{ displayName }}</li>
+        <li><strong>User ID:</strong> {{ uid }}</li>
+      </ul>
+      <h3 class="my-4">Archives</h3>
+      <ul class="list-unstyled">
+
+        <li v-for="item in archives" class="media">
+          <ArchiveHeaderImage v-bind:archiveId="item.key" class="mr-3"/>
+          <div class="media-body">
+            <h5 class="mt-0 mb-1"><a href="#" @click.stop="details(item)">{{ item.title }}</a></h5>
+            <p>{{item.desc}}</p>
+          </div>
+        </li>
+      </ul>  
+    </div>      
   </div>
 </template>
 
@@ -17,6 +25,7 @@
 
 import firebase from 'firebase'
 import sa from '../sa'
+import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 
 export default {
   name: "PublicProfile",
@@ -26,13 +35,16 @@ export default {
       uid: '',
     }
   },
+  components: {
+    ArchiveHeaderImage
+  },
   created() {
     this.getUidFromUsername()
   },
   computed: {
     displayName: function() {
       return this.$route.params.username
-    }  
+    }
   },
   methods: {
     async getUidFromUsername() {

@@ -8,7 +8,7 @@
           <a class="btn btn-dark" href="/admin/add-archive">New Archive</a>   
         </div>
         <div class="col-12 col-md-8" v-else>
-          <h4>Your Archives:</h4>
+          <h4 class="mb-4">Your Archives</h4>
           <div v-for="item in archives" class="card mb-3">
             <div class="card-header">{{item.title}} <button class="btn btn-outline-dark btn-sm mr-2 float-right" @click.stop="linkToPublicView(item)">View</button></div>
             <div class="card-body">
