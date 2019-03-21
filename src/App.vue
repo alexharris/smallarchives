@@ -80,7 +80,7 @@ export default {
 
   $blue: #0011cf;
   $pink: #fff4e6;
-  $red: #824c71;
+  $red: #f00;
 
   @font-face {
     font-family: 'Inter';

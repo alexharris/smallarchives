@@ -52,7 +52,17 @@
               <textarea class="form-control" id="inputDescription" v-model="assetDescription"></textarea>
               <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An account of the resource.</small>
             </div>
-          </div>          
+          </div>  
+          <!-- Tags -->
+          <div class="form-group row">
+            <label for="inputTags" class="col-sm-2 col-form-label">Tags</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="inputTags" multiple v-model="selectedTags">
+                <option v-for="tag in tags">{{tag.tagTitle}}</option>
+              </select>
+              <small v-if="helpSwitcherValue" class="help-text form-text text-muted">A name given to the resource.</small>
+            </div>
+          </div>                   
 
         </div> <!-- end first tab -->
         <!-- Start second tab -->
@@ -311,6 +321,8 @@ export default {
       selectedAssetMediaType: '',
       assetType: '',
       assetSrc: '',
+      tags: [],
+      selectedTags: [],
       uid: '',
       formErrors: false,
       loading: null,
@@ -358,12 +370,16 @@ export default {
         this.assetDescription = doc.data().assetDescription
         this.assetMediaType = doc.data().assetMediaType
         this.assetType = doc.data().assetType
+        this.selectedTags = doc.data().tags
       } else {
         console.log("No such document!");
       }
     }).then(() => {
       this.getAssetSrc()
     });
+
+    // load the tags from the central source
+    this.getTags()
 
     
 
@@ -381,7 +397,23 @@ export default {
       }).catch(function(error) {
         console.log(error.message)
       })
-    },     
+    }, 
+    getTags() {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id 
+      this.tags = [];   
+
+      sa.tagCollectionDbRef(uid,archiveId)
+      .get()
+      .then((querySnapshot) => {
+
+        querySnapshot.forEach((doc) => {
+          this.tags.push({
+            tagTitle: doc.data().tagTitle
+          });
+        });
+      });     
+    },        
     onSubmit (evt) {
       evt.preventDefault()
 
@@ -423,6 +455,7 @@ export default {
           assetSource: this.assetSource,
           assetSubject: this.assetSubject,
           assetType: this.assetType,
+          tags: this.selectedTags
         }).then(() => {
           console.log('asset updated!')
           this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})

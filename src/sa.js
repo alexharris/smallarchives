@@ -69,7 +69,25 @@ var sa = {
 	*/
 	userArchivesDocumentDbRef(uid) {
 		return firebase.firestore().collection('archives').doc(uid)
-	}, 		 
+	}, 	
+	/**
+	* Returns a reference to the "tags" collection of a userarchives
+	* @param uid - The logged in user's ID
+	*/
+	tagCollectionDbRef(uid, archiveId) {
+		return firebase.firestore().collection("archives").doc(uid).collection("userarchives").doc(archiveId).collection('tags')
+	},
+	/**
+	* Returns a reference to a specific, existing tag document that exists on an archive record, not on an asset
+	* @param uid - The logged in user's ID
+	* @param archiveId - The id of the archive that the tag belongs to
+	* @param tagId - The id of the tag desired
+	* Notes:
+	* Usually, this is called from "created()" in a view and params are retrieved from URL
+	*/
+	tagDocumentDbRef(uid, archiveId, tagId) {
+		return firebase.firestore().collection('archives').doc(uid).collection('userarchives').doc(archiveId).collection('tags').doc(tagId);
+	},		
 	/**
 	* ,---.   ,--.                                      
 	*'   .-',-'  '-. ,---. ,--.--. ,--,--. ,---.  ,---. 

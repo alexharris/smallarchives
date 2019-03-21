@@ -42,7 +42,7 @@
             </div>
           </div> 
           <hr class="my-4" />                                          
-          <div class="btn btn-warning" type="submit" @click="onSubmit">Submit</div>
+          <div class="btn btn-dark" type="submit" @click="onSubmit">Submit</div>
         </form>
       </div>
     </div>

@@ -19,7 +19,7 @@
             <div class="card-footer">
               <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="details(item.key)">Details</button>
               
-              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="editarchives(item.key)">Edit</button>
+              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="editarchive(item.key)">Edit</button>
             </div>
           </div>         
           <a v-if="archives.length <= 2 " class="btn btn-dark btn-sm mb-4" href="/admin/add-archive">New Archive</a>
@@ -152,7 +152,7 @@ export default {
     editarchive (id) {
       this.$router.push({
         name: 'AdminEditArchive',
-        params: { id: id }
+        params: { archive_id: id }
       })
     },      
   },

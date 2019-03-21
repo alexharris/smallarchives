@@ -26,8 +26,8 @@
           <div class="row">
             <div class="col-sm-2">Header Image</div>
             <div class="cols-m-10">
-              <ArchiveHeaderImage />
-              <div @click.stop="archive.headerImage = ''" class="btn btn-info my-4">Remove</div>
+              <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
+              <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
             </div>
           </div>
         </div>
@@ -41,6 +41,19 @@
       <hr class="my-4" />
       <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update Archive</button>
       <hr class="my-4" />
+      <h1 class="h4">Tags</h1>   
+      <hr class="my-4" /> 
+      <form class="form-inline mb-4">
+        <label class="sr-only" for="inlineFormInputName2">Name</label>
+        <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="Jane Doe" v-model="newTag">
+        <div class="btn btn-dark" v-on:click.stop="addTag">Add Tag</div>
+      </form>   
+      <div class="tags h4">  
+        <span class="badge badge-warning mr-2" v-for="tag in tags">
+          {{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 badge-close" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" />
+        </span>
+      </div>
+
       <div class="col-12" >
         <div class=" card-deck">
             <!--  Card one -->
@@ -87,7 +100,10 @@ export default {
       originalHeaderImage: '',
       newHeaderImage: '',
       numberOfItems: 0,
-      dateCreated: ''
+      dateCreated: '',
+      newTag: '',
+      tags: [],
+      newTags: []
     }
   },
   created () {
@@ -101,6 +117,7 @@ export default {
         this.archive = doc.data();
         this.dateCreated = sa.getFormattedDate(doc.data().dateCreated)
         this.originalHeaderImage = doc.data().headerImage
+        this.getTags()
       } else {
         alert("No such document!");
       }
@@ -148,9 +165,98 @@ export default {
     goBack() {
       this.$router.push({ name: 'AdminShowArchive', params: { archive_id: this.$route.params.archive_id }})
     },
+    getTags() {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id 
+      this.tags = [];     
+      sa.tagCollectionDbRef(uid,archiveId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.tags.push({
+            tagTitle: doc.data().tagTitle,
+            tagId: doc.id
+          });
+        });
+      });     
+    },
+    addTag(evt) {
+      evt.preventDefault()
+
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id      
+
+      sa.tagCollectionDbRef(uid, archiveId).add({
+        tagTitle: this.newTag
+      }).catch((error) => {
+        alert("Error adding document: ", error);
+      }).then(() => {
+        // get a new list of tags which will include the just added
+        this.getTags()
+        //clear the field
+        this.newTag = ''
+      })
+    },
+    deleteTagFromArchive(tagId, tagTitle) {
+
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+      // delete the tag from the archive record
+      sa.tagDocumentDbRef(uid, archiveId, tagId).delete().then(() =>{
+          console.log("Tag successfully deleted from archive");
+          this.deleteTagFromAsset(tagTitle)
+          this.getTags();
+      }).catch(function(error) {
+          console.error("Error removing tag: ", error);
+      });
+      
+    },
+    deleteTagFromAsset(tagTitle) {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+      console.log('tag targeted: ' + tagTitle);
+      this.newTags = []
+      // get all assets that contain a specific tag
+      sa.assetCollectionDbRef(uid, archiveId).where('tags', 'array-contains', tagTitle)
+      .get()
+      .then((querySnapshot) => {
+        console.log(this.newTags)
+        console.log('building up new array')
+        querySnapshot.forEach((doc) => {
+          // go through each tag
+          this.newTags = []
+          for( var i = 0; i < doc.data().tags.length; i++){ 
+             if ( doc.data().tags[i] != tagTitle) {
+
+               this.newTags.push(doc.data().tags[i])  
+             }
+          }
+           this.updateTagsOnAsset(doc.id, this.newTags)
+        });
+          console.log('New tag array:')
+          console.log(this.newTags)        
+      }).then(() => {
+        // console.log('now add back new array')
+        // sa.assetCollectionDbRef(uid, archiveId).where('tags', 'array-contains', tagTitle).update({
+        //   tags: newTags
+        // })        
+      })
+    },
+    updateTagsOnAsset(assetId, tags) {
+
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+
+      console.log(assetId)
+      console.log(tags)
+      sa.assetDocumentDbRef(uid, archiveId, assetId).update({
+          "tags": tags
+      })
+      .then(function() {
+          console.log("Document successfully updated!");
+      });
+    },
     deletearchive (id) {
-
-
 
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id     
@@ -161,8 +267,6 @@ export default {
       * 3. Delete the asset's data
       * 4. Delete the archive itself
       */
-
-      
 
       // 1: get all of the assets associated with the archive
       sa.assetCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
@@ -231,3 +335,11 @@ export default {
  
 }
 </script>
+
+<style lang="scss">
+
+  .tags {
+    size: 2em;
+  }
+
+</style>
