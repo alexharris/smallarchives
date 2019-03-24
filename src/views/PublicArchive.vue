@@ -35,7 +35,7 @@
         </nav>        
         <div class="collapse py-4" id="collapseExample">
           <div class="row">
-            <div class="col-12 col-xs-3">
+            <div class="col-12 col-md-3">
               <form>
                 <div class="form-group">                
                   <div class="input-group input-group-sm">
@@ -47,22 +47,41 @@
                       <option v-for="type in uniqueAssetTypes">{{type}}</option>
                     </select>
                     <div class="input-group-append" v-if="selectedAssetType != 'All'">
-                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearFilter()"><font-awesome-icon icon="times" size="1x" /></button>
+                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearAssetTypeFilter()"><font-awesome-icon icon="times" size="1x" /></button>
                     </div>
                   </div>
                 </div>
               </form>
             </div> 
-            <div class="col-12 col-xs-3">
+
+            <div class="col-12 col-md-3">
+              <form>
+                <div class="form-group">                
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect02">Tags</label>
+                    </div> 
+                    <select class="custom-select " v-model="selectedTag">
+                      <option :selected="true">None</option>
+                      <option v-for="tag in tags">{{tag.tagTitle}}</option>
+                    </select>
+                    <div class="input-group-append" v-if="selectedTag != 'None'">
+                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearTagFilter()"><font-awesome-icon icon="times" size="1x" /></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-12 col-md-3">
               <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
                 <label class="form-check-label" for="exampleCheck1">Has location</label>
               </div>              
-            </div>
+            </div>            
           </div>
-        </div>
-        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>  
-        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>
+        </div> 
+        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" v-bind:filteredTag="this.selectedTag"/>  
+        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" v-bind:filteredTag="this.selectedTag"/>
         <PublicMapAssets v-show="this.viewType == 'map'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>                   
       </div>        
     </div>
@@ -97,7 +116,9 @@ export default {
       assets: [],
       viewType: 'grid',
       selectedAssetType: 'All',
-      selectedHasLocation: false
+      selectedHasLocation: false,
+      tags: [],
+      selectedTag: 'None'
     }
   },
   components: {
@@ -142,6 +163,7 @@ export default {
         this.$router.push('/404')
       }      
       this.getArchiveDetails()
+      this.getArchiveTags()
       this.createAssetArray()
     },
     getArchiveDetails: function() {
@@ -157,6 +179,21 @@ export default {
         } else {
           this.$router.push('/404')
         }
+      });
+    },
+    getArchiveTags: function() {
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+      this.tags = [];   
+
+      sa.tagCollectionDbRef(uid,archiveId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.tags.push({
+            tagTitle: doc.data().tagTitle
+          });
+        });
       });
     },
     createAssetArray: function() {
@@ -186,9 +223,12 @@ export default {
     switchViewType: function(e) {
       console.log(e)
     },
-    clearFilter: function() {
+    clearAssetTypeFilter: function() {
       this.selectedAssetType = 'All'
-    }
+    },
+    clearTagFilter: function() {
+      this.selectedTag = 'None'
+    }    
   }
 }
 </script>

@@ -57,7 +57,7 @@ import sa from '../sa'
 
 export default {
   name: "PublicGridAssets",
-  props: ['filteredAssetType', 'filteredCoverageLat'],
+  props: ['filteredAssetType', 'filteredCoverageLat', 'filteredTag'],
   data() {
   	return {
   	uid: '',
@@ -74,7 +74,12 @@ export default {
     //watch the filteredCoverageLat prop for changes, and change the asset array when it does
     filteredCoverageLat: function(newVal, oldVal) { // watch it
       this.filterAssetArray()
-    }    
+    },
+    //watch the filteredTag prop for changes, and change the asset array when it does
+    filteredTag: function(newVal, oldVal) { // watch it
+      console.log('tag toggled')
+      this.filterAssetArray()
+    }       
   },    
 
   created() {
@@ -125,7 +130,8 @@ export default {
               assetFileName: doc.data().assetFileName,
               assetYoutubeId: doc.data().assetYoutubeId,
               assetSrc: assetSrcUrl,
-              assetCoverageLat: doc.data().assetCoverageLat
+              assetCoverageLat: doc.data().assetCoverageLat,
+              assetTags: doc.data().tags
             });    
             //tell the parent about how many assets there are
             this.$store.commit('setAssetCount', this.assets.length)  
@@ -154,23 +160,38 @@ export default {
       if(this.filteredCoverageLat === true) { //this means the box is checked and only items with location should appear
         this.renderedAssets = this.assets.filter((item) => {
           return item.assetCoverageLat != false
-        })  
+        })
+
         if(this.filteredAssetType != 'All'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
             return item.assetType === this.filteredAssetType
           })  
-        }
+        }   
+
+        if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
+          this.renderedAssets = this.renderedAssets.filter((item) => {
+            console.log('hello')
+            return item.assetTags.includes(this.filteredTag ) 
+          })  
+        }               
+
       } else { // this means show things with or without location
-        this.renderedAssets = this.assets.filter((item) => {
-          return item.assetCoverageLat != true
-        })  
+        this.renderedAssets = this.assets // start with all of them
+
         if(this.filteredAssetType != 'All'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
             return item.assetType === this.filteredAssetType
           })  
         }
+
+        if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
+          this.renderedAssets = this.renderedAssets.filter((item) => {
+            console.log('hello')
+            return item.assetTags.includes(this.filteredTag ) 
+          })  
+        }        
       }
-    },        
+    },         
     viewSingleAsset: function(assetId) {
       this.$router.push({
         name: 'PublicAsset',
