@@ -3,56 +3,79 @@
     <div class="col-12 col-sm-10">
       <div class="btn btn-dark" @click.stop="goBack">Back</div>
       <hr class="my-4" />
-      <h1 class="h4">Basic Info</h1>   
-      <hr class="my-4" /> 
-      <form>
-      
-        <!-- Title -->
-        <div class="form-group row">
-          <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
-          <div class="col-sm-10">
-            <input class="form-control" id="inputTitle" v-model="archive.title">
-          </div>
-        </div> 
-        <!-- Desc -->
-        <div class="form-group row">
-          <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
-          <div class="col-sm-10">
-            <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
-          </div>
-        </div>   
-        <!-- Header Image -->
-        <div v-if="archive.headerImage" class="my-4">
-          <div class="row">
-            <div class="col-sm-2">Header Image</div>
-            <div class="cols-m-10">
-              <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
-              <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
+      <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Tags</a>
+        </li>
+      </ul>     
+      <div id="myTabContent" class="tab-content my-5">   
+      <!-- Start first tab -->
+        <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">   
+
+          <h1 class="h4">Basic Info</h1>   
+          <hr class="my-4" /> 
+          <form>
+          
+            <!-- Title -->
+            <div class="form-group row">
+              <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-10">
+                <input class="form-control" id="inputTitle" v-model="archive.title">
+              </div>
+            </div> 
+            <!-- Desc -->
+            <div class="form-group row">
+              <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
+              </div>
+            </div>   
+            <!-- Header Image -->
+            <div v-if="archive.headerImage" class="my-4">
+              <div class="row">
+                <div class="col-sm-2">Header Image</div>
+                <div class="cols-m-10">
+                  <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
+                  <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
+                </div>
+              </div>
             </div>
-          </div>
+            <div v-else>
+              <div class="form-group row">
+                <label for="inputFile" class="col-sm-2 col-form-label">Header Image</label>
+                <input type="file" id="inputFile" v-on:change="handleFileChange">
+              </div>
+            </div>        
+          </form> 
+          <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update Archive</button>
         </div>
-        <div v-else>
-          <div class="form-group row">
-            <label for="inputFile" class="col-sm-2 col-form-label">Header Image</label>
-            <input type="file" id="inputFile" v-on:change="handleFileChange">
+        <!-- start second tab -->
+        <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+          <hr class="my-4" />
+          <h1 class="h4">Tags</h1>   
+          <hr class="my-4" />   
+          <div class="tags">  
+            <span v-if="tags.length == 0">
+              <p>This archive currently does not have any tags! Add a tag below and click <strong>Add</strong>. Once a tag has been added, you can add it to an asset by editing the asset.</p>
+            </span>
+            <span class="badge badge-warning mr-2" v-for="tag in tags" v-else>
+              {{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 badge-close" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" />
+            </span>
+            <form class="form-inline mt-4">
+              <label class="sr-only" for="inlineFormInputName2">Name</label>
+              <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
+              <div class="btn btn-dark" v-on:click.stop="addTag">Add</div>
+            </form> 
           </div>
-        </div>        
-      </form>   
-      <hr class="my-4" />
-      <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update Archive</button>
-      <hr class="my-4" />
-      <h1 class="h4">Tags</h1>   
-      <hr class="my-4" /> 
-      <form class="form-inline mb-4">
-        <label class="sr-only" for="inlineFormInputName2">Name</label>
-        <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="Jane Doe" v-model="newTag">
-        <div class="btn btn-dark" v-on:click.stop="addTag">Add Tag</div>
-      </form>   
-      <div class="tags h4">  
-        <span class="badge badge-warning mr-2" v-for="tag in tags">
-          {{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 badge-close" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" />
-        </span>
+        </div>          
       </div>
+
+      <hr class="my-4" />
+      
+
 
       <div class="col-12" >
         <div class=" card-deck">

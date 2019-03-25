@@ -135,8 +135,9 @@ export default {
         }   
         if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
-            console.log('hello')
-            return item.assetTags.includes(this.filteredTag ) 
+            if(item.assetTags) {
+              return item.assetTags.includes(this.filteredTag) 
+            }
           })  
         }               
 
@@ -151,8 +152,9 @@ export default {
 
         if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
-            
-            return item.assetTags.includes(this.filteredTag ) 
+            if(item.assetTags) {
+              return item.assetTags.includes(this.filteredTag) 
+            }
           })  
         }        
       }
