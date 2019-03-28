@@ -108,7 +108,7 @@ const router = new Router({
     {
       path: '/u/:username/:archive_id',
       name: 'PublicArchive',
-      component: PublicArchive
+      component: PublicArchive,
     },
     {
       path: '/u/:username/:archive_id/:asset_id',

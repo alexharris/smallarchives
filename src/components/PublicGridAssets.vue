@@ -1,54 +1,46 @@
-<template
-
->
-<div>
+<template>
+  <div>
     <div v-if="assets.length == 0">
         <p>This archive has no items.</p>
     </div>
     <div v-else>
-    
-          <div v-if="renderedAssets.length !== 0" class="row px-n5">
-            <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3 grid-item mb-3 p-md-4" v-for="item in renderedAssets">
-              <div class="media-display">
-                <div v-if="item.assetMediaType === 'image'">       
-                  <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
-                </div>
-                <div v-if="item.assetMediaType === 'pdf'">      
-                <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)"><img src="/img/pdf-page.svg" /></a> </div>
-                  <!-- <font-awesome-icon :icon="['far', 'file']" size="10x" /> -->
-                </div>
-                <div v-if="item.assetMediaType === 'audio'">       
-                  <figure>
-                      <audio
-                          controls
-                          :src="item.assetSrc">
-                              Your browser does not support the
-                              <code>audio</code> element.
-                      </audio>
-                  </figure>
-                </div> 
-                <div v-if="item.assetMediaType === 'youtube'">       
-                  <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="youtubeThumbnail(item)" /></a>
-                </div>                                 
-              </div>
-              <div class="grid-title">
-                <small>{{item.assetType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.assetCoverageLat"/></small>
-                <p class="my-2"><a href="" @click.stop="viewSingleAsset(item.assetId)">{{truncatedTitle(item.assetTitle, 50)}}</a></p>
-
-              </div>
+      <div v-if="renderedAssets.length !== 0" class="row px-n5">
+        <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3 grid-item mb-3 p-md-4" v-for="item in renderedAssets">
+          <div class="media-display">
+            <div v-if="item.assetMediaType === 'image'">       
+              <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="item.assetSrc" /></a>
             </div>
+            <div v-if="item.assetMediaType === 'pdf'">      
+              <div class="pdf-placeholder"><a href="" @click.stop="viewSingleAsset(item.assetId)"><img src="/img/pdf-page.svg" /></a> </div>
+            </div>
+            <div v-if="item.assetMediaType === 'audio'">       
+              <figure>
+                  <audio
+                      controls
+                      :src="item.assetSrc">
+                          Your browser does not support the
+                          <code>audio</code> element.
+                  </audio>
+              </figure>
+            </div> 
+            <div v-if="item.assetMediaType === 'youtube'">       
+              <a href="" @click.stop="viewSingleAsset(item.assetId)"><img :src="youtubeThumbnail(item)" /></a>
+            </div>                                 
           </div>
-          <div class="row" v-else>
-            <div class="col-12">
-              <p></p>
-              <p>There are no results. Please modify filters.</p>
-            </div>
-          </div>          
-
-     
+          <div class="grid-title">
+            <small>{{item.assetType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.assetCoverageLat"/></small>
+            <p class="my-2"><a href="" @click.stop="viewSingleAsset(item.assetId)">{{truncatedTitle(item.assetTitle, 50)}}</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="row" v-else>
+        <div class="col-12">
+          <p></p>
+          <p>There are no results. Please modify filters.</p>
+        </div>
+      </div>          
     </div>
-	</div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -57,13 +49,14 @@ import sa from '../sa'
 
 export default {
   name: "PublicGridAssets",
-  props: ['filteredAssetType', 'filteredCoverageLat', 'filteredTag'],
+  props: ['filteredAssetType', 'filteredCoverageLat'],
   data() {
   	return {
   	uid: '',
 		url: '',
     assets: [],
-    renderedAssets: []
+    renderedAssets: [],
+    // tag: this.$route.query.tag
   	}
   },
   watch: { 
@@ -75,16 +68,24 @@ export default {
     filteredCoverageLat: function(newVal, oldVal) { // watch it
       this.filterAssetArray()
     },
-    //watch the filteredTag prop for changes, and change the asset array when it does
-    filteredTag: function(newVal, oldVal) { // watch it
-      console.log('tag toggled')
+    //watch tag for changes, and change the asset array when it does
+    '$route.query.tag': function() { // watch it
+      // this.tag = this.$route.query.tag
       this.filterAssetArray()
-    }       
+    }          
   },    
-
   created() {
     this.getUidFromUsername()
-  },    
+  },  
+  computed: {
+    tag() {
+      if(this.$route.query.tag === undefined) {
+        return 'None' 
+      } else {
+        return this.$route.query.tag
+      }
+    }  
+  },     
   methods: {     
     async getUidFromUsername() {
       var username = this.$route.params.username
@@ -139,7 +140,8 @@ export default {
             this.assets.sort(this.sortByTitle)
 
             // load rendered assets
-            this.renderedAssets = this.assets         
+            this.renderedAssets = this.assets     
+            this.filterAssetArray()    
           })
         });
 
@@ -168,10 +170,10 @@ export default {
           })  
         }   
 
-        if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
+        if(this.tag != 'None'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
             if(item.assetTags) {
-              return item.assetTags.includes(this.filteredTag) 
+              return item.assetTags.includes(this.tag) 
             }
           })  
         }               
@@ -185,10 +187,11 @@ export default {
           })  
         }
 
-        if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
+        if(this.tag != 'None'){ // then we check to see if a specific type is selected
+
           this.renderedAssets = this.renderedAssets.filter((item) => {
            if(item.assetTags) {
-            return item.assetTags.includes(this.filteredTag) 
+            return item.assetTags.includes(this.tag) 
            }
           })  
         }        

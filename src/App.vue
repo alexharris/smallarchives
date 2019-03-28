@@ -102,20 +102,20 @@ export default {
   }
 
   p {
-    margin: 2em 0;
+    margin: 1em 0;
   }
 
-  body {
-    font-family: Georgia, sans-serif !important;
-    background-color: #fff4e6;
-    color: $blue;
-    font-size: 18px;
-    line-height: 35px;
-  }
+  // body {
+  //   font-family: Georgia, sans-serif !important;
+  //   background-color: #fff4e6;
+  //   color: $blue;
+  //   font-size: 18px;
+  //   line-height: 35px;
+  // }
 
-  hr {
-    border-top: 1px solid $blue !important;
-  }
+  // hr {
+  //   border-top: 1px solid $blue !important;
+  // }
 
   .wrapper {
     padding-top: 40px;
@@ -131,13 +131,13 @@ export default {
     // border-bottom: 2px solid $blue;
     a.navbar-brand {
       padding: 0;
-      color: $blue;
-      text-decoration: none;
-      border-bottom: 2px solid $pink;
+      // color: $blue;
+      // text-decoration: none;
+      // border-bottom: 2px solid $pink;
       &:hover {
-        text-decoration: none;
-        color: $red;
-        border-bottom: 2px solid $pink;
+        // text-decoration: none;
+        // color: $red;
+        // border-bottom: 2px solid $pink;
       }
       .logo {
         width: 30px;
@@ -170,122 +170,123 @@ export default {
     }
   }
 
-  .dashed-top-border {
-    border-top: 1px dashed #000;
-  }
+  // .dashed-top-border {
+  //   border-top: 1px dashed #000;
+  // }
 
   a {
     color: $blue;
-    border-bottom: 2px solid $blue;
-    padding-bottom: 4px;
+    // border-bottom: 2px solid $blue;
+    // padding-bottom: 4px;
     &:hover {
-      padding-bottom: 4px;
+      // padding-bottom: 4px;
       text-decoration: none;
       color: $red;
-      border-bottom: 2px solid $pink;
+      cursor: pointer;
+      // border-bottom: 2px solid $pink;
     }
   }
 
-  a svg:hover {
-    color: #474747;
-  }
+  // a svg:hover {
+  //   color: #474747;
+  // }
 
-  .card {
-    border: 1px solid $blue;
-    background-color: transparent;
-    & .card-header {
-      background-color: $pink;
-      border-bottom: 1px solid $blue;
-      font-weight: 800;
-    }
-    & .card-footer {
-      background-color: $pink;
-      border-top: 1px solid $blue;
-    }
-  }  
+  // .card {
+  //   border: 1px solid $blue;
+  //   background-color: transparent;
+  //   & .card-header {
+  //     background-color: $pink;
+  //     border-bottom: 1px solid $blue;
+  //     font-weight: 800;
+  //   }
+  //   & .card-footer {
+  //     background-color: $pink;
+  //     border-top: 1px solid $blue;
+  //   }
+  // }  
 
-  .card.border-danger {
-    border: 1px solid $red;
-    background-color: transparent;
-    color: $red;
-    & .card-header {
-      background-color: transparent;
-      border-bottom: 1px solid $red;
-            font-weight: 800;
-    }
-    & .card-footer {
-      background-color: $red;
-      border-top: 1px solid $red;
-    }
-  }  
+  // .card.border-danger {
+  //   border: 1px solid $red;
+  //   background-color: transparent;
+  //   color: $red;
+  //   & .card-header {
+  //     background-color: transparent;
+  //     border-bottom: 1px solid $red;
+  //           font-weight: 800;
+  //   }
+  //   & .card-footer {
+  //     background-color: $red;
+  //     border-top: 1px solid $red;
+  //   }
+  // }  
 
-  .btn:hover {
-    cursor: pointer;
-  }
+  // .btn:hover {
+  //   cursor: pointer;
+  // }
 
-  .btn.btn-outline-danger {
-      &:hover {
-          color: white !important;
-          border: 2px solid $red;
-      }
-  }  
+  // .btn.btn-outline-danger {
+  //     &:hover {
+  //         color: white !important;
+  //         border: 2px solid $red;
+  //     }
+  // }  
 
-  .btn-dark {
-      background-color: $blue;
-      color: $pink;
-      border: 1px solid $blue;
-      font-family: 'inter';
-      &:hover {
-          color: $blue;
-          background-color: $pink;
-          border: 1px solid $blue;
-      }
-  }
+  // .btn-dark {
+  //     background-color: $blue;
+  //     color: $pink;
+  //     border: 1px solid $blue;
+  //     font-family: 'inter';
+  //     &:hover {
+  //         color: $blue;
+  //         background-color: $pink;
+  //         border: 1px solid $blue;
+  //     }
+  // }
 
-  .btn-outline-dark {
-    color: $blue;
-    border: 1px solid $blue;
-    &:not(:disabled):not(.disabled).active {
-      background-color: $blue;
-      color: $pink;
-    }
-    &:hover {
-        color: $pink;
-        background-color: $blue;
-        border: 1px solid $blue;
-    }
-  }  
+  // .btn-outline-dark {
+  //   color: $blue;
+  //   border: 1px solid $blue;
+  //   &:not(:disabled):not(.disabled).active {
+  //     background-color: $blue;
+  //     color: $pink;
+  //   }
+  //   &:hover {
+  //       color: $pink;
+  //       background-color: $blue;
+  //       border: 1px solid $blue;
+  //   }
+  // }  
 
-  .btn-light {
-      background-color: $pink;
-      color: $blue;
-      border: 1px solid $pink;
-      font-family: 'inter';
-      &:hover {
-          color: $pink;
-          background-color: $blue;
-      }        
-  }   
+  // .btn-light {
+  //     background-color: $pink;
+  //     color: $blue;
+  //     border: 1px solid $pink;
+  //     font-family: 'inter';
+  //     &:hover {
+  //         color: $pink;
+  //         background-color: $blue;
+  //     }        
+  // }   
 
-  .table {
-    color: $blue;
-    & thead th {
-      border-bottom: 1px solid $blue;
-      border-top: 1px solid $blue;
-    }
-  }
+  // .table {
+  //   color: $blue;
+  //   & thead th {
+  //     border-bottom: 1px solid $blue;
+  //     border-top: 1px solid $blue;
+  //   }
+  // }
  
- header .nav-tabs {
-    border-bottom: 1px solid $blue;
-    .nav-link.active {
-      color: $blue;
-      border: 1px solid $blue;
-      border-bottom: 0px;
-      background-color: transparent;
-    }
-  }
+ // header .nav-tabs {
+ //    border-bottom: 1px solid $blue;
+ //    .nav-link.active {
+ //      color: $blue;
+ //      border: 1px solid $blue;
+ //      border-bottom: 0px;
+ //      background-color: transparent;
+ //    }
+ //  }
 
-  footer {
-    border-top: 1px solid #000;
-  }
+  // footer {
+  //   border-top: 1px solid #000;
+  // }
 </style>

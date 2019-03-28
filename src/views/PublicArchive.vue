@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div class="row mb-5 px-md-5 pb-4 justify-content-center">
       <div class="col-12 col-xl-10">
         <div class="row mb-5 py-3">
@@ -13,13 +14,11 @@
           </div>
         </div>
         <nav class="navbar nav-light">
-          <div class="btn-group btn-group-toggle">
-            <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+           <span class="navbar-text">
+            <a class="btn btn-outline-secondary mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Filter <font-awesome-icon icon="filter" size="1x" />
               <!-- <font-awesome-icon icon="times" size="1x" /> -->
             </a>
-          </div>
-          <span class="navbar-text">
             <div class="btn-group btn-group-toggle">
               <label for="grid" class="btn btn-outline-secondary" v-bind:class="gridViewType">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
@@ -27,6 +26,7 @@
               <label for="list" class="btn btn-outline-secondary" v-bind:class="listViewType">
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
+
 <!--               <label for="map" class="btn btn-outline-secondary" v-bind:class="mapViewType">
                 <input type="radio" id="map" value="map" v-model="viewType"> <font-awesome-icon icon="map-marker-alt" size="1x" />
               </label>  -->             
@@ -61,8 +61,8 @@
                     <div class="input-group-prepend">
                       <label class="input-group-text" for="inputGroupSelect02">Tags</label>
                     </div> 
-                    <select class="custom-select " v-model="selectedTag">
-                      <option :selected="true">None</option>
+                    <select class="custom-select tagFilter" v-on:change="filteredTag" v-model="selectFormTag">
+                      <option>None</option>
                       <option v-for="tag in tags">{{tag.tagTitle}}</option>
                     </select>
                     <div class="input-group-append" v-if="selectedTag != 'None'">
@@ -80,8 +80,8 @@
             </div>            
           </div>
         </div> 
-        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" v-bind:filteredTag="this.selectedTag"/>  
-        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" v-bind:filteredTag="this.selectedTag"/>
+        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
+        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" />
         <PublicMapAssets v-show="this.viewType == 'map'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>                   
       </div>        
     </div>
@@ -111,6 +111,7 @@ export default {
       archive: {},
       archiveId: this.$route.params.archive_id, 
       username: this.$route.params.username,
+      selectFormTag: 'None',
       creationDate: '',
       headerImage: '',
       assets: [],
@@ -118,7 +119,7 @@ export default {
       selectedAssetType: 'All',
       selectedHasLocation: false,
       tags: [],
-      selectedTag: 'None'
+
     }
   },
   components: {
@@ -148,6 +149,13 @@ export default {
     mapViewType() {
       return {
         active: this.viewType == 'map'
+      }
+    },
+    selectedTag() {
+      if(this.$route.query.tag === undefined) {
+        return 'None' 
+      } else {
+        return this.$route.query.tag
       }
     }  
   },
@@ -220,14 +228,21 @@ export default {
     goToUser: function(username) {
       this.$router.push({ name: 'PublicProfile', params: { username: this.username }})
     },
-    switchViewType: function(e) {
-      console.log(e)
-    },
+    filteredTag(e) {
+      this.$router.push({
+        name: 'PublicArchive',
+        query: { tag: e.target.value }
+      })
+    },    
     clearAssetTypeFilter: function() {
       this.selectedAssetType = 'All'
     },
     clearTagFilter: function() {
-      this.selectedTag = 'None'
+      this.selectFormTag = 'None'
+      this.$router.push({
+        name: 'PublicArchive',
+        query: { tag: 'None' }
+      })
     }    
   }
 }
@@ -242,22 +257,22 @@ export default {
     color: inherit;
   }
 
-  .btn-outline-secondary {
-    color: $blue;
-    border: 1px solid $blue;
-    &:not(:disabled):not(.disabled).active {
-      background-color: $blue;
-      color: $pink;
-    }
-    &:hover {
-        color: $pink;
-        background-color: $blue;
-        border: 1px solid $blue;
-    }
-  }
+  // .btn-outline-secondary {
+  //   color: $blue;
+  //   border: 1px solid $blue;
+  //   &:not(:disabled):not(.disabled).active {
+  //     background-color: $blue;
+  //     color: $pink;
+  //   }
+  //   &:hover {
+  //       color: $pink;
+  //       background-color: $blue;
+  //       border: 1px solid $blue;
+  //   }
+  // }
 
-  .collapse {
-    border-top: 2px solid $blue;
-    border-bottom: 2px solid $blue;
-  }
+  // .collapse {
+  //   border-top: 2px solid $blue;
+  //   border-bottom: 2px solid $blue;
+  // }
 </style>

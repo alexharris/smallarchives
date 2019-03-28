@@ -44,13 +44,14 @@ import sa from '../sa'
 
 export default {
   name: "DisplayArchiveItems",
-  props: ['filteredAssetType', 'filteredCoverageLat', 'filteredTag'],
+  props: ['filteredAssetType', 'filteredCoverageLat'],
   data() {
   	return {
   	uid: '',
 		url: '',
     assets: [],
     renderedAssets: [],
+    // tag: this.$route.query.tag
   	}
   },
   watch: { 
@@ -63,15 +64,25 @@ export default {
       console.log('location toggled')
       this.filterAssetArray()
     },
-    //watch the filteredTag prop for changes, and change the asset array when it does
-    filteredTag: function(newVal, oldVal) { // watch it
-      console.log('tag toggled')
+    //watch tag for changes, and change the asset array when it does
+    '$route.query.tag': function() { // watch it
+      // this.tag = this.$route.query.tag
       this.filterAssetArray()
-    }        
+    }       
+
   },  
   created() {
     this.getUidFromUsername()
-  },    
+  },   
+  computed: {
+    tag() {
+      if(this.$route.query.tag === undefined) {
+        return 'None' 
+      } else {
+        return this.$route.query.tag
+      }
+    }  
+  }, 
   methods: {     
     async getUidFromUsername() {
       var username = this.$route.params.username
@@ -108,7 +119,8 @@ export default {
         this.assets.sort(this.sortByTitle)
 
         // load rendered assets
-        this.renderedAssets = this.assets     
+        this.renderedAssets = this.assets   
+        this.filterAssetArray()
       });
     },
     // this just does some quick sorting
@@ -120,7 +132,7 @@ export default {
       return 0;
     },       
     filterAssetArray: function() {
-
+      
       this.renderedAssets = []
 
       if(this.filteredCoverageLat === true) { //this means the box is checked and only items with location should appear
@@ -133,10 +145,10 @@ export default {
             return item.assetType === this.filteredAssetType
           })  
         }   
-        if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
+        if(this.tag != 'None'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
             if(item.assetTags) {
-              return item.assetTags.includes(this.filteredTag) 
+              return item.assetTags.includes(this.tag) 
             }
           })  
         }               
@@ -150,15 +162,16 @@ export default {
           })  
         }
 
-        if(this.filteredTag != 'None'){ // then we check to see if a specific type is selected
+        if(this.tag != 'None'){ // then we check to see if a specific type is selected
+
           this.renderedAssets = this.renderedAssets.filter((item) => {
             if(item.assetTags) {
-              return item.assetTags.includes(this.filteredTag) 
+              return item.assetTags.includes(this.tag) 
             }
           })  
         }        
       }
-    },     
+    },   
     viewSingleAsset: function(assetId) {
       this.$router.push({
         name: 'PublicAsset',

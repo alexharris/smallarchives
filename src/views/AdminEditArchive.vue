@@ -10,12 +10,16 @@
         <li class="nav-item">
           <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Tags</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
+        </li>        
       </ul>     
       <div id="myTabContent" class="tab-content my-5">   
       <!-- Start first tab -->
         <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">   
 
-          <h1 class="h4">Basic Info</h1>   
+          <h2 class="h4">Basic Info</h2>
+          <p>Update basic info about this archive.</p>
           <hr class="my-4" /> 
           <form>
           
@@ -50,16 +54,16 @@
               </div>
             </div>        
           </form> 
-          <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update Archive</button>
+          <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update</button>
         </div>
         <!-- start second tab -->
         <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
-          <hr class="my-4" />
-          <h1 class="h4">Tags</h1>   
+          <h2 class="h4">Tags</h2>   
+          <p>Tags are used to group items together. Add tags here to make them available when creating or updating an item.</p>
           <hr class="my-4" />   
           <div class="tags">  
             <span v-if="tags.length == 0">
-              <p>This archive currently does not have any tags! Add a tag below and click <strong>Add</strong>. Once a tag has been added, you can add it to an asset by editing the asset.</p>
+              <p>This archive currently does not have any tags! Add a tag below and click <strong>Add</strong>.</p>
             </span>
             <span class="badge badge-warning mr-2" v-for="tag in tags" v-else>
               {{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 badge-close" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" />
@@ -70,35 +74,56 @@
               <div class="btn btn-dark" v-on:click.stop="addTag">Add</div>
             </form> 
           </div>
-        </div>          
+        </div>  
+
+        <!-- start third tab -->
+        <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+          <h2 class="h4">Administration</h2>   
+          <hr class="my-4" />   
+          <div class="admin">
+            <div class=" card-deck">
+              <!--  Card one -->
+              <div class="card">
+                <div class="card-header">Archive Info</div>
+                <div class="card-body">
+                  <ul class="list-unstyled">
+                    <li><strong>Created:</strong> {{dateCreated}}</li>
+                    <li><strong>ID:</strong> {{key}}</li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Card two -->
+              <div class="card border-danger">
+                <div class="card-header">Delete Archive</div>
+                <div class="card-body">
+                  <p>Warning: Deleting this archive is permanent and you can't get it back.</p>
+                  <a class="btn btn-outline-danger" data-target="#exampleModal" data-toggle="modal">Delete</a>
+                </div>
+              </div>             
+            </div> 
+          </div>
+        </div>                  
       </div>
-
-      <hr class="my-4" />
       
-
-
-      <div class="col-12" >
-        <div class=" card-deck">
-            <!--  Card one -->
-            <div class="card ml-0 bg-transparent">
-              <div class="card-header">Archive Info</div>
-              <div class="card-body">
-                <ul class="list-unstyled">
-                  <li><strong>Created:</strong> {{dateCreated}}</li>
-                  <li><strong>ID:</strong> {{key}}</li>
-                </ul>
-              </div>
-            </div>
-            <!-- Card two -->
-            <div class="card border-danger ml-0 bg-transparent">
-              <div class="card-header">Delete</div>
-              <div class="card-body">
-                <p>Warning: Deleting this archive is permanent and you can't get it back</p>
-                <a class="btn btn-outline-danger" @click.stop="deletearchive(key)">Delete</a>
-              </div>
-            </div>          
-        </div> 
-      </div>       
+    </div>
+      <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">CONFIRM DELETION!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>          
+          <div class="modal-body">           
+            <p>Are you totally sure you want to delete this archive? You really can't get it back at all.</p>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-outline-danger" @click.stop="deletearchive(key)">I understand, please delete</a>
+          </div>          
+        </div>
+      </div>
     </div>
   </div>
    

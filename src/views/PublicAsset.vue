@@ -41,7 +41,7 @@
 				<font-awesome-icon icon="folder" size="1x" class="mr-2" /><a href="" @click.stop="goBack">{{archiveTitle}}</a>
 				<h1 class="my-4 h3">{{asset.assetTitle}}</h1>
 				<p>{{asset.assetDescription}}</p>
-				<span class="badge badge-warning mr-2" v-for="tag in asset.tags">{{tag}}</span>
+				<span class="badge badge-warning mr-2" v-for="tag in asset.tags"><a @click.stop="goToTag(tag)">{{tag}}</a></span>
 
 	            <div class="card ml-0 mt-5 bg-transparent">
 	              <div class="card-header">Metadata</div>
@@ -216,7 +216,11 @@ export default {
 	},  
 	goBack() {
 	  this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
-	},      
+	},   
+	goToTag(tag) {
+		console.log(tag)
+	  // this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
+	}, 	   
   },
   
 
