@@ -218,8 +218,10 @@ export default {
 	  this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
 	},   
 	goToTag(tag) {
-		console.log(tag)
-	  // this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
+        this.$router.push({
+        	name: 'PublicArchive',
+        	query: { tag: tag }
+      	})
 	}, 	   
   },
   

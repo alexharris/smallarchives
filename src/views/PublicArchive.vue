@@ -111,7 +111,6 @@ export default {
       archive: {},
       archiveId: this.$route.params.archive_id, 
       username: this.$route.params.username,
-      selectFormTag: 'None',
       creationDate: '',
       headerImage: '',
       assets: [],
@@ -157,7 +156,14 @@ export default {
       } else {
         return this.$route.query.tag
       }
-    }  
+    },
+    selectFormTag() {
+      if(this.$route.query.tag === undefined) {
+        return 'None' 
+      } else {
+        return this.$route.query.tag
+      }
+    },   
   },
   created () {
     this.getUidFromUsername()
