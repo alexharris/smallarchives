@@ -42,12 +42,12 @@
                     <div class="input-group-prepend">
                       <label class="input-group-text" for="inputGroupSelect02">Type</label>
                     </div> 
-                    <select class="custom-select " v-model="selectedAssetType">
+                    <select class="custom-select mediaTypeFilter" v-on:change="updateQueryParams" :value="selectedMediaType" ref="mediaTypeFilter">
                       <option :selected="true">All</option>
                       <option v-for="type in uniqueAssetTypes">{{type}}</option>
                     </select>
-                    <div class="input-group-append" v-if="selectedAssetType != 'All'">
-                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearAssetTypeFilter()"><font-awesome-icon icon="times" size="1x" /></button>
+                    <div class="input-group-append" v-if="selectedMediaType != 'All'">
+                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearMediaTypeFilter()"><font-awesome-icon icon="times" size="1x" /></button>
                     </div>
                   </div>
                 </div>
@@ -61,7 +61,7 @@
                     <div class="input-group-prepend">
                       <label class="input-group-text" for="inputGroupSelect02">Tags</label>
                     </div> 
-                    <select class="custom-select tagFilter" v-on:change="filteredTag" v-model="selectFormTag">
+                    <select class="custom-select tagFilter" v-on:change="updateQueryParams" :value="selectedTag" ref="tagFilter">
                       <option>None</option>
                       <option v-for="tag in tags">{{tag.tagTitle}}</option>
                     </select>
@@ -80,9 +80,9 @@
             </div>            
           </div>
         </div> 
-        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
-        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation" />
-        <PublicMapAssets v-show="this.viewType == 'map'" v-bind:filteredAssetType="this.selectedAssetType" v-bind:filteredCoverageLat="this.selectedHasLocation"/>                   
+        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
+        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
+        <PublicMapAssets v-show="this.viewType == 'map'" v-bind:filteredCoverageLat="this.selectedHasLocation"/>                   
       </div>        
     </div>
 
@@ -115,7 +115,6 @@ export default {
       headerImage: '',
       assets: [],
       viewType: 'grid',
-      selectedAssetType: 'All',
       selectedHasLocation: false,
       tags: [],
 
@@ -156,12 +155,12 @@ export default {
       } else {
         return this.$route.query.tag
       }
-    },
-    selectFormTag() {
-      if(this.$route.query.tag === undefined) {
-        return 'None' 
+    }, 
+    selectedMediaType() {
+      if(this.$route.query.mediaType === undefined) {
+        return 'All' 
       } else {
-        return this.$route.query.tag
+        return this.$route.query.mediaType
       }
     },   
   },
@@ -234,20 +233,53 @@ export default {
     goToUser: function(username) {
       this.$router.push({ name: 'PublicProfile', params: { username: this.username }})
     },
-    filteredTag(e) {
+    updateQueryParams(e) {
+  
+
+      // build new object of various parameters
+
+      // // First, get the existing values from the URL
+      var currentTag = this.$route.query.tag
+      var currentMediaType = this.$route.query.mediaType
+
+      // // Then, update based on which filter was changed
+      if(e.target.classList.contains('tagFilter')) {
+        currentTag = e.target.value
+      }
+
+      if(e.target.classList.contains('mediaTypeFilter')) {
+        currentMediaType = e.target.value
+      }
+
+      var queryObject = {
+        tag: currentTag,
+        mediaType: currentMediaType
+      }
+
       this.$router.push({
         name: 'PublicArchive',
-        query: { tag: e.target.value }
-      })
-    },    
-    clearAssetTypeFilter: function() {
-      this.selectedAssetType = 'All'
+        query: queryObject
+      })        
+
+    },           
+    clearMediaTypeFilter: function() {
+      this.$refs.mediaTypeFilter.value = 'All'
+      this.$router.push({
+        name: 'PublicArchive',
+        query: { 
+          mediaType: 'All',
+          tag: this.$route.query.tag
+        }
+      })      
     },
     clearTagFilter: function() {
-      this.selectFormTag = 'None'
+      this.$refs.tagFilter.value = 'None'
       this.$router.push({
         name: 'PublicArchive',
-        query: { tag: 'None' }
+        query: { 
+          tag: 'None',
+          mediaType: this.$route.query.mediaType
+        }
       })
     }    
   }

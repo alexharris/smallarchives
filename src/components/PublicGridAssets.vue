@@ -49,30 +49,28 @@ import sa from '../sa'
 
 export default {
   name: "PublicGridAssets",
-  props: ['filteredAssetType', 'filteredCoverageLat'],
+  props: ['filteredCoverageLat'],
   data() {
   	return {
   	uid: '',
 		url: '',
     assets: [],
     renderedAssets: [],
-    // tag: this.$route.query.tag
   	}
   },
   watch: { 
-    //watch the filteredAssetType prop for changes, and change the asset array when it does
-    filteredAssetType: function(newVal, oldVal) { // watch it
-      this.filterAssetArray()
-    },
     //watch the filteredCoverageLat prop for changes, and change the asset array when it does
     filteredCoverageLat: function(newVal, oldVal) { // watch it
       this.filterAssetArray()
     },
     //watch tag for changes, and change the asset array when it does
     '$route.query.tag': function() { // watch it
-      // this.tag = this.$route.query.tag
       this.filterAssetArray()
-    }          
+    },
+    //watch tag for changes, and change the asset array when it does
+    '$route.query.mediaType': function() { // watch it
+      this.filterAssetArray()
+    }               
   },    
   created() {
     this.getUidFromUsername()
@@ -84,6 +82,13 @@ export default {
       } else {
         return this.$route.query.tag
       }
+    },
+    mediaType() {
+      if(this.$route.query.mediaType === undefined) {
+        return 'All' 
+      } else {
+        return this.$route.query.mediaType
+      }      
     }  
   },     
   methods: {     
@@ -157,6 +162,8 @@ export default {
     },      
     filterAssetArray: function() {
 
+      
+
       this.renderedAssets = []
 
       if(this.filteredCoverageLat === true) { //this means the box is checked and only items with location should appear
@@ -164,9 +171,9 @@ export default {
           return item.assetCoverageLat != false
         })
 
-        if(this.filteredAssetType != 'All'){ // then we check to see if a specific type is selected
+        if(this.mediaType != 'All'){ // then we check to see if a specific type is selected
           this.renderedAssets = this.renderedAssets.filter((item) => {
-            return item.assetType === this.filteredAssetType
+            return item.assetType === this.mediaType
           })  
         }   
 
@@ -179,11 +186,14 @@ export default {
         }               
 
       } else { // this means show things with or without location
+
+
         this.renderedAssets = this.assets // start with all of them
 
-        if(this.filteredAssetType != 'All'){ // then we check to see if a specific type is selected
+        if(this.mediaType != 'All'){ // then we check to see if a specific type is selected
+          console.log(this.filteredAssetType)
           this.renderedAssets = this.renderedAssets.filter((item) => {
-            return item.assetType === this.filteredAssetType
+            return item.assetType === this.mediaType
           })  
         }
 
