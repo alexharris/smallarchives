@@ -1,24 +1,28 @@
 <template>
   <div class="row px-sm-5 justify-content-center">
     <div class="col-12">
-      <div class="btn btn-dark" @click.stop="goBack">Back</div>
+      <div class="btn btn-outline-dark" @click.stop="goBack">Back</div>
       <div class="btn btn-outline-dark float-right" @click.stop="linkToPublicView(key)">View</div>
-      <div class="btn btn-outline-dark float-right mr-2" @click.stop="editarchive(key)">Edit</div>   
+  
       <hr class="my-4" />     
-      <div class="card"> 
+      <div class="card my-4"> 
+        <div class="card-header">
+          <h4 class="mb-0">Basic Info<div class="btn btn-link" @click.stop="editarchive(key)">Edit</div> </h4>
+        </div>
         <div class="card-body">
           <p><strong>Title:</strong> {{archive.title}}</p>
           <p><strong>Description:</strong> {{archive.desc}}</p>
         </div>
       </div>          
 
-      <div class="row my-4">
-          <div class="col"><h2>Items</h2></div>
+      <div class="row mt-5">
           <div class="col">
-            <div class="btn btn-dark float-right" @click.stop="addItemButton(key)">Add Item</div>
+            <h2>Items <div class="btn btn-link" @click.stop="addItemButton(key)"><font-awesome-icon icon="plus" size="1x" /></div></h2>
+            
           </div>
       </div>
       <ListAssets />  
+      <div class="btn btn-dark" @click.stop="addItemButton(key)"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
 
     </div>
   </div>

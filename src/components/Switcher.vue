@@ -69,9 +69,9 @@ export default {
 
 <style lang="scss">
 
-  $blue: #0011cf;
-  $pink: #fff4e6;
-  $red: #ff0000;
+  // $blue: #0011cf;
+  // $pink: #fff4e6;
+  // $red: #ff0000;
 
 .visual-label {
 	display: inline-block;
@@ -108,13 +108,14 @@ export default {
 	  left: 5px;
 	  width: 25px;
 	  height: 25px;
-	  background: $pink;
+	  background: white;
 	  border-radius: 25px;
 	  transition: 0.3s;
 	}
 
 	input:checked + label {
-	  background: $blue;
+	  // background: $blue;
+	  background: black;
 	}
 
 	input:checked + label:after {

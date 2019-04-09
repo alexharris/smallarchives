@@ -10,6 +10,7 @@ import NotFound from "@/views/NotFound.vue";
 // User
 import UserSignUp from "@/views/UserSignUp.vue";
 import UserProfile from "@/views/UserProfile.vue";
+import UserDirectory from "@/views/UserDirectory.vue";
 import EditUserProfile from "@/views/EditUserProfile.vue";
 
 // Admin
@@ -99,6 +100,11 @@ const router = new Router({
       path: "/sign-up",
       name: "UserSignUp",
       component: UserSignUp
+    },
+    {
+      path: "/users",
+      name: "UserDirectory",
+      component: UserDirectory
     },
     {
       path: "/u/:username",

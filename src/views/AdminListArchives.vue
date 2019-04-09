@@ -10,16 +10,16 @@
         <div class="col-12 col-md-8" v-else>
           <h4 class="mb-4">Your Archives</h4>
           <div v-for="item in archives" class="card mb-3">
-            <div class="card-header">{{item.title}} <button class="btn btn-outline-dark btn-sm mr-2 float-right" @click.stop="linkToPublicView(item)">View</button></div>
+            <div class="card-header"><h4 class="mb-0">{{item.title}}</h4></div>
             <div class="card-body">
               <span><strong>Description:</strong> {{item.desc}}</span><br/>
               <span><strong>Created:</strong> {{item.dateCreated}}</span>
               
             </div>
             <div class="card-footer">
-              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="details(item.key)">Details</button>
-              
-              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="editarchive(item.key)">Edit</button>
+              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="details(item.key)">Edit</button>
+              <!-- <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="editarchive(item.key)">Edit</button> -->
+              <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="linkToPublicView(item)">View</button>
             </div>
           </div>         
           <a v-if="archives.length <= 2 " class="btn btn-dark btn-sm mb-4" href="/admin/add-archive">New Archive</a>
@@ -148,13 +148,7 @@ export default {
                   }).catch(function(error) {
                     // An error happened.
                   });
-    },
-    editarchive (id) {
-      this.$router.push({
-        name: 'AdminEditArchive',
-        params: { archive_id: id }
-      })
-    },      
+    },     
   },
   computed: {
     emailVerified () {

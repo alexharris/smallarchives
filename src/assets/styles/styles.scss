@@ -1,0 +1,128 @@
+@import "../../assets/styles/bootstrap-overides.scss"; 
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
+@font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 400;
+    src: url("../Inter-Regular.woff2") format("woff2"),
+         url("../Inter-Regular.woff") format("woff");
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 800;
+    src: url("../Inter-ExtraBold.woff2") format("woff2"),
+         url("../Inter-ExtraBold.woff") format("woff");
+  }
+
+  h1,h2,h3,h4,h5 {
+    font-family: 'inter', sans-serif !important;
+  }
+
+  p {
+    margin: 1em 0;
+  }
+
+  // body {
+  //   font-family: Georgia, sans-serif !important;
+  //   background-color: #fff4e6;
+  //   color: $blue;
+  //   font-size: 18px;
+  //   line-height: 35px;
+  // }
+
+  // hr {
+  //   border-top: 1px solid $blue !important;
+  // }
+
+  .wrapper {
+    padding-top: 40px;
+    /*padding-bottom: 100px;*/
+  }
+  @media only screen and (max-device-width: 385px) { 
+    .wrapper {
+      padding-top: 40px;
+    }
+  }
+
+  header {
+
+    // border-bottom: 2px solid $blue;
+    a.navbar-brand {
+      padding: 0;
+      // color: $blue;
+      text-decoration: none;
+      // border-bottom: 2px solid $pink;
+      &:hover {
+        text-decoration: underline;
+        // color: $red;
+        // border-bottom: 2px solid $pink;
+        svg {
+          fill: $red;
+        }
+      }
+      svg {
+        width: 25px;
+        fill: $blue;
+        margin-bottom: 4px;
+        margin-right: 4px;
+      }
+      .logo {
+        width: 30px;
+        height: 30px;
+      }
+    }
+    .nav-item a {
+      padding-bottom: 8px;
+      border-bottom: 0;
+      text-decoration: none;
+      &:hover {
+        padding-bottom: 8px;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .navbar-toggler-icon {
+    color: $blue;
+    padding-top: 4px;
+  }
+
+
+
+  img {
+    max-width: 100%;
+  }
+
+  .img-link {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+
+
+  a {
+    color: $blue;
+    &:not(.btn):not(.nav-link):not(.navbar-brand) {
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    &:hover {
+      // padding-bottom: 4px;
+      text-decoration: underline;
+      color: $red;
+      cursor: pointer;
+      // border-bottom: 2px solid $pink;
+    }
+  }
+
+
+.btn {
+    &:hover {
+        cursor: pointer;
+    }
+}

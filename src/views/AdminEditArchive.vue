@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-12 col-sm-10">
-      <div class="btn btn-dark" @click.stop="goBack">Back</div>
+      <div class="btn btn-outline-dark" @click.stop="goBack">Back</div>
       <hr class="my-4" />
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">

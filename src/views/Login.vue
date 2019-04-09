@@ -1,7 +1,7 @@
 <template>
-  <div class="login">     
-    <div class="row px-sm-5 justify-content-center">
-      <div class="col-12 col-lg-5">
+   
+    <div class="row justify-content-center">
+      <div class="col-12 py-5 col-sm-8 col-lg-6">
         
         <form>
           <div class="form-group row">
@@ -16,16 +16,15 @@
               <input type="password" class="form-control" id="inputPassword" placeholder="" v-model="password">
             </div>
           </div>        
-          <button class="btn btn-outline-dark" type="submit" @click.stop="login">Submit</button>
+          <button class="btn btn-dark" type="submit" @click.stop="login">Sign In</button>
         </form>
         <!-- <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link></p>     -->
       </div>
-      <div class="col-12 col-lg-4 px-lg-5">
+      <!-- <div class="col-12 col-lg-4 px-lg-5"> -->
         <!-- This can come back once I can activate the "collect email address" twitter setting so that firebase can prevent duplicates, but that requires a terms of service and privacy policy which dont exist yet -->
 <!--         <button class="btn btn-primary" @click="twitter"><font-awesome-icon class="float-left pt-1 pb-2 mr-2" :icon="['fab', 'twitter']" size="2x" />Sign in with Twitter</button>    -->
-      </div>      
+      <!-- </div> -->      
     </div>
-  </div>
 </template>
 
 <script>

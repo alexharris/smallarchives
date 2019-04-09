@@ -3,7 +3,7 @@
     <div class="col-12 col-sm-10 col-lg-8">
       <div class="row">
         <div class="col-sm-8">
-          <div class="btn btn-dark" @click.stop="goBack" variant="dark">Back</div>
+          <div class="btn btn-outline-dark" @click.stop="goBack" variant="dark">Back</div>
         </div>
         <div class="col-sm-4">
 

@@ -2,7 +2,8 @@
 	<div id="app" class="d-flex flex-column h-100"> 
       <header>
         <nav class="navbar navbar-expand-lg " >
-          <a class="navbar-brand" href="/"><img src="/img/sa-logo.svg" class="float-left logo mr-2" />SMALL ARCHIVES</a>
+          <a class="navbar-brand" href="/">
+          <img src="../public/img/marble-icon.jpg" width="25" class="mb-1 mr-2" />SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
           </button>
@@ -78,114 +79,8 @@ export default {
 
 <style lang="scss">
 
-  $blue: #0011cf;
-  $pink: #fff4e6;
-  $red: #f00;
-
-  @font-face {
-    font-family: 'Inter';
-    font-style:  normal;
-    font-weight: 400;
-    src: url("./assets/Inter-Regular.woff2") format("woff2"),
-         url("./assets/Inter-Regular.woff") format("woff");
-  }
-  @font-face {
-    font-family: 'Inter';
-    font-style:  normal;
-    font-weight: 800;
-    src: url("./assets/Inter-ExtraBold.woff2") format("woff2"),
-         url("./assets/Inter-ExtraBold.woff") format("woff");
-  }
-
-  h1,h2,h3,h4,h5 {
-    font-family: 'inter', sans-serif !important;
-  }
-
-  p {
-    margin: 1em 0;
-  }
-
-  // body {
-  //   font-family: Georgia, sans-serif !important;
-  //   background-color: #fff4e6;
-  //   color: $blue;
-  //   font-size: 18px;
-  //   line-height: 35px;
-  // }
-
-  // hr {
-  //   border-top: 1px solid $blue !important;
-  // }
-
-  .wrapper {
-    padding-top: 40px;
-    /*padding-bottom: 100px;*/
-  }
-  @media only screen and (max-device-width: 385px) { 
-    .wrapper {
-      padding-top: 40px;
-    }
-  }
-
-  header {
-    // border-bottom: 2px solid $blue;
-    a.navbar-brand {
-      padding: 0;
-      // color: $blue;
-      // text-decoration: none;
-      // border-bottom: 2px solid $pink;
-      &:hover {
-        // text-decoration: none;
-        // color: $red;
-        // border-bottom: 2px solid $pink;
-      }
-      .logo {
-        width: 30px;
-        height: 30px;
-      }
-    }
-    .nav-item a {
-      padding-bottom: 8px;
-      border-bottom: 0;
-      &:hover {
-        padding-bottom: 8px;
-      }
-    }
-  }
-
-  .navbar-toggler-icon {
-    color: $blue;
-    padding-top: 4px;
-  }
 
 
-
-  img {
-    max-width: 100%;
-  }
-
-  .img-link {
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  // .dashed-top-border {
-  //   border-top: 1px dashed #000;
-  // }
-
-  a {
-    color: $blue;
-    // border-bottom: 2px solid $blue;
-    // padding-bottom: 4px;
-    &:hover {
-      // padding-bottom: 4px;
-      text-decoration: none;
-      color: $red;
-      cursor: pointer;
-      // border-bottom: 2px solid $pink;
-    }
-  }
 
   // a svg:hover {
   //   color: #474747;
