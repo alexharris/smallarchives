@@ -1,9 +1,8 @@
 <template>
-	<div id="app" class="d-flex flex-column h-100"> 
-      <header>
+	<div id="app" class="d-flex flex-column h-100" > 
+      <header v-if="!isArchive">
         <nav class="navbar navbar-expand-lg " >
-          <a class="navbar-brand" href="/">
-          <img src="../public/img/marble-icon.jpg" width="25" class="mb-1 mr-2" />SMALL ARCHIVES</a>
+          <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
           </button>
@@ -23,21 +22,22 @@
           </div>
         </nav>      
       </header> 	
-  		<div class="container-fluid wrapper flex-shrink-0" v-cloak> 		
+  		<div class="container-fluid wrapper flex-shrink-0" v-cloak> 
   			<router-view/>       
   		</div>  
-<!--       <footer class="footer py-3" v-if="user">
+ <!-- <footer class="footer py-3">
         <div class="container-fluid">
 
             <a href="/Contact">Contact</a>.
         </div>
-      </footer>  -->       
+      </footer>          -->
 
   </div>
 </template>
 
 <script>
 import firebase from 'firebase' 
+import { truncate } from 'fs';
 
 export default {
   name: "App",
@@ -47,6 +47,13 @@ export default {
     },
     displayName: function() {
 		  return this.$store.getters.getUser.email;
+    },
+    isArchive: function() {
+      if(this.$route.name == 'PublicArchive') {
+        return true;
+      } else {
+        return false;
+      }
     }
   }, 
   methods: {

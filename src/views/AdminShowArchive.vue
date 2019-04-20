@@ -21,7 +21,7 @@
             
           </div>
       </div>
-      <ListAssets />  
+      <ListItems />  
       <div class="btn btn-dark" @click.stop="addItemButton(key)"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
 
     </div>
@@ -32,13 +32,13 @@
 
 import firebase from 'firebase'
 import sa from '../sa'
-import ListAssets from '../components/ListAssets'
+import ListItems from '../components/ListItems'
 
 
 export default {
   name: 'AdminShowArchive',
   components: {
-    ListAssets
+    ListItems
   },  
   data () {
     return {
@@ -74,7 +74,7 @@ export default {
     },    
     addItemButton (id) {
       this.$router.push({
-        name: 'AdminCreateAsset',
+        name: 'AdminCreateItem',
         params: { id: id }
       })
     },

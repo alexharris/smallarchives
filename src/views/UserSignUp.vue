@@ -1,7 +1,7 @@
 <template>
   <div class="sign-up">  
-    <div class="row justify-content-center">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6" v-if="notSignedUp">
+    <div class="row justify-content-center" v-if="notSignedUp">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6" >
         <h3 class="mb-5">Sign up</h3>
           <template v-if="error">
             <div class="alert alert-danger" show>{{error}}</div>
@@ -12,6 +12,7 @@
               <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
               <div class="col-sm-10">
                 <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
+                <small class="help-text form-text text-muted">Your archives will be available at smallarchives.com/u/<em>username</em>.</small>
               </div>
             </div>
             <!-- Email -->
@@ -33,10 +34,22 @@
           </form>
           <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
       </div>
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6" v-else>
-        <h2>you've got mail</h2>
-        <p>Thanks for signing up! We sent you an email with a link in it. Please click the link to verify the email address.</p>
+      <!-- <div class="col-12 col-sm-2 col-md-4 col-lg-4" >
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="row justify-content-center" v-else>
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6" >
+        <h2>You've got mail.</h2>
+        <p>Thanks for signing up! We sent you an email with a link in it. Please click the link to verify your email address.</p>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -98,7 +111,7 @@
               })
               .then(() => {
                   console.log("Document successfully written!");
-                  // start tracking number of assets
+                  // start tracking number of items
                   firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).set({
                       numberOfItems: 0
                   })

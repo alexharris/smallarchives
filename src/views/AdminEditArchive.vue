@@ -78,7 +78,12 @@
 
         <!-- start third tab -->
         <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-          <h2 class="h4">Administration</h2>   
+          <h2 class="h4">Administration</h2>  
+           <form>
+              <input type="checkbox" id="checkbox" v-model="showMap">
+              <label for="checkbox" class="ml-2">Show Map View</label><br />
+              <div class="btn btn-dark" v-on:click.stop="saveAdmin">Save</div>
+           </form>
           <hr class="my-4" />   
           <div class="admin">
             <div class=" card-deck">
@@ -151,7 +156,8 @@ export default {
       dateCreated: '',
       newTag: '',
       tags: [],
-      newTags: []
+      newTags: [],
+      showMap: false
     }
   },
   created () {
@@ -166,6 +172,7 @@ export default {
         this.dateCreated = sa.getFormattedDate(doc.data().dateCreated)
         this.originalHeaderImage = doc.data().headerImage
         this.getTags()
+        this.showMap = doc.data().showMap
       } else {
         alert("No such document!");
       }
@@ -213,6 +220,18 @@ export default {
     goBack() {
       this.$router.push({ name: 'AdminShowArchive', params: { archive_id: this.$route.params.archive_id }})
     },
+    saveAdmin() {
+
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id    
+
+      sa.archiveDocumentDbRef(uid, archiveId).update({
+        showMap: this.showMap
+      }).catch((error) => {
+        console.log('Error: ' + error);
+      })      
+
+    },    
     getTags() {
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id 
@@ -252,20 +271,20 @@ export default {
       // delete the tag from the archive record
       sa.tagDocumentDbRef(uid, archiveId, tagId).delete().then(() =>{
           console.log("Tag successfully deleted from archive");
-          this.deleteTagFromAsset(tagTitle)
+          this.deleteTagFromItem(tagTitle)
           this.getTags();
       }).catch(function(error) {
           console.error("Error removing tag: ", error);
       });
       
     },
-    deleteTagFromAsset(tagTitle) {
+    deleteTagFromItem(tagTitle) {
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id
       console.log('tag targeted: ' + tagTitle);
       this.newTags = []
-      // get all assets that contain a specific tag
-      sa.assetCollectionDbRef(uid, archiveId).where('tags', 'array-contains', tagTitle)
+      // get all items that contain a specific tag
+      sa.itemCollectionDbRef(uid, archiveId).where('tags', 'array-contains', tagTitle)
       .get()
       .then((querySnapshot) => {
         console.log(this.newTags)
@@ -279,25 +298,25 @@ export default {
                this.newTags.push(doc.data().tags[i])  
              }
           }
-           this.updateTagsOnAsset(doc.id, this.newTags)
+           this.updateTagsOnItem(doc.id, this.newTags)
         });
           console.log('New tag array:')
           console.log(this.newTags)        
       }).then(() => {
         // console.log('now add back new array')
-        // sa.assetCollectionDbRef(uid, archiveId).where('tags', 'array-contains', tagTitle).update({
+        // sa.itemollectionDbRef(uid, archiveId).where('tags', 'array-contains', tagTitle).update({
         //   tags: newTags
         // })        
       })
     },
-    updateTagsOnAsset(assetId, tags) {
+    updateTagsOnItem(itemId, tags) {
 
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id
 
-      console.log(assetId)
+      console.log(itemId)
       console.log(tags)
-      sa.assetDocumentDbRef(uid, archiveId, assetId).update({
+      sa.itemocumentDbRef(uid, archiveId, itemId).update({
           "tags": tags
       })
       .then(function() {
@@ -310,31 +329,31 @@ export default {
       var archiveId = this.$route.params.archive_id     
 
       /**
-      * 1. Get all of the assets associated with this archive
+      * 1. Get all of the items associated with this archive
       * 2. Delete the images from storage associated with this archive
-      * 3. Delete the asset's data
+      * 3. Delete the item's data
       * 4. Delete the archive itself
       */
 
-      // 1: get all of the assets associated with the archive
-      sa.assetCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
+      // 1: get all of the items associated with the archive
+      sa.itemCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             // 2: Go through each one, get associated filename, and delete that file from storage
             
             this.numberOfItems = this.numberOfItems + 1 // track number of items to delete from total
   
-            // If this record has an assetFileName
-            if(doc.data().assetFileName != '') {
+            // If this record has an itemFileName
+            if(doc.data().itemFileName != '') {
               // Delete the main image
-              sa.assetStorageRef(uid, archiveId, doc.id, doc.data().assetFileName).delete()
+              sa.itemStorageRef(uid, archiveId, doc.id, doc.data().itemFileName).delete()
               // Delete the thumbnail
-              sa.assetStorageRef(uid, archiveId, doc.id, doc.data().assetFileName, 'thumb_').delete()
+              sa.itemStorageRef(uid, archiveId, doc.id, doc.data().itemFileName, 'thumb_').delete()
             }
-            // Delete the asset record
-            sa.assetDocumentDbRef(uid, archiveId, doc.id).delete().then(function() { 
-              console.log("Asset successfully deleted!");
+            // Delete the item record
+            sa.itemDocumentDbRef(uid, archiveId, doc.id).delete().then(function() { 
+              console.log("Item successfully deleted!");
             }).catch(function(error) {
-              console.error("Error removing asset: ", error);
+              console.error("Error removing item: ", error);
             });
           });
 

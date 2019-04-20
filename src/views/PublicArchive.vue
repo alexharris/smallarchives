@@ -3,15 +3,16 @@
 
     <div class="row mb-5 px-md-5 pb-4 justify-content-center">
       <div class="col-12 col-xl-10">
-        <div class="row mb-5 py-3">
+        <div class="row mb-1">
           <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
-            <ArchiveHeaderImage v-bind:archiveId="this.archiveId"/>
+            
           </div>  
-          <div class="col-12 col-md-9 mb-4">      
-            <h1 class="h1 pb-3">{{archive.title}}</h1>
-            <p>{{archive.desc}}</p>
-            <p><small>This archive contains <strong>{{assetCount}}</strong> items. <br />It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</small></p>            
+          <div class="col-12 mb-4 px-3 my-4">  
+            <ArchiveHeaderImage v-bind:archiveId="this.archiveId" class="float-right" />    
+            <h1 class="h3 pb-1">{{archive.title}}</h1>
+            <p>{{archive.desc}}</p> 
           </div>
+
         </div>
         <nav class="navbar nav-light">
            <span class="navbar-text">
@@ -19,7 +20,7 @@
               Filter <font-awesome-icon icon="filter" size="1x" />
               <!-- <font-awesome-icon icon="times" size="1x" /> -->
             </a>
-            <div class="btn-group btn-group-toggle">
+            <div class="btn-group btn-group-toggle mr-3">
               <label for="grid" class="btn btn-outline-secondary" v-bind:class="gridViewType">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
               </label>
@@ -27,12 +28,21 @@
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
 
-<!--               <label for="map" class="btn btn-outline-secondary" v-bind:class="mapViewType">
-                <input type="radio" id="map" value="map" v-model="viewType"> <font-awesome-icon icon="map-marker-alt" size="1x" />
-              </label>  -->             
-            </div>      
+               <label for="map" class="btn btn-outline-secondary" v-bind:class="mapViewType" v-if="showMap">
+                <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" />
+              </label>       
+            </div>  
+            <a class="btn btn-outline-secondary" data-toggle="collapse" href="#basicInfoCollapse" role="button" aria-expanded="false" aria-controls="basicInfoCollapse"><font-awesome-icon icon="question-circle" size="1x" /></a>    
           </span>  
-        </nav>        
+        </nav>   
+        <div class="collapse py-4" id="basicInfoCollapse">
+          <div class="row">
+            <div class="col-12">
+              <p>This archive contains <strong>{{itemCount}}</strong> items. It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</p>            
+            </div>
+          </div>
+        </div>
+             <!-- Filter collapse  -->
         <div class="collapse py-4" id="collapseExample">
           <div class="row">
             <div class="col-12 col-md-3">
@@ -44,7 +54,7 @@
                     </div> 
                     <select class="custom-select mediaTypeFilter" v-on:change="updateQueryParams" :value="selectedMediaType" ref="mediaTypeFilter">
                       <option :selected="true">All</option>
-                      <option v-for="type in uniqueAssetTypes">{{type}}</option>
+                      <option v-for="type in uniqueItemTypes">{{type}}</option>
                     </select>
                     <div class="input-group-append" v-if="selectedMediaType != 'All'">
                       <button class="btn btn-danger" type="button" id="button-addon1" @click="clearMediaTypeFilter()"><font-awesome-icon icon="times" size="1x" /></button>
@@ -80,10 +90,14 @@
             </div>            
           </div>
         </div> 
-        <PublicListAssets v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
-        <PublicGridAssets v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
-        <PublicMapAssets v-show="this.viewType == 'map'" v-bind:filteredCoverageLat="this.selectedHasLocation"/>                   
-      </div>        
+        <PublicListItems v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
+        <PublicGridItems v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
+        <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey"/>       
+       <div class="row my-5 py-5 justify-content-center">  
+         <small>Made with <a href="/">Small Archives</a></small>
+       </div>                      
+      </div>    
+
     </div>
 
 
@@ -94,9 +108,9 @@
 
 import firebase from 'firebase'
 import sa from '../sa'
-import PublicListAssets from '../components/PublicListAssets'
-import PublicGridAssets from '../components/PublicGridAssets'
-import PublicMapAssets from '../components/PublicMapAssets'
+import PublicListItems from '../components/PublicListItems'
+import PublicGridItems from '../components/PublicGridItems'
+import PublicMapItems from '../components/PublicMapItems'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import Switcher from '../components/Switcher'
 
@@ -113,26 +127,28 @@ export default {
       username: this.$route.params.username,
       creationDate: '',
       headerImage: '',
-      assets: [],
+      items: [],
       viewType: 'grid',
       selectedHasLocation: false,
       tags: [],
+      showMap: false,
+      mapComponentKey: 0
 
     }
   },
   components: {
-    PublicListAssets,
-    PublicGridAssets,
-    PublicMapAssets,
+    PublicListItems,
+    PublicGridItems,
+    PublicMapItems,
     ArchiveHeaderImage,
     Switcher   
   },
   computed: {
-    assetCount() {
-      return this.$store.getters.getAssetCount
+    itemCount() {
+      return this.$store.getters.getItemCount
     },
-    uniqueAssetTypes() {
-      return [...new Set(this.assets.map(p => p.assetType))]
+    uniqueItemTypes() {
+      return [...new Set(this.items.map(p => p.itemType))]
     },
     gridViewType() {
       return {
@@ -168,6 +184,9 @@ export default {
     this.getUidFromUsername()
   },
   methods: {
+    forceRerender() {
+      this.mapComponentKey += 1;  
+    },    
     async getUidFromUsername() {
       var username = this.$route.params.username
       this.uid = await sa.getUidFromUsername(username)
@@ -177,7 +196,7 @@ export default {
       }      
       this.getArchiveDetails()
       this.getArchiveTags()
-      this.createAssetArray()
+      this.createItemArray()
     },
     getArchiveDetails: function() {
       var uid = this.uid
@@ -189,6 +208,7 @@ export default {
           this.archive = doc.data();
           this.creationDate = sa.getFormattedDate(doc.data().dateCreated)
           this.headerImage = doc.data().headerImage
+          this.showMap = doc.data().showMap
         } else {
           this.$router.push('/404')
         }
@@ -209,25 +229,25 @@ export default {
         });
       });
     },
-    createAssetArray: function() {
+    createItemArray: function() {
 
       var uid = this.uid
 
-      sa.assetCollectionDbRef(uid, this.archiveId)
+      sa.itemCollectionDbRef(uid, this.archiveId)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          this.assets.push({
+          this.items.push({
             fileName: doc.data().file,
-            assetTitle: doc.data().assetTitle,
-            assetId: doc.id,
-            assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
-            assetText: doc.data().assetText,
-            assetType: doc.data().assetType,
+            itemTitle: doc.data().itemTitle,
+            itemId: doc.id,
+            itemCreationDate: sa.getFormattedDate(doc.data().itemCreationDate),
+            itemText: doc.data().itemText,
+            itemType: doc.data().itemType,
           });
         });
-        //tell the parent about how many assets there are
-        this.$store.commit('setAssetCount', this.assets.length)
+        //tell the parent about how many items there are
+        this.$store.commit('setItemCount', this.items.length)
       });
     },    
     goToUser: function(username) {
@@ -294,6 +314,12 @@ export default {
   a svg:hover {
     color: inherit;
   }
+
+  .navbar {
+    background-color: whitesmoke;
+    border-left: 2px solid lightgrey;
+  }
+
 
   // .btn-outline-secondary {
   //   color: $blue;

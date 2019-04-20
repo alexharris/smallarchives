@@ -1012,11 +1012,8 @@ QmCC" transform="matrix(0.5455 0 0 0.5455 427.5757 88)">
 
 <style scoped lang="scss">
 
-.smallball {
-    animation: smallball 10s 0s ease-in-out infinite;
-    animation-timing-function: ease-in-out;
-    -webkit-animation-timing-function: ease-in-out;    
-    transform-origin: left top;
+.duck:hover {
+    animation: smallball 1s 0s ease-in-out infinite;
 }
 @keyframes smallball {
   0% {

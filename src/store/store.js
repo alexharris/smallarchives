@@ -7,22 +7,22 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     user: null,
-    assetCount: null 
+    itemCount: null 
   },
   getters: {
     getUser: state => {
       return state.user;
     }, 
-    getAssetCount: state => {
-      return state.assetCount;
+    getItemCount: state => {
+      return state.itemCount;
     }  
   },
   mutations: {
     setUser: state => {
       state.user = firebase.auth().currentUser;
     },
-    setAssetCount: (state, payload) => {
-      state.assetCount = payload
+    setItemCount: (state, payload) => {
+      state.itemCount = payload
     }       
   },
   actions: {

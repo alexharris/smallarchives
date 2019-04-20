@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-12">
         <h1 class="h4">
-          Add Archive
+          New Archive
         </h1>
         <hr class="my-4" />
         <form @submit="onSubmit">
@@ -42,7 +42,7 @@
             </div>
           </div> 
           <hr class="my-4" />                                          
-          <div class="btn btn-dark" type="submit" @click="onSubmit">Submit</div>
+          <div class="btn btn-dark" type="submit" @click="onSubmit">Create</div>
         </form>
       </div>
     </div>

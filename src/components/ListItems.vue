@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div v-if="assets.length == 0">
+      <div v-if="items.length == 0">
           <p>This archive has no items.</p>    
       </div>
       <div v-else>  
@@ -9,16 +9,16 @@
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Date Added</th>
-              <th scope="col">Asset Type</th>
+              <th scope="col">Item Type</th>
               <th scope="col">Action</th>
             </tr>
           </thead>          
-          <tr v-for="item in assets">
-            <td>{{item.assetTitle}}</td>
-            <td>{{item.assetCreationDate}}</td>
-            <td>{{item.assetType}}</td>
+          <tr v-for="item in items">
+            <td>{{item.itemTitle}}</td>
+            <td>{{item.itemCreationDate}}</td>
+            <td>{{item.itemType}}</td>
             <td >
-              <button class="btn mr-2 btn-sm btn-outline-dark" @click.stop="itemEdit(item.assetName, item.assetId)">Edit</button>          
+              <button class="btn mr-2 btn-sm btn-outline-dark" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</button>          
             </td>
           </tr>
         </table> 
@@ -32,47 +32,47 @@ import firebase from 'firebase'
 import sa from '../sa'
 
 export default {
-  name: 'ListAssets',
+  name: 'ListItems',
   data () {
     return {
-      assets: [],
-      renderedAssets: [],
+      items: [],
+      renderedItems: [],
       uid: ''
     }
   },
   created() {
-    this.createAssetArray()
+    this.createItemArray()
 
     var currentUser = firebase.auth().currentUser;
     this.uid = currentUser.uid;
    
   },
   methods: {
-    createAssetArray: function() {
+    createItemArray: function() {
 
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id
 
-      sa.assetCollectionDbRef(uid, archiveId)
+      sa.itemCollectionDbRef(uid, archiveId)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          this.assets.push({
+          this.items.push({
             fileName: doc.data().file,
-            assetTitle: doc.data().assetTitle,
-            assetId: doc.id,
-            assetCreationDate: sa.getFormattedDate(doc.data().assetCreationDate),
-            assetText: doc.data().assetText,
-            assetType: doc.data().assetType
+            itemTitle: doc.data().itemTitle,
+            itemId: doc.id,
+            itemCreationDate: sa.getFormattedDate(doc.data().itemCreationDate),
+            itemText: doc.data().itemText,
+            itemType: doc.data().itemType
           });
 
         });
       });       
     },
-    itemEdit (assetTitle, assetId) {
+    itemEdit (itemTitle, itemId) {
       this.$router.push({
-        name: 'AdminEditAsset',
-        params: { archive_id: this.$route.params.archive_id, asset_id: assetId }
+        name: 'AdminEditItem',
+        params: { archive_id: this.$route.params.archive_id, item_id: itemId }
       })
     }
   }

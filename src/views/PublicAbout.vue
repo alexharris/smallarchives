@@ -11,8 +11,8 @@
   <h2>Features</h2>
 <ul>
   <li>Modern, mobile-friendly display</li>
-  <li>List and grid view</li>
-  <li>Multimedia assets include audio, video, images, and PDFs</li>
+  <li>List, grid and map view</li>
+  <li>Multimedia items include audio, video, images, and PDFs</li>
   <li>Basic filtering</li>
   <li>Tags</li>
   <li>Easy admin interface</li>
@@ -26,6 +26,9 @@
   <li>Bulk import</li>
   <li>Export</li>
 </ul>
+<h2>Cost</h2>
+<p>For now, Small Archives is free as we continue to improve and develop our product. Eventually, we might implement either a small fee or a simple "enterprise" level. We hope that a simple business model will help us to provide high quality service in perpetuity.</p>
+
 <h2>Technology</h2>
 <p>Small Archives is built using the Javascript framework called Vue, and is hosted with Google Firebase. I hope to open source the code for it once it is has been a little more thoroughly tested and is slightly more thoroughly commented.</p>
 

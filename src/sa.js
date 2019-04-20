@@ -54,36 +54,36 @@ var sa = {
       .doc(archiveId);
   },
   /**
-   * Returns a reference to an "assets" folder in firebase for a specific archive
+   * Returns a reference to an "item" folder in firebase for a specific archive
    * @param uid - The logged in user's ID
-   * @param archiveId - The id of the archive that the assets belong to
+   * @param archiveId - The id of the archive that the items belong to
    */
-  assetCollectionDbRef(uid, archiveId) {
+    itemCollectionDbRef(uid, archiveId) {
     return firebase
       .firestore()
       .collection("archives")
       .doc(uid)
       .collection("userarchives")
       .doc(archiveId)
-      .collection("assets");
+      .collection("items");
   },
   /**
-   * Returns a reference to a specific, existing asset document
+   * Returns a reference to a specific, existing item document
    * @param uid - The logged in user's ID
-   * @param archiveId - The id of the archive that the assets belong to
-   * @param assetId - The id of the asset desired
+   * @param archiveId - The id of the archive that the items belong to
+   * @param itemId - The id of the item desired
    * Notes:
    * Usually, this is called from "created()" in a view and params are retrieved from URL
    */
-  assetDocumentDbRef(uid, archiveId, assetId) {
+  itemDocumentDbRef(uid, archiveId, itemId) {
     return firebase
       .firestore()
       .collection("archives")
       .doc(uid)
       .collection("userarchives")
       .doc(archiveId)
-      .collection("assets")
-      .doc(assetId);
+      .collection("items")
+      .doc(itemId);
   },
   /**
    * Returns a reference to a specific, existing user archive record
@@ -109,7 +109,7 @@ var sa = {
       .collection("tags");
   },
   /**
-   * Returns a reference to a specific, existing tag document that exists on an archive record, not on an asset
+   * Returns a reference to a specific, existing tag document that exists on an archive record, not on an item
    * @param uid - The logged in user's ID
    * @param archiveId - The id of the archive that the tag belongs to
    * @param tagId - The id of the tag desired
@@ -161,21 +161,21 @@ var sa = {
       .child(filePath);
   },
   /**
-   * Returns a file from storage from the path [user_id]/archive_[archive_id]/assets/filename
+   * Returns a file from storage from the path [user_id]/archive_[archive_id]/items/filename
    * @param uid - The ID of the user who created this archive
    * @param archiveId - The id of the archive
-   * @param assetId - The id of the asset (this might not be necessary?)
+   * @param itemId - The id of the item (this might not be necessary?)
    * @param fileName - The filename of the uploaded file
    * @param prefix - Different file sizes get prefixes, for instance "thumb_" for thumbnail. Leave blank for original.
    * Prefix options: 'thumb_'
    */
-  assetStorageRef(uid, archiveId, assetId, fileName, prefix = "") {
+  itemStorageRef(uid, archiveId, itemId, fileName, prefix = "") {
     // console.log(uid)
     // console.log(archiveId)
-    // console.log(assetId)
+    // console.log(itemId)
     // console.log(fileName)
     var filePath =
-      uid + "/archive_" + archiveId + "/assets/" + prefix + fileName;
+      uid + "/archive_" + archiveId + "/items/" + prefix + fileName;
     return firebase
       .storage()
       .ref()
