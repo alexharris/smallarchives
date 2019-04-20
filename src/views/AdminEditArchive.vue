@@ -18,9 +18,14 @@
       <!-- Start first tab -->
         <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">   
 
-          <h2 class="h4">Basic Info</h2>
-          <p>Update basic info about this archive.</p>
-          <hr class="my-4" /> 
+          <h2 class="h4 mb-4">Basic Info</h2>
+
+          <ul class="list-unstyled">
+            <li><strong>Created:</strong> {{dateCreated}}</li>
+            <li><strong>ID:</strong> {{key}}</li>
+          </ul>
+       
+          <p>Update basic info about this archive:</p>
           <form>
           
             <!-- Title -->
@@ -58,7 +63,7 @@
         </div>
         <!-- start second tab -->
         <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
-          <h2 class="h4">Tags</h2>   
+          <h2 class="h4 mb-4">Tags</h2>   
           <p>Tags are used to group items together. Add tags here to make them available when creating or updating an item.</p>
           <hr class="my-4" />   
           <div class="tags">  
@@ -78,10 +83,14 @@
 
         <!-- start third tab -->
         <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-          <h2 class="h4">Administration</h2>  
+          <h2 class="h4 mb-4">Administration</h2>  
+          <p><strong>General Settings</strong></p>
            <form>
               <input type="checkbox" id="checkbox" v-model="showMap">
               <label for="checkbox" class="ml-2">Show Map View</label><br />
+              <p><strong>Export Data</strong></p>
+              <AdminExportData />
+              <hr />
               <div class="btn btn-dark" v-on:click.stop="saveAdmin">Save</div>
            </form>
           <hr class="my-4" />   
@@ -89,13 +98,7 @@
             <div class=" card-deck">
               <!--  Card one -->
               <div class="card">
-                <div class="card-header">Archive Info</div>
-                <div class="card-body">
-                  <ul class="list-unstyled">
-                    <li><strong>Created:</strong> {{dateCreated}}</li>
-                    <li><strong>ID:</strong> {{key}}</li>
-                  </ul>
-                </div>
+
               </div>
               <!-- Card two -->
               <div class="card border-danger">
@@ -139,11 +142,13 @@
 import firebase from 'firebase'
 import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
+import AdminExportData from '../components/AdminExportData'
 
 export default {
   name: 'AdminEditArchive',
   components: {
-    ArchiveHeaderImage
+    ArchiveHeaderImage,
+    AdminExportData
   }, 
   data () {
     return {
@@ -314,9 +319,7 @@ export default {
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id
 
-      console.log(itemId)
-      console.log(tags)
-      sa.itemocumentDbRef(uid, archiveId, itemId).update({
+      sa.itemDocumentDbRef(uid, archiveId, itemId).update({
           "tags": tags
       })
       .then(function() {

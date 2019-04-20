@@ -21,8 +21,6 @@ import AdminEditArchive from "@/views/AdminEditArchive";
 import AdminCreateItem from "@/views/AdminCreateItem";
 import AdminEditItem from "@/views/AdminEditItem";
 
-import AdminExportData from "@/views/AdminExportData";
-
 // Public
 
 import PublicHome from "@/views/PublicHome";
@@ -30,6 +28,7 @@ import PublicProfile from "@/views/PublicProfile";
 import PublicArchive from "@/views/PublicArchive";
 import PublicItem from "@/views/PublicItem";
 import PublicAbout from "@/views/PublicAbout";
+import PublicSchema from "@/views/PublicSchema";
 
 Vue.use(Router);
 
@@ -77,11 +76,6 @@ const router = new Router({
           component: AdminEditItem
         },
         {
-          path: "/admin/export/:archive_id",
-          name: "AdminExportData",
-          component: AdminExportData
-        },
-        {
           path: "/admin/profile",
           name: "UserProfile",
           component: UserProfile
@@ -97,6 +91,11 @@ const router = new Router({
       path: "/about",
       name: "PublicAbout",
       component: PublicAbout
+    },
+    {
+      path: "/schema",
+      name: "PublicSchema",
+      component: PublicSchema
     },
     {
       path: "/login",
