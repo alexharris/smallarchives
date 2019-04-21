@@ -17,6 +17,7 @@
   <li>Tags</li>
   <li>Easy admin interface</li>
   <li>Metadata hints</li>
+  <li>Data Export</li>
 </ul>
     <h2>Roadmap</h2>
 <p>There is also a roadmap of future features that are either planned or currently under development, including:</p>
@@ -24,7 +25,6 @@
   <li>Custom metadata fields per archive</li>
   <li>More supported content types</li>
   <li>Bulk import</li>
-  <li>Export</li>
 </ul>
 <h2>Cost</h2>
 <p>For now, Small Archives is free as we continue to improve and develop our product. Eventually, we might implement either a small fee or a simple "enterprise" level. We hope that a simple business model will help us to provide high quality service in perpetuity.</p>

@@ -58,7 +58,7 @@ var sa = {
    * @param uid - The logged in user's ID
    * @param archiveId - The id of the archive that the items belong to
    */
-    itemCollectionDbRef(uid, archiveId) {
+  itemCollectionDbRef(uid, archiveId) {
     return firebase
       .firestore()
       .collection("archives")
@@ -125,14 +125,12 @@ var sa = {
       .doc(archiveId)
       .collection("tags")
       .doc(tagId);
-	},
-	  /**
+  },
+  /**
    * Returns a reference to the "users" collection
    */
   userCollectionDbRef(uid, archiveId) {
-    return firebase
-      .firestore()
-      .collection("users")
+    return firebase.firestore().collection("users");
   },
   /**
    * ,---.   ,--.
@@ -288,6 +286,30 @@ var sa = {
       .catch(function(error) {
         console.error("Error removing main image from storage: ", error);
       });
+  },
+  /**
+   * Check ownership when determining whether to show admin stuff
+   * @param currentArchiveId - The ID of the archive currently being viewed
+   */
+  confirmOwner(currentArchiveId) {
+    var currentUserArchives = [];
+
+    return new Promise(resolve => {
+      sa.archiveCollectionDbRef(firebase.auth().currentUser.uid)
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            currentUserArchives.push(doc.id);
+          });
+        })
+        .then(() => {
+          if (currentUserArchives.includes(currentArchiveId)) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
+    });
   }
 };
 

@@ -21,7 +21,8 @@
             
           </div>
       </div>
-      <ListItems />  
+      <!-- <ListItems />   -->
+      <PublicListItems />  
       <div class="btn btn-dark" @click.stop="addItemButton(key)"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
 
     </div>
@@ -33,12 +34,14 @@
 import firebase from 'firebase'
 import sa from '../sa'
 import ListItems from '../components/ListItems'
+import PublicListItems from '../components/PublicListItems'
 
 
 export default {
   name: 'AdminShowArchive',
   components: {
-    ListItems
+    ListItems,
+    PublicListItems
   },  
   data () {
     return {

@@ -6,6 +6,7 @@
           <p>This archive has no items.</p>
       </div>
       <div v-else>
+        {{confirmOwner}}
         <div v-if="renderedItems.length !== 0" class="row">
           <table class="table table-public">
             <thead>
@@ -13,7 +14,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Item Type</th>
                 <th scope="col">Date Added</th>
-                
+                <th scope="col" v-if="confirmOwner">Action</th>
                 <!-- <th scope="col">Actions</th> -->
               </tr>
             </thead>
@@ -21,7 +22,9 @@
               <td><a href="" @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/></td>
               <td><div>{{item.itemType}}</div></td>
               <td>{{item.itemCreationDate}}</td>
-              
+              <td v-if="confirmOwner">
+                <button class="btn mr-2 btn-sm btn-outline-dark" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</button>          
+              </td>              
             </tr>
           </table>
         </div>
@@ -51,6 +54,8 @@ export default {
 		url: '',
     items: [],
     renderedItems: [],
+    currentUser: '',
+    // confirmOwner: false
     // tag: this.$route.query.tag
   	}
   },
@@ -71,7 +76,9 @@ export default {
     }             
   },  
   created() {
+    this.currentUser = firebase.auth().currentUser;
     this.getUidFromUsername()
+    this.getConfirmOwner()
   },   
   computed: {
     tag() {
@@ -87,12 +94,24 @@ export default {
       } else {
         return this.$route.query.mediaType
       }      
-    }       
+    },   
+         
   }, 
-  methods: {     
+  methods: {    
+    async getConfirmOwner() {
+      this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
+    }, 
     async getUidFromUsername() {
-      var username = this.$route.params.username
-      this.uid = await sa.getUidFromUsername(username)
+      // Since this component is used for admin and public purposes, we need two options for getting user id
+      // 1. We can get it from the username in the route params
+      if(this.$route.params.username != null) {
+        var username = this.$route.params.username
+        this.uid = await sa.getUidFromUsername(username)
+      } else {
+        // 2. Or, we can get it from the logged in user
+        this.uid = firebase.auth().currentUser.uid
+      }
+      
       this.createItemArray()
     },
     createItemArray: function() {
@@ -184,6 +203,13 @@ export default {
         params: { username: this.$route.params.username, archive_id: this.$route.params.archive_id, item_id: itemId }
       })
     },
+    itemEdit (itemTitle, itemId) {
+      this.$router.push({
+        name: 'AdminEditItem',
+        params: { archive_id: this.$route.params.archive_id, item_id: itemId }
+      })
+    },
+ 
   },
 
 };
