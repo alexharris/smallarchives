@@ -223,7 +223,7 @@ export default {
       })
     },
     goBack() {
-      this.$router.push({ name: 'AdminShowArchive', params: { archive_id: this.$route.params.archive_id }})
+      this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
     },
     saveAdmin() {
 

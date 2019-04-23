@@ -1,7 +1,7 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100" > 
-      <header v-if="!isArchive">
-        <nav class="navbar navbar-expand-lg " >
+      <header v-if="isPromo">
+        <nav class="navbar navbar-expand-lg" >
           <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
@@ -9,28 +9,45 @@
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item" v-if="user">
-                <a class="nav-link"  href="/admin/archives">Dashboard</a>
+                
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/about">About</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/login" v-if="!user">Login</a>
-              </li>                
-              <li class="nav-item" v-if="user"><a class="nav-link" href="" @click="logout()">Logout</a></li>            
+              </li>                          
             </ul>
+            <a class="nav-link btn btn-primary" href="/admin/archives" v-if="user">Dashboard</a>
           </div>
         </nav>      
       </header> 	
-  		<div class="container-fluid wrapper flex-shrink-0" v-cloak> 
-  			<router-view/>       
-  		</div>  
- <!-- <footer class="footer py-3">
-        <div class="container-fluid">
-
-            <a href="/Contact">Contact</a>.
+  		<div class="container-fluid wrapper flex-shrink-0 h-100" v-cloak> 
+        
+        <div class="row h-100" v-if="isAdmin || confirmOwner != false">
+          <div class="col-12 col-md-3 user-menu bg-primary" v-bind:class="{ menuVisible: menuVisible }">
+            <button class=" btn btn-primary mt-4 float-right user-menu-button" @click="toggleMenu()"><font-awesome-icon icon="times" size="1x" /></button>
+            <ul class="list-group list-group-flush position-fixed bg-transparent">
+              <li class="list-group-item bg-transparent"><a href="/admin/archives">Dashboard</a></li>
+              <li class="list-group-item bg-transparent"><a href="/admin/account">Account</a></li>
+              <li class="list-group-item bg-transparent"><a href="" @click="logout()">Logout</a></li>
+              <li class="list-group-item bg-transparent"><a href="/">Small Archives</a></li>
+            </ul>
+          </div>
+          <div class="col-12 col-md-9">  
+            <div class="user-menu-button">
+              <button class=" btn btn-primary mt-4 user-menu-button" @click="toggleMenu()">Menu</button>
+            </div>            
+            <router-view/>  
+          </div>
         </div>
-      </footer>          -->
+        <div class="row" v-else>
+          <div class="col-12">  
+            <router-view/>  
+          </div>
+        </div>  
+      </div>      
+    
 
   </div>
 </template>
@@ -38,9 +55,16 @@
 <script>
 import firebase from 'firebase' 
 import { truncate } from 'fs';
+import sa from './sa'
 
 export default {
   name: "App",
+  data() {
+    return {
+      confirmOwner: false,
+      menuVisible: false
+    }
+  },
   computed: {
     user() {
     	return this.$store.getters.getUser;
@@ -48,13 +72,27 @@ export default {
     displayName: function() {
 		  return this.$store.getters.getUser.email;
     },
-    isArchive: function() {
-      if(this.$route.name == 'PublicArchive') {
+    isPublic: function() {
+      if(this.$route.name.includes('Public')) {
         return true;
       } else {
         return false;
       }
-    }
+    },
+    isAdmin: function() {
+      if(this.$route.name.includes('Admin')) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isPromo: function() {
+      if(this.$route.name.includes('Promo')) {
+        return true;
+      } else {
+        return false;
+      }
+    }        
   }, 
   methods: {
    setUser: function() {
@@ -73,13 +111,28 @@ export default {
         })        
       })
     },
+    async getConfirmOwner() {
+      this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
+    },    
+    toggleMenu: function() {
+      this.menuVisible = !this.menuVisible
+    }  
   },
   created() {
     // when the app is created run the set user method
     // this uses Vuex to check if a user is signed in
     // check out mutations in the store.js file
     this.setUser();
-  }
+    this.getConfirmOwner();
+  },
+  watch:{
+    //check if the route changes to re-confirm owner
+    $route (){
+        this.getConfirmOwner()
+    }
+  } 
+
+ 
 }
 </script>
 

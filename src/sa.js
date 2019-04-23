@@ -292,6 +292,7 @@ var sa = {
    * @param currentArchiveId - The ID of the archive currently being viewed
    */
   confirmOwner(currentArchiveId) {
+    
     var currentUserArchives = [];
 
     return new Promise(resolve => {

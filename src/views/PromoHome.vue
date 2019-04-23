@@ -21,24 +21,7 @@
                     <small><a href="/demo">View Demo</a></small>
 
                 </div>
-                <!-- <div class="col-12 col-lg-5  float-right  newsletter"> 
-                    
-                    <div class="card bg-transparent">
-                        <div class="card-body p-0" >
-                            <p>Sign up to find out when we launch, which will eventually happen, we swear.</p>
-                            <form class="form-inline mb-5" action="https://tinyletter.com/smallarchives" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/smallarchives', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
-                                <div class="form-group mb-2">
-                                    <label for="tlemail" class="sr-only">Email address</label>
-                                    <input type="text" name="email" id="tlemail" placeholder="Email address" class="form-control mr-sm-2" />
-                                    <input type="hidden" value="1" name="embed"/><br />
-                                    <input type="submit" value="Sign Up" class="btn-dark btn" />
-                                </div>
-                            </form> 
-                            <font-awesome-icon class="float-left pr-2" :icon="['fab', 'twitter']" size="2x" />
-                            <p>Or follow our progress on twitter <a href="https://twitter.com/smallarchives">@smallarchives</a>.</p>
-                        </div>
-                    </div>          
-                </div> -->
+
                 <div class="col-12 col-lg-6 float-right ">   
                     <FunGrid />
                     <!-- <div class="card">

@@ -591,7 +591,7 @@
 
     },  
     goBack() {
-      this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.id }})
+      this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.id, username: firebase.auth().currentUser.displayName }})
     }    
   }
 }

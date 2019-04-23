@@ -6,7 +6,6 @@
           <p>This archive has no items.</p>
       </div>
       <div v-else>
-        {{confirmOwner}}
         <div v-if="renderedItems.length !== 0" class="row">
           <table class="table table-public">
             <thead>
@@ -55,7 +54,7 @@ export default {
     items: [],
     renderedItems: [],
     currentUser: '',
-    // confirmOwner: false
+    confirmOwner: false
     // tag: this.$route.query.tag
   	}
   },

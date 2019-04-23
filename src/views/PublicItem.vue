@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<div class="row justify-content-center">
+		<div class="row justify-content-center my-4">
 			<div class="col-12">
+				<button v-if="confirmOwner" class="btn mr-2 btn-sm btn-primary" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</button>		
 				<a @click.stop="goBack" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a><br />
 
 			</div>
@@ -38,15 +39,11 @@
 			</div>
 
 			<div class="col-lg-4">
-				<font-awesome-icon icon="folder" size="1x" class="mr-2" /><a href="" @click.stop="goBack">{{archiveTitle}}</a>
+				
 				<h1 class="my-4 h3">{{item.itemTitle}}</h1>
 				<p>{{item.itemDescription}}</p>
 				<span class="badge badge-warning mr-2" v-for="tag in item.tags"><a @click.stop="goToTag(tag)">{{tag}}</a></span>
-
-	            <div class="card ml-0 mt-5 bg-transparent">
-	              <div class="card-header">Metadata</div>
-	              <div class="card-body">
-					<p>
+				<p>
 					<span v-if="item.itemMediaType"><strong>Media type:</strong> {{item.itemMediaType}} <br /></span>
 					<span v-if="item.itemContributor"><strong>Contributor:</strong> {{item.itemContributor}} <br /></span>
 					<span v-if="item.itemCreator"><strong>Creator:</strong> {{item.itemCreator}} <br /></span>
@@ -60,22 +57,28 @@
 					<span v-if="item.itemRights"><strong>Rights:</strong> {{item.itemRights}}<br /></span>
 					<span v-if="item.itemSource"><strong>Source:</strong> {{item.itemSource}}<br /></span>
 					<span v-if="item.itemSubject"><strong>Subject:</strong> {{item.itemSubject}}<br /></span>
-					</p>
-	              </div>
-	            </div>				
-				
-
+				</p>
 				<div v-if="item.itemCoverage != ''" class="my-4">
 				  <l-map :zoom=13 :center="latLongArray" v-if="item.itemCoverageLat != '' && item.itemCoverageLong != ''">
 				    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
 				    <l-marker :lat-lng="latLongArray"></l-marker>
-
 				  </l-map>
+					<p>
+						<strong>Latitude: </strong>{{item.itemCoverageLat}}<br />
+						<strong>Longitude: </strong>{{item.itemCoverageLong}}
+					</p>
 				</div>
 				<div class="my-4">
-					<p>Added on: {{item.itemCreationDate}}</p>
+					<hr />
+					<p>
+						<strong>Part of: </strong> <a href="" @click.stop="goBack">{{archiveTitle}}</a><br />
+						<strong>Added on: </strong> {{item.itemCreationDate}}
+					</p>	
 				</div>
 			</div>
+			<div class="row my-5 py-5 justify-content-center">  
+				<small>Made with <a href="/">Small Archives</a></small>
+			</div>  			
 		</div>	
 	</div>
 </template>
@@ -109,7 +112,8 @@ export default {
   		},
   		itemSrc: '',
   		archiveTitle: '',
-  		uid: '',
+			uid: '',
+			confirmOwner: false
   		
   	}
   },
@@ -119,7 +123,8 @@ export default {
 	}
   },
   created() {
-  	this.getUidFromUsername()
+		this.getUidFromUsername()
+		this.getConfirmOwner();
   
   },
   methods: {      	
@@ -131,7 +136,10 @@ export default {
         this.$router.push('/404')
       }         
       this.getItemDetails()
-    },     	
+		},   
+    async getConfirmOwner() {
+      this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
+    },  		  	
   
 
     getItemDetails: function() {
@@ -222,7 +230,13 @@ export default {
         	name: 'PublicArchive',
         	query: { tag: tag }
       	})
-	}, 	   
+	},
+	itemEdit (itemTitle, itemId) {
+		this.$router.push({
+			name: 'AdminEditItem',
+			params: { archive_id: this.$route.params.archive_id, item_id: itemId }
+		})
+	},	 	   
   },
   
 

@@ -45,7 +45,7 @@ export default {
     }
   },  
   beforeCreate: function() {
-    document.body.className = 'admin';
+    // document.body.className = 'admin h-100';
   }
 }
 

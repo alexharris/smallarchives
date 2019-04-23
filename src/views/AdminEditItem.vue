@@ -3,16 +3,20 @@
     <div class="col-12 col-sm-10 col-lg-8">
       <div class="row">
         <div class="col-sm-8">
-          <div class="btn btn-outline-dark" @click.stop="goBack" variant="dark">Back</div>
+          <a class="btn btn-outline-dark" v-bind:href="backUrl">Back</a>
         </div>
         <div class="col-sm-4">
 
-          <switcher v-model="helpSwitcherValue" />   
-          <div class="visual-label">Metadata Hints</div>    
+          <!-- <switcher v-model="helpSwitcherValue" />    -->
+          <!-- <div class="visual-label">Metadata Hints</div>     -->
         </div>
       </div>
       <hr class="my-4" />
-      <h1 class="h4">Edit Item</h1>      
+      <h1 class="h4">Edit Item</h1>  
+      <div class="float-right">
+        <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
+        <label for="checkbo2x" class="ml-2">Show field hints</label>
+      </div>   
       <hr class="my-4" />
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
@@ -25,10 +29,6 @@
           <a class="nav-link" id="metadata-tab" data-toggle="tab" href="#metadata" role="tab" aria-controls="metadata" aria-selected="false">Metadata</a>
         </li>
       </ul>
-
-      
-
-      
       <form class="needs-validation">
       <div id="myTabContent" class="tab-content my-5">     
         <!-- Start first tab -->
@@ -317,6 +317,7 @@ export default {
       itemDate:'',
       itemLocation:'',
       itemMediaType:'',
+      itemMediaYoutubeId:'',
       itemCreationDate:'',
       selecteditemMediaType: '',
       itemType: '',
@@ -333,7 +334,8 @@ export default {
       imageInvalid: false,
       pdfInvalid: false,
       youtubeInvalid: false,
-      audioInvalid: false      
+      audioInvalid: false,
+   
     }
   },
   created () {
@@ -463,7 +465,7 @@ export default {
           tags: this.selectedTags
         }).then(() => {
           console.log('item updated!')
-          this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
+          this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
         })
       }
     },
@@ -509,12 +511,16 @@ export default {
       });
 
       // reroute after delete
-      this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
+      this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
 
     }, 
-    goBack() {
-      this.$router.push({ name: 'AdminShowArchive', params: { id: this.$route.params.archive_id }})
-    }           
+        
+  },
+  computed: {
+    backUrl() {
+      // this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
+      return '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id
+    }   
   }
 }
 </script>

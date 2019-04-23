@@ -13,6 +13,7 @@ import UserDirectory from "@/views/UserDirectory.vue";
 import EditUserProfile from "@/views/EditUserProfile.vue";
 
 // Admin
+import AdminAccountInfo from "@/views/AdminAccountInfo";
 import AdminListArchives from "@/views/AdminListArchives";
 import AdminShowArchive from "@/views/AdminShowArchive";
 import AdminCreateArchive from "@/views/AdminCreateArchive";
@@ -23,12 +24,12 @@ import AdminEditItem from "@/views/AdminEditItem";
 
 // Public
 
-import PublicHome from "@/views/PublicHome";
-import PublicProfile from "@/views/PublicProfile";
+import PromoHome from "@/views/PromoHome";
+import PromoProfile from "@/views/PromoProfile";
 import PublicArchive from "@/views/PublicArchive";
 import PublicItem from "@/views/PublicItem";
-import PublicAbout from "@/views/PublicAbout";
-import PublicSchema from "@/views/PublicSchema";
+import PromoAbout from "@/views/PromoAbout";
+import PromoSchema from "@/views/PromoSchema";
 
 Vue.use(Router);
 
@@ -84,18 +85,23 @@ const router = new Router({
           path: "/admin/edit-profile",
           name: "EditUserProfile",
           component: EditUserProfile
-        }
+        },
+        {
+          path: "/admin/account",
+          name: "AdminAccountInfo",
+          component: AdminAccountInfo
+        }        
       ]
     },
     {
       path: "/about",
-      name: "PublicAbout",
-      component: PublicAbout
+      name: "PromoAbout",
+      component: PromoAbout
     },
     {
       path: "/schema",
-      name: "PublicSchema",
-      component: PublicSchema
+      name: "PromoSchema",
+      component: PromoSchema
     },
     {
       path: "/login",
@@ -114,8 +120,8 @@ const router = new Router({
     },
     {
       path: "/u/:username",
-      name: "PublicProfile",
-      component: PublicProfile
+      name: "PromoProfile",
+      component: PromoProfile
     },
     {
       path: "/u/:username/:archive_id",
@@ -129,8 +135,8 @@ const router = new Router({
     },
     {
       path: "/",
-      name: "PublicHome",
-      component: PublicHome
+      name: "PromoHome",
+      component: PromoHome
     },
     {
       path: "/demo",

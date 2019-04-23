@@ -1,49 +1,67 @@
 <template>
   <div>
 
-    <div class="row mb-5 px-md-5 pb-4 justify-content-center">
-      <div class="col-12 col-xl-10">
-        <div class="row mb-1">
-          <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
+    <div class="row mb-5 px-md-2 pb-4 justify-content-center">
+      <div class="col-12">
+        <div class="row">
+          <!-- <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
+            <ArchiveHeaderImage v-bind:archiveId="this.archiveId" class="mb-4" />    
+          </div>   -->
+          <div class="col-12  py-4">  
             
-          </div>  
-          <div class="col-12 mb-4 px-3 my-4">  
-            <ArchiveHeaderImage v-bind:archiveId="this.archiveId" class="float-right" />    
-            <h1 class="h3 pb-1">{{archive.title}}</h1>
-            <p>{{archive.desc}}</p> 
+            <h1 class="h2 float-left">{{archive.title}}</h1>
+            <!-- <p>{{archive.desc}}</p>  -->
+            <div class="btn btn-primary float-right" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
+            <button class="btn btn-primary float-right mr-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
+
           </div>
 
-        </div>
-        <nav class="navbar nav-light">
+        </div>    
+             
+        <nav class="navbar sticky-top navbar-light pt-4"  style="background-color: #ffffff;">
            <span class="navbar-text">
-            <a class="btn btn-outline-secondary mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Filter <font-awesome-icon icon="filter" size="1x" />
+            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
+              Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
               <!-- <font-awesome-icon icon="times" size="1x" /> -->
-            </a>
+            </button>
+            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
+              About
+            </button>             
             <div class="btn-group btn-group-toggle mr-3">
-              <label for="grid" class="btn btn-outline-secondary" v-bind:class="gridViewType">
+              <label for="grid" class="btn btn-outline-dark" v-bind:class="gridViewType">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
               </label>
-              <label for="list" class="btn btn-outline-secondary" v-bind:class="listViewType">
+              <label for="list" class="btn btn-outline-dark" v-bind:class="listViewType">
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
 
-               <label for="map" class="btn btn-outline-secondary" v-bind:class="mapViewType" v-if="showMap">
+               <label for="map" class="btn btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
                 <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" />
               </label>       
             </div>  
-            <a class="btn btn-outline-secondary" data-toggle="collapse" href="#basicInfoCollapse" role="button" aria-expanded="false" aria-controls="basicInfoCollapse"><font-awesome-icon icon="question-circle" size="1x" /></a>    
+             
           </span>  
-        </nav>   
-        <div class="collapse py-4" id="basicInfoCollapse">
-          <div class="row">
-            <div class="col-12">
-              <p>This archive contains <strong>{{itemCount}}</strong> items. It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</p>            
+        </nav>    
+        <div class="modal fade" id="basicInfoModal" tabindex="-1" role="dialog" aria-labelledby="basicInfoModalTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="basicInfoModalTitle">{{archive.title}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>{{archive.desc}}</p>  
+                <hr />
+                <p>This archive contains <strong>{{itemCount}}</strong> items.</p> 
+                <p>It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</p>
+              </div>
             </div>
           </div>
-        </div>
+        </div>             
              <!-- Filter collapse  -->
-        <div class="collapse py-4" id="collapseExample">
+        <div class="collapse py-4 filter-collapse" id="collapseExample">
           <div class="row">
             <div class="col-12 col-md-3">
               <form>
@@ -90,12 +108,13 @@
             </div>            
           </div>
         </div> 
+       
         <PublicListItems v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
         <PublicGridItems v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
         <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey"/>       
-       <div class="row my-5 py-5 justify-content-center">  
-         <small>Made with <a href="/">Small Archives</a></small>
-       </div>                      
+        <div class="row my-5 py-5 justify-content-center">  
+          <small>Made with <a href="/">Small Archives</a></small>
+        </div>                      
       </div>    
 
     </div>
@@ -132,7 +151,9 @@ export default {
       selectedHasLocation: false,
       tags: [],
       showMap: false,
-      mapComponentKey: 0
+      mapComponentKey: 0,
+      confirmOwner: false,
+      filterState: true
 
     }
   },
@@ -182,8 +203,21 @@ export default {
   },
   created () {
     this.getUidFromUsername()
+    this.getConfirmOwner();
+    
   },
   methods: {
+    toggleFilters: function() {
+      this.filterState = !this.filterState
+      this.clearMediaTypeFilter()
+      this.clearTagFilter()
+      this.clearLocationFilter()
+    },
+    async getConfirmOwner() {
+      
+      this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
+      
+    },     
     forceRerender() {
       this.mapComponentKey += 1;  
     },    
@@ -301,7 +335,22 @@ export default {
           mediaType: this.$route.query.mediaType
         }
       })
-    }    
+    },
+    clearLocationFilter: function() {
+      this.selectedHasLocation = false
+    },
+    addItemButton (id) {
+      this.$router.push({
+        name: 'AdminCreateItem',
+        params: { id: id }
+      })
+    },
+    editarchive (id) {
+      this.$router.push({
+        name: 'AdminEditArchive',
+        params: { id: id }
+      })
+    },            
   }
 }
 </script>
@@ -311,13 +360,18 @@ export default {
   $blue: #0011cf;
   $pink: #fff4e6;
 
-  a svg:hover {
-    color: inherit;
-  }
+  // a svg:hover {
+  //   color: inherit;
+  // }
 
   .navbar {
-    background-color: whitesmoke;
-    border-left: 2px solid lightgrey;
+    border-top: 1px solid black;
+    padding-left: 0;
+    
+  }
+
+  .filter-collapse {
+    border-bottom: 1px solid black;
   }
 
 

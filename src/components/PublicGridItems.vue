@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <div v-if="renderedItems.length !== 0" class="row px-n5">
-        <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3 grid-item mb-3 p-md-4" v-for="item in renderedItems">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-item mb-3 p-md-4" v-for="item in renderedItems">
           <div class="media-display text-center">
             <div v-if="item.itemMediaType === 'image'">       
               <a href="" @click.stop="viewSingleItem(item.itemId)"><img :src="item.itemSrc" /></a>
@@ -29,8 +29,9 @@
           </div>
           <div class="grid-title">
             <small>{{item.itemType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/></small>
-            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a></p>
+            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a> <span class="btn mr-2 btn-sm btn-link" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner">Edit</span>    </p>
           </div>
+                
         </div>
       </div>
       <div class="row" v-else>
@@ -218,7 +219,13 @@ export default {
     },
     youtubeThumbnail: function(item) {
       return 'https://img.youtube.com/vi/' + item.itemMediaYoutubeId + '/sddefault.jpg';
-    }     
+    },
+    itemEdit (itemTitle, itemId) {
+      this.$router.push({
+        name: 'AdminEditItem',
+        params: { archive_id: this.$route.params.archive_id, item_id: itemId }
+      })
+    },     
        
   
   }

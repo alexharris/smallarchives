@@ -81,7 +81,7 @@ export default {
 <style lang="scss">
 
 .header-image-container img {
-  height: 100px;
+  max-width: 100%;
 }
 
 </style>
