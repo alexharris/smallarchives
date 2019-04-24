@@ -26,13 +26,19 @@
         
         <div class="row h-100" v-if="isAdmin || confirmOwner != false">
           <div class="col-12 col-md-3 user-menu bg-primary" v-bind:class="{ menuVisible: menuVisible }">
-            <button class=" btn btn-primary mt-4 float-right user-menu-button" @click="toggleMenu()"><font-awesome-icon icon="times" size="1x" /></button>
-            <ul class="list-group list-group-flush position-fixed bg-transparent">
-              <li class="list-group-item bg-transparent"><a href="/admin/archives">Dashboard</a></li>
-              <li class="list-group-item bg-transparent"><a href="/admin/account">Account</a></li>
-              <li class="list-group-item bg-transparent"><a href="" @click="logout()">Logout</a></li>
-              <li class="list-group-item bg-transparent"><a href="/">Small Archives</a></li>
-            </ul>
+            <div class="row">
+              <div class="col-12">
+                <button class=" btn btn-primary mt-4 float-right user-menu-button" @click="toggleMenu()"><font-awesome-icon icon="times" size="2x" /></button>
+              </div>
+              <div class="col-12">
+                <ul class="list-group list-group-flush position-fixed bg-transparent">
+                  <li class="list-group-item bg-transparent"><a href="/admin/archives">Dashboard</a></li>
+                  <li class="list-group-item bg-transparent"><a href="/admin/account">Account</a></li>
+                  <li class="list-group-item bg-transparent"><a href="" @click="logout()">Logout</a></li>
+                  <li class="list-group-item bg-transparent"><a href="/">Small Archives</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
           <div class="col-12 col-md-9">  
             <div class="user-menu-button">

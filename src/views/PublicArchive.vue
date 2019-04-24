@@ -7,12 +7,11 @@
           <!-- <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
             <ArchiveHeaderImage v-bind:archiveId="this.archiveId" class="mb-4" />    
           </div>   -->
-          <div class="col-12  py-4">  
-            
-            <h1 class="h2 float-left">{{archive.title}}</h1>
+          <div class="col-12  py-4">              
+            <h1 class="h2 mr-4 mb-4">{{archive.title}}</h1>
             <!-- <p>{{archive.desc}}</p>  -->
-            <div class="btn btn-primary float-right" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
-            <button class="btn btn-primary float-right mr-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
+            <div class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
+            <button class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
 
           </div>
 
@@ -20,22 +19,22 @@
              
         <nav class="navbar sticky-top navbar-light pt-4"  style="background-color: #ffffff;">
            <span class="navbar-text">
-            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
+            <button type="button" class="btn btn-sm btn-outline-dark mr-3 mb-2" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
               Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
               <!-- <font-awesome-icon icon="times" size="1x" /> -->
             </button>
-            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
+            <button type="button" class="btn btn-sm btn-outline-dark mr-3 mb-2" data-toggle="modal" data-target="#basicInfoModal">
               About
             </button>             
-            <div class="btn-group btn-group-toggle mr-3">
-              <label for="grid" class="btn btn-outline-dark" v-bind:class="gridViewType">
+            <div class="btn-group btn-group-toggle mr-3 mb-2">
+              <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
               </label>
-              <label for="list" class="btn btn-outline-dark" v-bind:class="listViewType">
+              <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType">
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
 
-               <label for="map" class="btn btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
+               <label for="map" class="btn btn-sm btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
                 <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" />
               </label>       
             </div>  
@@ -365,7 +364,9 @@ export default {
   // }
 
   .navbar {
-    border-top: 1px solid black;
+    // border-top: 1px solid black;
+    z-index: 1000;
+
     padding-left: 0;
     
   }

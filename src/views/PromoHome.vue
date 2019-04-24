@@ -11,7 +11,7 @@
 
                 </div>                
             </div> -->
-            <div class="row justify-content-center  px-5 my-md-5 pb-5">
+            <div class="row justify-content-center  px-md-5 my-md-5 py-5">
                 <div class="col-12 col-lg-6 mb-4 ">  
                     <h2 class="h1 display-5"><strong>Small Archives</strong></h2> 
 
@@ -22,7 +22,7 @@
 
                 </div>
 
-                <div class="col-12 col-lg-6 float-right ">   
+                <div class="col-12 col-lg-6 float-right d-none d-md-block">   
                     <FunGrid />
                     <!-- <div class="card">
                         <div class="card-body p-0 text-center">
@@ -32,7 +32,7 @@
                     </div>           -->
                 </div>
             </div> 
-            <div class="row justify-content-center px-5 py-5 ">
+            <div class="row justify-content-center px-md-5 py-5 ">
                 <div class="col-12 col-lg-6 mb-4 pr-5">  
                     <h3>Free for now</h3> 
 
@@ -60,7 +60,7 @@
                     </div>          
                 </div>
             </div>             
-            <div class="row my-5 py-5 px-sm-5 justify-content-center cards-row">
+            <div class="row my-5 py-5 px-md-5 justify-content-center cards-row">
                 <div class="col-12 col-xl-10">
                     <div class="card-deck">
 

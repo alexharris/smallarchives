@@ -1,23 +1,13 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-12 col-sm-10 col-lg-8">
-      <div class="row">
-        <div class="col-sm-8">
-          <a class="btn btn-outline-dark" v-bind:href="backUrl">Back</a>
-        </div>
-        <div class="col-sm-4">
-
-          <!-- <switcher v-model="helpSwitcherValue" />    -->
-          <!-- <div class="visual-label">Metadata Hints</div>     -->
-        </div>
-      </div>
-      <hr class="my-4" />
+    <div class="col-12 col-md-11 pt-4">
       <h1 class="h4">Edit Item</h1>  
-      <div class="float-right">
-        <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
-        <label for="checkbo2x" class="ml-2">Show field hints</label>
-      </div>   
       <hr class="my-4" />
+      <div>
+        <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
+        <label for="checkbox" class="ml-2">Show field hints</label>
+      </div>   
+
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
@@ -247,7 +237,8 @@
   
         <div v-if="!loading">
           <hr class="my-4" />
-          <div class="btn btn-dark btn-lg" @click.stop="onSubmit">Submit</div>
+          <div class="btn btn-dark mr-2" @click.stop="onSubmit">Submit</div>
+          <a class="btn btn-outline-primary" v-bind:href="backUrl">Back</a>
         </div>
         <div v-else>
           <div class="spinner-border" role="status">
@@ -428,7 +419,7 @@ export default {
       this.errors = []
 
       // check the form for completeness
-      if (!this.itemTitle) { // title is mandatory
+      if (!this.itemTitle || this.itemTitle == '') { // title is mandatory
         this.errors.push('A title is required')
         this.titleInvalid = true
       }  else {

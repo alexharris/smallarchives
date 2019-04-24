@@ -1,16 +1,6 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
-      <div class="row">
-        <div class="col-sm-9">
-          <div class="btn btn-dark" @click.stop="goBack">Back</div>
-        </div>
-        <div class="col-3">
-            <div class="float-left"><span class="mr-2 pt-2">Metadata Hints</span>  <switcher class="float-right" v-model="helpSwitcherValue" /></div>
-        </div>
-      </div>
-<hr class="my-4" />
-     
+    <div class="col-12 col-md-11 pt-4">     
       <template v-if="errors.length > 0">
         <div class="alert alert-danger" show>
           <h3>Errors</h3>
@@ -21,6 +11,10 @@
       </template>
       <h1 class="h4">Add New Item</h1>
       <hr class="my-4" />
+      <div>
+        <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
+        <label for="checkbox" class="ml-2">Show field hints</label>
+      </div>        
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
@@ -256,7 +250,8 @@
         </div>   
         <hr class="my-4" />
         <div v-if="!loading" class="my-5">
-          <div class="btn btn-dark btn-lg" @click.stop="onSubmit">Submit</div>
+          <div class="btn btn-dark mr-2" @click.stop="onSubmit">Submit</div>
+          <div class="btn btn-outline-primary" @click.stop="goBack">Back</div>
         </div>
         <div v-else>
           <div class="spinner-border" role="status">
@@ -358,7 +353,7 @@
       this.errors = []
 
       // check the form for completeness
-      if (!this.itemTitle) { // title is mandatory
+      if (!this.itemTitle || this.itemTitle === '') { // title is mandatory
         this.errors.push('A title is required')
         this.titleInvalid = true
       }  else {
@@ -366,7 +361,7 @@
       }
 
       if(this.selecteditemMediaType === '') {
-        this.errors.push('Media is required')
+        this.errors.push('Media Type is required')
         this.mediaInvalid = true
       } else {
         this.mediaInvalid = false

@@ -1,11 +1,10 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-12 col-sm-10">
+    <div class="col-12 col-sm-11 pt-4">
       <div class="btn btn-outline-dark" @click.stop="goBack">Back</div>
-      <hr class="my-4" />
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
+          <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Tags</a>
@@ -59,7 +58,8 @@
               </div>
             </div>        
           </form> 
-          <button class="btn btn-dark" type="submit" v-on:click="onSubmit">Update</button>
+          <button class="btn btn-dark mr-4" type="submit" v-on:click="onSubmit">Update</button>
+          
         </div>
         <!-- start second tab -->
         <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
@@ -96,10 +96,7 @@
           <hr class="my-4" />   
           <div class="admin">
             <div class=" card-deck">
-              <!--  Card one -->
-              <div class="card">
 
-              </div>
               <!-- Card two -->
               <div class="card border-danger">
                 <div class="card-header">Delete Archive</div>

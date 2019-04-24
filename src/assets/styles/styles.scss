@@ -124,6 +124,7 @@
 .user-menu {
   a {
     color: $light;
+    text-decoration: none !important;
   }
 }
 
@@ -138,13 +139,14 @@
 @media all and (max-width : 768px) {
   .user-menu {
     display: none;
+    
   }
   .menuVisible {
     display: block;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
-    z-index: 400;
+    z-index: 1100;
   }
   .user-menu-button {
     display: block;
