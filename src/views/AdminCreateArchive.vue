@@ -1,20 +1,15 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-12">
-        <div class="btn btn-dark" @click.stop="goBack">Back</div>
-        <hr class="my-4" />
+  <div class="row justify-content-center">
+
+      <div class="col-11 my-4">
+
         <template v-if="errors.length > 0">
           <div class="alert alert-danger" role="alert" show>
             <ul>
               <li v-for="error in errors">{{error}}</li>
             </ul>
           </div>
-        </template>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
+        </template>        
         <h1 class="h4">
           New Archive
         </h1>
@@ -41,11 +36,29 @@
               <input type="file" id="selectHeaderImage" v-on:change="handleFileChange">
             </div>
           </div> 
+          <!-- Views -->
+          <div class="form-group row">
+            <label for="listView" class="col-sm-2 col-form-label">Show List View</label>
+            <div class="col-sm-10">
+              <input type="checkbox" id="listView" v-model="showList">
+            </div>
+          </div>    
+          <div class="form-group row">
+            <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
+            <div class="col-sm-10">
+              <input type="checkbox" id="gridView" v-model="showGrid">
+            </div>
+          </div>  
+          <div class="form-group row">
+            <label for="mapView" class="col-sm-2 col-form-label">Show Map View</label>
+            <div class="col-sm-10">
+              <input type="checkbox" id="mapView" v-model="showMap">
+            </div>
+          </div>                                         
           <hr class="my-4" />                                          
-          <div class="btn btn-dark" type="submit" @click="onSubmit">Create</div>
+          <div class="btn btn-primary mr-2" type="submit" @click="onSubmit">Create</div>         <div class="btn btn-outline-primary" @click.stop="goBack">Cancel</div>
         </form>
       </div>
-    </div>
 
   </div>
 </template>
@@ -66,7 +79,10 @@ export default {
       uid: '',
       archiveHeaderImage: null,
       archiveCreationDate: '',
-      errors: []
+      errors: [],
+      showList: true,
+      showGrid: true,
+      showMap: false
     }
   },
   created() {
@@ -104,7 +120,13 @@ export default {
         title: this.archive.title,
         desc: this.archive.desc,
         headerImage: this.archiveHeaderImage.name,
-        dateCreated: new Date()
+        dateCreated: new Date(),
+        showMap: this.showMap,
+        showGrid: this.showGrid,
+        showList: this.showList,
+        mapLat: 1,
+        mapLong: 1,
+        zoom: 0        
       }).catch((error) => {
         alert("Error adding document: ", error);
       }).then((docRef) => {

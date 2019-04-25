@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <!-- <table class="table">
       <thead>
         <tr>
@@ -48,8 +48,10 @@
           </tr>
       </tbody>
     </table>     -->
-    <a :href="encodedUri" :download="archiveTitle + '.csv'">Download Data as CSV</a>
-  </div>
+    
+    <a :href="encodedUri" :download="archiveTitle + '.csv'" v-if="items.length > 0">Download Data as CSV</a>
+    <span v-else>There are no items to export.</span>
+  </span>
 </template>
 
 <script>
@@ -122,8 +124,9 @@ export default {
 
         });
       }).then(() => {
-        this.convertToCsv()
-
+        if(this.items.length > 0) {
+          this.convertToCsv()
+        }
       });       
     },
     convertToCsv: function() {
@@ -132,6 +135,7 @@ export default {
       const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
       const header = Object.keys(items[0])
 
+      
       
 
       let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))

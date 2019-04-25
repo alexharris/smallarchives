@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-12">
+  <div class="row justify-content-center">
+    <div class="col-11 my-4">
         <h1 class="h4">Account</h1>
         <h2 class="h5">Basic Info</h2>
         <ul class="list-unstyled">

@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-12 col-sm-11 pt-4">
-      <div class="btn btn-outline-dark" @click.stop="goBack">Back</div>
+      <h1 class="h2"> Edit Archive</h1>
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic</a>
@@ -19,46 +19,101 @@
 
           <h2 class="h4 mb-4">Basic Info</h2>
 
-          <ul class="list-unstyled">
-            <li><strong>Created:</strong> {{dateCreated}}</li>
-            <li><strong>ID:</strong> {{key}}</li>
-          </ul>
-       
-          <p>Update basic info about this archive:</p>
-          <form>
+
           
-            <!-- Title -->
-            <div class="form-group row">
-              <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
-              <div class="col-sm-10">
-                <input class="form-control" id="inputTitle" v-model="archive.title">
-              </div>
-            </div> 
-            <!-- Desc -->
-            <div class="form-group row">
-              <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
-              <div class="col-sm-10">
-                <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
-              </div>
-            </div>   
-            <!-- Header Image -->
-            <div v-if="archive.headerImage" class="my-4">
-              <div class="row">
-                <div class="col-sm-2">Header Image</div>
-                <div class="cols-m-10">
-                  <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
-                  <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
-                </div>
+          <!-- Title -->
+          <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="inputTitle" v-model="archive.title">
+            </div>
+          </div> 
+          <!-- Desc -->
+          <div class="form-group row">
+            <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
+            </div>
+          </div>   
+          <!-- Header Image -->
+          <div v-if="archive.headerImage" class="my-4">
+            <div class="row">
+              <div class="col-sm-2">Header Image</div>
+              <div class="cols-m-10">
+                <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
+                <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
               </div>
             </div>
-            <div v-else>
+          </div>
+          <div v-else>
+            <div class="form-group row">
+              <label for="inputFile" class="col-sm-2 col-form-label">Header Image</label>
+              <input type="file" id="inputFile" v-on:change="handleFileChange">
+            </div>
+          </div>        
+
+          <!-- Views -->
+          <div class="form-group row">
+            <label for="listView" class="col-sm-2 col-form-label">Show List View</label>
+            <div class="col-sm-10">
+              <input type="checkbox" id="listView" v-model="showList">
+            </div>
+          </div>    
+          <div class="form-group row">
+            <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
+            <div class="col-sm-10">
+              <input type="checkbox" id="gridView" v-model="showGrid">
+            </div>
+          </div>  
+          <div class="form-group row">
+            <label for="mapView" class="col-sm-2 col-form-label">Show Map View</label>
+            <div class="col-sm-10">
+              <input type="checkbox" id="mapView" v-model="showMap">
+            </div>
+          </div>  
+          <!-- Map Coordinates -->
+          <div class="card" v-if="showMap">
+            <div class="card-header">
+              Map Settings
+            </div>
+            <div class="card-body">
               <div class="form-group row">
-                <label for="inputFile" class="col-sm-2 col-form-label">Header Image</label>
-                <input type="file" id="inputFile" v-on:change="handleFileChange">
+                <label for="inputMapLat" class="col-sm-2 col-form-label">Initial Map Latitude</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="inputMapLat" v-model.number="mapLat">
+                </div>
               </div>
-            </div>        
-          </form> 
-          <button class="btn btn-dark mr-4" type="submit" v-on:click="onSubmit">Update</button>
+              <div class="form-group row">
+                <label for="inputMapLong" class="col-sm-2 col-form-label">Initial Map Longitude</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="inputMapLong" v-model.number="mapLong">
+                </div>
+              </div>  
+              <div class="form-group row">
+                <label for="customRange2" class="col-sm-2 col-form-label">Initial Map Zoom</label>
+                <div class="col-sm-2 text-center">
+                  <strong>{{zoom}}</strong>
+                </div>            
+                <div class="col-sm-8">
+                  <input type="range" class="custom-range" min="0" max="16" id="customRange2" v-model.number="zoom">    
+                </div>
+              </div> 
+            </div>
+          </div>     
+          <!-- Submit -->
+          <div v-if="!loading">
+            <hr class="my-4" />
+            <button class="btn btn-primary mr-2" type="submit" v-on:click="onSubmit">Update</button>
+            <div class="btn btn-outline-primary" @click.stop="goBack">Cancel</div>
+          </div>
+          <div v-else>
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>                       
+
+          
+                      
           
         </div>
         <!-- start second tab -->
@@ -76,7 +131,7 @@
             <form class="form-inline mt-4">
               <label class="sr-only" for="inlineFormInputName2">Name</label>
               <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
-              <div class="btn btn-dark" v-on:click.stop="addTag">Add</div>
+              <div class="btn btn-primary" v-on:click.stop="addTag">Add</div>
             </form> 
           </div>
         </div>  
@@ -84,17 +139,17 @@
         <!-- start third tab -->
         <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
           <h2 class="h4 mb-4">Administration</h2>  
-          <p><strong>General Settings</strong></p>
-           <form>
-              <input type="checkbox" id="checkbox" v-model="showMap">
-              <label for="checkbox" class="ml-2">Show Map View</label><br />
-              <p><strong>Export Data</strong></p>
-              <AdminExportData />
-              <hr />
-              <div class="btn btn-dark" v-on:click.stop="saveAdmin">Save</div>
-           </form>
-          <hr class="my-4" />   
-          <div class="admin">
+
+            <ul class="list-unstyled">
+              <li><strong>Created:</strong> {{dateCreated}}</li>
+              <li><strong>ID:</strong> {{key}}</li>
+              <li><strong>Export Data: </strong> <AdminExportData /></li>
+            </ul>
+                        
+                    
+
+ 
+          <div class="admin my-4">
             <div class=" card-deck">
 
               <!-- Card two -->
@@ -108,8 +163,7 @@
             </div> 
           </div>
         </div>                  
-      </div>
-      
+      </div>     
     </div>
       <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -159,7 +213,13 @@ export default {
       newTag: '',
       tags: [],
       newTags: [],
-      showMap: false
+      showMap: true,
+      showGrid: true,
+      showList: false,
+      loading: null,
+      zoom: 1,
+      mapLat: 1,
+      mapLong: 1
     }
   },
   created () {
@@ -174,7 +234,12 @@ export default {
         this.dateCreated = sa.getFormattedDate(doc.data().dateCreated)
         this.originalHeaderImage = doc.data().headerImage
         this.getTags()
+        this.showList = doc.data().showList
+        this.showGrid = doc.data().showGrid
         this.showMap = doc.data().showMap
+        this.mapLat = doc.data().mapLat
+        this.mapLong = doc.data().mapLong
+        this.zoom = doc.data().zoom
       } else {
         alert("No such document!");
       }
@@ -187,12 +252,20 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
 
+      this.loading = true
+
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id      
 
       sa.archiveDocumentDbRef(uid, archiveId).update({
         title: this.archive.title,
-        desc: this.archive.desc
+        desc: this.archive.desc,
+        showList: this.showList,
+        showGrid: this.showGrid,
+        showMap: this.showMap,
+        mapLat: this.mapLat,
+        mapLong: this.mapLong,
+        zoom: this.zoom        
       }).catch((error) => {
         alert("Error adding document: ", error);
       }).then(() => {
@@ -221,19 +294,7 @@ export default {
     },
     goBack() {
       this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
-    },
-    saveAdmin() {
-
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id    
-
-      sa.archiveDocumentDbRef(uid, archiveId).update({
-        showMap: this.showMap
-      }).catch((error) => {
-        console.log('Error: ' + error);
-      })      
-
-    },    
+    },  
     getTags() {
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id 

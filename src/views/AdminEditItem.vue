@@ -238,7 +238,7 @@
         <div v-if="!loading">
           <hr class="my-4" />
           <div class="btn btn-dark mr-2" @click.stop="onSubmit">Submit</div>
-          <a class="btn btn-outline-primary" v-bind:href="backUrl">Back</a>
+          <a class="btn btn-outline-primary" v-bind:href="backUrl">Cancel</a>
         </div>
         <div v-else>
           <div class="spinner-border" role="status">

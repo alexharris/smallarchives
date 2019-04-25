@@ -27,10 +27,10 @@
               About
             </button>             
             <div class="btn-group btn-group-toggle mr-3 mb-2">
-              <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType">
+              <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType" v-if="showGrid">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
               </label>
-              <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType">
+              <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType" v-if="showList">
                 <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
               </label>
 
@@ -40,6 +40,53 @@
             </div>  
              
           </span>  
+             <!-- Filter collapse  -->
+          <div class="collapse pt-2 filter-collapse" id="collapseExample">
+            <div class="row">
+              <div class="col-11 col-md-3">
+                <form>
+                  <div class="form-group">                
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect02">Type</label>
+                      </div> 
+                      <select class="custom-select mediaTypeFilter" v-on:change="updateQueryParams" :value="selectedMediaType" ref="mediaTypeFilter">
+                        <option :selected="true">All</option>
+                        <option v-for="type in uniqueItemTypes">{{type}}</option>
+                      </select>
+                      <div class="input-group-append" v-if="selectedMediaType != 'All'">
+                        <button class="btn btn-danger" type="button" id="button-addon1" @click="clearMediaTypeFilter()"><font-awesome-icon icon="times" size="1x" /></button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div> 
+              <div class="col-11 col-md-3">
+                <form>
+                  <div class="form-group">                
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect02">Tags</label>
+                      </div> 
+                      <select class="custom-select tagFilter" v-on:change="updateQueryParams" :value="selectedTag" ref="tagFilter">
+                        <option>None</option>
+                        <option v-for="tag in tags">{{tag.tagTitle}}</option>
+                      </select>
+                      <div class="input-group-append" v-if="selectedTag != 'None'">
+                        <button class="btn btn-danger" type="button" id="button-addon1" @click="clearTagFilter()"><font-awesome-icon icon="times" size="1x" /></button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-11 col-md-3">
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
+                  <label class="form-check-label" for="exampleCheck1">Has location</label>
+                </div>              
+              </div>            
+            </div>
+          </div>           
         </nav>    
         <div class="modal fade" id="basicInfoModal" tabindex="-1" role="dialog" aria-labelledby="basicInfoModalTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -59,58 +106,9 @@
             </div>
           </div>
         </div>             
-             <!-- Filter collapse  -->
-        <div class="collapse py-4 filter-collapse" id="collapseExample">
-          <div class="row">
-            <div class="col-12 col-md-3">
-              <form>
-                <div class="form-group">                
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text" for="inputGroupSelect02">Type</label>
-                    </div> 
-                    <select class="custom-select mediaTypeFilter" v-on:change="updateQueryParams" :value="selectedMediaType" ref="mediaTypeFilter">
-                      <option :selected="true">All</option>
-                      <option v-for="type in uniqueItemTypes">{{type}}</option>
-                    </select>
-                    <div class="input-group-append" v-if="selectedMediaType != 'All'">
-                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearMediaTypeFilter()"><font-awesome-icon icon="times" size="1x" /></button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div> 
-
-            <div class="col-12 col-md-3">
-              <form>
-                <div class="form-group">                
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text" for="inputGroupSelect02">Tags</label>
-                    </div> 
-                    <select class="custom-select tagFilter" v-on:change="updateQueryParams" :value="selectedTag" ref="tagFilter">
-                      <option>None</option>
-                      <option v-for="tag in tags">{{tag.tagTitle}}</option>
-                    </select>
-                    <div class="input-group-append" v-if="selectedTag != 'None'">
-                      <button class="btn btn-danger" type="button" id="button-addon1" @click="clearTagFilter()"><font-awesome-icon icon="times" size="1x" /></button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="col-12 col-md-3">
-              <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
-                <label class="form-check-label" for="exampleCheck1">Has location</label>
-              </div>              
-            </div>            
-          </div>
-        </div> 
-       
         <PublicListItems v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
         <PublicGridItems v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
-        <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey"/>       
+        <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey" :mapLat="mapLat" :mapLong="mapLong" :zoom="zoom" />       
         <div class="row my-5 py-5 justify-content-center">  
           <small>Made with <a href="/">Small Archives</a></small>
         </div>                      
@@ -150,9 +148,14 @@ export default {
       selectedHasLocation: false,
       tags: [],
       showMap: false,
+      showList: true,
+      showGrid: true,
       mapComponentKey: 0,
       confirmOwner: false,
-      filterState: true
+      filterState: true,
+      mapLat: 1,
+      mapLong: 1,
+      zoom: 16
 
     }
   },
@@ -242,6 +245,11 @@ export default {
           this.creationDate = sa.getFormattedDate(doc.data().dateCreated)
           this.headerImage = doc.data().headerImage
           this.showMap = doc.data().showMap
+          this.showList = doc.data().showList
+          this.showGrid = doc.data().showGrid
+          this.mapLat = doc.data().mapLat
+          this.mapLong = doc.data().mapLong
+          this.zoom = doc.data().zoom
         } else {
           this.$router.push('/404')
         }
@@ -372,7 +380,7 @@ export default {
   }
 
   .filter-collapse {
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
   }
 
 

@@ -6,10 +6,10 @@
           <p>This archive has no items.</p>
       </div>
       <div v-else>
-        <div v-if="renderedItems.length !== 0" class="row">
-          <div class="col-12">
+        <div v-if="renderedItems.length !== 0" class="row justify-content-center">
+          <div class="col-11">
             <div class="map-container">
-              <l-map :zoom=2>
+              <l-map :zoom="zoom" :center="center">
                 <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
                   <template v-for="item in renderedItems">
                     <l-marker v-if="item.itemCoverageLat != ''" :lat-lng="[item.itemCoverageLat, item.itemCoverageLong]">
@@ -48,6 +48,11 @@ export default {
     renderedItems: [],
   	}
   },
+  props: {
+    mapLat: Number,
+    mapLong: Number,
+    zoom: Number
+  },
   components: {
     LMap,
     LTileLayer,
@@ -69,8 +74,9 @@ export default {
     this.getUidFromUsername()
   },   
   computed: {
-    firstMapPoint: function() {
-      return [1,1]
+    center: function() {
+      var center =  L.latLng(this.mapLat, this.mapLong)
+      return center
     },
     tag() {
       if(this.$route.query.tag === undefined) {
@@ -160,7 +166,7 @@ export default {
           if(item.itemTags) {
             return item.itemTags.includes(this.tag) 
           }
-        })  
+        })
       }   
 
     },
@@ -188,6 +194,12 @@ export default {
   .map-container {
     width: 100%;
     height: 700px;
+  }
+
+  @media only screen and (max-width: 767px) { 
+      .map-container {
+          height: 100vw
+      }
   }
 
 </style>

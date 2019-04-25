@@ -29,7 +29,7 @@
           </div>
           <div class="grid-title">
             <small>{{item.itemType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/></small>
-            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a> <span class="btn mr-2 btn-sm btn-link" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner">Edit</span>    </p>
+            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a><br /><span class="mt-2 btn btn-outline-primary btn-sm" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner"><small>Edit</small></span>    </p>
           </div>
                 
         </div>
@@ -57,6 +57,7 @@ export default {
 		url: '',
     items: [],
     renderedItems: [],
+    confirmOwner: false
   	}
   },
   watch: { 
@@ -75,6 +76,7 @@ export default {
   },    
   created() {
     this.getUidFromUsername()
+    this.getConfirmOwner()
   },  
   computed: {
     tag() {
@@ -92,7 +94,10 @@ export default {
       }      
     }  
   },     
-  methods: {     
+  methods: {  
+    async getConfirmOwner() {
+      this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
+    },        
     async getUidFromUsername() {
       var username = this.$route.params.username
       this.uid = await sa.getUidFromUsername(username)

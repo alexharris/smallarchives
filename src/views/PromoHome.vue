@@ -11,8 +11,8 @@
 
                 </div>                
             </div> -->
-            <div class="row justify-content-center  px-md-5 my-md-5 py-5">
-                <div class="col-12 col-lg-6 mb-4 ">  
+            <div class="row justify-content-center px-md-5 my-md-5 d-flex">
+                <div class="col-12 col-lg-6 mb-4 order-2 order-lg-1">  
                     <h2 class="h1 display-5"><strong>Small Archives</strong></h2> 
 
                     <p class="lead my-4">A simple platform for publishing collections of stuff on the web.</p>
@@ -22,7 +22,7 @@
 
                 </div>
 
-                <div class="col-12 col-lg-6 float-right d-none d-md-block">   
+                <div class="col-12 col-lg-6 mb-4 float-right order-1 order-lg-2">   
                     <FunGrid />
                     <!-- <div class="card">
                         <div class="card-body p-0 text-center">

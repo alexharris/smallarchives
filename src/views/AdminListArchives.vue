@@ -20,7 +20,8 @@
             <div class="card-footer">
               <!-- <button class="btn btn-primary btn-sm mr-2" @click.stop="details(item.key)">Manage</button> -->
               <!-- <button class="btn btn-outline-dark btn-sm mr-2" @click.stop="editarchive(item.key)">Edit</button> -->
-              <a class="btn btn-primary" :href="'/u/' + username + '/' + archive.id">View</a>
+              <a class="btn btn-primary mr-2" :href="'/u/' + username + '/' + archive.id">View</a>
+              <a class="btn btn-primary" :href="'/admin/edit-archive/' + archive.id">Edit</a>
             </div>
           </div>   
           </div>      
@@ -85,3 +86,4 @@ export default {
   }
 }
 </script>
+
