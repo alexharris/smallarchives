@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="row mb-5 px-md-2 pb-4 justify-content-center">
+    <div class="row mb-2 px-md-2 pb-2 justify-content-center">
       <div class="col-12">
         <div class="row">
           <!-- <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
@@ -17,16 +17,16 @@
 
         </div>    
              
-        <nav class="navbar sticky-top navbar-light pt-4"  style="background-color: #ffffff;">
+        <nav class="navbar sticky-top navbar-light"  style="background-color: #ffffff;">
            <span class="navbar-text">
-            <button type="button" class="btn btn-sm btn-outline-dark mr-3 mb-2" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
+            <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
               Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
               <!-- <font-awesome-icon icon="times" size="1x" /> -->
             </button>
-            <button type="button" class="btn btn-sm btn-outline-dark mr-3 mb-2" data-toggle="modal" data-target="#basicInfoModal">
+            <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
               About
             </button>             
-            <div class="btn-group btn-group-toggle mr-3 mb-2">
+            <div class="btn-group btn-group-toggle mr-3">
               <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType" v-if="showGrid">
                 <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
               </label>
@@ -40,8 +40,9 @@
             </div>  
              
           </span>  
+        </nav>            
              <!-- Filter collapse  -->
-          <div class="collapse pt-2 filter-collapse" id="collapseExample">
+          <div class="collapse pt-2 filter-collapse sticky-top bg-white" id="collapseExample">
             <div class="row">
               <div class="col-11 col-md-3">
                 <form>
@@ -87,7 +88,7 @@
               </div>            
             </div>
           </div>           
-        </nav>    
+  
         <div class="modal fade" id="basicInfoModal" tabindex="-1" role="dialog" aria-labelledby="basicInfoModalTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -108,8 +109,8 @@
         </div>             
         <PublicListItems v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
         <PublicGridItems v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
-        <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey" :mapLat="mapLat" :mapLong="mapLong" :zoom="zoom" />       
-        <div class="row my-5 py-5 justify-content-center">  
+        <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey" :mapLat="mapLat" :mapLong="mapLong" :zoom="zoom"/>       
+        <div class="row mt-5 pt-5 justify-content-center">  
           <small>Made with <a href="/">Small Archives</a></small>
         </div>                      
       </div>    
@@ -381,6 +382,10 @@ export default {
 
   .filter-collapse {
     border-bottom: 2px solid black;
+  }
+
+  .filter-collapse.sticky-top {
+    top: 63px;
   }
 
 

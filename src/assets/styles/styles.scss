@@ -1,23 +1,26 @@
 @import "../../assets/styles/bootstrap-overides.scss"; 
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 
-@font-face {
-    font-family: 'Inter';
-    font-style:  normal;
-    font-weight: 400;
-    src: url("../Inter-Regular.woff2") format("woff2"),
-         url("../Inter-Regular.woff") format("woff");
-  }
-  @font-face {
-    font-family: 'Inter';
-    font-style:  normal;
-    font-weight: 800;
-    src: url("../Inter-ExtraBold.woff2") format("woff2"),
-         url("../Inter-ExtraBold.woff") format("woff");
-  }
+// @font-face {
+//     font-family: 'Inter';
+//     font-style:  normal;
+//     font-weight: 400;
+//     src: url("../Inter-Regular.woff2") format("woff2"),
+//          url("../Inter-Regular.woff") format("woff");
+//   }
+//   @font-face {
+//     font-family: 'Inter';
+//     font-style:  normal;
+//     font-weight: 800;
+//     src: url("../Inter-ExtraBold.woff2") format("woff2"),
+//          url("../Inter-ExtraBold.woff") format("woff");
+//   }
 
-  h1,h2,h3,h4,h5 {
-    font-family: 'inter', sans-serif !important;
+  @import url('https://fonts.googleapis.com/css?family=Inknut+Antiqua');
+
+  h1,h2,h3,h4,h5, .navbar-brand {
+    // font-family: 'inter', sans-serif !important;
+    font-family: 'Inknut Antiqua', serif;
   }
 
   p {

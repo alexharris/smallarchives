@@ -61,7 +61,7 @@
                 </div>
             </div>             
             <div class="row my-5 py-5 px-md-5 justify-content-center cards-row">
-                <div class="col-12 col-xl-10">
+                <div class="col-12">
                     <div class="card-deck">
 
                       <div class="card">

@@ -1,6 +1,6 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100" > 
-      <header v-if="isPromo">
+      <header v-if="isPromo" class="bg-white">
         <nav class="navbar navbar-expand-lg" >
           <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@
             <router-view/>  
           </div>
         </div>  
+     
       </div>      
     
 
