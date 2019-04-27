@@ -1,48 +1,46 @@
 <template>
-  <div>
+  <div class="container">
 
     <div class="row mb-2 px-md-2 pb-2 justify-content-center">
       <div class="col-12">
-        <div class="row">
-          <!-- <div class="col-12 col-md-3 mb-4 justify-content-md-center" v-if="headerImage != ''">
-            <ArchiveHeaderImage v-bind:archiveId="this.archiveId" class="mb-4" />    
-          </div>   -->
-          <div class="col-12  py-4">              
-            <h1 class="h2 mr-4 mb-4">{{archive.title}}</h1>
-            <!-- <p>{{archive.desc}}</p>  -->
-            <div class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
-            <button class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
-
+          <div class="row">
+            <div class="col-12 mx-0 px-0 my-4">
+              <h1 class="h2 mb-4">{{archive.title}}</h1>
+              <!-- <p>{{archive.desc}}</p>  -->
+              <div class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
+              <button class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
+            </div>
           </div>
+  
+         <div class="row sticky-top">
+          <nav class="navbar navbar-light col-12"  style="background-color: #ffffff;">
+            <span class="navbar-text">
+              <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
+                Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
+                <!-- <font-awesome-icon icon="times" size="1x" /> -->
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
+                About
+              </button>             
+              <div class="btn-group btn-group-toggle mr-3">
+                <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType" v-if="showGrid">
+                  <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
+                </label>
+                <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType" v-if="showList">
+                  <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
+                </label>
 
+                <label for="map" class="btn btn-sm btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
+                  <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" />
+                </label>       
+              </div>  
+              
+            </span>  
+          </nav>        
         </div>    
-             
-        <nav class="navbar sticky-top navbar-light"  style="background-color: #ffffff;">
-           <span class="navbar-text">
-            <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
-              Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
-              <!-- <font-awesome-icon icon="times" size="1x" /> -->
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
-              About
-            </button>             
-            <div class="btn-group btn-group-toggle mr-3">
-              <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType" v-if="showGrid">
-                <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
-              </label>
-              <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType" v-if="showList">
-                <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
-              </label>
-
-               <label for="map" class="btn btn-sm btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
-                <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" />
-              </label>       
-            </div>  
-             
-          </span>  
-        </nav>            
-             <!-- Filter collapse  -->
-          <div class="collapse pt-2 filter-collapse sticky-top bg-white" id="collapseExample">
+        <!-- Filter collapse  -->
+        <div class="row sticky-top filter-collapse bg-white">
+          <div class="collapse pt-2  bg-white" id="collapseExample">
             <div class="row">
               <div class="col-11 col-md-3">
                 <form>
@@ -88,7 +86,7 @@
               </div>            
             </div>
           </div>           
-  
+        </div>
         <div class="modal fade" id="basicInfoModal" tabindex="-1" role="dialog" aria-labelledby="basicInfoModalTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
