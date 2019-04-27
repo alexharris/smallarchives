@@ -10,20 +10,17 @@
           <table class="table table-public">
             <thead>
               <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Item Type</th>
-                <th scope="col">Date Added</th>
-                <th scope="col" v-if="confirmOwner">Action</th>
+
+                <th scope="col">Title <a @click.stop="sortResults('itemTitle')" ><font-awesome-icon class="ml-2" :class="rotateTitleIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
+                <th scope="col">Item Type <a @click.stop="sortResults('itemType')"><font-awesome-icon class="ml-2" :class="rotateTypeIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
+                <th scope="col">Date Added <a @click.stop="sortResults('itemCreationDate')"><font-awesome-icon class="ml-2" :class="rotateDateIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
                 <!-- <th scope="col">Actions</th> -->
               </tr>
             </thead>
             <tr v-for="item in renderedItems">
-              <td><a href="" @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/></td>
+              <td><a href="" @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/><a v-if="confirmOwner" href="" class="ml-2" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</a></td>
               <td><div>{{item.itemType}}</div></td>
-              <td>{{item.itemCreationDate}}</td>
-              <td v-if="confirmOwner">
-                <button class="btn mr-2 btn-sm btn-outline-dark" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</button>          
-              </td>              
+              <td>{{item.itemCreationDate}}</td>           
             </tr>
           </table>
         </div>
@@ -54,7 +51,11 @@ export default {
     items: [],
     renderedItems: [],
     currentUser: '',
-    confirmOwner: false
+    confirmOwner: false,
+    sortedResults: false,
+    rotateTitleIcon: false,
+    rotateTypeIcon: false,
+    rotateDateIcon: false
     // tag: this.$route.query.tag
   	}
   },
@@ -113,6 +114,39 @@ export default {
       
       this.createItemArray()
     },
+    sortResults: function(field) {
+      switch(field) {
+        case 'itemTitle':
+          this.rotateTitleIcon = !this.rotateTitleIcon
+          break;
+        case 'itemType':
+          this.rotateTypeIcon = !this.rotateTypeIcon
+          break;
+        case 'itemCreationDate':
+          this.rotateDateIcon = !this.rotateDateIcon
+          break;
+      }
+      this.sortedResults = !this.sortedResults
+      this.renderedItems.sort((a,b) => {
+        if(this.sortedResults) {
+          if (a[field] > b[field]) {
+            return 1
+          } 
+          if (a[field] < b[field]) {
+            return -1
+          }
+          return 0
+        } else {
+          if (a[field] > b[field]) {
+            return -1
+          } 
+          if (a[field] < b[field]) {
+            return 1
+          }
+          return 0
+        }
+      })
+    },
     createItemArray: function() {
 
       var uid = this.uid
@@ -147,7 +181,7 @@ export default {
         this.filterItemArray()
       });
     },
-    // this just does some quick sorting
+    // this just does some quick initial sorting
     sortByTitle: function(a,b) {
       if (a.itemTitle < b.itemTitle)
         return -1;
@@ -219,4 +253,29 @@ export default {
   img {
     height: 300px;
   }
+
+  .rotate {
+    /* -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); */
+    animation: spin .2s linear;
+  }
+
+    .rotateAgain {
+    /* -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); */
+    animation: spin2 .2s linear;
+  }
+  @-moz-keyframes spin { 100% { -moz-transform: rotate(180deg); } }
+  @-webkit-keyframes spin { 100% { -webkit-transform: rotate(180deg); } }
+  @keyframes spin { 100% { -webkit-transform: rotate(180deg); transform:rotate(180deg); } }
+
+
+  @-moz-keyframes spin2 { 100% { -moz-transform: rotate(-180deg); } }
+  @-webkit-keyframes spin2 { 100% { -webkit-transform: rotate(-180deg); } }
+  @keyframes spin2 { 100% { -webkit-transform: rotate(-180deg); transform:rotate(-180deg); } }
+
 </style>

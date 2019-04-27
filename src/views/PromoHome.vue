@@ -91,15 +91,15 @@
                     </div>                    
                 </div>             
             </div>              
-            <div class="row px-sm-5 justify-content-center example-row">
-                <div class="col-12 col-lg-6">
+            <div class="row px-sm-5 my-4 py-5 justify-content-center example-row">
+                <div class="col-12 col-lg-4">
                     <h2 class="h2">View a demo</h2>
                     <p>View an example of a small archive with our demo collection.</p>
                     <p><a href="/demo" class="btn btn-primary">See Example</a></p>                    
                 </div>                 
-                <div class="col-12 col-lg-6 p-0">
+                <div class="col-12 col-lg-8 p-0">
                     <a href="/demo">
-                        <img class="img-link" src="img/demo-screenshot.png" />     
+                        <img class="img-link" src="img/demo-screenshot.jpg" />     
                     </a>                    
                 </div>   
             </div>               
