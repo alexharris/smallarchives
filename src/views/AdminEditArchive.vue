@@ -101,16 +101,7 @@
             </div>
           </div>     
           <!-- Submit -->
-          <div v-if="!loading">
-            <hr class="my-4" />
-            <button class="btn btn-primary mr-2" type="submit" v-on:click="onSubmit">Update</button>
-            <div class="btn btn-outline-primary" @click.stop="goBack">Cancel</div>
-          </div>
-          <div v-else>
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>                       
+          <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" />                      
 
           
                       
@@ -194,12 +185,14 @@ import firebase from 'firebase'
 import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import AdminExportData from '../components/AdminExportData'
+import SubmitButton from '../components/SubmitButton'
 
 export default {
   name: 'AdminEditArchive',
   components: {
     ArchiveHeaderImage,
-    AdminExportData
+    AdminExportData,
+    SubmitButton
   }, 
   data () {
     return {
@@ -249,8 +242,7 @@ export default {
     handleFileChange(e, index) {
       this.newHeaderImage = e.target.files[0]
     },     
-    onSubmit (evt) {
-      evt.preventDefault()
+    onSubmit () {
 
       this.loading = true
 

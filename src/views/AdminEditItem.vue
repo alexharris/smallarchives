@@ -1,6 +1,7 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 pt-4">
+      
       <h1 class="h4">Edit Item</h1>  
       <hr class="my-4" />
       <div>
@@ -233,18 +234,8 @@
         </div> <!-- end third tab -->        
       </div>        
             
-                                                                                                         
-  
-        <div v-if="!loading">
-          <hr class="my-4" />
-          <div class="btn btn-dark mr-2" @click.stop="onSubmit">Submit</div>
-          <a class="btn btn-outline-primary" v-bind:href="backUrl">Cancel</a>
-        </div>
-        <div v-else>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
+      <SubmitButton v-on:submit="onSubmit" v-on:cancel="backUrl" />
+      
         </form>                      
         <hr class="my-4" />  
         <div class="col-12" >
@@ -278,12 +269,12 @@
 
 import firebase from 'firebase'
 import sa from '../sa'
-import Switcher from '../components/Switcher'
+import SubmitButton from '../components/SubmitButton'
 
 export default {
   name: 'AdminEditItem',
   components: {
-    Switcher
+    SubmitButton
   },  
   data () {
     return {
@@ -412,8 +403,7 @@ export default {
         });
       });     
     },        
-    onSubmit (evt) {
-      evt.preventDefault()
+    onSubmit () {
 
       // empty the error variable to get rid of old errors
       this.errors = []
@@ -505,13 +495,10 @@ export default {
       this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
 
     }, 
-        
-  },
-  computed: {
     backUrl() {
-      // this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id }})
-      return '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id
-    }   
+      this.$router.push({ name: 'PublicArchive', params: {username: firebase.auth().currentUser.displayName, id: this.$route.params.archive_id }})
+      // return '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id
+    }           
   }
 }
 </script>

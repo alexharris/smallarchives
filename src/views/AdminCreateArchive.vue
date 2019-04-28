@@ -55,8 +55,7 @@
               <input type="checkbox" id="mapView" v-model="showMap">
             </div>
           </div>                                         
-          <hr class="my-4" />                                          
-          <div class="btn btn-primary mr-2" type="submit" @click="onSubmit">Create</div>         <div class="btn btn-outline-primary" @click.stop="goBack">Cancel</div>
+          <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" />                                          
         </form>
       </div>
 
@@ -67,9 +66,13 @@
 
 import firebase from 'firebase'
 import sa from '../sa'
+import SubmitButton from '../components/SubmitButton'
 
 export default {
   name: 'AdminCreateArchive',
+  components: {
+    SubmitButton
+  },   
   data () {
     return {
       archive: {
@@ -93,10 +96,8 @@ export default {
     handleFileChange(e, index) {
       this.archiveHeaderImage = e.target.files[0]
     },      
-    onSubmit (evt) {
-      evt.preventDefault()
-
-        
+    onSubmit () {
+ 
       // Check for errors in the form
       this.errors = [] //clear old error array
       //check for completeness

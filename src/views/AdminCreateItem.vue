@@ -248,16 +248,8 @@
             </div>            
           </div>
         </div>   
-        <hr class="my-4" />
-        <div v-if="!loading" class="my-5">
-          <div class="btn btn-dark mr-2" @click.stop="onSubmit">Submit</div>
-          <div class="btn btn-outline-primary" @click.stop="goBack">Back</div>
-        </div>
-        <div v-else>
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
+        <!-- Submit -->
+        <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" />    
       </form>
     </div>
   </div>    
@@ -268,12 +260,12 @@
 
   import firebase from 'firebase'
   import sa from '../sa'
-  import Switcher from '../components/Switcher'
+  import SubmitButton from '../components/SubmitButton'
 
   export default {
     name: 'AdminCreateItem',
     components: {
-      Switcher
+      SubmitButton
     },
     data () {
       return {
@@ -346,8 +338,7 @@
           });
         });     
       },          
-      onSubmit (evt) {
-        evt.preventDefault()
+      onSubmit () {
 
       // empty the error variable to get rid of old errors
       this.errors = []
