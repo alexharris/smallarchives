@@ -17,7 +17,6 @@ import firebase from 'firebase';
 
 export default {
   name: "SubmitButton", 
-  props: ['send'],
   data() {
       return {
           loading: false

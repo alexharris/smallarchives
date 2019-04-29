@@ -3,11 +3,11 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import Admin from "@/views/Admin.vue";
-import Login from "@/views/Login.vue";
+
 import NotFound from "@/views/NotFound.vue";
 
 // User
-import UserSignUp from "@/views/UserSignUp.vue";
+
 import UserProfile from "@/views/UserProfile.vue";
 import UserDirectory from "@/views/UserDirectory.vue";
 import EditUserProfile from "@/views/EditUserProfile.vue";
@@ -23,7 +23,8 @@ import AdminCreateItem from "@/views/AdminCreateItem";
 import AdminEditItem from "@/views/AdminEditItem";
 
 // Public
-
+import PromoSignUp from "@/views/PromoSignUp.vue";
+import PromoLogin from "@/views/PromoLogin.vue";
 import PromoHome from "@/views/PromoHome";
 import PromoProfile from "@/views/PromoProfile";
 import PublicArchive from "@/views/PublicArchive";
@@ -105,13 +106,13 @@ const router = new Router({
     },
     {
       path: "/login",
-      name: "login",
-      component: Login
+      name: "PromoLogin",
+      component: PromoLogin
     },
     {
       path: "/sign-up",
-      name: "UserSignUp",
-      component: UserSignUp
+      name: "PromoSignUp",
+      component: PromoSignUp
     },
     {
       path: "/users",

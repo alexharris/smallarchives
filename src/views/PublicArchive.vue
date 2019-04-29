@@ -1,23 +1,19 @@
 <template>
   <div class="container">
-
     <div class="row mb-2 px-md-2 pb-2 justify-content-center">
       <div class="col-12">
-          <div class="row">
-            <div class="col-12 mx-0 px-0 my-4">
-              <h1 class="h2 mb-4">{{archive.title}}</h1>
-              <!-- <p>{{archive.desc}}</p>  -->
-              <div class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
-              <button class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
-            </div>
+        <div class="row">
+          <div class="col-12 mx-0 px-0 my-4">
+            <h1 class="h2 mb-4">{{archive.title}}</h1>
+            <div class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
+            <button class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
           </div>
-  
-         <div class="row sticky-top">
+        </div>
+        <div class="row sticky-top">
           <nav class="navbar navbar-light col-12"  style="background-color: #ffffff;">
             <span class="navbar-text">
               <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
                 Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
-                <!-- <font-awesome-icon icon="times" size="1x" /> -->
               </button>
               <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
                 About

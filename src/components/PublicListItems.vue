@@ -1,39 +1,32 @@
-<template
-
->
-<div class="mt-5">
-      <div v-if="items.length == 0">
-          <p>This archive has no items.</p>
-      </div>
-      <div v-else>
-        <div v-if="renderedItems.length !== 0" class="row">
-          <table class="table table-public">
-            <thead>
-              <tr>
-
-                <th scope="col">Title <a @click.stop="sortResults('itemTitle')" ><font-awesome-icon class="ml-2" :class="rotateTitleIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
-                <th scope="col">Item Type <a @click.stop="sortResults('itemType')"><font-awesome-icon class="ml-2" :class="rotateTypeIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
-                <th scope="col">Date Added <a @click.stop="sortResults('itemCreationDate')"><font-awesome-icon class="ml-2" :class="rotateDateIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
-                <!-- <th scope="col">Actions</th> -->
-              </tr>
-            </thead>
-            <tr v-for="item in renderedItems">
-              <td><a href="" @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/><a v-if="confirmOwner" href="" class="ml-2" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</a></td>
-              <td><div>{{item.itemType}}</div></td>
-              <td>{{item.itemCreationDate}}</td>           
+<template>
+  <div class="mt-5">
+    <div v-if="items.length == 0">
+        <p>This archive has no items.</p>
+    </div>
+    <div v-else>
+      <div v-if="renderedItems.length !== 0" class="row">
+        <table class="table table-public">
+          <thead>
+            <tr>
+              <th scope="col">Title <a @click.stop="sortResults('itemTitle')" ><font-awesome-icon class="ml-2" :class="rotateTitleIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
+              <th scope="col">Item Type <a @click.stop="sortResults('itemType')"><font-awesome-icon class="ml-2" :class="rotateTypeIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
+              <th scope="col">Date Added <a @click.stop="sortResults('itemCreationDate')"><font-awesome-icon class="ml-2" :class="rotateDateIcon ? 'rotate' : 'rotateAgain'" icon="sort" size="1x" /></a></th>
             </tr>
-          </table>
-        </div>
-        <div class="row" v-else>
-          <div class="col-12">
-            <p></p>
-            <p>There are no results. Please modify filters.</p>
-          </div>
-        </div>          
+          </thead>
+          <tr v-for="item in renderedItems">
+            <td><a href="" @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a><font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/><a v-if="confirmOwner" href="" class="ml-2" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</a></td>
+            <td><div>{{item.itemType}}</div></td>
+            <td>{{item.itemCreationDate}}</td>           
+          </tr>
+        </table>
       </div>
-
-
-
+      <div class="row" v-else>
+        <div class="col-12">
+          <p></p>
+          <p>There are no results. Please modify filters.</p>
+        </div>
+      </div>          
+    </div>
 	</div>
 </template>
 
@@ -56,7 +49,6 @@ export default {
     rotateTitleIcon: false,
     rotateTypeIcon: false,
     rotateDateIcon: false
-    // tag: this.$route.query.tag
   	}
   },
   watch: { 

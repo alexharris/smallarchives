@@ -18,8 +18,39 @@
           </div>        
           <button class="btn btn-dark" type="submit" @click.stop="login">Sign In</button>
         </form>
-        <!-- <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link></p>     -->
+        <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link><br />
+        Forgot your password? <a href="#" data-toggle="modal" data-target="#exampleModal">Reset it.</a></p>    
       </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <form v-if="!passwordResetSent"> 
+          <div class="form-group row">
+            <label for="resetPasswordEmail" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+              <input type="email" class="form-control" id="resetPasswordEmail" placeholder="" v-model="resetPasswordEmail">
+            </div>
+          </div>
+        </form>
+        <p v-else>
+          Password Reset instructions sent. Please check your email.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click.stop="sendPasswordReset">Send Password Reset</button>
+      </div>
+    </div>
+  </div>
+</div>      
       <!-- <div class="col-12 col-lg-4 px-lg-5"> -->
         <!-- This can come back once I can activate the "collect email address" twitter setting so that firebase can prevent duplicates, but that requires a terms of service and privacy policy which dont exist yet -->
 <!--         <button class="btn btn-primary" @click="twitter"><font-awesome-icon class="float-left pt-1 pb-2 mr-2" :icon="['fab', 'twitter']" size="2x" />Sign in with Twitter</button>    -->
@@ -30,11 +61,13 @@
 <script>
   import firebase from 'firebase';
   export default {
-    name: 'login',
+    name: 'PromoLogin',
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        resetPasswordEmail: '',
+        passwordResetSent: false
       }
     },
     beforeCreate: function() {
@@ -55,6 +88,19 @@
             alert('Oops. ' + err.message)
           }
         );
+      },
+      sendPasswordReset: function() {
+        var auth = firebase.auth();
+        var emailAddress = "ahyes.web@gmail.com";
+
+        this.passwordResetSent = true
+
+        auth.sendPasswordResetEmail(emailAddress).then(function() {
+          // Email sent.
+        }).catch(function(error) {
+          // An error happened.
+        });
+
       },
       twitter: function() {
 
