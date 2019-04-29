@@ -9,24 +9,26 @@
             <li><strong>Joined:</strong> {{joinDate}}</li>
             <li><strong>User ID:</strong> {{uid}}</li>
         </ul>
-        <h2 class="h5">Stats</h2>
+        <button v-if="!passwordResetSent" class="btn btn-primary btn-sm" @click.stop="sendPasswordReset">Reset Password</button>
+        <p v-else><strong>Password reset email sent.</strong></p>
+        <h2 class="h5 my-4">Stats</h2>
         <ul class="list-unstyled">
             <li><strong>Number of archives: </strong>{{this.archives.length}}</li>
             <li><strong>Total items: </strong>{{numberOfItems}}</li>
         </ul>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>            
-                Email Verification Sent
-            </div>
-            </div>
-        </div>
-        </div>
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+              <div class="modal-body">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>            
+                  Email Verification Sent
+              </div>
+              </div>
+          </div>
+        </div>        
     </div>
   </div>
 </template>
@@ -46,7 +48,9 @@ export default {
       emailAddress: this.$store.getters.getUser.email,
       numberOfItems: 0,
       joinDate: firebase.auth().currentUser.metadata.creationTime,
-      uid: firebase.auth().currentUser.uid
+      uid: firebase.auth().currentUser.uid,
+      resetPasswordEmail: '',
+      passwordResetSent: false
     }
   },
   created () {
@@ -64,6 +68,17 @@ export default {
     });     
   },
   methods: {
+    sendPasswordReset: function() {
+      var auth = firebase.auth();
+      this.passwordResetSent = true
+
+      auth.sendPasswordResetEmail(this.emailAddress).then(function() {
+        // Email sent.
+      }).catch(function(error) {
+        // An error happened.
+      });
+
+    }, 
     getNumberOfItems () {
   
       sa.userArchivesDocumentDbRef(firebase.auth().currentUser.uid).onSnapshot((doc) => {

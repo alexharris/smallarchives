@@ -67,7 +67,7 @@
         email: '',
         password: '',
         resetPasswordEmail: '',
-        passwordResetSent: false
+        passwordResetSent: false,
       }
     },
     beforeCreate: function() {
@@ -91,7 +91,7 @@
       },
       sendPasswordReset: function() {
         var auth = firebase.auth();
-        var emailAddress = "ahyes.web@gmail.com";
+        var emailAddress = this.resetPasswordEmail
 
         this.passwordResetSent = true
 
