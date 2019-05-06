@@ -25,11 +25,14 @@
             </div> 
             <div v-if="item.itemMediaType === 'youtube'">       
               <a href="" @click.stop="viewSingleItem(item.itemId)"><img :src="youtubeThumbnail(item)" /></a>
-            </div>                                 
+            </div>  
+            <div v-if="item.itemMediaType === 'iaVideo'">      
+              <iframe v-bind:src="item.itemMediaInternetArchiveId" width="100%" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>					
+            </div>                                             
           </div>
           <div class="grid-title">
             <small>{{item.itemType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/></small>
-            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a><br /><span class="mt-2 btn btn-outline-primary btn-sm" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner"><small>Edit</small></span>    </p>
+            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a><a href="#" class="ml-2" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner"><small>Edit</small></a>    </p>
           </div>
                 
         </div>
@@ -45,7 +48,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import sa from '../sa'
 
 export default {
@@ -141,6 +144,7 @@ export default {
               itemMediaType: doc.data().itemMediaType,
               itemFileName: doc.data().itemFileName,
               itemMediaYoutubeId: doc.data().itemMediaYoutubeId,
+              itemMediaInternetArchiveId: 'https://archive.org/embed/' + doc.data().itemMediaInternetArchiveId,
               itemSrc: itemSrcUrl,
               itemCoverageLat: doc.data().itemCoverageLat,
               itemTags: doc.data().tags

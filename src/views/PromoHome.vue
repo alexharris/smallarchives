@@ -13,9 +13,9 @@
             </div> -->
             <div class="row justify-content-center px-md-5 my-md-5 d-flex">
                 <div class="col-12 col-lg-6 mb-4 order-2 order-lg-1">  
-                    <h2 class="h1 display-5"><strong>Small Archives</strong></h2> 
+                    <!-- <h2 class="h1 display-5"><strong>Small Archives</strong></h2>  -->
 
-                    <p class="lead my-4">A simple platform for publishing collections of stuff on the web.</p>
+                    <h2 class="my-4 display-4">A simple platform for publishing collections on the web.</h2>
                     <p>Create collections of images, audio, video and text, add metadata, location, and tags, then share (or don't?).</p>
                     <p><a class="btn btn-primary btn-lg" href="/sign-up">Sign Up</a></p>
                     <small><a href="/demo">View Demo</a></small>
@@ -67,7 +67,7 @@
                       <div class="card">
                         <!-- <p class="text-center mt-4"><font-awesome-icon class="text-center" icon="file-image" size="3x" /></p> -->
                         <div class="card-body text-center">
-                          <MediaTypesAnimation class="mb-4" />
+                          <MediaTypesAnimation class="mb-4" style="max-width: 200px" />
                           <h3 class="card-title text-left">Multi-media</h3>
                           <p class="card-text text-left">Add images, audio, PDFs, and youtube videos (and more to come). Visitors can view all media in-browser, no downloading required!</p>
                         </div>
@@ -75,7 +75,7 @@
                       <div class="card">
                         <!-- <p class="text-center mt-4"><font-awesome-icon class="text-center" icon="archive" size="3x" /></p> -->
                         <div class="card-body text-center">
-                          <MetadataAnimation class="mb-4"/>
+                          <MetadataAnimation class="mb-4" style="max-width: 200px" />
                           <h3 class="card-title text-left">Metadata</h3>
                           <p class="card-text text-left">Small Archives uses default Dublin Core Metatdata fields, with a few minor modifications. Input forms have handy tips for those less familiar with what all the terms mean.</p>
                         </div>
@@ -83,7 +83,7 @@
                       <div class="card">
                         <!-- <p class="text-center mt-4"><font-awesome-icon class="text-center" icon="university" size="3x" /></p> -->
                         <div class="card-body text-center">
-                            <AaasAnimation class="mb-4" /> 
+                            <AaasAnimation class="mb-4" style="max-width: 200px" /> 
                             <h3 class="card-title text-left">A-a-a-S</h3>
                             <p class="card-text text-left">Small Archives is Archives-as-a-Service. No need to set anything up or host anything. Just sign up and get started.</p>
                         </div>

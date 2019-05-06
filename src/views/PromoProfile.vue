@@ -23,7 +23,7 @@
 
 <script>
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 

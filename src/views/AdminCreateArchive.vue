@@ -13,6 +13,7 @@
         <h1 class="h4">
           New Archive
         </h1>
+        <p>Set some basic information and settings for your archive. You will be able to change all of this in the future, as well as add advanced configuration such as custom tags and fields.</p>
         <hr class="my-4" />
         <form @submit="onSubmit">
           <!-- Title -->
@@ -64,7 +65,7 @@
 
 <script>
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import sa from '../sa'
 import SubmitButton from '../components/SubmitButton'
 

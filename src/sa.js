@@ -98,6 +98,7 @@ var sa = {
   /**
    * Returns a reference to the "tags" collection of a userarchives
    * @param uid - The logged in user's ID
+   * @param archiveId - The id of the archive that the tag belongs to
    */
   tagCollectionDbRef(uid, archiveId) {
     return firebase
@@ -107,6 +108,20 @@ var sa = {
       .collection("userarchives")
       .doc(archiveId)
       .collection("tags");
+  },
+  /**
+   * Returns a reference to the "customFields" collection of a userarchives
+   * @param uid - The logged in user's ID
+   * @param archiveId - The id of the archive that the field belongs to
+   */
+  customFieldCollectionDbRef(uid, archiveId) {
+    return firebase
+      .firestore()
+      .collection("archives")
+      .doc(uid)
+      .collection("userarchives")
+      .doc(archiveId)
+      .collection("customFields")
   },
   /**
    * Returns a reference to a specific, existing tag document that exists on an archive record, not on an item
@@ -125,6 +140,24 @@ var sa = {
       .doc(archiveId)
       .collection("tags")
       .doc(tagId);
+  },
+  /**
+   * Returns a reference to a specific, existing field document that exists on an archive record, not on an item
+   * @param uid - The logged in user's ID
+   * @param archiveId - The id of the archive that the tag belongs to
+   * @param customFieldName - The id of the field desired
+   * Notes:
+   * Usually, this is called from "created()" in a view and params are retrieved from URL
+   */
+  customFieldDocumentDbRef(uid, archiveId, customFieldName) {
+    return firebase
+      .firestore()
+      .collection("archives")
+      .doc(uid)
+      .collection("userarchives")
+      .doc(archiveId)
+      .collection("customFields")
+      .doc(customFieldName);
   },
   /**
    * Returns a reference to the "users" collection
@@ -292,24 +325,24 @@ var sa = {
    * @param currentArchiveId - The ID of the archive currently being viewed
    */
   confirmOwner(currentArchiveId) {
-    
     var currentUserArchives = [];
-
     return new Promise(resolve => {
-      sa.archiveCollectionDbRef(firebase.auth().currentUser.uid)
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            currentUserArchives.push(doc.id);
+      if (firebase.auth().currentUser) {
+        sa.archiveCollectionDbRef(firebase.auth().currentUser.uid)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              currentUserArchives.push(doc.id);
+            });
+          })
+          .then(() => {
+            if (currentUserArchives.includes(currentArchiveId)) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
           });
-        })
-        .then(() => {
-          if (currentUserArchives.includes(currentArchiveId)) {
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        });
+      }
     });
   }
 };

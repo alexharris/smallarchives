@@ -70,6 +70,7 @@
                   <option value="pdf">PDF</option>
                   <!-- <option value="text">Text</option> -->
                   <option value="youtube">Youtube</option>
+                  <option value="iaVideo">Internet Archive Video</option>
                 </select>
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The media used to represent this resource.</small>
               </div>
@@ -113,7 +114,15 @@
               <div class="col-sm-8">
                 <input class="form-control" id="selectYoutube" v-model="itemMediaYoutubeId" v-bind:class="{'is-invalid': youtubeInvalid}" />
               </div>
-            </div>           
+            </div>   
+            <!-- Media Type - Internet Archive Video -->
+            <div class="form-group row" v-if="selecteditemMediaType === 'iaVideo'">
+              <span class="col-sm-2"></span>
+              <label for="selectYoutube" class="col-sm-2 col-form-label">Internet Archive Video ID</label>
+              <div class="col-sm-8">
+                <input class="form-control" id="selectYoutube" v-model="itemMediaInternetArchiveId" v-bind:class="{'is-invalid': internetArchiveInvalid}" />
+              </div>
+            </div>                     
           </div>
           <div class="tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
             <!-- Item Type -->
@@ -245,7 +254,15 @@
                 <input class="form-control" id="inputSubject" v-model="itemSubject">
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The topic of the resource.</small>
               </div>
-            </div>            
+            </div> 
+            <!-- Custom Fields -->
+            <div class="form-group row" v-for="field in customFields">
+              <label :for="'customField_' + field.customFieldName" class="col-sm-2 col-form-label">{{field.customFieldName}}</label>
+              <div class="col-sm-10">
+                <input class="form-control" :id="'customField_' + field.customFieldName" :ref="field.customFieldName">
+                <small v-if="helpSwitcherValue" class="help-text form-text text-muted">{{field.customFieldHint}}</small>
+              </div>
+            </div>                        
           </div>
         </div>   
         <!-- Submit -->
@@ -258,7 +275,7 @@
 
 <script>
 
-  import firebase from 'firebase'
+  import firebase from 'firebase/app'
   import sa from '../sa'
   import SubmitButton from '../components/SubmitButton'
 
@@ -276,6 +293,7 @@
         file: null,
         itemText: '',
         itemMediaYoutubeId: '',
+        itemMediaInternetArchiveId: '',
         customFieldLabel: '',
         itemTitle: null,
         itemDescription: '',
@@ -298,6 +316,7 @@
         itemRights:'',
         itemSource:'',
         itemSubject:'',
+        customFields: [],
         formErrors: false,
         loading: null,
         helpSwitcherValue: false,
@@ -307,6 +326,7 @@
         imageInvalid: false,
         pdfInvalid: false,
         youtubeInvalid: false,
+        internetArchiveInvalid: false,
         audioInvalid: false,
         tags: [],
         selectedTags: []
@@ -317,11 +337,30 @@
       this.uid = currentUser.uid
       // load the tags from the central source
       this.getTags()
+      this.getCustomFields()
     },  
     methods: {
       handleFileChange(e, index) {
         this.file = e.target.files[0]
       },   
+      getCustomFields() {
+        var uid = firebase.auth().currentUser.uid
+        var archiveId = this.$route.params.archive_id 
+        this.customFields = [];   
+
+        sa.customFieldCollectionDbRef(uid,archiveId)
+        .get()
+        .then((querySnapshot) => {
+
+          querySnapshot.forEach((doc) => {
+            this.customFields.push({
+              customFieldName: doc.id,
+              customFieldType: doc.data().customFieldType,
+              customFieldHint: doc.data().customFieldHint
+            });
+          });
+        })
+      },              
       getTags() {
         var uid = firebase.auth().currentUser.uid
         var archiveId = this.$route.params.archive_id 
@@ -458,7 +497,8 @@
       }        
 
       // NEED TO ADD
-      // YOUTUBE ERRORS    
+      // YOUTUBE ERRORS  
+      // Internet Archive Video Errors  
 
       this.itemCreationDate = new Date();
 
@@ -478,6 +518,7 @@
           var uid = this.uid
           var archiveId = this.$route.params.id
           var fileName = this.file.name
+
           // Check to see if a file exists before uploading, by trying to get the download URL
           sa.archiveStorageRef(uid, archiveId,'', fileName).getDownloadURL().then((url) => {
             // this means we got a URL, which means it exists, which means we throw an error
@@ -502,6 +543,16 @@
         }
       }   
     },
+    addCustomFieldValues() {
+      var customFieldsObj = [];
+      this.customFields.forEach((field) => {
+        customFieldsObj.push({
+          [field.customFieldName]: this.$refs[field.customFieldName][0].value
+        })
+      })
+ 
+      this.customFields = customFieldsObj
+    },      
     addArchiveDataToDatabase() {
 
       //this is because sometimes there is no file, so we have to fake it
@@ -534,6 +585,9 @@
           console.log("Error getting document:", error);
       });
 
+      // Add
+      this.addCustomFieldValues()
+
       sa.itemCollectionDbRef(uid, archiveId).add({
 
         // DCMI Stuff
@@ -560,10 +614,12 @@
         itemFileName: file.name,
         itemText: this.itemText,
         itemMediaYoutubeId: this.itemMediaYoutubeId,
+        itemMediaInternetArchiveId: this.itemMediaInternetArchiveId,
 
         // Other Stuff
         itemCreationDate: this.itemCreationDate,
-        tags: this.selectedTags
+        tags: this.selectedTags,
+        customFields: this.customFields
 
       }).catch((error) => {
         alert("Error adding document: ", error);

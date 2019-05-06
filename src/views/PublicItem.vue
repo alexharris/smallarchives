@@ -35,7 +35,10 @@
 				</div>
 				<div v-if="item.itemMediaType === 'youtube'" class="video-wrapper">					
 					<iframe width="560" height="315" v-bind:src="item.itemMediaYoutubeId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>					
-				</div>												
+				</div>	
+				<div v-if="item.itemMediaType === 'iaVideo'" class="video-wrapper">					
+					<iframe v-bind:src="item.itemMediaInternetArchiveId" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>					
+				</div>															
 			</div>
 
 			<div class="col-lg-4">
@@ -57,7 +60,11 @@
 					<span v-if="item.itemRights"><strong>Rights:</strong> {{item.itemRights}}<br /></span>
 					<span v-if="item.itemSource"><strong>Source:</strong> {{item.itemSource}}<br /></span>
 					<span v-if="item.itemSubject"><strong>Subject:</strong> {{item.itemSubject}}<br /></span>
+					<span v-for="field in item.customFields">
+						<strong>{{ Object.keys(field).toString()}}: </strong> {{ Object.values(field).toString()}}<br />
+					</span>					
 				</p>
+
 				<div v-if="item.itemCoverage != ''" class="my-4">
 				  <l-map :zoom=13 :center="latLongArray" v-if="item.itemCoverageLat != '' && item.itemCoverageLong != ''">
 				    <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
@@ -84,7 +91,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import sa from '../sa'
 import PDF from 'pdfobject';
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
@@ -106,7 +113,7 @@ export default {
 	        itemName: '',
 	        itemId: '',
 	        filePath: '',
-	        customFields: '',
+	        customFields: {},
 	        itemCoverageLat: '',
 	        itemCoverageLong: ''	
   		},
@@ -172,17 +179,18 @@ export default {
 	        this.item.itemFileName = doc.data().itemFileName
 	        this.item.itemMediaType = doc.data().itemMediaType
 	        this.item.itemText = doc.data().itemText
-	        this.item.itemMediaYoutubeId = 'https://www.youtube.com/embed/' + doc.data().itemMediaYoutubeId
+					this.item.itemMediaYoutubeId = 'https://www.youtube.com/embed/' + doc.data().itemMediaYoutubeId
+					this.item.itemMediaInternetArchiveId = 'https://archive.org/embed/' + doc.data().itemMediaInternetArchiveId
 	        this.item.itemId = doc.id
 	        
 	        this.item.itemCoverageLat = doc.data().itemCoverageLat
 	        this.item.itemCoverageLong = doc.data().itemCoverageLong
 	        this.item.itemCreationDate = sa.getFormattedDate(doc.data().itemCreationDate)
-	        this.item.tags = doc.data().tags
+					this.item.tags = doc.data().tags
+					// console.log(doc.data().customFields)
+					this.item.customFields = doc.data().customFields
 	        
-	        
-
-	        this.getItemSrc()
+					this.getItemSrc()
 	        
 	      } else {
 	        this.$router.push('/404')
@@ -196,7 +204,7 @@ export default {
     	var uid = this.uid
     	var archiveId = this.$route.params.archive_id
     	var itemId = this.item.itemId
-		var fileName = this.item.itemFileName
+			var fileName = this.item.itemFileName
   
         sa.itemStorageRef(uid, archiveId, itemId, fileName).getDownloadURL().then((url) => {
             this.itemSrc = url

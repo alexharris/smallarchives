@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import sa from '../sa'
 import {LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
 

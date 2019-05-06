@@ -31,7 +31,7 @@
 
 <script>
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import sa from '../sa'
 import ListItems from '../components/ListItems'
 import PublicListItems from '../components/PublicListItems'

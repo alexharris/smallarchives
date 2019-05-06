@@ -7,8 +7,11 @@
           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" id="field-tab" data-toggle="tab" href="#field" role="tab" aria-controls="field" aria-selected="false">Fields</a>
+        </li>         
+        <li class="nav-item">
           <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Tags</a>
-        </li>
+        </li>       
         <li class="nav-item">
           <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
         </li>        
@@ -108,7 +111,11 @@
           
         </div>
         <!-- start second tab -->
-        <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+        <div class="tab-pane fade" id="field" role="tabpanel" aria-labelledby="field-tab">
+          <AdminCustomFields />   
+        </div>          
+        <!-- start third tab -->
+        <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">     
           <h2 class="h4 mb-4">Tags</h2>   
           <p>Tags are used to group items together. Add tags here to make them available when creating or updating an item.</p>
           <hr class="my-4" />   
@@ -124,10 +131,11 @@
               <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
               <div class="btn btn-primary" v-on:click.stop="addTag">Add</div>
             </form> 
+
           </div>
         </div>  
 
-        <!-- start third tab -->
+        <!-- start fourth tab -->
         <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
           <h2 class="h4 mb-4">Administration</h2>  
 
@@ -181,10 +189,11 @@
 
 <script>
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import AdminExportData from '../components/AdminExportData'
+import AdminCustomFields from '../components/AdminCustomFields'
 import SubmitButton from '../components/SubmitButton'
 
 export default {
@@ -192,7 +201,8 @@ export default {
   components: {
     ArchiveHeaderImage,
     AdminExportData,
-    SubmitButton
+    SubmitButton,
+    AdminCustomFields
   }, 
   data () {
     return {

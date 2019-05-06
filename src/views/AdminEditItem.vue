@@ -100,7 +100,7 @@
         </div> <!-- end second tab -->
         <!-- Start third tab -->
         <div class="tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
-          <h2 class="h5">Metadata</h2>
+          <h2 class="h5 my-4">Metadata</h2>
           <!-- Item Type -->
           <div class="form-group row">
             <label for="inputItemType" class="col-sm-2 col-form-label">Item Type</label>
@@ -230,7 +230,16 @@
               <input class="form-control" id="inputSubject" v-model="itemSubject">
               <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The topic of the resource.</small>
             </div>
-          </div>           
+          </div> 
+          <h2 class="my-4 h5">Custom Fields</h2>
+          <!-- Custom Fields -->
+          <div class="form-group row" v-for="field in customFields">
+            <label :for="'customField_' + field.customFieldName" class="col-sm-2 col-form-label">{{field.customFieldName}}</label>
+            <div class="col-sm-10">
+              <input class="form-control" :id="'customField_' + field.customFieldName" :ref="field.customFieldName" :value="field.customFieldValue">
+              <small v-if="helpSwitcherValue" class="help-text form-text text-muted">{{field.customFieldHint}}</small>
+            </div>
+          </div>                
         </div> <!-- end third tab -->        
       </div>        
             
@@ -267,7 +276,7 @@
 
 <script>
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import sa from '../sa'
 import SubmitButton from '../components/SubmitButton'
 
@@ -306,6 +315,7 @@ export default {
       itemSrc: '',
       tags: [],
       selectedTags: [],
+      customFields: [],
       uid: '',
       formErrors: false,
       loading: null,
@@ -317,7 +327,6 @@ export default {
       pdfInvalid: false,
       youtubeInvalid: false,
       audioInvalid: false,
-   
     }
   },
   created () {
@@ -369,6 +378,7 @@ export default {
 
     // load the tags from the central source
     this.getTags()
+    this.getCustomFields()
 
     
 
@@ -395,14 +405,73 @@ export default {
       sa.tagCollectionDbRef(uid,archiveId)
       .get()
       .then((querySnapshot) => {
-
         querySnapshot.forEach((doc) => {
           this.tags.push({
             tagTitle: doc.data().tagTitle
           });
         });
       });     
-    },        
+    },
+    getCustomFields() {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id 
+      this.customFields = [];   
+
+      sa.customFieldCollectionDbRef(uid,archiveId)
+      .get()
+      .then((querySnapshot) => {
+
+        querySnapshot.forEach((doc) => {
+          this.customFields.push({
+            customFieldName: doc.id,
+            customFieldType: doc.data().customFieldType,
+            customFieldHint: doc.data().customFieldHint
+          });
+        });
+      }).then(() => {
+        this.getExistingCustomFieldsValues()
+      })
+    },  
+    getExistingCustomFieldsValues() {
+
+
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+
+      sa.itemDocumentDbRef(uid,archiveId,this.$route.params.item_id)
+      .get()
+      .then((doc) => {
+
+
+        
+        for(var i in doc.data().customFields) {
+          var keyObj = Object.keys(doc.data().customFields[i])
+          var key = keyObj[0]
+
+          this.$refs[key][0].value = doc.data().customFields[i][key]
+        }
+          // this.customFields.push({
+          //   customFieldName: doc.id,
+          //   customFieldType: doc.data().customFieldType
+          // });
+      })
+    },
+    //
+    addCustomFieldValues() {
+      var uid = firebase.auth().currentUser.uid
+      var archiveId = this.$route.params.archive_id
+
+      var customFieldsObj = [];
+      this.customFields.forEach((field) => {
+        customFieldsObj.push({
+          [field.customFieldName]: this.$refs[field.customFieldName][0].value
+        })
+      })
+      sa.itemDocumentDbRef(uid,archiveId,this.$route.params.item_id).update({
+        customFields: customFieldsObj
+      })       
+
+    },              
     onSubmit () {
 
       // empty the error variable to get rid of old errors
@@ -420,7 +489,9 @@ export default {
       var archiveId = this.$route.params.archive_id
       var itemId = this.$route.params.item_id
 
-      if(!(this.errors.length > 0)) {
+      this.addCustomFieldValues()
+
+      if(!(this.errors.length < 0)) {
 
         this.loading = true
         // build the ref

@@ -39,6 +39,11 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: "/",
+      name: "PromoHome",
+      component: PromoHome
+    },
+    {
       path: "/admin",
       name: "Admin",
       component: Admin,
@@ -91,7 +96,7 @@ const router = new Router({
           path: "/admin/account",
           name: "AdminAccountInfo",
           component: AdminAccountInfo
-        }        
+        }
       ]
     },
     {
@@ -133,11 +138,6 @@ const router = new Router({
       path: "/u/:username/:archive_id/:item_id",
       name: "PublicItem",
       component: PublicItem
-    },
-    {
-      path: "/",
-      name: "PromoHome",
-      component: PromoHome
     },
     {
       path: "/demo",

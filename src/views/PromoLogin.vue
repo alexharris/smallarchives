@@ -59,7 +59,7 @@
 </template>
 
 <script>
-  import firebase from 'firebase';
+  import firebase from 'firebase/app';
   export default {
     name: 'PromoLogin',
     data() {
