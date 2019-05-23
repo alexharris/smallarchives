@@ -3,7 +3,7 @@
 		<div class="row justify-content-center my-4">
 			<div class="col-12">
 				<button v-if="confirmOwner" class="btn mr-2 btn-sm btn-primary" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</button>		
-				<a @click.stop="goBack" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a><br />
+				<a @click.stop="goBack" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a>
 
 			</div>
 		</div>
@@ -11,9 +11,15 @@
 		<div class="row justify-content-center">
 
 			<div class="col-lg-8 item-pane my-4">
-
+				<template v-for="src in itemFileNames">	
+					<img :src="src" />
+					</template>
 				<div v-if="item.itemMediaType == 'image'">
-					<img :src="itemSrc" />
+					<!-- probably dont need to check for itemMediaType anymore -->
+					<template v-for="src in itemFileNames">	
+					<img :src="src" />
+					</template>
+					<img :src="legacyFileSrc" />
 				</div>
 				<div v-if="item.itemMediaType == 'audio'">
 					<figure>
@@ -115,12 +121,14 @@ export default {
 	        filePath: '',
 	        customFields: {},
 	        itemCoverageLat: '',
-	        itemCoverageLong: ''	
+					itemCoverageLong: ''
   		},
   		itemSrc: '',
   		archiveTitle: '',
 			uid: '',
-			confirmOwner: false
+			confirmOwner: false,
+			itemFileNames: [],
+			legacyFileSrc: []
   		
   	}
   },
@@ -175,8 +183,8 @@ export default {
 					this.item.itemSource = doc.data().itemSource
 					this.item.itemSubject = doc.data().itemSubject				
 
-			// Media Fields
-	        this.item.itemFileName = doc.data().itemFileName
+			    // Media Fields
+	        this.item.itemFileNames = doc.data().itemMediaFiles
 	        this.item.itemMediaType = doc.data().itemMediaType
 	        this.item.itemText = doc.data().itemText
 					this.item.itemMediaYoutubeId = 'https://www.youtube.com/embed/' + doc.data().itemMediaYoutubeId
@@ -185,7 +193,7 @@ export default {
 	        
 	        this.item.itemCoverageLat = doc.data().itemCoverageLat
 	        this.item.itemCoverageLong = doc.data().itemCoverageLong
-	        this.item.itemCreationDate = sa.getFormattedDate(doc.data().itemCreationDate)
+	        this.item.itemCreationDate = sa.getFormattedDate(doc.data().itemDateCreated)
 					this.item.tags = doc.data().tags
 					// console.log(doc.data().customFields)
 					this.item.customFields = doc.data().customFields
@@ -204,17 +212,39 @@ export default {
     	var uid = this.uid
     	var archiveId = this.$route.params.archive_id
     	var itemId = this.item.itemId
-			var fileName = this.item.itemFileName
-  
-        sa.itemStorageRef(uid, archiveId, itemId, fileName).getDownloadURL().then((url) => {
-            this.itemSrc = url
-        }).catch(function(error) {
-          console.log(error.message)
-        }).then(() => {
-	    	if(this.item.itemMediaType === 'pdf') {
-	    		PDF.embed(this.itemSrc, "#pdfViewer");	
-	    	}  			
-	    }); 
+			var fileNames = this.item.itemFileNames
+
+			if(Array.isArray(fileNames)) {
+				console.log('multiple images')
+				for( var i = 0; i < fileNames.length; i++){ 
+					console.log(fileNames[i])
+					sa.itemStorageRef(uid, archiveId, itemId, fileNames[i]).getDownloadURL().then((url) => {
+							this.itemFileNames.push(url)
+					}).catch(function(error) {
+						console.log(error.message)
+					}).then(() => {
+						// if(this.item.itemMediaType === 'pdf') {
+						// 	PDF.embed(this.itemSrc, "#pdfViewer");	
+						// }  			
+					}); 
+				}
+			} else {
+					console.log('legacy, before multiple images')
+					sa.itemStorageRef(uid, archiveId, '', fileNames).getDownloadURL().then((url) => {
+						console.log(url)
+							this.legacyFileSrc = url
+					}).catch(function(error) {
+						console.log(error.message)
+					}).then(() => {
+						// if(this.item.itemMediaType === 'pdf') {
+						// 	PDF.embed(this.itemSrc, "#pdfViewer");	
+						// }  			
+					}); 				
+			}
+
+
+			console.log(this.itemSrc)
+
     },   
     getArchiveTitle: function() {
 		var uid = this.uid

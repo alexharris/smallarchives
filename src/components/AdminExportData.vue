@@ -48,7 +48,6 @@
           </tr>
       </tbody>
     </table>     -->
-    
     <a :href="encodedUri" :download="archiveTitle + '.csv'" v-if="items.length > 0">Download Data as CSV</a>
     <span v-else>There are no items to export.</span>
   </span>
@@ -77,17 +76,13 @@ export default {
     var archiveId = this.$route.params.archive_id
     const date = new Date().toJSON().slice(0,10).replace(/-/g,'-');
 
-
     sa.archiveDocumentDbRef(currentUser.uid, archiveId).get().then((doc) => {
       this.archiveTitle = doc.data().title
     }).then(() => {
       this.archiveTitle = 'SmallArchives-' + this.archiveTitle.split(' ').join('') + '-Export-' + date
     })
-
-    
-   
   },
-  methods: {
+  methods: {  
     createItemArray: function() {
 
       var uid = firebase.auth().currentUser.uid
@@ -97,6 +92,7 @@ export default {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+          // console.log(doc.data().customFields)
           this.items.push({
             itemTitle: doc.data().itemTitle,   
             itemDescription: doc.data().itemDescription,  
@@ -118,16 +114,15 @@ export default {
             itemRelation: doc.data().itemRelation,  
             itemRights: doc.data().itemRights,  
             itemSource: doc.data().itemSource,  
-            itemSubject: doc.data().itemSubject
-
+            itemSubject: doc.data().itemSubject,
+            customFields: doc.data().customFields
           });
-
         });
       }).then(() => {
         if(this.items.length > 0) {
           this.convertToCsv()
         }
-      });       
+      })     
     },
     convertToCsv: function() {
 

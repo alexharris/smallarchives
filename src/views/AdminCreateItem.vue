@@ -1,20 +1,21 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 pt-4">     
-      <template v-if="errors.length > 0">
-        <div class="alert alert-danger" show>
-          <h3>Errors</h3>
-          <ul>
-            <li v-for="error in errors">{{error}}</li>
-          </ul>
-        </div>
-      </template>
-      <h1 class="h4">Add New Item</h1>
+      <h1 class="h4 float-left">Add New Item</h1>
+      <a :href="backUrl" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a><br />
       <hr class="my-4" />
       <div>
         <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
         <label for="checkbox" class="ml-2">Show field hints</label>
-      </div>        
+      </div>  
+      <template v-if="errors.length > 0">
+        <div class="alert alert-danger" show>
+          <p><strong>Errors</strong></p>
+          <ul>
+            <li v-for="error in errors">{{error}}</li>
+          </ul>
+        </div>
+      </template>  
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
@@ -57,7 +58,14 @@
                 </select>
                 <small class="help-text form-text text-muted">Tags allow you to draw connections between separate items. Get started by editing the archive and adding the tags you want to use. They will then appear here and you can select which ones apply to each item.</small>
               </div>
-            </div>                      
+            </div>
+            <!-- Featured image -->
+            <div class="form-group row" >
+              <label for="selectImage" class="col-sm-2 col-form-label">Featured Image</label>
+              <div class="col-sm-10">
+                <input type="file" id="selectImage" v-on:change="handleFeatureImageChange" v-bind:class="{'is-invalid': imageInvalid}">
+              </div>
+            </div>                                
           </div>
           <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
             <!-- Media Type -->
@@ -75,51 +83,43 @@
                 <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The media used to represent this resource.</small>
               </div>
             </div> 
-            <!-- Media Type - Image -->
-            <div class="form-group row" v-if="selecteditemMediaType === 'image'">
-              <span class="col-sm-2"></span>
-              <label for="selectImage" class="col-sm-2 col-form-label">Select Image</label>
-              <div class="col-sm-8">
-                <input type="file" id="selectImage" v-on:change="handleFileChange" v-bind:class="{'is-invalid': imageInvalid}">
-              </div>
-            </div>
+            <!-- Media Type - Image -->           
+            <template v-if="selecteditemMediaType === 'image'">
+              <p v-if="imageTypeError">Image files must be one of the following types: JPG, TIF, PNG, GIF</p>
+              <AdminMediaUploader />
+            </template>
             <!-- Media Type - Audio -->
             <div class="form-group row" v-if="selecteditemMediaType === 'audio'">
-              <span class="col-sm-2"></span>
               <label for="selectAudio" class="col-sm-2 col-form-label">Select Audio File</label>
-              <div class="col-sm-8">
+              <div class="col-sm-10">
                 <input type="file" id="selectAudio" v-on:change="handleFileChange" v-bind:class="{'is-invalid': audioInvalid}">
               </div>
             </div>
             <!-- Media Type - PDF -->
             <div class="form-group row" v-if="selecteditemMediaType === 'pdf'">
-              <span class="col-sm-2"></span>
               <label for="selectPdf" class="col-sm-2 col-form-label">Select PDF</label>
-              <div class="col-sm-8">
+              <div class="col-sm-10">
                 <input type="file" id="selectPdf" v-on:change="handleFileChange" v-bind:class="{'is-invalid': pdfInvalid}">
               </div>
             </div>
             <!-- Media Type - Text -->
             <div class="form-group row" v-if="selecteditemMediaType === 'text'">
-              <span class="col-sm-2"></span>
               <label for="selectText" class="col-sm-2 col-form-label">Text</label>
-              <div class="col-sm-8">
+              <div class="col-sm-10">
                 <textarea class="form-control" id="selectText" v-model="itemText" v-bind:class="{'is-invalid': textInvalid}"></textarea>
               </div>
             </div>
             <!-- Media Type - Youtube -->
             <div class="form-group row" v-if="selecteditemMediaType === 'youtube'">
-              <span class="col-sm-2"></span>
               <label for="selectYoutube" class="col-sm-2 col-form-label">Youtube Video ID</label>
-              <div class="col-sm-8">
+              <div class="col-sm-10">
                 <input class="form-control" id="selectYoutube" v-model="itemMediaYoutubeId" v-bind:class="{'is-invalid': youtubeInvalid}" />
               </div>
             </div>   
             <!-- Media Type - Internet Archive Video -->
             <div class="form-group row" v-if="selecteditemMediaType === 'iaVideo'">
-              <span class="col-sm-2"></span>
               <label for="selectYoutube" class="col-sm-2 col-form-label">Internet Archive Video ID</label>
-              <div class="col-sm-8">
+              <div class="col-sm-10">
                 <input class="form-control" id="selectYoutube" v-model="itemMediaInternetArchiveId" v-bind:class="{'is-invalid': internetArchiveInvalid}" />
               </div>
             </div>                     
@@ -266,7 +266,7 @@
           </div>
         </div>   
         <!-- Submit -->
-        <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" />    
+        <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" :formErrors="errors" :formIsLoading="isLoading"/>    
       </form>
     </div>
   </div>    
@@ -278,11 +278,13 @@
   import firebase from 'firebase/app'
   import sa from '../sa'
   import SubmitButton from '../components/SubmitButton'
+  import AdminMediaUploader from '../components/AdminMediaUploader'
 
   export default {
     name: 'AdminCreateItem',
     components: {
-      SubmitButton
+      SubmitButton,
+      AdminMediaUploader
     },
     data () {
       return {
@@ -290,7 +292,13 @@
         errors: [],
         archive: {},
         uid: '',
+        isLoading: false,
         file: null,
+        files: [],
+        fileNames: [],
+        itemMediaFiles: [],
+        mediaFileNames: [],
+        itemFeatureImage: null,
         itemText: '',
         itemMediaYoutubeId: '',
         itemMediaInternetArchiveId: '',
@@ -318,7 +326,6 @@
         itemSubject:'',
         customFields: [],
         formErrors: false,
-        loading: null,
         helpSwitcherValue: false,
         titleInvalid: false,
         mediaInvalid: false,
@@ -329,7 +336,9 @@
         internetArchiveInvalid: false,
         audioInvalid: false,
         tags: [],
-        selectedTags: []
+        selectedTags: [],
+        backUrl: '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id,
+        imageTypeError: false
       }
     },
     created() {
@@ -340,8 +349,34 @@
       this.getCustomFields()
     },  
     methods: {
+      checkImageFile(e) {
+
+        console.log(e.target.files[0].type)
+  
+
+        // It must be jpg, tif, png, or jpg
+
+        if(e.target.files[0].type != 'image/jpeg' && e.target.files[0].type != 'image/tiff' && e.target.files[0].type != 'image/png' && e.target.files[0].type != 'image/gif') {
+          this.imageTypeError = true
+        }  else {
+          this.imageInvalid = false
+
+        } 
+
+        // Set a maximum filesize   
+        // if(this.selecteditemMediaType === 'image' && this.file.size >= 1000000) {
+        //   this.errors.push('Image files must be less than 1MB')
+        //   this.imageInvalid = true
+        // }  else {
+        //   this.imageInvalid = false
+        // }    
+      },
+
       handleFileChange(e, index) {
         this.file = e.target.files[0]
+      },   
+      handleFeatureImageChange(e, index) {
+        this.itemFeatureImage = e.target.files[0]
       },   
       getCustomFields() {
         var uid = firebase.auth().currentUser.uid
@@ -376,129 +411,132 @@
             });
           });
         });     
-      },          
-      onSubmit () {
+      },      
+      checkForErrors () {
+        // empty the error variable to get rid of old errors
+        this.errors = []
 
-      // empty the error variable to get rid of old errors
-      this.errors = []
-
-      // check the form for completeness
-      if (!this.itemTitle || this.itemTitle === '') { // title is mandatory
-        this.errors.push('A title is required')
-        this.titleInvalid = true
-      }  else {
-        this.titleInvalid = false
-      }
-
-      if(this.selecteditemMediaType === '') {
-        this.errors.push('Media Type is required')
-        this.mediaInvalid = true
-      } else {
-        this.mediaInvalid = false
-      }
-
-      // TEXT ERRORS
-      // A text item must have some text
-      // Test to make sure HTML etc is escaped?
-      // Set a character length?
-      // Do links work?
-      if(this.selecteditemMediaType === 'text' && this.text === '') {
-        console.log('oops')
-        this.errors.push('Media type "text" is selected, but no text is entered')
-        this.textInvalid = true
-      }  else {
-        this.textInvalid = false
-      }
-
-      // IMAGE ERRORS
-      // An image file must exist
-      if(this.selecteditemMediaType === 'image' && this.file === null) {
-        this.errors.push('Media type "image" is selected, but no image is uploaded')
-        this.imageInvalid = true
-      }  else {
-        this.imageInvalid = false
-      }
-
-      // It must be jpg, tif, png, or jpg
-
-      if(this.selecteditemMediaType === 'image' && this.file.type != null) {
-        if(this.file.type != 'image/jpeg' && this.file.type != 'image/tiff' && this.file.type != 'image/png' && this.file.type != 'image/gif') {
-          this.errors.push('Image files must be one of the following types: JPG, TIF, PNG, GIF')
-          this.imageInvalid = true
+        // check the form for completeness
+        if (!this.itemTitle || this.itemTitle === '') { // title is mandatory
+          this.errors.push('A title is required')
+          this.titleInvalid = true
         }  else {
-          this.imageInvalid = false
+          this.titleInvalid = false
         }
-      }   
 
-      // Set a maximum filesize   
-      if(this.selecteditemMediaType === 'image' && this.file.size >= 5000000) {
-        this.errors.push('Image files must be less than 5MB')
-        this.imageInvalid = true
-      }  else {
-        this.imageInvalid = false
-      }     
+        if(this.selecteditemMediaType === '') {
+          this.errors.push('Media Type is required')
+          this.mediaInvalid = true
+        } else {
+          this.mediaInvalid = false
+        }
 
-      // AUDIO ERRORS
-      // Audo file must exist
-      // It must be of type wav, mp3, ogg
-      // Set a maximum filesize
-      if(this.selecteditemMediaType === 'audio' && this.file === null) {
-        this.errors.push('Media type "audio" is selected, but no audio is uploaded')
-        this.audioInvalid = true
-      }  else {
-        this.audioInvalid = false
-      } 
+        // TEXT ERRORS
+        // A text item must have some text
+        // Test to make sure HTML etc is escaped?
+        // Set a character length?
+        // Do links work?
+        if(this.selecteditemMediaType === 'text' && this.text === '') {
+          console.log('oops')
+          this.errors.push('Media type "text" is selected, but no text is entered')
+          this.textInvalid = true
+        }  else {
+          this.textInvalid = false
+        }
 
-      // Audio files must be less than 5MB in size
-      if(this.selecteditemMediaType === 'audio' && this.file.size >= 5000000) {
-        this.errors.push('Audio files must be less than 5MB')
-        this.audioInvalid = true
-      }  else {
-        this.audioInvalid = false
-      }
+        // IMAGE ERRORS
+        // An image file must exist
+        // if(this.selecteditemMediaType === 'image' && this.file === null) {
+        //   this.errors.push('Media type "image" is selected, but no image is uploaded')
+        //   this.imageInvalid = true
+        // }  else {
+        //   this.imageInvalid = false
+        // }
 
-      // It must be wav, mp3, ogg, or m4a
-      if(this.selecteditemMediaType == 'audio') {
-        if(this.file.type != 'audio/x-wav' && this.file.type != 'audio/x-m4a' && this.file.type != 'video/ogg' && this.file.type != 'audio/mpeg') {
-          this.errors.push('Audio files must be one of the following types: WAV, MP3, OGG, M4A')
+        // It must be jpg, tif, png, or jpg
+
+        // if(this.selecteditemMediaType === 'image' && this.file.type != null) {
+        //   if(this.file.type != 'image/jpeg' && this.file.type != 'image/tiff' && this.file.type != 'image/png' && this.file.type != 'image/gif') {
+        //     this.errors.push('Image files must be one of the following types: JPG, TIF, PNG, GIF')
+        //     this.imageInvalid = true
+        //   }  else {
+        //     this.imageInvalid = false
+        //   }
+        // }   
+
+        // Set a maximum filesize   
+        // if(this.selecteditemMediaType === 'image' && this.file.size >= 1000000) {
+        //   this.errors.push('Image files must be less than 1MB')
+        //   this.imageInvalid = true
+        // }  else {
+        //   this.imageInvalid = false
+        // }     
+
+        // AUDIO ERRORS
+        // Audo file must exist
+        // It must be of type wav, mp3, ogg
+        // Set a maximum filesize
+        if(this.selecteditemMediaType === 'audio' && this.file === null) {
+          this.errors.push('Media type "audio" is selected, but no audio is uploaded')
+          this.audioInvalid = true
+        }  else {
+          this.audioInvalid = false
+        } 
+
+        // Audio files must be less than 5MB in size
+        if(this.selecteditemMediaType === 'audio' && this.file.size >= 5000000) {
+          this.errors.push('Audio files must be less than 5MB')
           this.audioInvalid = true
         }  else {
           this.audioInvalid = false
         }
-      }  
 
-      // PDF ERRORS
-      // PDF file must exist
-      // It must be of type PDF
-      // Set a maximum filesize
-      if(this.selecteditemMediaType === 'pdf' && this.file === null) {
-        this.errors.push('Media type "PDF" is selected, but no pdf is uploaded')
-        this.pdfInvalid = true
-      }  else {
-        this.pdfInvalid = false
-      } 
+        // It must be wav, mp3, ogg, or m4a
+        if(this.selecteditemMediaType == 'audio') {
+          if(this.file.type != 'audio/x-wav' && this.file.type != 'audio/x-m4a' && this.file.type != 'video/ogg' && this.file.type != 'audio/mpeg') {
+            this.errors.push('Audio files must be one of the following types: WAV, MP3, OGG, M4A')
+            this.audioInvalid = true
+          }  else {
+            this.audioInvalid = false
+          }
+        }  
 
-      // PDF files must be less than 5MB in size
-      if(this.selecteditemMediaType === 'pdf' && this.file.size >= 5000000) {
-        this.errors.push('PDFs must be less than 10MB')
-        this.pdfInvalid = true
-      }  else {
-        this.pdfInvalid = false
-      }
+        // PDF ERRORS
+        // PDF file must exist
+        // It must be of type PDF
+        // Set a maximum filesize
+        if(this.selecteditemMediaType === 'pdf' && this.file === null) {
+          this.errors.push('Media type "PDF" is selected, but no pdf is uploaded')
+          this.pdfInvalid = true
+        }  else {
+          this.pdfInvalid = false
+        } 
 
-      // It must be PDF
-      if(this.selecteditemMediaType == 'pdf') {
-        if(this.file.type != 'application/pdf') {
-          this.errors.push('The uploaded file must be a PDF')
+        // PDF files must be less than 5MB in size
+        if(this.selecteditemMediaType === 'pdf' && this.file.size >= 5000000) {
+          this.errors.push('PDFs must be less than 10MB')
           this.pdfInvalid = true
         }  else {
           this.pdfInvalid = false
         }
-      }        
 
-      // NEED TO ADD
-      // YOUTUBE ERRORS  
-      // Internet Archive Video Errors  
+        // It must be PDF
+        if(this.selecteditemMediaType == 'pdf') {
+          if(this.file.type != 'application/pdf') {
+            this.errors.push('The uploaded file must be a PDF')
+            this.pdfInvalid = true
+          }  else {
+            this.pdfInvalid = false
+          }
+        }        
+
+        // NEED TO ADD
+        // YOUTUBE ERRORS  
+        // Internet Archive Video Errors  
+      },    
+      onSubmit () {
+
+     
 
       this.itemCreationDate = new Date();
 
@@ -506,42 +544,56 @@
       // UPLOAD IMAGE 
       //-------------
 
+      this.checkForErrors();
 
+      
       if(!(this.errors.length > 0)) {
 
-        this.loading = true
-        
-        // Check to see if a file has been uploaded
-        if(this.file != null) {
+        // // Check to see if a file has been uploaded
+        // if(this.files != null) {
 
-          var file = this.file // use the Blob or File API
-          var uid = this.uid
-          var archiveId = this.$route.params.id
-          var fileName = this.file.name
+        //   console.log('there is already a file')
 
-          // Check to see if a file exists before uploading, by trying to get the download URL
-          sa.archiveStorageRef(uid, archiveId,'', fileName).getDownloadURL().then((url) => {
-            // this means we got a URL, which means it exists, which means we throw an error
-            this.errors.push('This archive already contains a file with this name!')
-          }).catch((error) => {
-
-            // but if a not found error message returns, it means it wasnt found, which means we should upload it
-
-            var file = this.file // use the Blob or File API
-            var uid = this.uid
-            var archiveId = this.$route.params.archive_id
-            var archiveId = this.$route.params.archive_id
-            var fileName = this.file.name
-
-            sa.itemStorageRef(uid, archiveId,'', fileName).put(file).then((snapshot) => {
-              console.log('Uploaded a blob or file!');
-              this.addArchiveDataToDatabase()
-            });
-          })
-        } else {
-          this.addArchiveDataToDatabase()
-        }
+        // } else {
+          this.isLoading = true;
+          this.addItemDataToDatabase()
+        // }
       }   
+    },
+    addMedia(itemId) {
+      // var uid = this.uid
+      // var archiveId = this.$route.params.id
+      // var fileName = this.files[0].name
+      // var file = this.files[0] // use the Blob or File API
+
+      // Check to see if a file exists before uploading, by trying to get the download URL
+      // sa.archiveStorageRef(uid, archiveId,'', fileName).getDownloadURL().then((url) => {
+      //   // this means we got a URL, which means it exists, which means we throw an error
+      //   this.errors.push('This archive already contains a file with this name!')
+      // }).catch((error) => {
+
+        // but if a not found error message returns, it means it wasnt found, which means we should upload it
+
+        var uid = this.uid
+        var archiveId = this.$route.params.archive_id
+        // var fileName = this.files[0].name
+        // console.log(fileName)
+        for( var i = 0; i < this.itemMediaFiles.length; i++){ 
+          sa.itemStorageRef(uid, archiveId, itemId, this.itemMediaFiles[i].name).put(this.itemMediaFiles[i]).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          });
+        }
+      // })
+    },
+    addFeatureImage(itemId) {
+      var uid = this.uid
+      var archiveId = this.$route.params.archive_id
+      // var fileName = this.files[0].name
+      // console.log(fileName)
+
+      sa.itemStorageRef(uid, archiveId, itemId, this.itemFeatureImage.name).put(this.itemFeatureImage).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
     },
     addCustomFieldValues() {
       var customFieldsObj = [];
@@ -553,15 +605,15 @@
  
       this.customFields = customFieldsObj
     },      
-    addArchiveDataToDatabase() {
+    addItemDataToDatabase() {
 
       //this is because sometimes there is no file, so we have to fake it
-      var file = this.file
+      // var file = this.files[0]
 
-      if(file == null) {
-        file = {}
-        file.name = ''
-      }
+      // if(file == null) {
+      //   file = {}
+      //   file.name = ''
+      // }
 
       var uid = this.uid
       var archiveId = this.$route.params.archive_id
@@ -585,8 +637,16 @@
           console.log("Error getting document:", error);
       });
 
+
       // Add
       this.addCustomFieldValues()
+
+
+
+      this.itemMediaFiles.forEach((file) => {
+
+        this.mediaFileNames.push(file.name)
+      })
 
       sa.itemCollectionDbRef(uid, archiveId).add({
 
@@ -611,7 +671,9 @@
 
         // Media Stuff
         itemMediaType: this.selecteditemMediaType,
-        itemFileName: file.name,
+        itemFileName: this.fileNames,
+        itemFeatureImage: this.itemFeatureImage.name,
+        itemMediaFiles: this.mediaFileNames,
         itemText: this.itemText,
         itemMediaYoutubeId: this.itemMediaYoutubeId,
         itemMediaInternetArchiveId: this.itemMediaInternetArchiveId,
@@ -621,10 +683,15 @@
         tags: this.selectedTags,
         customFields: this.customFields
 
-      }).catch((error) => {
-        alert("Error adding document: ", error);
+      }).then((docRef) => {
+        this.addMedia(docRef.id)
+        this.addFeatureImage(docRef.id)
       }).then(() => {
         this.goBack()
+      }).catch((error) => {
+        console.log('hello')
+        console.log(error)
+        // alert("Error adding document: ", error);
       })
 
 

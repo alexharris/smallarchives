@@ -206,7 +206,15 @@ var sa = {
     // console.log(itemId)
     // console.log(fileName)
     var filePath =
-      uid + "/archive_" + archiveId + "/items/" + prefix + fileName;
+      uid +
+      "/archive_" +
+      archiveId +
+      "/items/" +
+      itemId +
+      "/" +
+      prefix +
+      fileName;
+
     return firebase
       .storage()
       .ref()
@@ -344,7 +352,8 @@ var sa = {
           });
       }
     });
-  }
+  },
+  
 };
 
 export default sa;

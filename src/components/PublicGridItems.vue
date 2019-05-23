@@ -5,11 +5,13 @@
     </div>
     <div v-else>
       <div v-if="renderedItems.length !== 0" class="row px-n5">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-item mb-3 p-md-4" v-for="item in renderedItems">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-item pb-md-3" v-for="item in renderedItems">
           <div class="media-display text-center">
-            <div v-if="item.itemMediaType === 'image'">       
-              <a href="" @click.stop="viewSingleItem(item.itemId)"><img :src="item.itemSrc" /></a>
-            </div>
+            <!-- <div v-if="item.itemMediaType === 'image'">        -->
+              <a href="" @click.stop="viewSingleItem(item.itemId)">
+                <img :src="item.itemFeatureImage" v-if="item.itemFeatureImage" />
+              </a>
+            <!-- </div> -->
             <div v-if="item.itemMediaType === 'pdf'">      
               <div class="pdf-placeholder"><a href="" @click.stop="viewSingleItem(item.itemId)"><img src="/img/pdf-page.svg" /></a> </div>
             </div>
@@ -115,21 +117,42 @@ export default {
 
       // clear it so it resets each time this is called
       this.items = []
-
+      //
       sa.itemCollectionDbRef(uid, archiveId)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+
           var imagePrefix = '';
+          var featureImage = '';
+          var itemFeatureImageUrl = '';
 
           if(doc.data().itemMediaType === 'image') {
             imagePrefix = 'thumb_'
           } else {
             imagePrefix = ''
           }
+
+          // console.log(uid)
+          // console.log(archiveId)
+          // console.log(doc.id)
+          // console.log(doc.data().itemFeatureImage)
+          // console.log(doc.data().itemFileName)
+          // console.log(imagePrefix)
+
+          // if(doc.data().itemFeatureImage != null) {
+          //   featureImage = doc.data().itemFeatureImage
+          // } else {
+          //   featureImage = doc.data().itemFileName
+          // }
+
+          // console.log(featureImage)
+
+
           // get the item source for thumbnail image
-          sa.itemStorageRef(uid, archiveId, doc.id, doc.data().itemFileName, imagePrefix).getDownloadURL().then((url) => {
-            itemSrcUrl = url
+          sa.itemStorageRef(uid, archiveId, doc.id, doc.data().itemFeatureImage, 'thumb_').getDownloadURL().then((url) => {
+            console.log(url)
+            itemFeatureImageUrl = url
           }).catch(function(error) {
             itemSrcUrl = ''
             console.log(error.message)
@@ -138,11 +161,11 @@ export default {
               fileName: doc.data().file,
               itemTitle: doc.data().itemTitle,
               itemId: doc.id,
-              itemCreationDate: sa.getFormattedDate(doc.data().itemCreationDate),
+              itemDateCreated: doc.data().itemDateCreated,
               itemText: doc.data().itemText,
               itemType: doc.data().itemType,
               itemMediaType: doc.data().itemMediaType,
-              itemFileName: doc.data().itemFileName,
+              itemFeatureImage: itemFeatureImageUrl,
               itemMediaYoutubeId: doc.data().itemMediaYoutubeId,
               itemMediaInternetArchiveId: 'https://archive.org/embed/' + doc.data().itemMediaInternetArchiveId,
               itemSrc: itemSrcUrl,
@@ -253,11 +276,11 @@ export default {
   }
 
   .grid-item {
-    height: 400px;
+    // height: 400px;
   }
 
   .grid-title {
-    height: 90px;
+    // height: 90px;
     padding-bottom: 10px;
   }
 
@@ -276,5 +299,27 @@ export default {
     img {
       max-height: 200px
     }
+  }
+
+  @media all and (max-width : 768px) {
+    .grid-item {
+      height: auto;
+    }
+
+    .grid-title {
+      height: auto
+    }
+
+    .media-display {
+      height: auto;
+      img {
+        max-height: 500px;
+      }
+    }
+
+    iframe {
+      min-height: 300px;
+    }
+    
   }
 </style>

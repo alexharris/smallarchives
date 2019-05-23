@@ -2,7 +2,8 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 pt-4">
       
-      <h1 class="h4">Edit Item</h1>  
+      <h1 class="h4 float-left">Edit Item</h1>  
+      <a :href="backUrlHref" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a><br />
       <hr class="my-4" />
       <div>
         <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
@@ -53,15 +54,24 @@
               </select>
               <small class="help-text form-text text-muted">Tags allow you to draw connections between separate items. Get started by editing the archive and adding the tags you want to use. They will then appear here and you can select which ones apply to each item.</small>
             </div>
-          </div>                   
+          </div>   
+          <!-- Featured image -->
+          <div class="form-group row" >
+            <label for="selectImage" class="col-sm-2 col-form-label">Featured Image</label>
+            <div class="col-sm-10">
+              Current feature image: {{itemFeatureImage}} <br />
+              Old feature image: {{itemOldFeatureImage}} <br />
+              <input type="file" id="selectImage" v-on:change="handleFeatureImageChange" v-bind:class="{'is-invalid': imageInvalid}">
+            </div>
+          </div>                           
 
         </div> <!-- end first tab -->
         <!-- Start second tab -->
         <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
-          <h2 class="h5">Media Details</h2>
-          <p><small>The media associated with this item is immutable for now. Delete this item and create a new one if a new media representation is needed.</small></p>
+          <!-- <h2 class="h5">Media Details</h2> -->
+          <!-- <p><small>The media associated with this item is immutable for now. Delete this item and create a new one if a new media representation is needed.</small></p> -->
           <div class="row">
-            <div class="col-2">
+            <!-- <div class="col-2">
               Type
             </div>
             <div class="col-10">
@@ -69,11 +79,12 @@
             </div>        
             <div class="col-2">
               Media
-            </div>
-            <div class="col-10">
-
+            </div> -->
+            <div class="col-12">
+              <AdminMediaUploader ref="mediaUploader" :itemId="this.itemId" />
               <div v-if="itemMediaType == 'image'">
                 <img :src="itemSrc" />
+
               </div>
               <div v-if="itemMediaType == 'audio'">
                 <figure>
@@ -231,7 +242,8 @@
               <small v-if="helpSwitcherValue" class="help-text form-text text-muted">The topic of the resource.</small>
             </div>
           </div> 
-          <h2 class="my-4 h5">Custom Fields</h2>
+          <h2 class="my-4 h5" v-if="customFields.length > 0">Custom Fields</h2>
+
           <!-- Custom Fields -->
           <div class="form-group row" v-for="field in customFields">
             <label :for="'customField_' + field.customFieldName" class="col-sm-2 col-form-label">{{field.customFieldName}}</label>
@@ -242,8 +254,8 @@
           </div>                
         </div> <!-- end third tab -->        
       </div>        
-            
-      <SubmitButton v-on:submit="onSubmit" v-on:cancel="backUrl" />
+      <small><strong>Item last saved: {{itemLastSaved}}</strong></small>
+      <SubmitButton v-on:submit="onSubmit" v-on:cancel="backUrl" :formIsLoading="isLoading" />
       
         </form>                      
         <hr class="my-4" />  
@@ -254,8 +266,8 @@
               <div class="card-header">Item Info</div>
               <div class="card-body">
                 <ul class="list-unstyled">
-                  <li><strong>Created:</strong> {{itemCreationDate}}</li>
-                  <li><strong>ID:</strong> {{this.$route.params.item_id}}</li>
+                  <li><strong>Created:</strong> {{itemDateCreated}}</li>
+                  <li><strong>ID:</strong> {{this.itemId}}</li>
                 </ul>
               </div>
             </div>
@@ -264,7 +276,7 @@
               <div class="card-header">Delete</div>
               <div class="card-body">
                 <p>Warning: Deleting this item is permanent and you can't get it back</p>
-                <a class="btn btn-outline-danger" @click.stop="itemDelete(itemId)">Delete</a>
+                <a class="btn btn-outline-danger" @click.stop="itemDelete()">Delete</a>
               </div>
             </div> 
           </div>         
@@ -279,18 +291,19 @@
 import firebase from 'firebase/app'
 import sa from '../sa'
 import SubmitButton from '../components/SubmitButton'
+import AdminMediaUploader from '../components/AdminMediaUploader'
 
 export default {
   name: 'AdminEditItem',
   components: {
-    SubmitButton
+    SubmitButton,
+    AdminMediaUploader
   },  
   data () {
     return {
       key: this.$route.params.id,
       itemTitle: '',
       itemFileName: '',
-      itemId: '',
       itemDescription: '',
       itemFormat:'',
       itemIdentifier:'',
@@ -307,18 +320,24 @@ export default {
       itemCreator:'',
       itemDate:'',
       itemLocation:'',
+      itemFeatureImage: '',
+      itemNewFeatureImage: '',
+      itemOldFeatureImage: '',
+      itemMediaFiles: [],
+      newItemMediaFiles: [],
       itemMediaType:'',
       itemMediaYoutubeId:'',
-      itemCreationDate:'',
+      itemDateCreated:'',
       selecteditemMediaType: '',
       itemType: '',
       itemSrc: '',
       tags: [],
       selectedTags: [],
       customFields: [],
-      uid: '',
+      uid: firebase.auth().currentUser.uid,
+      archiveId: this.$route.params.archive_id,
       formErrors: false,
-      loading: null,
+      isLoading: false,
       helpSwitcherValue: false,
       titleInvalid: false,
       mediaInvalid: false,
@@ -327,82 +346,163 @@ export default {
       pdfInvalid: false,
       youtubeInvalid: false,
       audioInvalid: false,
+      backUrlHref: '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id,
+      itemLastSaved: false, // determine if the item has been saved, and if so when,
+      numberOfExistingItems: 0,
+      itemId: ''
     }
   },
   created () {
+
+    console.log(this.$route.params.item_id)
+
+      if (this.$route.params.item_id == null) {
+        console.log('new')
+        
+        // find out how many items there are
+        sa.itemCollectionDbRef(this.uid, this.archiveId)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              this.numberOfExistingItems ++
+            });
+        }).then(() => {
+          this.itemId = 'item_' + this.numberOfExistingItems
+          console.log(this.itemId)
+          this.itemDateCreated = new Date()
+        })
+      } else {
+        console.log('existing')
+        this.itemId = this.$route.params.item_id
+        this.getExistingItemData()
+        
+      }    
     //-------------
     // Get the initial data
     //-------------
+    
+    // console.log(this.itemId)
 
-    var uid = firebase.auth().currentUser.uid
-    var archiveId = this.$route.params.archive_id
-    var itemId = this.$route.params.item_id
+    // sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).get().then((doc) => {
+    //   console.log
+    // }).catch(function(error) {
+    //       console.log("Error getting document:", error);
+    // });
 
-    // build the ref
-    sa.itemDocumentDbRef(uid, archiveId, itemId).get().then((doc) => {
-      if (doc.exists) {
-        this.itemCreationDate = sa.getFormattedDate(doc.data().itemCreationDate)
-        this.itemContributor = doc.data().itemContributor
-        this.itemCoverage = doc.data().itemCoverage
-        this.itemCreator = doc.data().itemCreator
-        this.itemDate = doc.data().itemDate
-        this.itemTitle = doc.data().itemTitle
-        this.itemFileName = doc.data().itemFileName
-        this.itemFormat = doc.data().itemFormat
-        this.itemIdentifier = doc.data().itemIdentifier
-        this.itemLanguage = doc.data().itemLanguage
-        this.itemPublisher = doc.data().itemPublisher
-        this.itemRelation = doc.data().itemRelation
-        this.itemRights = doc.data().itemRights
-        this.itemSource = doc.data().itemSource
-        this.itemSubject = doc.data().itemSubject
-        this.itemCoverageLat = doc.data().itemCoverageLat
-        this.itemCoverageLong = doc.data().itemCoverageLong
-        this.itemId = doc.id
-        this.itemText = doc.data().itemText
-        this.itemDescription = doc.data().itemDescription
-        this.itemMediaType = doc.data().itemMediaType
-        this.itemType = doc.data().itemType
-        if(Array.isArray(doc.data().tags)) { // check to see if there are any tags selected already, and if not, pass an empty array
-           this.selectedTags = doc.data().tags // the tags stored on the item are the ones already selected for that item
-        } else {
-          this.selectedTags = [] // the tags stored on the item are the ones already selected for that item
-        }
-       
-      } else {
-        console.log("No such document!");
-      }
-    }).then(() => {
-      this.getItemSrc()
-    });
+    
 
-    // load the tags from the central source
-    this.getTags()
-    this.getCustomFields()
+    // // check to see if we are editing an existing one or creating a new one
+    // if(this.itemId == '123456') {
+    //   console.log('no item id, need to create one')
+   
+
+    //   sa.itemCollectionDbRef(this.uid, this.archiveId).add({
+    //     itemCreationDate: new Date()
+    //   }).then((docRef) => {
+    //     // now it exists
+    //     this.itemId = docRef.id
+        
+    //   }).then(() => {
+    //     this.getExistingItemData()
+    //   }).catch((error) => {
+    //     console.log('hello')
+    //     console.log(error)
+    //     // alert("Error adding document: ", error);
+    //   })
+    // } else {
+    //   // this.getExistingItemData()
+    // }
+
 
     
 
   },
-  methods: {
-    getItemSrc() {
+  methods: {    
+    getExistingItemData() {
 
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id
-      var itemId = this.$route.params.item_id
-      var fileName = this.itemFileName
+      // build the ref
+      sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).get().then((doc) => {
+        if (doc.exists) {
+          this.itemDateCreated = doc.data().itemDateCreated
+          this.itemContributor = doc.data().itemContributor
+          this.itemCoverage = doc.data().itemCoverage
+          this.itemCreator = doc.data().itemCreator
+          this.itemDate = doc.data().itemDate
+          this.itemTitle = doc.data().itemTitle
+          this.itemFeatureImage = doc.data().itemFeatureImage
+          this.itemFormat = doc.data().itemFormat
+          this.itemIdentifier = doc.data().itemIdentifier
+          this.itemLanguage = doc.data().itemLanguage
+          this.itemPublisher = doc.data().itemPublisher
+          this.itemRelation = doc.data().itemRelation
+          this.itemRights = doc.data().itemRights
+          this.itemSource = doc.data().itemSource
+          this.itemSubject = doc.data().itemSubject
+          this.itemCoverageLat = doc.data().itemCoverageLat
+          this.itemCoverageLong = doc.data().itemCoverageLong
+          this.itemId = doc.id
+          this.itemText = doc.data().itemText
+          this.itemDescription = doc.data().itemDescription
+          this.itemMediaType = doc.data().itemMediaType
+          this.itemType = doc.data().itemType
+          if(Array.isArray(doc.data().tags)) { // check to see if there are any tags selected already, and if not, pass an empty array
+            this.selectedTags = doc.data().tags // the tags stored on the item are the ones already selected for that item
+          } else {
+            this.selectedTags = [] // the tags stored on the item are the ones already selected for that item
+          }
+        
+        } else {
+          console.log("No such document!");
+        }
+      }).then(() => {
+        // this.getItemSrc()
+        // load the tags from the central source
+        this.getTags()
+        this.getCustomFields()        
+      });
 
-      sa.itemStorageRef(uid, archiveId, itemId, fileName, 'thumb_').getDownloadURL().then((url) => {
-        this.itemSrc = url
-      }).catch(function(error) {
-        console.log(error.message)
-      })
-    }, 
+
+
+    } ,  
+    // getItemSrc() {
+
+    //   var uid = firebase.auth().currentUser.uid
+    //   var archiveId = this.$route.params.archive_id
+
+    //   sa.itemStorageRef(uid, archiveId, this.itemId, fileName, 'thumb_').getDownloadURL().then((url) => {
+    //     this.itemSrc = url
+    //   }).catch(function(error) {
+    //     console.log(error.message)
+    //   })
+    // }, 
+    handleFeatureImageChange(e, index) {
+      if(this.itemFeatureImage != '') { // if the feature image is already
+        this.itemOldFeatureImage = this.itemFeatureImage // move the value
+        this.itemFeatureImage = e.target.files[0] // set it to new value
+      } else { // else
+        this.itemFeatureImage = e.target.files[0] // just set it
+      }
+
+      
+    },    
+    addFeatureImage() { // Upload feature image to the DB
+
+      // delete the legacy image and thumb derivative
+      if(this.itemOldFeatureImage != '') { //check to see if there is a new feature image
+        sa.itemStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, 'thumb_').delete()
+        sa.itemStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, '').delete()
+      }
+
+
+      // add the new one
+      sa.itemStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImage.name).put(this.itemFeatureImage).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
+    },       
     getTags() {
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id 
       this.tags = [];   
 
-      sa.tagCollectionDbRef(uid,archiveId)
+      sa.tagCollectionDbRef(this.uid, this.archiveId)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -413,11 +513,10 @@ export default {
       });     
     },
     getCustomFields() {
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id 
-      this.customFields = [];   
 
-      sa.customFieldCollectionDbRef(uid,archiveId)
+      this.customFields = [];   
+ 
+      sa.customFieldCollectionDbRef(this.uid, this.archiveId)
       .get()
       .then((querySnapshot) => {
 
@@ -434,17 +533,13 @@ export default {
     },  
     getExistingCustomFieldsValues() {
 
-
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id
-
-      sa.itemDocumentDbRef(uid,archiveId,this.$route.params.item_id)
+      sa.itemDocumentDbRef(this.uid, this.archiveId,this.itemId)
       .get()
       .then((doc) => {
 
 
-        
         for(var i in doc.data().customFields) {
+          console.log(i)
           var keyObj = Object.keys(doc.data().customFields[i])
           var key = keyObj[0]
 
@@ -458,8 +553,6 @@ export default {
     },
     //
     addCustomFieldValues() {
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id
 
       var customFieldsObj = [];
       this.customFields.forEach((field) => {
@@ -467,7 +560,7 @@ export default {
           [field.customFieldName]: this.$refs[field.customFieldName][0].value
         })
       })
-      sa.itemDocumentDbRef(uid,archiveId,this.$route.params.item_id).update({
+      sa.itemDocumentDbRef(this.uid, this.archiveId,this.itemId).update({
         customFields: customFieldsObj
       })       
 
@@ -483,19 +576,24 @@ export default {
         this.titleInvalid = true
       }  else {
         this.titleInvalid = false
+        this.itemLastSaved = new Date()
+        // this.addCustomFieldValues()
+        
+        this.addItemEditsToDB()
+        this.addFeatureImage()
       }      
 
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id
-      var itemId = this.$route.params.item_id
 
-      this.addCustomFieldValues()
+
+
+    },
+    addItemEditsToDB () {
 
       if(!(this.errors.length < 0)) {
 
-        this.loading = true
+        this.isLoading = true
         // build the ref
-        sa.itemDocumentDbRef(uid, archiveId, itemId).update({
+        sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).set({
           // DCMI Stuff
           itemTitle: this.itemTitle,
           itemDescription: this.itemDescription,
@@ -514,40 +612,32 @@ export default {
           itemSource: this.itemSource,
           itemSubject: this.itemSubject,
           itemType: this.itemType,
+          itemDateCreated: this.itemDateCreated,
+          itemFeatureImage: this.itemFeatureImage.name,
           tags: this.selectedTags
-        }).then(() => {
+        }, { merge: true }).then(() => {
+          this.$refs.mediaUploader.uploadFiles()
           console.log('item updated!')
           this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
         })
       }
     },
-    itemDelete(itemId) {
+    itemDelete() {
+
+      console.log('itemDelete called')
       //Delete the item from the database
-      var uid = firebase.auth().currentUser.uid
-      var archiveId = this.$route.params.archive_id
-      var itemId = this.$route.params.item_id
-      var fileName = this.itemFileName
+      var fileName = this.itemFeatureImage
 
-      console.log(fileName)
-      //Check to see if there are items to delete
+      // Needs to check and see if there are any media files or featured image to delete
 
-      console.log(this.itemMediaType)
-      if(this.itemMediaType === 'image') {
-        // delete the thumb derivative
-        sa.itemStorageRef(uid, archiveId, itemId, fileName, 'thumb_').delete()
-      }
-
-      if(this.itemMediaType === 'image' || this.itemMediaType === 'audio' || this.itemMediaType === 'pdf') {
-        // delete the main item image
-        sa.itemStorageRef(uid, archiveId, itemId, fileName).delete()
-      }
+     
 
       // delete the document
-      sa.itemDocumentDbRef(uid, archiveId, itemId).delete()
+      sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).delete()
 
       // Keep track of the number of items this user has
       var numberOfItems;
-      sa.userArchivesDocumentDbRef(uid).get().then(function(doc) {
+      sa.userArchivesDocumentDbRef(this.uid).get().then(function(doc) {
           if (doc.exists) {
               numberOfItems = doc.data().numberOfItems - 1
           } else {
@@ -555,7 +645,7 @@ export default {
               console.log("No such document!");
           }
       }).then(() => {
-        sa.userArchivesDocumentDbRef(uid).set({
+        sa.userArchivesDocumentDbRef(this.uid).set({
           numberOfItems: numberOfItems
         })        
       }).catch(function(error) {
@@ -567,8 +657,12 @@ export default {
 
     }, 
     backUrl() {
+      // if(this.itemLastSaved === false) { //item has never been saved, it can be deleted
+      //   this.itemDelete()
+      // } else {
+      //   // dont delete
+      // }
       this.$router.push({ name: 'PublicArchive', params: {username: firebase.auth().currentUser.displayName, id: this.$route.params.archive_id }})
-      // return '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id
     }           
   }
 }

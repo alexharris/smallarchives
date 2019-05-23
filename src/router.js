@@ -65,7 +65,7 @@ const router = new Router({
         {
           path: "/admin/add-item/:archive_id",
           name: "AdminCreateItem",
-          component: AdminCreateItem
+          component: AdminEditItem
         },
         {
           path: "/admin/add-archive",

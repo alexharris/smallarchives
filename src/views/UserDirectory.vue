@@ -2,7 +2,7 @@
   <div>
     <h1>User Directory</h1>
     <ul v-for="user in this.users">
-        <li><a href="" @click.stop="goToUser(user)">{{ user }}</a></li>
+        <li><a :href="'/u/' + user" @click.stop="goToUser(user)">{{ user }}</a></li>
     </ul>
   </div>
 </template>
@@ -33,5 +33,6 @@ export default {
       this.$router.push({ name: 'PublicProfile', params: { username:  username}})
     },      
   }
+
 };
 </script>

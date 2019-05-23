@@ -1,7 +1,17 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-12 col-sm-11 pt-4">
-      <h1 class="h2"> Edit Archive</h1>
+      <h1 class="h2 float-left"> Edit Archive</h1>
+      <a :href="backUrl" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a><br />
+      <br />
+      <hr class="my-4" />
+        <template v-if="errors.length > 0">
+          <div class="alert alert-danger" role="alert" show>
+            <ul>
+              <li v-for="error in errors">{{error}}</li>
+            </ul>
+          </div>
+        </template>        
       <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic</a>
@@ -54,23 +64,25 @@
               <input type="file" id="inputFile" v-on:change="handleFileChange">
             </div>
           </div>        
-
+          <h4>View types</h4>
+          <p>The grid view will always show by default, but you can decide if you want to also display items in a table format or map view. Map view will only display items that have a latitude and longitude.</p>
           <!-- Views -->
           <div class="form-group row">
-            <label for="listView" class="col-sm-2 col-form-label">Show List View</label>
-            <div class="col-sm-10">
+            <label for="listView" class="col-sm-4 col-form-label">Show List View</label>
+            <div class="col-sm-8">
               <input type="checkbox" id="listView" v-model="showList">
             </div>
           </div>    
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
             <div class="col-sm-10">
               <input type="checkbox" id="gridView" v-model="showGrid">
             </div>
-          </div>  
+          </div>   -->
+
           <div class="form-group row">
-            <label for="mapView" class="col-sm-2 col-form-label">Show Map View</label>
-            <div class="col-sm-10">
+            <label for="mapView" class="col-sm-4 col-form-label">Show Map View</label>
+            <div class="col-sm-8">
               <input type="checkbox" id="mapView" v-model="showMap">
             </div>
           </div>  
@@ -81,30 +93,30 @@
             </div>
             <div class="card-body">
               <div class="form-group row">
-                <label for="inputMapLat" class="col-sm-2 col-form-label">Initial Map Latitude</label>
-                <div class="col-sm-10">
+                <label for="inputMapLat" class="col-12 col-sm-4 col-form-label">Initial Map Latitude</label>
+                <div class="col-12 col-sm-8">
                   <input class="form-control" id="inputMapLat" v-model.number="mapLat">
                 </div>
               </div>
               <div class="form-group row">
-                <label for="inputMapLong" class="col-sm-2 col-form-label">Initial Map Longitude</label>
-                <div class="col-sm-10">
+                <label for="inputMapLong" class="col-12 col-sm-4 col-form-label">Initial Map Longitude</label>
+                <div class="col-12 col-sm-8">
                   <input class="form-control" id="inputMapLong" v-model.number="mapLong">
                 </div>
               </div>  
               <div class="form-group row">
-                <label for="customRange2" class="col-sm-2 col-form-label">Initial Map Zoom</label>
-                <div class="col-sm-2 text-center">
+                <label for="customRange2" class="col-12 col-sm-4 col-form-label">Initial Map Zoom</label>
+                <div class="col-12 col-sm-2 text-center">
                   <strong>{{zoom}}</strong>
                 </div>            
-                <div class="col-sm-8">
+                <div class="col-12 col-sm-8">
                   <input type="range" class="custom-range" min="0" max="16" id="customRange2" v-model.number="zoom">    
                 </div>
               </div> 
             </div>
           </div>     
           <!-- Submit -->
-          <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" />                      
+          <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" :formIsLoading="isLoading" />                      
 
           
                       
@@ -212,17 +224,19 @@ export default {
       originalHeaderImage: '',
       newHeaderImage: '',
       numberOfItems: 0,
+      errors: [],
       dateCreated: '',
       newTag: '',
       tags: [],
       newTags: [],
       showMap: true,
-      showGrid: true,
+      // showGrid: true,
       showList: false,
-      loading: null,
+      isLoading: false,
       zoom: 1,
       mapLat: 1,
-      mapLong: 1
+      mapLong: 1,
+      backUrl: '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id
     }
   },
   created () {
@@ -238,7 +252,7 @@ export default {
         this.originalHeaderImage = doc.data().headerImage
         this.getTags()
         this.showList = doc.data().showList
-        this.showGrid = doc.data().showGrid
+        // this.showGrid = doc.data().showGrid
         this.showMap = doc.data().showMap
         this.mapLat = doc.data().mapLat
         this.mapLong = doc.data().mapLong
@@ -254,7 +268,16 @@ export default {
     },     
     onSubmit () {
 
-      this.loading = true
+      this.isLoading = true
+
+      // Check for errors in the form
+      this.errors = [] //clear old error array
+      //check for completeness
+      if(this.archive.title == '') { //title is mandatory
+        this.errors.push('Title required')
+        this.isLoading = false;
+        return
+      }      
 
       var uid = firebase.auth().currentUser.uid
       var archiveId = this.$route.params.archive_id      
@@ -263,7 +286,7 @@ export default {
         title: this.archive.title,
         desc: this.archive.desc,
         showList: this.showList,
-        showGrid: this.showGrid,
+        // showGrid: this.showGrid,
         showMap: this.showMap,
         mapLat: this.mapLat,
         mapLong: this.mapLong,

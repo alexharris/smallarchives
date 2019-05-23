@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-12 py-5 col-sm-8 col-lg-6">
         
-        <form>
+        <div>
           <div class="form-group row">
             <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
             <div class="col-sm-9">
@@ -17,7 +17,7 @@
             </div>
           </div>        
           <button class="btn btn-dark" type="submit" @click.stop="login">Sign In</button>
-        </form>
+        </div>
         <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link><br />
         Forgot your password? <a href="#" data-toggle="modal" data-target="#exampleModal">Reset it.</a></p>    
       </div>

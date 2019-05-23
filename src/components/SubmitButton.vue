@@ -1,8 +1,8 @@
 <template>
-    <div v-if="!loading">
+    <div v-if="formIsLoading == false">
         <hr class="my-4" />
-        <div class="btn btn-primary mr-2" v-on:click="loading = !loading; $emit('submit')">Submit</div>
-        <a class="btn btn-outline-primary" v-on:click="loading = !loading; $emit('cancel')">Cancel</a>
+        <div class="btn btn-primary mr-2" v-on:click="$emit('submit')">Submit</div>
+        <a class="btn btn-outline-primary" v-on:click="$emit('cancel')">Cancel</a>
     </div>
     <div v-else>
         <hr class="my-4" />
@@ -16,11 +16,28 @@
 import firebase from 'firebase/app';
 
 export default {
-  name: "SubmitButton", 
-  data() {
-      return {
-          loading: false
-      }
-  }
+    name: "SubmitButton", 
+    // data () {
+    //     return {
+    //         newLoading: false
+    //     }
+    // },
+    props: ['formErrors', 'formIsLoading'],
+    // computed: {
+    //     isLoading: {
+    //         get: function() {
+    //             return this.loading
+    //         },
+    //         set: function(newValue) {
+    //             this.newLoading = true
+    //         }
+    //     }
+    // }
+    // computed: {
+    //     hasErrors: function() {
+    //         console.log(this)
+    //         return this
+    //     }
+    // }
 };
 </script>

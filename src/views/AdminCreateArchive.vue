@@ -56,7 +56,7 @@
               <input type="checkbox" id="mapView" v-model="showMap">
             </div>
           </div>                                         
-          <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" />                                          
+          <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" :formIsLoading="isLoading" />                                          
         </form>
       </div>
 
@@ -86,7 +86,8 @@ export default {
       errors: [],
       showList: true,
       showGrid: true,
-      showMap: false
+      showMap: false,
+      isLoading: false
     }
   },
   created() {
@@ -98,12 +99,15 @@ export default {
       this.archiveHeaderImage = e.target.files[0]
     },      
     onSubmit () {
+
+      this.isLoading = true;
  
       // Check for errors in the form
       this.errors = [] //clear old error array
       //check for completeness
       if(this.archive.title == '') { //title is mandatory
         this.errors.push('Title required')
+        this.isLoading = false;
         return
       }
 
@@ -134,8 +138,11 @@ export default {
       }).then((docRef) => {
         if(this.archiveHeaderImage.name != '') {
           this.addArchiveHeaderImage(docRef.id)
+          
         }
       }).then(() => {
+        
+
         this.$router.push({
           name: 'Admin',
         })         

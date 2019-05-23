@@ -13,7 +13,7 @@
           <nav class="navbar navbar-light col-12"  style="background-color: #ffffff;">
             <span class="navbar-text">
               <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
-                Filters <font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
+                Filters<font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
               </button>
               <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
                 About
@@ -36,7 +36,7 @@
         </div>    
         <!-- Filter collapse  -->
         <div class="row sticky-top filter-collapse bg-white">
-          <div class="collapse pt-2  bg-white" id="collapseExample">
+          <div class="pt-2 bg-white collapse" id="collapseExample">
             <div class="row">
               <div class="col-11 col-md-3">
                 <form>
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>             
-        <PublicListItems v-show="this.viewType == 'list'" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
+        <PublicListItems v-show="this.viewType == 'list'" v-if="showList" v-bind:filteredCoverageLat="this.selectedHasLocation" />  
         <PublicGridItems v-show="this.viewType == 'grid'" v-bind:filteredCoverageLat="this.selectedHasLocation" />
         <PublicMapItems v-show="this.viewType == 'map'" v-if="showMap" :key="mapComponentKey" :mapLat="mapLat" :mapLong="mapLong" :zoom="zoom"/>       
         <div class="row mt-5 pt-5 justify-content-center">  
@@ -187,6 +187,8 @@ export default {
       if(this.$route.query.tag === undefined) {
         return 'None' 
       } else {
+        console.log('there is a tag value')
+        this.filterState = true
         return this.$route.query.tag
       }
     }, 
@@ -241,7 +243,7 @@ export default {
           this.headerImage = doc.data().headerImage
           this.showMap = doc.data().showMap
           this.showList = doc.data().showList
-          this.showGrid = doc.data().showGrid
+          // this.showGrid = doc.data().showGrid // show grid is always set to true since it is the default
           this.mapLat = doc.data().mapLat
           this.mapLong = doc.data().mapLong
           this.zoom = doc.data().zoom
@@ -277,7 +279,7 @@ export default {
             fileName: doc.data().file,
             itemTitle: doc.data().itemTitle,
             itemId: doc.id,
-            itemCreationDate: sa.getFormattedDate(doc.data().itemCreationDate),
+            itemDateCreated: sa.getFormattedDate(doc.data().itemDateCreated),
             itemText: doc.data().itemText,
             itemType: doc.data().itemType,
           });

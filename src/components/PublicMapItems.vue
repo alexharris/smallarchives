@@ -107,7 +107,7 @@ export default {
        // clear it so it resets each time this is called
       this.items = []      
 
-      sa.itemCollectionDbRef(uid, archiveId)
+      sa.itemCollectionDbRef(uid, archiveId).where("itemTitle.length", '>', 0)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
