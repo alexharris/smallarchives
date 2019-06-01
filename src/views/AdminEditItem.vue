@@ -2,9 +2,25 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 pt-4">
       
-      <h1 class="h4 float-left">Edit Item</h1>  
-      <a :href="backUrlHref" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a><br />
+      
+
+      <ul class="nav nav-pills justify-content-end">
+        <li class="nav-item">
+          <a class="nav-link active" :href="backUrlHref + '/' + itemId">View</a>
+        </li>
+        <li class="nav-item">
+          <a :href="backUrlHref" class="nav-link close-item"><font-awesome-icon icon="times" size="1x" /></a>
+        </li>
+      </ul>    
+      <h1 class="h4">Edit Item</h1>    
       <hr class="my-4" />
+        <template v-if="errors.length > 0">
+          <div class="alert alert-danger" role="alert" show>
+            <ul>
+              <li v-for="error in errors">{{error}}</li>
+            </ul>
+          </div>
+        </template>      
       <div>
         <input type="checkbox" id="checkbox" v-model="helpSwitcherValue">
         <label for="checkbox" class="ml-2">Show field hints</label>
@@ -30,7 +46,7 @@
           <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">Title *</label>
             <div class="col-sm-10">
-              <input class="form-control" id="inputTitle" v-model="itemTitle" v-bind:class="{'is-invalid': titleInvalid}">
+              <input class="form-control" id="inputTitle" v-model="itemTitle">
               <div class="invalid-feedback">
                 Please enter a title.
               </div>
@@ -59,8 +75,6 @@
           <div class="form-group row" >
             <label for="selectImage" class="col-sm-2 col-form-label">Featured Image</label>
             <div class="col-sm-10">
-              Current feature image: {{itemFeatureImage}} <br />
-              Old feature image: {{itemOldFeatureImage}} <br />
               <input type="file" id="selectImage" v-on:change="handleFeatureImageChange" v-bind:class="{'is-invalid': imageInvalid}">
             </div>
           </div>                           
@@ -254,9 +268,8 @@
           </div>                
         </div> <!-- end third tab -->        
       </div>        
-      <small><strong>Item last saved: {{itemLastSaved}}</strong></small>
       <SubmitButton v-on:submit="onSubmit" v-on:cancel="backUrl" :formIsLoading="isLoading" />
-      
+
         </form>                      
         <hr class="my-4" />  
         <div class="col-12" >
@@ -266,7 +279,7 @@
               <div class="card-header">Item Info</div>
               <div class="card-body">
                 <ul class="list-unstyled">
-                  <li><strong>Created:</strong> {{itemDateCreated}}</li>
+                  <!-- <li><strong>Created:</strong> {{itemCreationDate}}</li> -->
                   <li><strong>ID:</strong> {{this.itemId}}</li>
                 </ul>
               </div>
@@ -321,13 +334,13 @@ export default {
       itemDate:'',
       itemLocation:'',
       itemFeatureImage: '',
-      itemNewFeatureImage: '',
+      itemFeatureImageName: '',
       itemOldFeatureImage: '',
       itemMediaFiles: [],
       newItemMediaFiles: [],
       itemMediaType:'',
       itemMediaYoutubeId:'',
-      itemDateCreated:'',
+      itemCreationDate:'',
       selecteditemMediaType: '',
       itemType: '',
       itemSrc: '',
@@ -339,7 +352,6 @@ export default {
       formErrors: false,
       isLoading: false,
       helpSwitcherValue: false,
-      titleInvalid: false,
       mediaInvalid: false,
       textInvalid: false,
       imageInvalid: false,
@@ -347,14 +359,12 @@ export default {
       youtubeInvalid: false,
       audioInvalid: false,
       backUrlHref: '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id,
-      itemLastSaved: false, // determine if the item has been saved, and if so when,
       numberOfExistingItems: 0,
-      itemId: ''
+      itemId: '',
+      errors: []
     }
   },
   created () {
-
-    console.log(this.$route.params.item_id)
 
       if (this.$route.params.item_id == null) {
         console.log('new')
@@ -369,53 +379,14 @@ export default {
         }).then(() => {
           this.itemId = 'item_' + this.numberOfExistingItems
           console.log(this.itemId)
-          this.itemDateCreated = new Date()
+          this.$refs.mediaUploader.getExistingFiles(this.itemId)
         })
       } else {
-        console.log('existing')
         this.itemId = this.$route.params.item_id
         this.getExistingItemData()
         
-      }    
-    //-------------
-    // Get the initial data
-    //-------------
-    
-    // console.log(this.itemId)
-
-    // sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).get().then((doc) => {
-    //   console.log
-    // }).catch(function(error) {
-    //       console.log("Error getting document:", error);
-    // });
-
-    
-
-    // // check to see if we are editing an existing one or creating a new one
-    // if(this.itemId == '123456') {
-    //   console.log('no item id, need to create one')
-   
-
-    //   sa.itemCollectionDbRef(this.uid, this.archiveId).add({
-    //     itemCreationDate: new Date()
-    //   }).then((docRef) => {
-    //     // now it exists
-    //     this.itemId = docRef.id
         
-    //   }).then(() => {
-    //     this.getExistingItemData()
-    //   }).catch((error) => {
-    //     console.log('hello')
-    //     console.log(error)
-    //     // alert("Error adding document: ", error);
-    //   })
-    // } else {
-    //   // this.getExistingItemData()
-    // }
-
-
-    
-
+      }        
   },
   methods: {    
     getExistingItemData() {
@@ -423,13 +394,14 @@ export default {
       // build the ref
       sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).get().then((doc) => {
         if (doc.exists) {
-          this.itemDateCreated = doc.data().itemDateCreated
+          this.itemCreationDate = doc.data().itemCreationDate
           this.itemContributor = doc.data().itemContributor
           this.itemCoverage = doc.data().itemCoverage
           this.itemCreator = doc.data().itemCreator
           this.itemDate = doc.data().itemDate
           this.itemTitle = doc.data().itemTitle
-          this.itemFeatureImage = doc.data().itemFeatureImage
+          // this.itemFeatureImage = doc.data().itemFeatureImage
+          this.itemFeatureImageName = doc.data().itemFeatureImageName
           this.itemFormat = doc.data().itemFormat
           this.itemIdentifier = doc.data().itemIdentifier
           this.itemLanguage = doc.data().itemLanguage
@@ -457,6 +429,7 @@ export default {
       }).then(() => {
         // this.getItemSrc()
         // load the tags from the central source
+        this.$refs.mediaUploader.getExistingFiles()
         this.getTags()
         this.getCustomFields()        
       });
@@ -464,40 +437,37 @@ export default {
 
 
     } ,  
-    // getItemSrc() {
-
-    //   var uid = firebase.auth().currentUser.uid
-    //   var archiveId = this.$route.params.archive_id
-
-    //   sa.itemStorageRef(uid, archiveId, this.itemId, fileName, 'thumb_').getDownloadURL().then((url) => {
-    //     this.itemSrc = url
-    //   }).catch(function(error) {
-    //     console.log(error.message)
-    //   })
-    // }, 
     handleFeatureImageChange(e, index) {
-      if(this.itemFeatureImage != '') { // if the feature image is already
-        this.itemOldFeatureImage = this.itemFeatureImage // move the value
+      if(this.itemFeatureImageName != '') { // if the feature image is already set
+        this.itemOldFeatureImage = this.itemFeatureImageName // move the value
         this.itemFeatureImage = e.target.files[0] // set it to new value
+        this.itemFeatureImageName = e.target.files[0].name
       } else { // else
         this.itemFeatureImage = e.target.files[0] // just set it
+        this.itemFeatureImageName = e.target.files[0].name
       }
 
       
+    },   
+    deleteOldFeatureImage() {
+      // delete the legacy image and thumb derivative
+      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, 'thumb_').delete()
+      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, '').delete()
+    },
+    deleteCurrentFeatureImage() {
+      // delete the current image and thumb derivative
+      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImageName, 'thumb_').delete()
+      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImageName, '').delete()
     },    
     addFeatureImage() { // Upload feature image to the DB
-
-      // delete the legacy image and thumb derivative
       if(this.itemOldFeatureImage != '') { //check to see if there is a new feature image
-        sa.itemStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, 'thumb_').delete()
-        sa.itemStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, '').delete()
+        this.deleteOldFeatureImage() //delete the old one
       }
-
-
       // add the new one
-      sa.itemStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImage.name).put(this.itemFeatureImage).then((snapshot) => {
+      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImage.name).put(this.itemFeatureImage).then((snapshot) => {
         console.log('Uploaded a blob or file!');
-      });
+      });   
+
     },       
     getTags() {
       this.tags = [];   
@@ -545,10 +515,7 @@ export default {
 
           this.$refs[key][0].value = doc.data().customFields[i][key]
         }
-          // this.customFields.push({
-          //   customFieldName: doc.id,
-          //   customFieldType: doc.data().customFieldType
-          // });
+
       })
     },
     //
@@ -564,28 +531,31 @@ export default {
         customFields: customFieldsObj
       })       
 
-    },              
-    onSubmit () {
-
+    },     
+    checkForErrors () {
       // empty the error variable to get rid of old errors
       this.errors = []
 
       // check the form for completeness
-      if (!this.itemTitle || this.itemTitle == '') { // title is mandatory
+      if (!this.itemTitle || this.itemTitle === '') { // title is mandatory
         this.errors.push('A title is required')
-        this.titleInvalid = true
-      }  else {
-        this.titleInvalid = false
-        this.itemLastSaved = new Date()
-        // this.addCustomFieldValues()
-        
+      }
+
+      if (!this.itemFeatureImageName || this.itemFeatureImageName === '') { // title is mandatory
+        this.errors.push('A feature image is required')
+      }
+
+    },             
+    onSubmit () {
+
+      this.checkForErrors();
+
+      if(!(this.errors.length > 0)) {      
         this.addItemEditsToDB()
-        this.addFeatureImage()
-      }      
-
-
-
-
+        if(this.itemFeatureImage != '') {
+          this.addFeatureImage()
+        }
+      }
     },
     addItemEditsToDB () {
 
@@ -612,8 +582,8 @@ export default {
           itemSource: this.itemSource,
           itemSubject: this.itemSubject,
           itemType: this.itemType,
-          itemDateCreated: this.itemDateCreated,
-          itemFeatureImage: this.itemFeatureImage.name,
+          itemCreationDate: new Date(),
+          itemFeatureImageName: this.itemFeatureImageName,
           tags: this.selectedTags
         }, { merge: true }).then(() => {
           this.$refs.mediaUploader.uploadFiles()
@@ -624,16 +594,15 @@ export default {
     },
     itemDelete() {
 
-      console.log('itemDelete called')
-      //Delete the item from the database
-      var fileName = this.itemFeatureImage
-
-      // Needs to check and see if there are any media files or featured image to delete
+      // Needs to check and see if there are any media files to delete
 
      
 
       // delete the document
       sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).delete()
+      
+      // delete the feature image
+      this.deleteCurrentFeatureImage() 
 
       // Keep track of the number of items this user has
       var numberOfItems;
@@ -657,11 +626,6 @@ export default {
 
     }, 
     backUrl() {
-      // if(this.itemLastSaved === false) { //item has never been saved, it can be deleted
-      //   this.itemDelete()
-      // } else {
-      //   // dont delete
-      // }
       this.$router.push({ name: 'PublicArchive', params: {username: firebase.auth().currentUser.displayName, id: this.$route.params.archive_id }})
     }           
   }

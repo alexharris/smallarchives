@@ -155,7 +155,7 @@ export default {
             fileName: doc.data().file,
             itemTitle: doc.data().itemTitle,
             itemId: doc.id,
-            itemCreationDate: sa.getFormattedDate(doc.data().itemDateCreated),
+            itemCreationDate: doc.data().itemCreationDate,
             itemText: doc.data().itemText,
             itemType: doc.data().itemType,
             itemCoverageLat: doc.data().itemCoverageLat,

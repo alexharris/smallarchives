@@ -22,7 +22,7 @@ export default {
     //         newLoading: false
     //     }
     // },
-    props: ['formErrors', 'formIsLoading'],
+    props: ['formIsLoading'],
     // computed: {
     //     isLoading: {
     //         get: function() {

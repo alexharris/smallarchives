@@ -150,7 +150,8 @@ export default {
 
 
           // get the item source for thumbnail image
-          sa.itemStorageRef(uid, archiveId, doc.id, doc.data().itemFeatureImage, 'thumb_').getDownloadURL().then((url) => {
+
+          sa.itemFeatureStorageRef(uid, archiveId, doc.id, doc.data().itemFeatureImageName, 'thumb_').getDownloadURL().then((url) => {
             console.log(url)
             itemFeatureImageUrl = url
           }).catch(function(error) {
@@ -161,7 +162,7 @@ export default {
               fileName: doc.data().file,
               itemTitle: doc.data().itemTitle,
               itemId: doc.id,
-              itemDateCreated: doc.data().itemDateCreated,
+              itemCreationDate: doc.data().itemCreationDate,
               itemText: doc.data().itemText,
               itemType: doc.data().itemType,
               itemMediaType: doc.data().itemMediaType,

@@ -7,36 +7,14 @@
 
 			</div>
 		</div>
-
 		<div class="row justify-content-center">
 
 			<div class="col-lg-8 item-pane my-4">
-				<template v-for="src in itemFileNames">	
-					<img :src="src" />
+					<template v-for="(file, i) in item.mediaFiles">
+						<PublicMediaFile :filename="file" :id="item.itemId" :uid="uid" />
 					</template>
-				<div v-if="item.itemMediaType == 'image'">
-					<!-- probably dont need to check for itemMediaType anymore -->
-					<template v-for="src in itemFileNames">	
-					<img :src="src" />
-					</template>
-					<img :src="legacyFileSrc" />
-				</div>
-				<div v-if="item.itemMediaType == 'audio'">
-					<figure>
-					    <audio
-					        controls
-					        :src="itemSrc">
-					            Your browser does not support the
-					            <code>audio</code> element.
-					    </audio>
-					</figure>
-				</div>
-				<div v-if="item.itemMediaType == 'pdf'" class="pdf-download">
-					<!-- <p>{{item.itemFileName}}</p> -->
-<!-- 					<a :href="itemSrc"><font-awesome-icon icon="file-download" size="6x" /> </a> -->
-					<div id="pdfViewer"></div>
-				</div>				
-				<div v-if="item.itemMediaType === 'text'">
+				
+				<!-- <div v-if="item.itemMediaType === 'text'">
 					<p class="lead">{{item.itemText}}</p>
 				</div>
 				<div v-if="item.itemMediaType === 'youtube'" class="video-wrapper">					
@@ -44,7 +22,7 @@
 				</div>	
 				<div v-if="item.itemMediaType === 'iaVideo'" class="video-wrapper">					
 					<iframe v-bind:src="item.itemMediaInternetArchiveId" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>					
-				</div>															
+				</div>															 -->
 			</div>
 
 			<div class="col-lg-4">
@@ -99,8 +77,9 @@
 <script>
 import firebase from 'firebase/app';
 import sa from '../sa'
-import PDF from 'pdfobject';
+import PublicMediaFile from '../components/PublicMediaFile'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import mime from "mime-types";
 
 
 
@@ -110,7 +89,8 @@ export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+		LMarker,
+		PublicMediaFile
   },  
   data() {
   	return {
@@ -121,21 +101,22 @@ export default {
 	        filePath: '',
 	        customFields: {},
 	        itemCoverageLat: '',
-					itemCoverageLong: ''
+					itemCoverageLong: '',
+					mediaFiles: []
   		},
-  		itemSrc: '',
+  		// itemSrc: '',
   		archiveTitle: '',
 			uid: '',
 			confirmOwner: false,
-			itemFileNames: [],
-			legacyFileSrc: []
+			// itemFileNames: [],
+			// legacyFileSrc: []
   		
   	}
   },
   computed: {
   	latLongArray: function() {
   		return [this.item.itemCoverageLat, this.item.itemCoverageLong]
-	}
+		}
   },
   created() {
 		this.getUidFromUsername()
@@ -184,68 +165,28 @@ export default {
 					this.item.itemSubject = doc.data().itemSubject				
 
 			    // Media Fields
-	        this.item.itemFileNames = doc.data().itemMediaFiles
-	        this.item.itemMediaType = doc.data().itemMediaType
+	        this.item.mediaFiles = doc.data().itemMediaFiles
+	        // this.item.itemMediaType = doc.data().itemMediaType
 	        this.item.itemText = doc.data().itemText
 					this.item.itemMediaYoutubeId = 'https://www.youtube.com/embed/' + doc.data().itemMediaYoutubeId
 					this.item.itemMediaInternetArchiveId = 'https://archive.org/embed/' + doc.data().itemMediaInternetArchiveId
-	        this.item.itemId = doc.id
+					this.item.itemId = doc.id
 	        
 	        this.item.itemCoverageLat = doc.data().itemCoverageLat
 	        this.item.itemCoverageLong = doc.data().itemCoverageLong
-	        this.item.itemCreationDate = sa.getFormattedDate(doc.data().itemDateCreated)
+	        this.item.itemCreationDate = sa.getFormattedDate(doc.data().itemCreationDate)
 					this.item.tags = doc.data().tags
 					// console.log(doc.data().customFields)
 					this.item.customFields = doc.data().customFields
-	        
-					this.getItemSrc()
-	        
+
 	      } else {
 	        this.$router.push('/404')
 	      }
 	    }).then(() => {
 	    	this.getArchiveTitle()
-	    })    
-    },  
-    getItemSrc: function() {
-
-    	var uid = this.uid
-    	var archiveId = this.$route.params.archive_id
-    	var itemId = this.item.itemId
-			var fileNames = this.item.itemFileNames
-
-			if(Array.isArray(fileNames)) {
-				console.log('multiple images')
-				for( var i = 0; i < fileNames.length; i++){ 
-					console.log(fileNames[i])
-					sa.itemStorageRef(uid, archiveId, itemId, fileNames[i]).getDownloadURL().then((url) => {
-							this.itemFileNames.push(url)
-					}).catch(function(error) {
-						console.log(error.message)
-					}).then(() => {
-						// if(this.item.itemMediaType === 'pdf') {
-						// 	PDF.embed(this.itemSrc, "#pdfViewer");	
-						// }  			
-					}); 
-				}
-			} else {
-					console.log('legacy, before multiple images')
-					sa.itemStorageRef(uid, archiveId, '', fileNames).getDownloadURL().then((url) => {
-						console.log(url)
-							this.legacyFileSrc = url
-					}).catch(function(error) {
-						console.log(error.message)
-					}).then(() => {
-						// if(this.item.itemMediaType === 'pdf') {
-						// 	PDF.embed(this.itemSrc, "#pdfViewer");	
-						// }  			
-					}); 				
-			}
-
-
-			console.log(this.itemSrc)
-
-    },   
+	    })
+		},  
+ 
     getArchiveTitle: function() {
 		var uid = this.uid
     	var archiveId = this.$route.params.archive_id

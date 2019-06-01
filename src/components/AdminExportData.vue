@@ -1,6 +1,6 @@
 <template>
   <span>
-    <!-- <table class="table">
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">Title</th>
@@ -47,7 +47,7 @@
           <td>{{item.itemSubject}}</td>
           </tr>
       </tbody>
-    </table>     -->
+    </table>    
     <a :href="encodedUri" :download="archiveTitle + '.csv'" v-if="items.length > 0">Download Data as CSV</a>
     <span v-else>There are no items to export.</span>
   </span>

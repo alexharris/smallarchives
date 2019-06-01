@@ -220,6 +220,35 @@ var sa = {
       .ref()
       .child(filePath);
   },
+    /**
+   * Returns a file from storage from the path [user_id]/archive_[archive_id]/items/feature/filename
+   * @param uid - The ID of the user who created this archive
+   * @param archiveId - The id of the archive
+   * @param itemId - The id of the item (this might not be necessary?)
+   * @param fileName - The filename of the uploaded file
+   * @param prefix - Different file sizes get prefixes, for instance "thumb_" for thumbnail. Leave blank for original.
+   * Prefix options: 'thumb_'
+   */
+  itemFeatureStorageRef(uid, archiveId, itemId, fileName, prefix = "") {
+    // console.log(uid)
+    // console.log(archiveId)
+    // console.log(itemId)
+    // console.log(fileName)
+    var filePath =
+      uid +
+      "/archive_" +
+      archiveId +
+      "/items/" +
+      itemId +
+      "/feature/" +
+      prefix +
+      fileName;
+
+    return firebase
+      .storage()
+      .ref()
+      .child(filePath);
+  },
   /**
    *,--. ,--.  ,--.  ,--.,--.,--.  ,--.  ,--.
    *|  | |  |,-'  '-.`--'|  |`--',-'  '-.`--' ,---.  ,---.
@@ -257,7 +286,6 @@ var sa = {
 
   getFormattedDate(dateCreated) {
     dateCreated = dateCreated.toDate();
-
     var day = dateCreated.getDate();
     var month = dateCreated.getMonth() + 1;
     var year = dateCreated.getFullYear();

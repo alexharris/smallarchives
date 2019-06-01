@@ -1,25 +1,28 @@
 <template>
     <div>
-   
+        <!-- <div v-for="file in newFiles">
+            {{file.name}}
+        </div> -->
         <table class="table" v-if="combinedFiles.length > 0">
-        <thead>
-            <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(file,i) in combinedFiles">
-            <th scope="row">{{i+1}}</th>
-            <td>{{file}}</td>
-            <td><div class="btn btn-sm btn-outline-danger" @click="removeFile(file)">Remove</div></td>
-            </tr>
-        </tbody>
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(file,i) in combinedFiles">
+                <th scope="row">{{i+1}}</th>
+                <td>{{file}}</td>
+                <!-- <td><input type="checkbox" @change="manageDeleteArray(file)"></td> -->
+                <td><div class="btn btn-sm btn-outline-danger" @click="deleteFile(file)">Delete</div></td>
+                </tr>
+            </tbody>
         </table> 
         <div class="">
-            <label class="btn btn-primary" v-if="existingFiles.length < 5">
-                Add file <input type="file" @change="fileAdded" accept=".jpg, .jpeg, .tif, .png, .gif, .wav, .mp3, .ogg, .m4a, .pdf" hidden>
+            <label class="btn btn-primary" >
+                Add file <input type="file" @change="fileAdded" accept=".jpg, .jpeg, .tif, .png, .gif, .wav, .mp3, .ogg, .m4a, .pdf, .mov, .mpg, .mpeg" hidden>
             </label>
         </div>                
     </div>
@@ -28,6 +31,7 @@
 <script>
 import firebase from 'firebase/app';
 import sa from '../sa'
+import mime from "mime-types";
 
 export default {
     name: "AdminMediaUploader",
@@ -39,7 +43,8 @@ export default {
             newItemId: this.itemId,
             existingFiles: [], //the files on the item at the time of loading
             newFiles: [], // new files added to the item
-            newFileNames: []
+            newFileNames: [],
+            filesToBeDeleted: []
         }
     },
     watch: { 
@@ -51,12 +56,20 @@ export default {
     },    
     created() {
         //send existing files to make array of File objects
-        this.getExistingFiles()
+        // nothing is happening here because we wait, in the parent, for the itemid for new items to be created, and then getExistingFiles is called from there when its ready
     },   
     computed: {
         combinedFiles: function() {
             return this.newFileNames.concat(this.existingFiles)
-        }
+        },
+        numberOfFiles: function() {
+            if(this.existingFiles != []) {
+                return this.existingFiles.length
+            } else {
+                return 0
+            }
+            
+        }      
     }, 
     methods: {   
         //----
@@ -70,22 +83,21 @@ export default {
                 alert('That PDF is too big! PDFs must be under 5MB.')
             } else if (e.target.files[0].type.includes('audio/') && e.target.files[0].size > 5000000) { // audio file size
                 alert('That PDF is too big! Audio files must be under 5MB.')
-            } else {
+            } else if (e.target.files[0].type.includes('video/') && e.target.files[0].size > 25000000) { // audio file size
+                alert('That PDF is too big! Audio files must be under 25MB.')
+            }else {
                 this.newFiles.push(e.target.files[0]) //make array of file blobs for upload
                 this.newFileNames.push(e.target.files[0].name) //make array of file name for display
             }
         },        
-        // combineNewAndExistingFiles: function() {
-        //     console.log(this.newFiles)
-        //     console.log(this.existingFiles)
-        //     this.combinedFiles = this.newFiles.concat(this.existingFiles)
-        // },
-        uploadFiles: function() {
 
+        uploadFiles: function() {
             // this.combineNewAndExistingFiles()
             console.log('begin uploading files')
             for(var i in this.newFiles) {
-                console.log(this.newFiles[i])
+            // console.log('Name: ' + this.newFiles[i].name)
+            // console.log('File: ' + this.newFiles[i])
+
                 // ----
                 // This puts the file into storage
                 // at some point should check to see if it already exists and tell user
@@ -97,70 +109,88 @@ export default {
                 // at some point should check to see if it already exists and tell user
                 sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
                     itemMediaFiles: firebase.firestore.FieldValue.arrayUnion(this.newFiles[i].name)
-                }) .then(() => {
-                    // update the files that show to the user
-                    this.getExistingFiles()
                 })
             }            
         },
-        removeFile: function(fileName) {
-            // ----    
-            // This removes the filename from the database 
-            sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
-                itemMediaFiles: firebase.firestore.FieldValue.arrayRemove(fileName)
-            }) .then(() => {
-                sa.itemStorageRef(this.uid, this.archiveId, this.newItemId, fileName, '').delete()
-                sa.itemStorageRef(this.uid, this.archiveId, this.newItemId, fileName, 'thumb_').delete()
-                this.getExistingFiles()
 
-            })
+        deleteFile: function(fileName) {
+
+            // vvvvvvvvvvvvvvvvvvv
+            // console.log('deleteFiles called')
+            // if(this.filesToBeDeleted.length > 0) {
+            //     // console.log('there are some files to be deleted')
+            //     // go through the files
+            //     for (var i in this.filesToBeDeleted) {
+            //         // check to see if this file has already been uploaded previously
+            //         // console.log(this.existingFiles)
+            //         // console.log(this.filesToBeDeleted[i])
+            //         if(this.existingFiles.includes(this.filesToBeDeleted[i])) {
+            //             //this means it has, so we need to delete from DB and Storage
+            //             console.log('delete from storage: ' + this.filesToBeDeleted[i])
+            //         } else {
+            //             console.log('remove from newFiles: ' + this.filesToBeDeleted[i])
+            //         }
+            //     }              
+            // } else {
+            //     console.log('there are no files to be deleted')
+            // }
+            /// ^^^^^^^^^^^^^^^^^^^^^
+            if(this.existingFiles.includes(fileName)) {
+                //this means it has, so we need to delete from DB and Storage
+                console.log('delete from storage: ' + fileName)
+                // This removes the filename from the database 
+                sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
+                    itemMediaFiles: firebase.firestore.FieldValue.arrayRemove(fileName)
+                }) .then(() => {
+                    sa.itemStorageRef(this.uid, this.archiveId, this.newItemId, fileName, '').delete()
+                    sa.itemStorageRef(this.uid, this.archiveId, this.newItemId, fileName, 'thumb_').delete()
+                    this.getExistingFiles()
+
+                })                
+            } else {
+                console.log('remove from newFiles: ' + fileName)
+                console.log('new files: ' + this.newFiles)
+                
+                // var index = this.newFiles.indexOf(fileName);
+                // if (index !== -1) this.newFiles.splice(index, 1); 
+                 
+                // remove the file blob from the file list
+                this.newFiles = this.newFiles.filter(function( obj ) {
+                    return obj.name !== fileName;
+                });
+
+                //remove from the filename list
+                var index = this.newFileNames.indexOf(fileName);
+                if (index !== -1) this.newFileNames.splice(index, 1); 
+
+                console.log(this.newFiles)
+                console.log(this.newFileNames)
+
+            }
+
         },
 
         //----
         // In order to list the files that have already been uploaded
         //----        
-        getExistingFiles: function() {
+        getExistingFiles: function(itemId = this.newItemId) {
 
-            if(this.newItemId !== '') {
-                console.log(this.uid, this.archiveId, this.newItemId)
-                // This gets all of the files currently listed in item.itemMediaFiles
-                sa.itemDocumentDbRef(this.uid, this.archiveId, this.newItemId).get().then((doc) => {
-                    if (doc.exists) {
+            // This gets all of the files currently listed in item.itemMediaFiles
+            sa.itemDocumentDbRef(this.uid, this.archiveId, itemId).get().then((doc) => {
+                if (doc.exists) {
+                    if (doc.data().itemMediaFiles != undefined) {
                         this.existingFiles = doc.data().itemMediaFiles
-                    } else {
-                        // doc.data() will be undefined in this case
-                        console.log("No such document!");
-                    }
-                }).catch(function(error) {
-                    console.log("Error getting document:", error);
-                });                
-            } else {
-                console.log('new item, no existing files')
-            }
+                    }                    
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });                
 
-
-            // sa.itemStorageRef(this.uid, this.archiveId, this.itemId, fileName, '').getMetadata().then((metadata) => {
-            //     // Metadata now contains the metadata for 'images/forest.jpg'
-            //     console.log(metadata)
-            //     this.combinedFiles.push(metadata)
-            // }).catch(function(error) {
-            //     console.log(error.message)
-            // // Uh-oh, an error occurred!
-            // });
         },
-        // getFileMetadata: function(fileName) {
-        //     var fileMetadata = ''
-        //     sa.itemStorageRef(this.uid, this.archiveId, this.itemId, fileName, '').getMetadata().then((metadata) => {
-        //         // Metadata now contains the metadata for 'images/forest.jpg'
-        //         fileMetadata = metadata
-        //     }).then(() => {
-        //         return fileMetadata
-        //     }).catch(function(error) {
-        //         console.log(error.message)
-        //     // Uh-oh, an error occurred!
-        //     });
 
-        // }
     },
 };
 </script>
