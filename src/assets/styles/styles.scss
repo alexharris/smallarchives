@@ -16,11 +16,10 @@
 //          url("../Inter-ExtraBold.woff") format("woff");
 //   }
 
-  @import url('https://fonts.googleapis.com/css?family=Inknut+Antiqua');
-
   h1,h2,h3,h4,h5, .navbar-brand {
+    font-family: 'Times New Roman', serif;
     // font-family: 'inter', sans-serif !important;
-    font-family: 'Inknut Antiqua', serif;
+    // font-family: 'Inknut Antiqua', serif;
   }
 
   p {
@@ -102,6 +101,7 @@
   }
 
   a {
+    cursor: pointer;
     color: $blue;
     &:not(.btn):not(.nav-link):not(.navbar-brand):not(.btn-link) {
       text-decoration: underline;
@@ -115,6 +115,11 @@
       color: blue;
       cursor: pointer;
       // border-bottom: 2px solid $pink;
+    }
+    img {
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 

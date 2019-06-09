@@ -3,7 +3,7 @@
 		<div class="row justify-content-center my-4">
 			<div class="col-12">
 				<button v-if="confirmOwner" class="btn mr-2 btn-sm btn-primary" @click.stop="itemEdit(item.itemName, item.itemId)">Edit</button>		
-				<a @click.stop="goBack" class="float-right close-item"><font-awesome-icon icon="times" size="2x" /></a>
+				<a @click.stop="goBack" class="float-right close-item"><font-awesome-icon icon="times" size="1x" /></a>
 
 			</div>
 		</div>

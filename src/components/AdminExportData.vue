@@ -1,13 +1,11 @@
 <template>
   <span>
-    <table class="table">
+    <!-- <table class="table">
       <thead>
         <tr>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
           <th scope="col">Tags</th>
-          <th scope="col">Media Type</th>
-          <th scope="col">Youtube ID</th>
           <th scope="col">Type</th>
           <th scope="col">Contributor</th>
           <th scope="col">Date</th>
@@ -22,6 +20,7 @@
           <th scope="col">Rights</th>
           <th scope="col">Source</th>
           <th scope="col">Subject</th>
+          <th scope="col">Media Files</th>
         </tr>
       </thead>
       <tbody>
@@ -29,8 +28,6 @@
           <td>{{item.itemTitle}}</td>
           <td>{{item.itemDescription}}</td>
           <td>{{item.tags}}</td>
-          <td>{{item.itemMediaType}}</td>
-          <td>{{item.itemMediaYoutubeId}}</td>
           <td>{{item.itemType}}</td>
           <td>{{item.itemContributor}}</td>
           <td>{{item.itemDate}}</td>
@@ -45,9 +42,10 @@
           <td>{{item.itemRights}}</td>
           <td>{{item.itemSource}}</td>
           <td>{{item.itemSubject}}</td>
+          <td>{{item.itemMediaFiles}}</td>
           </tr>
       </tbody>
-    </table>    
+    </table>     -->
     <a :href="encodedUri" :download="archiveTitle + '.csv'" v-if="items.length > 0">Download Data as CSV</a>
     <span v-else>There are no items to export.</span>
   </span>
@@ -92,14 +90,12 @@ export default {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          // console.log(doc.data().customFields)
           this.items.push({
             itemTitle: doc.data().itemTitle,   
             itemDescription: doc.data().itemDescription,  
             tags: doc.data().tags.join(','),            
-            mediaType: doc.data().itemTitle,            
             itemMediaFileName: doc.data().itemMediaFileName,            
-            itemMediaYoutubeId: doc.data().itemMediaYoutubeId,            
+            // itemMediaYoutubeId: doc.data().itemMediaYoutubeId,            
             itemType: doc.data().itemType,            
             itemContributor: doc.data().itemContributor,            
             itemDate: doc.data().itemDate,            
@@ -115,7 +111,11 @@ export default {
             itemRights: doc.data().itemRights,  
             itemSource: doc.data().itemSource,  
             itemSubject: doc.data().itemSubject,
-            customFields: doc.data().customFields
+            customFields: doc.data().customFields,
+            itemFeatureImageName: doc.data().itemFeatureImageName,
+            tags: Object.assign({}, doc.data().tags),
+            itemMediaFiles: Object.assign({}, doc.data().itemMediaFiles)
+
           });
         });
       }).then(() => {
@@ -126,20 +126,18 @@ export default {
     },
     convertToCsv: function() {
 
-      const items = this.items
+      const items = this.items // get all the items in an array of objects
       const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-      const header = Object.keys(items[0])
+      const header = Object.keys(items[0]) // this creates an array of the field names
+    
+      console.log(items)
+      let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t')) // this takes the header values and maps them
+      console.log(csv)
 
-      
-      
-
-      let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
-
-      csv.unshift(header.join(','))
+      csv.unshift(header.join('\t'))
       csv = "data:text/csv;charset=utf-8," + csv.join('\n')
       this.csv = csv
   
-
       this.encodedUri = encodeURI(csv);
 
 

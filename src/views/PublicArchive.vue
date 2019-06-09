@@ -1,45 +1,50 @@
 <template>
-  <div class="container">
-    <div class="row mb-2 px-md-2 pb-2 justify-content-center">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12 mx-0 px-0 my-4">
-            <h1 class="h2 mb-4">{{archive.title}}</h1>
-            <div class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
-            <button class="btn btn-primary btn-sm mr-2 mb-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
-          </div>
+  <div class="px-0">
+    <div class="sticky-top">
+      <nav class="navbar bg-white px-4 row d-flex">
+        <div class="col-11 order-1 order-sm-2 justify-content-center text-center">
+          <span class="navbar-brand"><strong>{{archive.title}}</strong></span>
         </div>
-        <div class="row sticky-top">
-          <nav class="navbar navbar-light col-12"  style="background-color: #ffffff;">
-            <span class="navbar-text">
-              <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" @click="toggleFilters()">
-                Filters<font-awesome-icon icon="filter" v-if="filterState" size="1x" /><font-awesome-icon icon="times" v-if="!filterState" size="1x" />
-              </button>
-              <button type="button" class="btn btn-sm btn-outline-dark mr-3" data-toggle="modal" data-target="#basicInfoModal">
-                About
-              </button>             
-              <div class="btn-group btn-group-toggle mr-3">
-                <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType" v-if="showGrid">
-                  <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" />
-                </label>
-                <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType" v-if="showList">
-                  <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" />
-                </label>
+        <div class="col-1 order-2 order-sm-1">
+          <span @click="menuIsVisible = !menuIsVisible; closeFilters()">
+            <font-awesome-icon icon="ellipsis-h" size="1x" v-if="!menuIsVisible" />
+            <font-awesome-icon icon="times" size="1x" v-if="menuIsVisible" />
+          </span>
+        </div>         
+      </nav>   
+      <nav class="navbar px-4 row archive-navbar" v-if="menuIsVisible">
+      
+        <button type="button" class="btn btn-sm btn-outline-dark mr-3" @click="toggleFilters()">
+          <font-awesome-icon icon="filter" v-if="!filterIsVisible" size="1x" /><font-awesome-icon icon="times" v-if="filterIsVisible" size="1x" /> Filters 
+        </button>
+        <div class="btn-group btn-group-toggle mr-3">
+          <label for="grid" class="btn btn-sm btn-outline-dark" v-bind:class="gridViewType" v-if="showGrid">
+            <input type="radio" id="grid" value="grid" v-model="viewType"> <font-awesome-icon icon="th" size="1x" /> <span class="ml-1">Grid</span>
+          </label>
+          <label for="list" class="btn btn-sm btn-outline-dark" v-bind:class="listViewType" v-if="showList">
+            <input type="radio" id="list" value="list" v-model="viewType"> <font-awesome-icon icon="th-list" size="1x" /> <span class="ml-1">List</span>
+          </label>
+          <label for="map" class="btn btn-sm btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
+            <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" /> <span class="ml-1">Map</span>
+          </label>       
+        </div> 
+        <button type="button" class="btn btn-sm btn-outline-dark mr-3 mr-auto" data-toggle="modal" data-target="#basicInfoModal">
+          About
+        </button>   
+        <div class="ml-md-2 float-md-right pt-sm-0 pt-xs-2">
+          <div class="btn btn-info btn-sm mr-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
+          <button class="btn btn-info btn-sm mr-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
+        </div>                 
+      </nav>     
 
-                <label for="map" class="btn btn-sm btn-outline-dark" v-bind:class="mapViewType" v-if="showMap">
-                  <input type="radio" id="map" value="map" v-model="viewType" @click.stop="forceRerender()"> <font-awesome-icon icon="map-marker-alt" size="1x" />
-                </label>       
-              </div>  
-              
-            </span>  
-          </nav>        
-        </div>    
-        <!-- Filter collapse  -->
-        <div class="row sticky-top filter-collapse bg-white">
-          <div class="pt-2 bg-white collapse" id="collapseExample">
+      <!-- Filter collapse  -->
+      <div class="row filter-collapse p-4" v-if="filterIsVisible">
+        <div class="pt-2 col-12">
+          <div class="pb-3 filter-title"><strong>FILTERS</strong><span class="float-right" @click="toggleFilters()"><font-awesome-icon  icon="times" size="1x" v-if="filterIsVisible" /></span></div>
+          <!-- <nav class="navbar"> -->
             <div class="row">
-              <div class="col-11 col-md-3">
-                <form>
+              <div class="col-12 col-sm-6">
+                <form class="mr-2">
                   <div class="form-group">                
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
@@ -55,9 +60,9 @@
                     </div>
                   </div>
                 </form>
-              </div> 
-              <div class="col-11 col-md-3">
-                <form>
+              </div>
+              <div class="col-12 col-sm-6">
+                <form class="mr-2">
                   <div class="form-group">                
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
@@ -72,17 +77,42 @@
                       </div>
                     </div>
                   </div>
-                </form>
+                </form>  
               </div>
-              <div class="col-11 col-md-3">
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
-                  <label class="form-check-label" for="exampleCheck1">Has location</label>
-                </div>              
-              </div>            
+
             </div>
-          </div>           
-        </div>
+
+
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="selectedHasLocation">
+              <label class="form-check-label" for="exampleCheck1" >Has location</label>
+            </div> 
+            <div class="form-group">
+              <button class="btn btn-sm btn-outline-danger" href="#" @click.stop="clearAllFilters()">Clear All</button>                                                  
+            </div>
+        </div>           
+      </div>
+      <!-- End filter collapse -->
+      <!-- Filter indicators -->
+      <div class="row filter-indicator pb-2" v-if="!filterIsVisible">
+        <div class="col-12">
+          <nav class="navbar navbar-expand-lg " v-if="selectedTag != 'None' || selectedMediaType != 'All'">
+              <span><strong>Active Filters</strong></span>
+              <a class="ml-2 float-right" href="#" @click.stop="clearAllFilters()">
+                  <small>Clear</small>
+              </a>
+          </nav>             
+          <div class="float-left mr-2 ml-3 pb-2" v-if="selectedTag != 'None'"><small>Tag: </small> <span class="badge badge-pill badge-warning">{{selectedTag}}</span> </div>
+          <div class="float-left ml-3 pb-2" v-if="selectedMediaType != 'All'"><small> Type: </small><span class="badge badge-pill badge-warning">{{selectedMediaType}}</span></div>
+        </div> 
+      </div>      
+      <!-- end filter indicators -->
+    </div>
+    <div class="row mb-2 px-md-2 pb-2 justify-content-center">
+      <div class="col-12">      
+
+ 
+              
         <div class="modal fade" id="basicInfoModal" tabindex="-1" role="dialog" aria-labelledby="basicInfoModalTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -147,7 +177,8 @@ export default {
       showGrid: true,
       mapComponentKey: 0,
       confirmOwner: false,
-      filterState: true,
+      filterIsVisible: false,
+      menuIsVisible: false,
       mapLat: 1,
       mapLong: 1,
       zoom: 16
@@ -188,7 +219,6 @@ export default {
         return 'None' 
       } else {
         console.log('there is a tag value')
-        this.filterState = true
         return this.$route.query.tag
       }
     }, 
@@ -207,11 +237,11 @@ export default {
   },
   methods: {
     toggleFilters: function() {
-      this.filterState = !this.filterState
-      this.clearMediaTypeFilter()
-      this.clearTagFilter()
-      this.clearLocationFilter()
+      this.filterIsVisible = !this.filterIsVisible
     },
+    closeFilters: function() {
+      this.filterIsVisible = false
+    },    
     async getConfirmOwner() {
       
       this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
@@ -303,6 +333,7 @@ export default {
       // // Then, update based on which filter was changed
       if(e.target.classList.contains('tagFilter')) {
         currentTag = e.target.value
+        console.log('hello')
       }
 
       if(e.target.classList.contains('mediaTypeFilter')) {
@@ -319,9 +350,14 @@ export default {
         query: queryObject
       })        
 
-    },           
+    },  
+    clearAllFilters: function() {
+      console.log('clear')
+      this.clearMediaTypeFilter()
+      this.clearTagFilter()
+      this.clearLocationFilter()
+    },         
     clearMediaTypeFilter: function() {
-      this.$refs.mediaTypeFilter.value = 'All'
       this.$router.push({
         name: 'PublicArchive',
         query: { 
@@ -331,7 +367,6 @@ export default {
       })      
     },
     clearTagFilter: function() {
-      this.$refs.tagFilter.value = 'None'
       this.$router.push({
         name: 'PublicArchive',
         query: { 
@@ -363,25 +398,24 @@ export default {
 
   $blue: #0011cf;
   $pink: #fff4e6;
+  $grey: #efefef;
 
-  // a svg:hover {
-  //   color: inherit;
-  // }
-
-  .navbar {
-    // border-top: 1px solid black;
-    z-index: 1000;
-
-    padding-left: 0;
-    
+  .archive-navbar {
+    background: $grey;
   }
 
   .filter-collapse {
-    border-bottom: 2px solid black;
+    // border-bottom: 2px solid black;
+    background-color: darken($grey, 5%);
   }
 
-  .filter-collapse.sticky-top {
-    top: 63px;
+  .filter-indicator .col-12 {
+    background-color: darken($grey, 5%);
+    
+  }
+
+  @media all and (max-width : 768px) {
+
   }
 
 

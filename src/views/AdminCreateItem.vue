@@ -406,6 +406,7 @@
         .then((querySnapshot) => {
 
           querySnapshot.forEach((doc) => {
+            console.log(doc)
             this.tags.push({
               tagTitle: doc.data().tagTitle
             });

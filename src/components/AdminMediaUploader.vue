@@ -4,7 +4,7 @@
             {{file.name}}
         </div> -->
         <table class="table" v-if="combinedFiles.length > 0">
-            <thead>
+            <thead> 
                 <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>

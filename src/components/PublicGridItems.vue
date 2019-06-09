@@ -9,10 +9,10 @@
           <div class="media-display text-center">
             <!-- <div v-if="item.itemMediaType === 'image'">        -->
               <a href="" @click.stop="viewSingleItem(item.itemId)">
-                <img :src="item.itemFeatureImage" v-if="item.itemFeatureImage" />
+                <img :src="item.itemFeatureImage" v-if="item.itemFeatureImage" :alt="item.itemTitle" />
               </a>
             <!-- </div> -->
-            <div v-if="item.itemMediaType === 'pdf'">      
+            <!-- <div v-if="item.itemMediaType === 'pdf'">      
               <div class="pdf-placeholder"><a href="" @click.stop="viewSingleItem(item.itemId)"><img src="/img/pdf-page.svg" /></a> </div>
             </div>
             <div v-if="item.itemMediaType === 'audio'">       
@@ -30,11 +30,12 @@
             </div>  
             <div v-if="item.itemMediaType === 'iaVideo'">      
               <iframe v-bind:src="item.itemMediaInternetArchiveId" width="100%" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>					
-            </div>                                             
+            </div>                                              -->
           </div>
-          <div class="grid-title">
+          <div class="grid-title text-center">
             <small>{{item.itemType}}<font-awesome-icon class="ml-2" icon="map-marker-alt" size="1x" v-if="item.itemCoverageLat"/></small>
-            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a><a href="#" class="ml-2" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner"><small>Edit</small></a>    </p>
+            <p class="my-2"><a href="" @click.stop="viewSingleItem(item.itemId)">{{truncatedTitle(item.itemTitle, 50)}}</a>
+            <br /><a href="#" class="ml-2" @click.stop="itemEdit(item.itemName, item.itemId)"  v-if="confirmOwner"><small>Edit</small></a>    </p>
           </div>
                 
         </div>
@@ -283,6 +284,9 @@ export default {
   .grid-title {
     // height: 90px;
     padding-bottom: 10px;
+    a:not(.btn):not(.nav-link):not(.navbar-brand):not(.btn-link) {
+      text-decoration: none;
+    }
   }
 
   // .pdf-placeholder {

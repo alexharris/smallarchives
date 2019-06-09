@@ -1,6 +1,5 @@
 <template>
-    <div class="mt-5">
-        <h4>Custom Fields</h4>
+    <div class="mt-2">
         <p>Add custom fields that can be filled out across all items.</p>
         <table class="table" v-if="customFields.length > 0">
             <thead>

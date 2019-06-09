@@ -1,35 +1,24 @@
-<template
-
->
-<div class="mt-5">
-      <div v-if="items.length == 0">
-          <p>This archive has no items.</p>
-      </div>
-      <div v-else>
-        <div v-if="renderedItems.length !== 0" class="row justify-content-center">
-          <div class="col-11">
-            <div class="map-container">
-              <l-map :zoom="zoom" :center="center">
-                <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
-                  <template v-for="item in renderedItems">
-                    <l-marker v-if="item.itemCoverageLat != ''" :lat-lng="[item.itemCoverageLat, item.itemCoverageLong]">
-                      <l-popup><a @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a></l-popup>
-                    </l-marker>
-                  </template>
-              </l-map>
-            </div>
-         </div>
-        </div>
-        <div class="row" v-else>
-          <div class="col-12">
-            <p></p>
-            <p>There are no results. Please modify filters.</p>
+<template>
+  <div class="mt-5"> 
+    <div v-if="items.length == 0">
+        <p>This archive has no results with location data.</p>
+    </div>
+    <div v-else>
+      <div class="row justify-content-center">
+        <div class="col-11">
+          <div class="map-container">
+            <l-map :zoom="zoom" :center="center">
+              <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
+                <template v-for="item in renderedItems">
+                  <l-marker v-if="item.itemCoverageLat != ''" :lat-lng="[item.itemCoverageLat, item.itemCoverageLong]">
+                    <l-popup><a @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a></l-popup>
+                  </l-marker>
+                </template>
+            </l-map>
           </div>
-        </div>          
-      </div>
-
-
-
+        </div>
+      </div>         
+    </div>
 	</div>
 </template>
 
