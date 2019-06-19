@@ -33,7 +33,7 @@
                 </div>           -->
             <!-- </div>  -->
         </div> 
-        <div class="row my-5 py-md-5 px-md-5 justify-content-center cards-row">
+        <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
             <div class="col-12 col-12 col-lg-8 my-md-3">
                 <div class="row noborder pb-md-5">
                     <div class="col-12 col-lg-4 my-3">
@@ -65,21 +65,30 @@
                 </div>                    
             </div>                              
         </div>
-        <div class="row px-sm-5 my-4 py-md-5 justify-content-center example-row">
-            <div class="col-12 col-lg-8 p-0 text-center">
-                <a href="/demo">
+        <div class="row px-sm-5 mb-4 py-5 justify-content-center example-row">
+            <div class="col-12 col-lg-5 p-0 text-center">
+                <!-- <a href="/demo">
                     <img class="img-link" src="img/demo-screenshot.jpg" />     
-                </a>      
-                <div class="p-4">                
-                    <h2 class="h2">View a demo –</h2>
-                    <p>View an example of a small archive with our demo collection.</p>
-                    <p><a href="/demo" class="btn btn-primary">View Demo</a></p>                    
-                </div>
-            </div>                  
-        </div>                          
+                </a>  -->
+                <video class="demo-video fullscreen" autoplay loop muted>
+                <source src="img/smallarchives-demo.mp4" type="video/mp4">
+                <!-- fallback for browsers that don't support video tag -->
+                <a href="img/smallarchives-demo.mp4">download video</a>
+                </video>                
+
+            </div>
+            <div class="col-12 col-lg-3 pl-0 mx-0 pl-lg-5 py-5">           
+                <h2 class="h2">View a demo –</h2>
+                <p>View an example of a small archive with our demo collection.</p>
+                <p><a href="/demo" class="btn btn-warning">View Demo</a></p>                    
+            </div>               
+        </div>                               
         <div class="row justify-content-center px-md-5 py-5 ">
-            <div class="col-12 col-lg-4 mb-4 pr-5">  
-                <h3>Questions, comments, concerns? –</h3>
+            <div class="col-12 col-lg-4 mb-4 pr-5">
+                <h3>Ongoing Development</h3>  
+                <p>Small Archives is still in active beta development. We are doing some fine-tuning before working out businessy things like pricing. You can view (and make comments on) our public roadmap <a href="https://trello.com/b/i04fENfA/small-archives-roadmap">here</a>, or view our code repository <a href="https://github.com/alexharris/smallarchives">here</a>.</p>
+                <p>We greatly appreciate any feedback and want to make a tool that satisfies real people's needs.</p>
+                <h4>Questions, comments, concerns? –</h4>
                     <ul class="list-unstyled my-4">
                     <li><strong>Email:</strong> smallarchives at gmail dot com</li>
                     <li><strong>Twitter:</strong> @smallarchives</li>
@@ -209,6 +218,25 @@ export default {
     .random-item {
         color: red;     
     }
+
+    .example-row {
+        background-color:#021626;
+        z-index: -200;
+        color: white;
+    }
+
+    video.fullscreen { 
+        max-width: 100%;
+    // position: relative;
+    // top: 50%;
+    // left: 50%;
+    // min-width: 100%;
+    // min-height: 100%;
+    // width: auto;
+    // height: auto;
+    // z-index: -100;
+    // transform: translate(-50%, -50%);
+    }    
  
     @media only screen and (max-width: 767px) { 
         .fungrid2 {

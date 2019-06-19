@@ -20,12 +20,9 @@
         <li>Data Export</li>
       </ul>
       <h2 class="h4">Roadmap</h2>
-      <p>There is also a roadmap of future features that are either planned or currently under development, including:</p>
-      <ul>
-        <li>Custom metadata fields per archive</li>
-        <li>More supported content types</li>
-        <li>Bulk import</li>
-      </ul>
+      <p>We maintain a public roadmap that you are welcome and encourage to participate in, available <a href="https://trello.com/b/i04fENfA/small-archives-roadmap">here</a>.</p>
+      <h2 class="h4">Source </h2>
+      <p>You can view our source code <a href="https://github.com/alexharris/smallarchives">here</a>.</p>
       <h2 class="h4">Cost</h2>
       <p>For now, Small Archives is free as we continue to improve and develop our product. Eventually, we might implement either a small fee or a simple "enterprise" level. We hope that a simple business model will help us to provide high quality service in perpetuity.</p>
 
