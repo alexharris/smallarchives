@@ -564,6 +564,7 @@ export default {
 
       if(!(this.errors.length > 0)) {      
         this.addItemEditsToDB()
+        this.addCustomFieldValues()
         if(this.itemFeatureImage != '') {
           this.addFeatureImage()
         }
