@@ -259,6 +259,7 @@ export default {
         alert("No such document!");
       }
     });
+
   },
   methods: {
     handleFileChange(e, index) {
@@ -417,7 +418,8 @@ export default {
       * 2. Delete the images from storage associated with this archive
       * 3. Delete the item's data
       * 4. Delete tags
-      * 5. Delete the archive itself
+      * 5. Delete custom fields
+      * 6. Delete the archive itself
       */
 
       // 1: get all of the items associated with the archive
@@ -425,8 +427,7 @@ export default {
           querySnapshot.forEach((doc) => {
             // 2: Go through each one, get associated filename, and delete that file from storage
             
-            this.numberOfItems = this.numberOfItems + 1 // track number of items to delete from total
-  
+
             // If this record has an itemFileName
             if(doc.data().itemFileName != '') {
               // Delete the main image
@@ -447,14 +448,21 @@ export default {
       }).then(() => {
 
         // 4. Delete the tags from the archive
-          tagCollectionDbRef(uid, archiveId).delete().then(function() {
-              console.log("Tags successfully deleted!");
-          }).catch(function(error) {
-              console.error("Error removing document: ", error);
+        sa.tagCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              sa.tagDocumentDbRef(uid, archiveId, doc.id).delete() 
           });
+        }) 
+
+        // 5. Delete the tags from the archive
+        sa.customFieldCollectionDbRef(uid, archiveId).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              sa.customFieldDocumentDbRef(uid, archiveId, doc.id).delete() 
+          });
+        })         
 
 
-        // 5. Delete the archive itself
+        // 6. Delete the archive itself
 
         // First the images from storage
         sa.deleteArchiveHeaderImage (uid, archiveId, this.originalHeaderImage)
