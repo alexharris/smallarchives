@@ -221,7 +221,6 @@ export default {
       uid: this.$store.getters.getUser.uid,
       originalHeaderImage: '',
       newHeaderImage: '',
-      numberOfItems: 0,
       errors: [],
       dateCreated: '',
       newTag: '',

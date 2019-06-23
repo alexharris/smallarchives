@@ -125,7 +125,6 @@
               <div class="modal-body">
                 <p>{{archive.desc}}</p>  
                 <hr />
-                <p>This archive contains <strong>{{itemCount}}</strong> items.</p> 
                 <p>It was created on <strong>{{creationDate}}</strong> by <strong><a href="" @click.stop="goToUser()">{{ this.username }}</a></strong>.</p>
               </div>
             </div>
@@ -193,9 +192,6 @@ export default {
     Switcher   
   },
   computed: {
-    itemCount() {
-      return this.$store.getters.getItemCount
-    },
     uniqueItemTypes() {
       return [...new Set(this.items.map(p => p.itemType))]
     },
@@ -314,8 +310,6 @@ export default {
             itemType: doc.data().itemType,
           });
         });
-        //tell the parent about how many items there are
-        this.$store.commit('setItemCount', this.items.length)
       });
     },    
     goToUser: function(username) {

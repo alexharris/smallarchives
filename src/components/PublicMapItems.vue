@@ -113,9 +113,6 @@ export default {
           });
         })
 
-        //tell the parent about how many items there are
-        this.$store.commit('setItemCount', this.items.length)
-
         // sort the results
         this.items.sort(this.sortByTitle)
   

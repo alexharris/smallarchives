@@ -174,8 +174,7 @@ export default {
               itemCoverageLat: doc.data().itemCoverageLat,
               itemTags: doc.data().tags
             });    
-            //tell the parent about how many items there are
-            this.$store.commit('setItemCount', this.items.length)  
+
 
             this.items.sort(this.sortByTitle)
 

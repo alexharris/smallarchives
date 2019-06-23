@@ -3,9 +3,10 @@
         <div class="card-body">
             <h3 class="mb-4"><a :href="'/u/' + username + '/' + archiveId">{{archiveTitle}}</a></h3>
             <p>{{archiveDesc}}</p>
-            <span><strong>Created:</strong> {{archiveDateCreated}}</span><br />
+            <strong>Number of Items: </strong> {{numberOfItems}} <br />
             <strong>Custom Fields: </strong><span v-for="field in archiveCustomFields" class="badge badge-pill badge-info mr-2">{{field}}</span><br />
-            <strong>Tags: </strong><span v-for="tag in archiveTags" class="badge badge-pill badge-warning mr-2">{{tag}}</span>
+            <strong>Tags: </strong><span v-for="tag in archiveTags" class="badge badge-pill badge-warning mr-2">{{tag}}</span><br />
+            <span><strong>Created:</strong> {{archiveDateCreated}}</span><br />
 
         </div>
         <div class="card-footer">
@@ -31,12 +32,14 @@ export default {
             archiveHeaderImage: '',
             archiveDateCreated: '',
             archiveCustomFields: [],
-            archiveTags: []
+            archiveTags: [],
+            numberOfItems: ''
             
         }
     },
     created() {
         this.getArchives()
+        this.getItems()
         this.getCustomFields()
         this.getCustomTags()
 
@@ -60,6 +63,13 @@ export default {
                 this.archiveDateCreated = sa.getFormattedDate(doc.data().dateCreated)
             })
         },
+        getItems() {
+            sa.itemCollectionDbRef(this.uid, this.archiveId).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc => {
+                    this.numberOfItems++
+                }))
+            }) 
+        },
         getCustomFields () {
             sa.customFieldCollectionDbRef(this.uid, this.archiveId).get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -71,12 +81,11 @@ export default {
         getCustomTags () {
             sa.tagCollectionDbRef(this.uid, this.archiveId).get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    console.log(doc)
                     this.archiveTags.push(doc.data().tagTitle)
                 });
 
             })
-        }        
+        }
 
   
     },

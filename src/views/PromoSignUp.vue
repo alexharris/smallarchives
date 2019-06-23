@@ -111,10 +111,7 @@
               })
               .then(() => {
                   console.log("Document successfully written!");
-                  // start tracking number of items
-                  firebase.firestore().collection("archives").doc(firebase.auth().currentUser.uid).set({
-                      numberOfItems: 0
-                  })
+
 
                   var newUser = firebase.auth().currentUser;
 

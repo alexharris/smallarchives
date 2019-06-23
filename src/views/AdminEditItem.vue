@@ -617,23 +617,6 @@ export default {
       // delete the feature image
       this.deleteCurrentFeatureImage() 
 
-      // Keep track of the number of items this user has
-      var numberOfItems;
-      sa.userArchivesDocumentDbRef(this.uid).get().then(function(doc) {
-          if (doc.exists) {
-              numberOfItems = doc.data().numberOfItems - 1
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-          }
-      }).then(() => {
-        sa.userArchivesDocumentDbRef(this.uid).set({
-          numberOfItems: numberOfItems
-        })        
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
-      });
-
       // reroute after delete
       this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
 

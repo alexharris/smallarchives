@@ -14,7 +14,6 @@
         <h2 class="h5 my-4">Stats</h2>
         <ul class="list-unstyled">
             <li><strong>Number of archives: </strong>{{this.archives.length}}</li>
-            <li><strong>Total items: </strong>{{numberOfItems}}</li>
         </ul>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -46,7 +45,6 @@ export default {
       errors: [],
       displayName: this.$store.getters.getUser.displayName,
       emailAddress: this.$store.getters.getUser.email,
-      numberOfItems: 0,
       joinDate: firebase.auth().currentUser.metadata.creationTime,
       uid: firebase.auth().currentUser.uid,
       resetPasswordEmail: '',
@@ -55,7 +53,6 @@ export default {
   },
   created () {
     var uid = firebase.auth().currentUser.uid
-    this.getNumberOfItems()  
 
     // this is to get the number of archives
     sa.archiveCollectionDbRef(uid).onSnapshot((querySnapshot) => {
@@ -78,16 +75,6 @@ export default {
         // An error happened.
       });
 
-    }, 
-    getNumberOfItems () {
-  
-      sa.userArchivesDocumentDbRef(firebase.auth().currentUser.uid).onSnapshot((doc) => {
-        
-        if(doc.exists != false ) {
-          this.numberOfItems = doc.data().numberOfItems;
-        }
-      });
-      
     },
     resendEmailVerification() {
         //send verification email
