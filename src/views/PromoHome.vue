@@ -168,9 +168,6 @@ export default {
             'tsotchkes'
             ]
 
-        console.log('i: ' + this.i)
-        console.log('random length: ' + randomItems.length)
-
         this.randomItem = randomItems[this.i]
 
         if(this.i == randomItems.length -1) {

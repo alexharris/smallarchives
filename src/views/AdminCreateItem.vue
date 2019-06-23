@@ -620,25 +620,6 @@
       var archiveId = this.$route.params.archive_id
 
 
-      // Keep track of the number of items this user has
-      var numberOfItems;
-      sa.userArchivesDocumentDbRef(uid).get().then(function(doc) {
-          if (doc.exists) {
-              numberOfItems = doc.data().numberOfItems + 1
-              console.log(numberOfItems)
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-          }
-      }).then(() => {
-        sa.userArchivesDocumentDbRef(uid).set({
-          numberOfItems: numberOfItems
-        })        
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
-      });
-
-
       // Add
       this.addCustomFieldValues()
 

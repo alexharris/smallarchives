@@ -10,7 +10,7 @@
 //
 //-----------------------
 
-import firebase from "firebase";
+import firebase from 'firebase/app';
 
 var sa = {
   /**

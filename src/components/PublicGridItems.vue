@@ -153,7 +153,6 @@ export default {
           // get the item source for thumbnail image
 
           sa.itemFeatureStorageRef(uid, archiveId, doc.id, doc.data().itemFeatureImageName, 'thumb_').getDownloadURL().then((url) => {
-            console.log(url)
             itemFeatureImageUrl = url
           }).catch(function(error) {
             itemSrcUrl = ''
