@@ -1,38 +1,47 @@
 <template>
   <div class="sign-up">  
-    <div class="row justify-content-center" v-if="notSignedUp">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6" >
-        <h3 class="mb-5">Sign up</h3>
+    <div class="row justify-content-center mt-5" v-if="notSignedUp">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-4" >
+        <h3 class="mb-3">Sign up</h3>
           <template v-if="error">
             <div class="alert alert-danger" show>{{error}}</div>
-          </template>             
-          <form>
-            <!-- Username -->
-            <div class="form-group row">
-              <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
-              <div class="col-sm-10">
-                <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
-                <small class="help-text form-text text-muted">Your archives will be available at smallarchives.com/u/<em>username</em>.</small>
+          </template>  
+          <div class="card">           
+            <form class="card-body">
+              <!-- Username -->
+              <div class="form-group row justify-content-center">
+                
+                <div class="col-sm-10">
+                  <label for="inputUsername">Username</label>
+                  <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
+                  <small class="help-text form-text text-muted">Your archives will be available at smallarchives.com/u/<em>username</em>.</small>
+                </div>
               </div>
-            </div>
-            <!-- Email -->
-            <div class="form-group row">
-              <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-              <div class="col-sm-10">
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+              <!-- Email -->
+              <div class="form-group row justify-content-center">
+                
+                <div class="col-sm-10">
+                  <label for="inputEmail">Email</label>
+                  <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+                </div>
               </div>
-            </div>
-            <!-- Password -->
-            <div class="form-group row">
-              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+              <!-- Password -->
+              <div class="form-group row justify-content-center">
+                
+                <div class="col-sm-10">
+                  <label for="inputPassword">Password</label>
+                  <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+                </div>
+              </div>                 
+              <div class="row justify-content-center pt-3">
+                <div class="col-sm-10">
+                  <div class="btn btn-dark " @click="checkUsername">Sign Up</div>
+                </div>
               </div>
-            </div>                 
-
-            <div class="btn btn-dark" @click="checkUsername">Sign Up</div>
-          </form>
-          <p class="mt-5">Already have an account? <router-link to="/login">Login</router-link>.</p>
+              
+            </form>
+          </div>
+          <p class="mt-3">Already have an account? <router-link to="/login">Login</router-link>.</p>
       </div>
       <!-- <div class="col-12 col-sm-2 col-md-4 col-lg-4" >
         <div class="card" style="width: 18rem;">

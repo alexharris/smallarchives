@@ -7,12 +7,13 @@
 
       <h2 class="h4">History</h2>
 
-      <p>I initially created Small Archives out of a desire to display a personal collection of materials obtained while researching a local wildlife refuge in Oakland, CA (this is now the <a href="/demo">demo collection</a>). I knew from my time working as a web developer at a museum and archive that most of the tools for this sort of thing were either geared toward large institutional collections, cobbled together from general tools like Wordpress or Drupal, or else people used social tools like Instagram or Tumblr, whose focus on the “timeline” is not conducive to presenting time-insensitive collections.</p>
+      <p>I initially created Small Archives out of a desire to display a personal collection of materials obtained while researching a local wildlife refuge in Oakland, CA (this is now the <a href="/demo">demo collection</a>). I knew from my time working as a web developer at a museum and archive that most of the tools for this sort of thing were either geared toward large institutional collections, cobbled together from general tools like Wordpress or Drupal, or else people used social tools like Instagram or Tumblr, whose focus on the timeline/newsfeed is not conducive to presenting time-insensitive collections.</p>
       <h2 class="h4">Features</h2>
       <ul>
         <li>Modern, mobile-friendly display</li>
         <li>List, grid and map view</li>
         <li>Multimedia items include audio, video, images, and PDFs</li>
+        <li>Custom metadata fields</li>
         <li>Basic filtering</li>
         <li>Tags</li>
         <li>Easy admin interface</li>

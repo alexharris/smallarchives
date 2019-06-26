@@ -1,24 +1,32 @@
 <template>
    
     <div class="row justify-content-center">
-      <div class="col-12 py-5 col-sm-8 col-lg-6">
-        
-        <div>
-          <div class="form-group row">
-            <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
-            <div class="col-sm-9">
-              <input type="email" class="form-control" id="inputEmail" placeholder="" v-model="email">
+      <div class="py-5 col-12 col-sm-10 col-md-8 col-lg-6">
+        <h3 class="mb-3">Sign in</h3>
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group row justify-content-center">
+              
+              <div class="col-sm-10">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="" v-model="email">
+              </div>
+            </div>
+            <div class="form-group row justify-content-center">
+              
+              <div class="col-sm-10">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="" v-model="password">
+              </div>
+            </div>    
+            <div class="row justify-content-center pt-3">    
+              <div class="col-sm-10">
+                <button class="btn btn-dark" type="submit" @click.stop="login">Sign In</button>
+              </div>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
-            <div class="col-sm-9">
-              <input type="password" class="form-control" id="inputPassword" placeholder="" v-model="password">
-            </div>
-          </div>        
-          <button class="btn btn-dark" type="submit" @click.stop="login">Sign In</button>
         </div>
-        <p class="mt-5">No account? <router-link to="/sign-up">Create one.</router-link><br />
+        <p class="mt-3">No account? <router-link to="/sign-up">Create one.</router-link><br />
         Forgot your password? <a href="#" data-toggle="modal" data-target="#exampleModal">Reset it.</a></p>    
       </div>
 

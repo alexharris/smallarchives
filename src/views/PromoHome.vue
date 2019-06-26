@@ -23,15 +23,6 @@
 
             </div>
 
-            <!-- <div class="col-12 col-lg-6 mb-4 float-right order-1 order-lg-2">   
-                <FunGrid />
-                <!-- <div class="card">
-                    <div class="card-body p-0 text-center">
-                        <p></p>
-                        <a class="btn btn-primary btn-lg" href="/sign-up">Sign Up</a>
-                    </div>
-                </div>           -->
-            <!-- </div>  -->
         </div> 
         <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
             <div class="col-12 col-12 col-lg-8 my-md-3">

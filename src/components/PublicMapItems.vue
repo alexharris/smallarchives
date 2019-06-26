@@ -1,11 +1,11 @@
 <template>
-  <div class="mt-5"> 
+  <div class=""> 
     <div v-if="items.length == 0">
         <p>This archive has no results with location data.</p>
     </div>
     <div v-else>
       <div class="row justify-content-center">
-        <div class="col-11">
+        <div class="col-12 m-0 p-0">
           <div class="map-container">
             <l-map :zoom="zoom" :center="center">
               <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
@@ -89,17 +89,18 @@ export default {
       this.createItemArray()
     },
     createItemArray: function() {
-
       var uid = this.uid
       var archiveId = this.$route.params.archive_id
 
        // clear it so it resets each time this is called
       this.items = []      
 
-      sa.itemCollectionDbRef(uid, archiveId).where("itemTitle.length", '>', 0)
+      sa.itemCollectionDbRef(uid, archiveId)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+
+          
           this.items.push({
             fileName: doc.data().file,
             itemTitle: doc.data().itemTitle,

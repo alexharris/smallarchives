@@ -1,5 +1,5 @@
 <template>
-    <div class="card mb-3">
+    <div class="card mb-3 col-10">
         <div class="card-body">
             <h3 class="mb-4"><a :href="'/u/' + username + '/' + archiveId">{{archiveTitle}}</a></h3>
             <p>{{archiveDesc}}</p>

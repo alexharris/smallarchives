@@ -7,15 +7,26 @@
           <p>You have no archives at this time. Create a new one to get started.</p>
           <a class="btn btn-dark" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>   
         </div>
-        <div class="col-12" v-else>
-          <h4 class="my-4">Dashboard</h4>
-          <div class="card-deck">
+        <div class="col-12 justify-content-center" v-else>
+          <div class="row justify-content-center my-4">
+            <div class="col-10 m-0 p-0">
+              <h4>Your Dashboard –</h4>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+          
             <template v-for="archive in archives">
               <AdminArchiveSnapshot :archiveId="archive.id" />
             </template>   
-          </div>      
-          <a v-if="archives.length <= 2 " class="btn btn-outline-dark btn-sm my-4" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>
-          <div v-else>You have reached the limit of 3 archives.</div>
+          </div>
+          <div class="row justify-content-center my-4">
+            <div class="col-10 m-0 p-0">
+              <a v-if="archives.length <= 2 " class="btn btn-outline-dark btn-sm my-4" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>
+              <div v-else>You have reached the limit of 3 archives.</div>
+            </div>
+          </div>          
+
+
         </div>            
       </div>
     </div>

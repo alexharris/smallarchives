@@ -1,59 +1,47 @@
 <template>
 	<div id="app" class="d-flex flex-column h-100" > 
-      <header v-if="isPromo" class="bg-white">
-        <nav class="navbar navbar-expand-lg" >
-          <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item" v-if="user">
-                
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/login" v-if="!user">Login</a>
-              </li>                          
-            </ul>
-            <a class="nav-link btn btn-primary" href="/admin/archives" v-if="user">Dashboard</a>
-          </div>
-        </nav>      
-      </header> 
-
-  		<div class="container-fluid wrapper flex-shrink-0 h-100" v-cloak>      
-        <div class="row h-100" v-if="isAdmin || confirmOwner != false">
-          <div class="col-12 col-md-3 user-menu bg-primary" v-bind:class="{ menuVisible: menuVisible }">
-            <div class="row">
-              <div class="col-12">
-                <button class=" btn btn-primary mt-4 float-right user-menu-button" @click="toggleMenu()"><font-awesome-icon icon="times" size="2x" /></button>
-              </div>
-              <div class="col-12">
-                <ul class="list-group list-group-flush position-fixed bg-transparent">
-                  <li class="list-group-item bg-transparent list-group-item-action"><a href="/admin/archives" class="p-2">Dashboard</a></li>
-                  <li class="list-group-item bg-transparent list-group-item-action"><a href="/admin/account" class="p-2">Account</a></li>
-                  <li class="list-group-item bg-transparent list-group-item-action"><a href="" @click="logout()" class="p-2">Logout</a></li>
-                  <li class="list-group-item bg-transparent list-group-item-action"><a href="/" class="p-2">Home</a></li>
+    <!-- Navbar -->
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <header v-if="isPromo" class="bg-white">
+            <nav class="navbar navbar-expand-lg" >
+              <a class="navbar-brand mr-auto" href="/">SMALL ARCHIVES</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarText">
+                <div class="mr-auto"><a class="nav-link" href="/about">About</a></div>
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-primary" href="/login" v-if="!user">Sign in</a>
+                  </li>                          
                 </ul>
+                <a class="nav-link btn btn-primary" href="/admin/archives" v-if="user">Dashboard</a>
               </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-9 ">  
-            <div class="user-menu-button">
-              <button class=" btn btn-primary mt-4 user-menu-button" @click="toggleMenu()">Menu</button>
-            </div>            
-            <router-view/>  
-          </div>
+            </nav>      
+          </header> 
         </div>
-        <div class="row" v-else>
-          <div class="col-12">  
-            <router-view/>  
-          </div>
-        </div>  
-     
-      </div>      
+      </div>
+    </div>
+    <!-- Main content -->
+    <div class="container-fluid wrapper flex-shrink-0 h-100" v-cloak>      
+      <div class="row h-100" v-if="isAdmin || confirmOwner != false">
+        <AdminSidebar v-bind:menuVisible="this.menuVisible" v-on:toggleMenu="toggleMenu" />
+        <div class="main mx-3">  
+          <div class="user-menu-button">
+            <button class=" btn btn-primary mt-4 user-menu-button" @click="toggleMenu()">Menu</button>
+          </div>            
+          <router-view/>  
+        </div>
+      </div>
+      <div class="row" v-else>
+        <div class="col-12">  
+          <router-view/>  
+        </div>
+      </div>  
+    
+    </div>      
     
 
   </div>
@@ -63,6 +51,7 @@
 import firebase from 'firebase/app' 
 import { truncate } from 'fs';
 import sa from './sa'
+import AdminSidebar from './components/AdminSidebar'
 
 export default {
   name: "App",
@@ -71,6 +60,9 @@ export default {
       confirmOwner: false,
       menuVisible: false
     }
+  },
+  components: {
+    AdminSidebar
   },
   computed: {
     user() {
@@ -146,7 +138,9 @@ export default {
 
 <style lang="scss">
 
-
+.main {
+  flex: 1;
+}
 
 
   // a svg:hover {
