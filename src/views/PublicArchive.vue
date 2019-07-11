@@ -32,10 +32,11 @@
           About
         </button>   
         <div class="ml-md-2 float-md-right pt-sm-0 pt-xs-2">
-          <div class="btn btn-info btn-sm mr-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div>
+          <!-- <div class="btn btn-info btn-sm mr-2" @click.stop="addItemButton(key)" v-if="confirmOwner"><font-awesome-icon class="mr-2" icon="plus" size="1x" />Add Item</div> -->
           <button class="btn btn-info btn-sm mr-2" @click.stop="editarchive(archive.key)"  v-if="confirmOwner">Edit</button>
+          <AdminAddItemButton />
         </div>                 
-      </nav>     
+      </nav>
 
       <!-- Filter collapse  -->
       <div class="row filter-collapse p-4" v-if="filterIsVisible">
@@ -153,6 +154,7 @@ import PublicGridItems from '../components/PublicGridItems'
 import PublicMapItems from '../components/PublicMapItems'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import Switcher from '../components/Switcher'
+import AdminAddItemButton from '../components/AdminAddItemButton'
 
 
 
@@ -189,7 +191,8 @@ export default {
     PublicGridItems,
     PublicMapItems,
     ArchiveHeaderImage,
-    Switcher   
+    Switcher,
+    AdminAddItemButton   
   },
   computed: {
     uniqueItemTypes() {
@@ -372,12 +375,12 @@ export default {
     clearLocationFilter: function() {
       this.selectedHasLocation = false
     },
-    addItemButton (id) {
-      this.$router.push({
-        name: 'AdminCreateItem',
-        params: { id: id }
-      })
-    },
+    // addItemButton (id) {
+    //   this.$router.push({
+    //     name: 'AdminCreateItem',
+    //     params: { id: id }
+    //   })
+    // },
     editarchive (id) {
       this.$router.push({
         name: 'AdminEditArchive',

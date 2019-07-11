@@ -26,6 +26,8 @@
         </div> 
         <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
             <div class="col-12 col-12 col-lg-8 my-md-3">
+                <h2>Features –</h2>
+                <p class="lead">Some of the stuff that Small Archives offers.</p>
                 <div class="row noborder pb-md-5">
                     <div class="col-12 col-lg-4 my-3">
                         <h3 class="card-title text-left">Multi-media –</h3>
@@ -56,6 +58,26 @@
                 </div>                    
             </div>                              
         </div>
+        <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
+            <div class="col-12 col-12 col-lg-8 my-md-3">
+                <h2>Not Features –</h2>
+                <p class="lead">Some of the stuff that Small Archives does not offer.</p>
+                <div class="row noborder pb-md-5">
+                    <div class="col-12 col-lg-4 my-3">
+                        <h3 class="card-title text-left">Social Networking –</h3>
+                        <p class="card-text text-left">There is no way to friend anybody, like anything, or subscribe to anything.</p>
+                    </div>
+                    <div class="col-12 col-lg-4 my-3">
+                        <h3 class="card-title text-left">Machine Learning –</h3>
+                        <p class="card-text text-left">Small Archives can't automatically detect anything...we don't know how.</p>
+                    </div>
+                    <div class="col-12 col-lg-4 my-3">
+                        <h3 class="card-title text-left">Algorithms –</h3>
+                        <p class="card-text text-left">We only know two algorithms: <code>y=mx+b</code> and <code>a2+b2=c2</code>, and we haven't figured out how to make those helpful for this product.</p>                            
+                    </div>  
+                </div>                   
+            </div>                              
+        </div>        
         <div class="row px-sm-5 mb-4 py-5 justify-content-center example-row">
             <div class="col-12 col-lg-5 p-0 text-center">
                 <!-- <a href="/demo">

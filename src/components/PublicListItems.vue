@@ -2,6 +2,7 @@
   <div>
     <div v-if="items.length == 0">
         <p>This archive has no items.</p>
+        <AdminAddItemButton />
     </div>
     <div v-else>
       <div v-if="renderedItems.length !== 0" class="px-n5">
@@ -64,10 +65,14 @@
 <script>
 import firebase from 'firebase/app';
 import sa from '../sa'
+import AdminAddItemButton from '../components/AdminAddItemButton'
 
 export default {
   name: "PublicListItems",
   props: ['filteredCoverageLat'],
+  components: {
+    AdminAddItemButton
+  },  
   data() {
   	return {
   	uid: '',

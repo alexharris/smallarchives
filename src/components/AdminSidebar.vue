@@ -38,7 +38,14 @@ export default {
     },
   },
   methods: {
-
+    logout: function() {
+      firebase.auth().signOut().then(() => {
+        this.setUser()
+        this.$router.push({
+          name: 'login'
+        })        
+      })
+    },
   }
 }
 </script>

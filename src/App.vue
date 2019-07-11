@@ -102,14 +102,6 @@ export default {
         name: 'login'
       })      
     },
-    logout: function() {
-      firebase.auth().signOut().then(() => {
-        this.setUser()
-        this.$router.push({
-          name: 'login'
-        })        
-      })
-    },
     async getConfirmOwner() {
       this.confirmOwner = await sa.confirmOwner(this.$route.params.archive_id)
     },    
