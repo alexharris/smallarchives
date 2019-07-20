@@ -118,3 +118,36 @@ exports.generateThumbnail = functions.storage
       .push({ path: fileUrl, thumbnail: thumbFileUrl });
     return console.log("Thumbnail URLs saved to database.");
   });
+
+/*
+// STRIPE WEBHOOKS FUNCTION
+*/
+// assign the stripe API library
+const stripe = require("stripe")(functions.config().keys.webhooks);
+// Set the webhook event signing secret from environmental variable
+const endpointSecret = functions.config().keys.signing;
+
+exports.events = functions.https.onRequest((request, response) => {
+  let sig = request.headers["stripe-signature"];
+
+  try {
+    let event = stripe.webhooks.constructEvent(
+      request.rawBody,
+      sig,
+      endpointSecret
+    ); // Validate the request
+
+    return admin.firestore().collection("events")
+      .add(event) // Add the event to the database
+      .then(snapshot => {
+        // Return a successful response to acknowledge the event was processed successfully
+        return response.json({ received: true, ref: snapshot.ref.toString() });
+      })
+      .catch(err => {
+        console.error(err); // Catch any errors saving to the database
+        return response.status(500).end();
+      });
+  } catch (err) {
+    return response.status(400).end(); // Signing signature failure, return an error 400
+  }
+});
