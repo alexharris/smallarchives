@@ -143,14 +143,24 @@ exports.events = functions.https.onRequest((request, response) => {
       .collection("users") //go to the users collection in firestore
       .where("email", "==", event.data.object.email) // query for a certain user record based on email address. "event" is what is sent from stripe, defined above
       .get() //get that specific user record
-      .then(snapshot => { // this is all of the results from the above query
-        snapshot.forEach(doc => { // go through each one, but there should be only one since email addres is unique
+      .then(snapshot => {
+        // this is all of the results from the above query
+        snapshot.forEach(doc => {
+          // go through each one, but there should be only one since email addres is unique
           // now add data. the above query is just for finding the record, but firestore doesnt allow to do a WHERE query and then write to the result
+
+          var today = new Date();
+
           admin
             .firestore()
             .collection("users") // go to the users collection
             .doc(doc.id) //go to the document
-            .update({ foo: "bar" }); //update the data. this will make sure the user account knows the user paid
+            .update({
+              subscriptionType: "Annual", // set the subscription type
+              trialStart: today, // when the trial starts
+              subscriptionStart: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), //when the actual subscription start
+              subscriptionEnd: new Date(today.getFullYear(), today.getMonth(), today.getDate()+372) //when the actual subscription start
+            });
         });
         // Return a successful response to acknowledge the event was processed successfully
         return response.json({ received: true });
