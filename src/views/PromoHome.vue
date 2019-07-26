@@ -143,8 +143,6 @@ import AaasAnimation from '../components/AaasAnimation'
 import MetadataAnimation from '../components/MetadataAnimation'
 
 
-
-
 export default {
   name: 'PublicHome',
   components: {
@@ -157,8 +155,7 @@ export default {
   data() {
       return {
           randomItem: 'items',
-          i: 0
-      }
+          i: 0      }
   },
   created() {
       window.setInterval(this.rotateItems, 4000);

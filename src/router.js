@@ -1,5 +1,5 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import firebase from "firebase/app";
+import "firebase/firestore";
 import Vue from "vue";
 import Router from "vue-router";
 
@@ -32,6 +32,11 @@ import PublicArchive from "@/views/PublicArchive";
 import PublicItem from "@/views/PublicItem";
 import PromoAbout from "@/views/PromoAbout";
 import PromoSchema from "@/views/PromoSchema";
+import PublicPaymentSignup from "@/views/PublicPaymentSignup";
+import PromoSuccess from "@/views/PromoSuccess";
+import PromoCancelled from "@/views/PromoCancelled";
+
+import Test from "@/views/Test";
 
 Vue.use(Router);
 
@@ -135,6 +140,21 @@ const router = new Router({
       name: "PublicArchive",
       component: PublicArchive
     },
+    // {
+    //   path: "/payment",
+    //   name: "PublicPaymentSignup",
+    //   component: PublicPaymentSignup
+    // },
+    {
+      path: "/success",
+      name: "PromoSuccess",
+      component: PromoSuccess
+    },
+    {
+      path: "/cancelled",
+      name: "PromoCancelled",
+      component: PromoCancelled
+    },
     {
       path: "/u/:username/:archive_id/:item_id",
       name: "PublicItem",
@@ -143,6 +163,11 @@ const router = new Router({
     {
       path: "/demo",
       redirect: "/u/demo/7YUwCoXaIpMOmEKEKjyt"
+    },
+    {
+      path: "/test",
+      name: "Test",
+      component: Test
     },
     {
       path: "/404",

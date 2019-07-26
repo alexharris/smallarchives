@@ -159,6 +159,16 @@ var sa = {
       .collection("customFields")
       .doc(customFieldName);
   },
+   /**
+   * Returns a reference to a specific, existing user
+   * @param uid - The logged in user's ID
+   */
+  userDocumentDbRef(uid) {
+    return firebase
+      .firestore()
+      .collection("users")
+      .doc(uid);
+  },
   /**
    * Returns a reference to the "users" collection
    */

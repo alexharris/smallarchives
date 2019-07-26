@@ -388,8 +388,6 @@ export default {
       } else {
         this.itemId = this.$route.params.item_id
         this.getExistingItemData()
-        
-        
       }        
   },
   methods: {    
@@ -546,9 +544,9 @@ export default {
         this.errors.push('A title is required')
       }
 
-      if (!this.itemFeatureImageName || this.itemFeatureImageName === '') { // title is mandatory
-        this.errors.push('A feature image is required')
-      }
+      // if (!this.itemFeatureImageName || this.itemFeatureImageName === '') { // title is mandatory
+      //   this.errors.push('A feature image is required')
+      // }
 
       console.log(this.itemFeatureImage)
       if(this.itemFeatureImage != '') {

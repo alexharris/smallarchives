@@ -2,6 +2,7 @@
 node_modules
 /dist
 src/main.js
+src/views/PublicPaymentSignup.vue
 
 
 # local env files

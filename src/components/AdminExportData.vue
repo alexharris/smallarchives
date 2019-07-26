@@ -130,9 +130,7 @@ export default {
       const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
       const header = Object.keys(items[0]) // this creates an array of the field names
     
-      console.log(items)
       let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t')) // this takes the header values and maps them
-      console.log(csv)
 
       csv.unshift(header.join('\t'))
       csv = "data:text/csv;charset=utf-8," + csv.join('\n')

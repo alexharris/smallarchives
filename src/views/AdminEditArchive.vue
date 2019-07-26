@@ -147,15 +147,12 @@
 
             <!-- start fourth tab -->
             <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-                <ul class="list-unstyled">
-                  <li><strong>Created:</strong> {{dateCreated}}</li>
-                  <li><strong>ID:</strong> {{key}}</li>
-                  <li><strong>Export Data: </strong> <AdminExportData /></li>
-                </ul>
-                            
-                        
-
-    
+              <ul class="list-unstyled">
+                <li><strong>Created:</strong> {{dateCreated}}</li>
+                <li><strong>ID:</strong> {{key}}</li>
+                <li><strong>Export Data: </strong> <AdminExportData /></li>
+                <!-- <li><strong>Import Data: </strong> <AdminImportData /></li> -->
+              </ul>
               <div class="admin my-4">
                 <div class=" card-deck">
 
@@ -174,7 +171,7 @@
         </div>
       </div>
     </div>
-      <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -203,6 +200,7 @@ import firebase from 'firebase/app'
 import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import AdminExportData from '../components/AdminExportData'
+import AdminImportData from '../components/AdminImportData'
 import AdminCustomFields from '../components/AdminCustomFields'
 import SubmitButton from '../components/SubmitButton'
 
@@ -211,6 +209,7 @@ export default {
   components: {
     ArchiveHeaderImage,
     AdminExportData,
+    AdminImportData,
     SubmitButton,
     AdminCustomFields
   }, 

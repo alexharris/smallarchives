@@ -8,6 +8,7 @@
             <li><strong>Email:</strong> {{emailAddress}} <span v-if="emailVerified"><span class="badge badge-success">Verified</span></span><span v-else><a class="#" @click="resendEmailVerification()" data-toggle="modal" data-target="#exampleModal"><small>Send Verification</small></a></span></li>
             <li><strong>Joined:</strong> {{joinDate}}</li>
             <li><strong>User ID:</strong> {{uid}}</li>
+            <li><strong>Subscription Type: {{subscription}}</strong></li>
         </ul>
         <button v-if="!passwordResetSent" class="btn btn-primary btn-sm" @click.stop="sendPasswordReset">Reset Password</button>
         <p v-else><strong>Password reset email sent.</strong></p>
@@ -45,10 +46,12 @@ export default {
       errors: [],
       displayName: this.$store.getters.getUser.displayName,
       emailAddress: this.$store.getters.getUser.email,
+      subscription: firebase.auth().currentUser,
       joinDate: firebase.auth().currentUser.metadata.creationTime,
       uid: firebase.auth().currentUser.uid,
       resetPasswordEmail: '',
-      passwordResetSent: false
+      passwordResetSent: false,
+      subscription: ''
     }
   },
   created () {
@@ -62,7 +65,14 @@ export default {
           key: doc.id
         });
       });
-    });     
+    });  
+   
+   // get the user information stored in the firestore 'users' collection
+    sa.userDocumentDbRef(uid).get()
+    .then((doc) => {
+      console.log(doc.data().subscription)
+      this.subscription = doc.data().subscription
+    }); 
   },
   methods: {
     sendPasswordReset: function() {

@@ -12,6 +12,9 @@
               <!-- <div v-if="item.itemMediaType === 'image'">        -->
                 <a href="" @click.stop="viewSingleItem(item.itemId)">
                   <img :src="item.itemFeatureImage" v-if="item.itemFeatureImage" :alt="item.itemTitle" />
+                  <div v-else>
+                    <font-awesome-icon class="mr-2" icon="file" size="9x" />
+                  </div>                  
                 </a>
               <!-- </div> -->
               <!-- <div v-if="item.itemMediaType === 'pdf'">      

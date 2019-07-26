@@ -6,6 +6,8 @@
           <template v-if="error">
             <div class="alert alert-danger" show>{{error}}</div>
           </template>  
+          <!-- Error message for Stripe Checkout -->
+          <div id="error-message"></div>
           <div class="card">           
             <form class="card-body">
               <!-- Username -->
@@ -116,26 +118,30 @@
 
               //Also add the username to the users table
               firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
-                  displayName: this.displayName
+                  displayName: this.displayName,
+                  email: this.email
               })
               .then(() => {
                   console.log("Document successfully written!");
 
 
-                  var newUser = firebase.auth().currentUser;
+                  // var newUser = firebase.auth().currentUser;
 
-                  this.notSignedUp = false
+                  this.chargeCustomer()
 
-                  //send verification email
-                  newUser.sendEmailVerification().then(function() {
-                    // Email sent.
+                  // this.notSignedUp = false
+
+                  // //send verification email
+                  // newUser.sendEmailVerification().then(function() {
+                  //   // Email sent.
+                  //  
                     
-                  }).catch(function(error) {
-                    // An error happened.
-                  });
+                  // }).catch(function(error) {
+                  //   // An error happened.
+                  // });
 
                   // tell the store to check about the user
-                  this.$store.dispatch('setUser')
+                  // this.$store.dispatch('setUser')
 
 
                   
@@ -156,6 +162,31 @@
             this.returnError(err.message)
           }
         );
+      },
+      chargeCustomer: function() {
+        var stripe = Stripe('pk_test_1Xevbq0rqu1q2qQzMe5bFGBR00C58N65EB');
+
+          // Redirect the customer to Checkout
+          stripe.redirectToCheckout({
+          items: [{plan: 'plan_FT2uZXGDbyqpas', quantity: 1}],
+
+          // Do not rely on the redirect to the successUrl for fulfilling
+          // purchases, customers may not always reach the success_url after
+          // a successful payment.
+          // Instead use one of the strategies described in
+          // https://stripe.com/docs/payments/checkout/fulfillment
+          successUrl: 'http://localhost:8081/success',
+          cancelUrl: 'http://localhost:8081/cancelled',
+          })
+          .then(function (result) {
+          if (result.error) {
+              // If `redirectToCheckout` fails due to a browser or network
+              // error, display the localized error message to your customer.
+              var displayError = document.getElementById('error-message');
+              displayError.textContent = result.error.message;
+          }
+        });
+
       },
       returnError(errorMessage) {
         this.error = errorMessage
