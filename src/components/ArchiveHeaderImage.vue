@@ -1,5 +1,5 @@
 <template>
-	<div class="header-image-container"> 
+	<div class="header-image-container text-center"> 
 		<img :src="headerImage" />
 	</div>
 </template>
@@ -78,10 +78,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .header-image-container img {
   max-width: 100%;
+  max-height: 200px;
 }
 
 </style>

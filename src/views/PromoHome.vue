@@ -73,7 +73,7 @@
                     </div>
                     <div class="col-12 col-lg-4 my-3">
                         <h3 class="card-title text-left">Algorithms –</h3>
-                        <p class="card-text text-left">We only know two algorithms: <code>y=mx+b</code> and <code>a2+b2=c2</code>, and we haven't figured out how to make those helpful for this product.</p>                            
+                        <p class="card-text text-left">We only know two algorithms: <code>y=mx+b</code> and <code>a2+b2=c2</code>, and we haven't figured out how to make those helpful for this product (are those even algorithms?)</p>                            
                     </div>  
                 </div>                   
             </div>                              
@@ -175,7 +175,8 @@ export default {
             'random home movies from goodwill',
             'some PDFs that were around',
             'animated gifs',
-            'tsotchkes'
+            'tsotchkes',
+            'historical stuff'
             ]
 
         this.randomItem = randomItems[this.i]

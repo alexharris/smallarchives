@@ -1,34 +1,60 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-11 my-4">
-        <h1 class="h4">Account</h1>
-        <h2 class="h5">Basic Info</h2>
-        <ul class="list-unstyled">
-            <li><strong>Username:</strong> {{displayName}}</li>
-            <li><strong>Email:</strong> {{emailAddress}} <span v-if="emailVerified"><span class="badge badge-success">Verified</span></span><span v-else><a class="#" @click="resendEmailVerification()" data-toggle="modal" data-target="#exampleModal"><small>Send Verification</small></a></span></li>
-            <li><strong>Joined:</strong> {{joinDate}}</li>
-            <li><strong>User ID:</strong> {{uid}}</li>
-            <li><strong>Subscription Type: {{subscription}}</strong></li>
-        </ul>
-        <button v-if="!passwordResetSent" class="btn btn-primary btn-sm" @click.stop="sendPasswordReset">Reset Password</button>
-        <p v-else><strong>Password reset email sent.</strong></p>
-        <h2 class="h5 my-4">Stats</h2>
-        <ul class="list-unstyled">
-            <li><strong>Number of archives: </strong>{{this.archives.length}}</li>
-        </ul>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-              <div class="modal-body">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                  </button>            
-                  Email Verification Sent
-              </div>
+  <div class="container my-5 p-0">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="h4 mb-5">Account —</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-lg-6 ">
+          <div class="card">
+            <div class="card-header">
+              <strong>Basic Info</strong>
+            </div>            
+            <div class="card-body">
+              <ul class="list-unstyled">
+                  <li><strong>Username:</strong> {{displayName}}</li>
+                  <li><strong>Email:</strong> {{emailAddress}} <span v-if="emailVerified"><span class="badge badge-success">Verified</span></span><span v-else><a class="#" @click="resendEmailVerification()" data-toggle="modal" data-target="#exampleModal"><small>Send Verification</small></a></span></li>
+                  <li><strong>Joined:</strong> {{joinDate}}</li>
+                  <li><strong>User ID:</strong> {{uid}}</li>
+                  <li><strong>Number of archives: </strong>{{this.archives.length}}</li>
+              </ul>
+              <button v-if="!passwordResetSent" class="btn btn-dark btn-sm" @click.stop="sendPasswordReset">Reset Password</button>
+              <p v-else><strong>Password reset email sent.</strong></p>
+            </div>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>            
+                    Email Verification Sent
+                </div>
+                </div>
+            </div>
+          </div>        
+      </div>
+      <div class="col-xs-12 col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <strong>Subscription Info</strong>
+          </div>
+          <div class="card-body">
+              <ul class="list-unstyled" v-if="subscriptionType != 'None'">
+                  <li><strong>Subscription Type:</strong> {{subscriptionType}}</li>
+                  <li><strong>Subscription Start:</strong> {{subscriptionStart}} </li>
+                  <li><strong>Subscription End:</strong> {{subscriptionEnd}} </li>
+              </ul>
+              <div  v-else>
+                <span>You are currently using the free plan, and will be limited to 1 archive.</span><br /><br />
+                <a  href="/payment" class="btn btn-success btn-sm">View Pricing Info</a>
               </div>
           </div>
-        </div>        
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -46,12 +72,13 @@ export default {
       errors: [],
       displayName: this.$store.getters.getUser.displayName,
       emailAddress: this.$store.getters.getUser.email,
-      subscription: firebase.auth().currentUser,
       joinDate: firebase.auth().currentUser.metadata.creationTime,
       uid: firebase.auth().currentUser.uid,
       resetPasswordEmail: '',
       passwordResetSent: false,
-      subscription: ''
+      subscriptionType: 'None',
+      subscriptionStart: '',
+      subscriptionEnd: ''
     }
   },
   created () {
@@ -70,8 +97,9 @@ export default {
    // get the user information stored in the firestore 'users' collection
     sa.userDocumentDbRef(uid).get()
     .then((doc) => {
-      console.log(doc.data().subscription)
-      this.subscription = doc.data().subscription
+      this.subscriptionType = doc.data().subscriptionType
+      this.subscriptionStart = sa.getFormattedDate(doc.data().subscriptionStart)
+      this.subscriptionEnd = sa.getFormattedDate(doc.data().subscriptionEnd)
     }); 
   },
   methods: {

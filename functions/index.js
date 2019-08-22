@@ -137,6 +137,8 @@ exports.events = functions.https.onRequest((request, response) => {
       endpointSecret
     ); // Validate the request
 
+    console.log(event)
+
     // THIS WORKS!
     return admin
       .firestore()
@@ -157,13 +159,14 @@ exports.events = functions.https.onRequest((request, response) => {
             .doc(doc.id) //go to the document
             .update({
               subscriptionType: "Annual", // set the subscription type
-              trialStart: today, // when the trial starts
-              subscriptionStart: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), //when the actual subscription start
-              subscriptionEnd: new Date(today.getFullYear(), today.getMonth(), today.getDate()+372) //when the actual subscription start
+              // trialStart: today, // when the trial starts
+              subscriptionStart: new Date(today.getFullYear(), today.getMonth(), today.getDate()), //when the subscription starts
+              subscriptionEnd: new Date(today.getFullYear(), today.getMonth(), today.getDate()+366) //when the subscription ends
             });
         });
         // Return a successful response to acknowledge the event was processed successfully
-        return response.json({ received: true });
+        // return response.json({ received: true }); // I think this was just here to test sending a response, which would show up in stripe logs
+        return response.status(200).end(); // but this is what really lets Stripe know that we received their event?
       })
       .catch(err => {
         console.error(err); // Catch any errors saving to the database

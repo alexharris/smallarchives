@@ -37,7 +37,7 @@ export default {
 		  return this.$store.getters.getUser.email;
     },
     isDashboard: function() {
-      if(this.$route.name === 'AdminListArchives') {
+      if(this.$route.name === 'AdminDashboard') {
         return true
       } else {
         return false

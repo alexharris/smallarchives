@@ -15,11 +15,11 @@ import EditUserProfile from "@/views/EditUserProfile.vue";
 
 // Admin
 import AdminAccountInfo from "@/views/AdminAccountInfo";
-import AdminListArchives from "@/views/AdminListArchives";
+import AdminDashboard from "@/views/AdminDashboard";
 import AdminShowArchive from "@/views/AdminShowArchive";
 import AdminCreateArchive from "@/views/AdminCreateArchive";
 import AdminEditArchive from "@/views/AdminEditArchive";
-
+import AdminPaymentSignup from "@/views/AdminPaymentSignup";
 import AdminCreateItem from "@/views/AdminCreateItem";
 import AdminEditItem from "@/views/AdminEditItem";
 
@@ -32,7 +32,7 @@ import PublicArchive from "@/views/PublicArchive";
 import PublicItem from "@/views/PublicItem";
 import PromoAbout from "@/views/PromoAbout";
 import PromoSchema from "@/views/PromoSchema";
-import PublicPaymentSignup from "@/views/PublicPaymentSignup";
+
 import PromoSuccess from "@/views/PromoSuccess";
 import PromoCancelled from "@/views/PromoCancelled";
 
@@ -53,15 +53,15 @@ const router = new Router({
       path: "/admin",
       name: "Admin",
       component: Admin,
-      redirect: "/admin/archives",
+      redirect: "/admin/dashboard",
       meta: {
         requiresAuth: true
       },
       children: [
         {
-          path: "/admin/archives",
-          name: "AdminListArchives",
-          component: AdminListArchives
+          path: "/admin/dashboard",
+          name: "AdminDashboard",
+          component: AdminDashboard
         },
         {
           path: "/admin/show-archive/:archive_id",
@@ -140,11 +140,11 @@ const router = new Router({
       name: "PublicArchive",
       component: PublicArchive
     },
-    // {
-    //   path: "/payment",
-    //   name: "PublicPaymentSignup",
-    //   component: PublicPaymentSignup
-    // },
+    {
+      path: "/payment",
+      name: "AdminPaymentSignup",
+      component: AdminPaymentSignup
+    },
     {
       path: "/success",
       name: "PromoSuccess",

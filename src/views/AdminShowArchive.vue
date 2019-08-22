@@ -82,7 +82,7 @@ export default {
       })
     },
     goBack() {
-      this.$router.push({ name: 'AdminListArchives', params: { archive_id: this.$route.params.archive_id }})
+      this.$router.push({ name: 'AdminDashboard', params: { archive_id: this.$route.params.archive_id }})
     },    
   }
 }

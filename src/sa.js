@@ -10,7 +10,7 @@
 //
 //-----------------------
 
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 
 var sa = {
   /**
@@ -121,7 +121,7 @@ var sa = {
       .doc(uid)
       .collection("userarchives")
       .doc(archiveId)
-      .collection("customFields")
+      .collection("customFields");
   },
   /**
    * Returns a reference to a specific, existing tag document that exists on an archive record, not on an item
@@ -159,7 +159,7 @@ var sa = {
       .collection("customFields")
       .doc(customFieldName);
   },
-   /**
+  /**
    * Returns a reference to a specific, existing user
    * @param uid - The logged in user's ID
    */
@@ -230,7 +230,7 @@ var sa = {
       .ref()
       .child(filePath);
   },
-    /**
+  /**
    * Returns a file from storage from the path [user_id]/archive_[archive_id]/items/feature/filename
    * @param uid - The ID of the user who created this archive
    * @param archiveId - The id of the archive
@@ -390,8 +390,7 @@ var sa = {
           });
       }
     });
-  },
-  
+  }
 };
 
 export default sa;

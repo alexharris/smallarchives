@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <div v-if="fileMetadata.includes('image')">
             <img :src="url" />
         </div>
@@ -46,6 +47,7 @@ export default {
             var uid = this.uid
             var archiveId = this.$route.params.archive_id
             var itemId = this.id
+
             sa.itemStorageRef(uid, archiveId, itemId, this.filename).getDownloadURL().then((url) => {
                 this.url = url
             })

@@ -177,7 +177,7 @@ export default {
     },
     goBack() {
         this.$router.push({
-          name: 'AdminListArchives',
+          name: 'AdminDashboard',
         }) 
     }
   }

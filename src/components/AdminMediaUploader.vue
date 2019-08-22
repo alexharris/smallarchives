@@ -95,8 +95,8 @@ export default {
             // this.combineNewAndExistingFiles()
             console.log('begin uploading files')
             for(var i in this.newFiles) {
-            // console.log('Name: ' + this.newFiles[i].name)
-            // console.log('File: ' + this.newFiles[i])
+            console.log('Name: ' + this.newFiles[i].name)
+            console.log('File: ' + this.newFiles[i])
 
                 // ----
                 // This puts the file into storage

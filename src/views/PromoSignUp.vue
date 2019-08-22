@@ -119,35 +119,35 @@
               //Also add the username to the users table
               firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
                   displayName: this.displayName,
-                  email: this.email
+                  email: this.email,
+                  subscriptionType: "None"
+
               })
               .then(() => {
                   console.log("Document successfully written!");
 
 
-                  // var newUser = firebase.auth().currentUser;
+                  var newUser = firebase.auth().currentUser;
 
-                  this.chargeCustomer()
+                  // this.chargeCustomer()
 
-                  // this.notSignedUp = false
+                  this.notSignedUp = false
 
-                  // //send verification email
-                  // newUser.sendEmailVerification().then(function() {
-                  //   // Email sent.
-                  //  
-                    
-                  // }).catch(function(error) {
-                  //   // An error happened.
-                  // });
+                  //send verification email
+                  newUser.sendEmailVerification().then(function() {
+                    // Email sent. 
+                  }).catch(function(error) {
+                    // An error happened.
+                  });
 
                   // tell the store to check about the user
-                  // this.$store.dispatch('setUser')
+                  this.$store.dispatch('setUser')
 
 
                   
 
                   // //then redirect user to home         
-                  // this.$router.replace('admin')
+                  this.$router.replace('admin')
               })
               .catch(function(error) {
                   console.error("Error writing document: ", error);

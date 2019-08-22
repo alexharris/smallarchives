@@ -310,7 +310,7 @@ export default {
         }
       }).then(() => {
         this.$router.push({
-          name: 'AdminListArchives',
+          name: 'AdminDashboard',
         }) 
       })
     },
@@ -477,7 +477,7 @@ export default {
         // sa.archiveDocumentDbRef(uid, archiveId).parent().delete()
         
         //reroute
-        this.$router.push({ name: 'AdminListArchives'})
+        this.$router.push({ name: 'AdminDashboard'})
       })
       
 

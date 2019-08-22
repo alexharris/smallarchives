@@ -17,7 +17,7 @@
                     <a class="nav-link btn btn-sm btn-primary" href="/login" v-if="!user">Sign in</a>
                   </li>                          
                 </ul>
-                <a class="nav-link btn btn-primary" href="/admin/archives" v-if="user">Dashboard</a>
+                <a class="nav-link btn btn-primary" href="/admin/" v-if="user">Dashboard</a>
               </div>
             </nav>      
           </header> 

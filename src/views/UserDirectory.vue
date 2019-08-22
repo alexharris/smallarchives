@@ -1,9 +1,21 @@
 <template>
   <div>
     <h1>User Directory</h1>
-    <ul v-for="user in this.users">
-        <li><a :href="'/u/' + user" @click.stop="goToUser(user)">{{ user }}</a></li>
-    </ul>
+    <table class="table" v-if="isSuperAdmin === true">
+      <th>User</th><th>Admin</th>
+    <tr v-for="user in this.users" >
+        
+        <td>
+          <a :href="'/u/' + user.displayName" @click.stop="goToUser(user.displayName)">{{ user.displayName }}</a>
+        </td>
+        <td>
+          <a v-if="user.displayName != 'demo'" href="#" class="btn btn-sm btn-danger" @click.stop="deleteUser(user.id)">Delete</a>
+        </td>
+    </tr>
+    </table>
+    <div v-else>
+      Not a super user.
+    </div>
   </div>
 </template>
 
@@ -16,22 +28,48 @@ export default {
   name: "UserDirectory",
   data() {
     return {
-      users: []
+      users: [],
+      isSuperAdmin: false
     }
   },
   created () {
+
+      this.getUsers()
+
+      var currentUser = firebase.auth().currentUser;
+      
+      if (currentUser.email === 'smallarchives@gmail.com') {
+        this.isSuperAdmin = true
+      }
+  },
+  methods: {
+    getUsers: function() {
+
+      this.users = []
+
       sa.userCollectionDbRef()
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            this.users.push(doc.data().displayName)
+
+          this.users.push({
+            displayName: doc.data().displayName,
+            id: doc.id
+          });
         });
       });
-  },
-  methods: {
+    },
     goToUser: function(username) {
       this.$router.push({ name: 'PublicProfile', params: { username:  username}})
-    },      
+    },
+    deleteUser: function(userId) {
+      sa.userCollectionDbRef().doc(userId).delete().then(() => {
+          console.log("Document successfully deleted!");
+          this.getUsers()
+      }).catch(function(error) {
+          console.error("Error removing document: ", error);
+      });
+    }      
   }
 
 };

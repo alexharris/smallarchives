@@ -2,9 +2,9 @@
 <div>
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 pt-4">
-      <h1 class="h3 float-left">Edit Item</h1>
+      <h1 class="h3 float-left">Edit Item -</h1>
       <a :href="backUrlHref" class="btn btn-sm btn-transparent float-right close-item"><font-awesome-icon icon="times" size="1x" /></a>
-      <a class="btn btn-sm btn-outline-primary float-right mr-2" :href="backUrlHref + '/' + itemId">View</a>
+      <!-- <a class="btn btn-sm btn-outline-primary float-right mr-2" :href="backUrlHref + '/' + itemId">View</a> -->
       <br />
     </div>
   </div>
