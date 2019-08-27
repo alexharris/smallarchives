@@ -1,7 +1,7 @@
 <template>
    
     <div class="row justify-content-center">
-      <div class="py-5 col-12 col-sm-10 col-md-8 col-lg-6">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
         <h3 class="mb-3">Sign in</h3>
         <div class="card">
           <div class="card-body">

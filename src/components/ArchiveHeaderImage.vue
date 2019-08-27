@@ -1,5 +1,5 @@
 <template>
-	<div class="header-image-container text-center"> 
+	<div class="header-image-container"> 
 		<img :src="headerImage" />
 	</div>
 </template>
@@ -82,7 +82,7 @@ export default {
 
 .header-image-container img {
   max-width: 100%;
-  max-height: 200px;
+  // max-height: 200px;
 }
 
 </style>

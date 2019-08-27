@@ -20,8 +20,9 @@
           </div>
           <div class="row justify-content-center my-4">
             <div class="col-12 m-0 p-0">
-              <a v-if="archives.length < 1 " class="btn btn-outline-dark btn-sm my-4" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>
-              <div v-else><a href="/payment">Upgrade</a> to add additional archives.</div>
+              <a v-if="archives.length < 1 || subscriptionType === 'Annual' " class="btn btn-outline-dark btn-sm my-4" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>
+            
+              <div v-if="subscriptionType === 'None'"><a href="/payment">Upgrade</a> to add additional archives.</div>
             </div>
           </div>          
         </div>            
@@ -53,13 +54,20 @@ export default {
       archives: [],
       errors: [],
       uid: firebase.auth().currentUser.uid,
-      username: firebase.auth().currentUser.displayName
+      username: firebase.auth().currentUser.displayName,
+      subscriptionType: 'None'
     }
   },
   created () {
 
     
     this.getArchives()
+
+   // get the user information stored in the firestore 'users' collection
+    sa.userDocumentDbRef(this.uid).get()
+    .then((doc) => {
+      this.subscriptionType = doc.data().subscriptionType
+    });     
 
     
   },

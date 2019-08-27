@@ -20,7 +20,7 @@ import AdminShowArchive from "@/views/AdminShowArchive";
 import AdminCreateArchive from "@/views/AdminCreateArchive";
 import AdminEditArchive from "@/views/AdminEditArchive";
 import AdminPaymentSignup from "@/views/AdminPaymentSignup";
-import AdminCreateItem from "@/views/AdminCreateItem";
+// import AdminCreateItem from "@/views/AdminCreateItem";
 import AdminEditItem from "@/views/AdminEditItem";
 
 // Public
@@ -29,6 +29,7 @@ import PromoLogin from "@/views/PromoLogin.vue";
 import PromoHome from "@/views/PromoHome";
 import PromoProfile from "@/views/PromoProfile";
 import PublicArchive from "@/views/PublicArchive";
+import PublicArchiveAbout from "@/views/PublicArchiveAbout";
 import PublicItem from "@/views/PublicItem";
 import PromoAbout from "@/views/PromoAbout";
 import PromoSchema from "@/views/PromoSchema";
@@ -68,11 +69,11 @@ const router = new Router({
           name: "AdminShowArchive",
           component: AdminShowArchive
         },
-        {
-          path: "/admin/add-item/:archive_id",
-          name: "AdminCreateItem",
-          component: AdminEditItem
-        },
+        // {
+        //   path: "/admin/add-item/:archive_id",
+        //   name: "AdminCreateItem",
+        //   component: AdminEditItem
+        // },
         {
           path: "/admin/add-archive",
           name: "AdminCreateArchive",
@@ -88,6 +89,11 @@ const router = new Router({
           name: "AdminEditItem",
           component: AdminEditItem
         },
+        {
+          path: "/admin/edit-item/:archive_id/",
+          name: "AdminEditNewItem",
+          component: AdminEditItem
+        },        
         {
           path: "/admin/profile",
           name: "UserProfile",
@@ -139,6 +145,11 @@ const router = new Router({
       path: "/u/:username/:archive_id",
       name: "PublicArchive",
       component: PublicArchive
+    },
+    {
+      path: "/u/:username/:archive_id/about",
+      name: "PublicArchiveAbout",
+      component: PublicArchiveAbout
     },
     {
       path: "/payment",

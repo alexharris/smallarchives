@@ -21,9 +21,13 @@ export const store = new Vuex.Store({
     setUser: state => {
       state.user = firebase.auth().currentUser;
     },
-    setMenuExpanded: state => {
-      console.log(state.menuExpanded);
-      state.menuExpanded = !state.menuExpanded;
+    setMenuExpanded(state, payload) {
+      if (!payload) {
+        state.menuExpanded = !state.menuExpanded;
+      } else {
+        console.log(payload)
+        state.menuExpanded = payload;
+      }
     }
   },
   actions: {

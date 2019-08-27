@@ -11,18 +11,15 @@
 
             </div>                
         </div> -->
-        <div class="row justify-content-center px-md-5 py-md-5 my-md-5 d-flex">
+        <div class="row justify-content-center px-5 py-5 my-5 d-flex">
             <div class="col-12 col-lg-8 my-md-5 order-2 order-lg-1 ">  
                 <!-- <h2 class="h1 display-5"><strong>Small Archives</strong></h2>  -->
                 <h2 class="my-4 pb-2 display-4 intro-text">Small Archives is a simple web platform for publishing collections of <span class="random-item">{{randomItem}}.</span></h2>
                 <p class="pt-5">
-                <a class="btn btn-primary" href="/sign-up">Beta Sign Up</a>
+                <a class="btn btn-primary" href="/sign-up">Sign Up</a>
                 <a class="btn btn-outline-primary ml-3" href="/demo">View Demo</a>
-                </p>
-                
-
+                </p> 
             </div>
-
         </div> 
         <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
             <div class="col-12 col-12 col-lg-8 my-md-3">
@@ -98,19 +95,16 @@
         </div>                               
         <div class="row justify-content-center px-md-5 py-5 ">
             <div class="col-12 col-lg-4 mb-4 pr-5">
-                <h3>Ongoing Development</h3>  
-                <p>Small Archives is still in active beta development. We are doing some fine-tuning before working out businessy things like pricing. You can view (and make comments on) our public roadmap <a href="https://trello.com/b/i04fENfA/small-archives-roadmap">here</a>, or view our code repository <a href="https://github.com/alexharris/smallarchives">here</a>.</p>
-                <p>We greatly appreciate any feedback and want to make a tool that satisfies real people's needs.</p>
-                <h4>Questions, comments, concerns? –</h4>
+                <h3>Ongoing Development –</h3>  
+                <p>Small Archives is in active development. You can view (and make comments on) our public roadmap <a href="https://trello.com/b/i04fENfA/small-archives-roadmap">here</a>, or view our code repository <a href="https://github.com/alexharris/smallarchives">here</a>.</p>
+                <p>We greatly appreciate any feedback.</p>
                     <ul class="list-unstyled my-4">
                     <li><strong>Email:</strong> smallarchives at gmail dot com</li>
-                    <li><strong>Twitter:</strong> @smallarchives</li>
-                    <li><strong>Instagram:</strong> @smallarchives</li>
+                    <li><strong>Twitter:</strong>&nbsp;<a href="https://twitter.com/smallarchives">@smallarchives</a></li>
+                    <li><strong>Instagram:</strong>&nbsp;<a href="https://instagram.com/smallarchives">@smallarchives</a></li>
                 </ul> 
-
             </div>
             <div class="col-12 col-lg-4 newsletter"> 
-                
                 <div class="card bg-transparent">
                     <div class="card-body p-0" >
                         <h3>Newsletter –</h3> 

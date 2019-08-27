@@ -6,9 +6,26 @@
         <table class="table" v-if="combinedFiles.length > 0">
             <thead> 
                 <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Delete</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">
+                        Feature 
+                        <popper
+                            trigger="click"
+                            :options="{
+                            placement: 'bottom',
+                            modifiers: { offset: { offset: '0,0' } }
+                            }">
+                            <div class="popper">
+                            The feature image is what will display
+                            </div>
+                        
+                            <button class="btn btn-link" slot="reference">
+                            <font-awesome-icon icon="question-circle" size="1x" />
+                            </button>
+                        </popper>                          
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -17,9 +34,15 @@
                 <td>{{file}}</td>
                 <!-- <td><input type="checkbox" @change="manageDeleteArray(file)"></td> -->
                 <td><div class="btn btn-sm btn-outline-danger" @click="deleteFile(file)">Delete</div></td>
+                <td>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" :id="file" :value="file" v-model="featureImage">
+                    </div>                 
+                </td>
                 </tr>
             </tbody>
-        </table> 
+        </table>  
+        {{featureImage}}
         <div class="">
             <label class="btn btn-primary" >
                 Add file <input type="file" @change="fileAdded" accept=".jpg, .jpeg, .tif, .png, .gif, .wav, .mp3, .ogg, .m4a, .pdf, .mov, .mpg, .mpeg" hidden>
@@ -32,9 +55,14 @@
 import firebase from 'firebase/app';
 import sa from '../sa'
 import mime from "mime-types";
+import Popper from 'vue-popperjs';
+import 'vue-popperjs/dist/vue-popper.css';
 
 export default {
     name: "AdminMediaUploader",
+    components: {
+        'popper': Popper
+    },
     props: ['itemId'],
     data() {
         return {
@@ -44,7 +72,8 @@ export default {
             existingFiles: [], //the files on the item at the time of loading
             newFiles: [], // new files added to the item
             newFileNames: [],
-            filesToBeDeleted: []
+            filesToBeDeleted: [],
+            featureImage: ''
         }
     },
     watch: { 
@@ -52,7 +81,10 @@ export default {
         itemId: function(newVal, oldVal) { // watch it
         this.newItemId = newVal
             // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-        }
+        },
+        featureImage: function(newVal, oldVal) {
+            this.setFeatureImage(newVal)
+        }        
     },    
     created() {
         //send existing files to make array of File objects
@@ -77,8 +109,8 @@ export default {
         //----
         fileAdded: function(e) {
             
-            if(e.target.files[0].type.includes('image/') && e.target.files[0].size > 1000000) { // image file size
-                alert('That image is too big! Images must be under 1MB.')
+            if(e.target.files[0].type.includes('image/') && e.target.files[0].size > 2000000) { // image file size
+                alert('That image is too big! Images must be under 2MB.')
             } else if (e.target.files[0].type.includes('application/pdf') && e.target.files[0].size > 5000000) { // PDF file size
                 alert('That PDF is too big! PDFs must be under 5MB.')
             } else if (e.target.files[0].type.includes('audio/') && e.target.files[0].size > 5000000) { // audio file size
@@ -190,6 +222,17 @@ export default {
             });                
 
         },
+        //----
+        // Set the feature image on the item record
+        //----        
+        setFeatureImage: function(featureImage) {
+            sa.itemDocumentDbRef(this.uid, this.archiveId, this.newItemId).update({
+                featureImage: featureImage
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });                
+
+        },        
 
     },
 };

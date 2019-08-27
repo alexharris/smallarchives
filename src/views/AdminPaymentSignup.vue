@@ -51,7 +51,7 @@
             id="checkout-button-plan_FT2uZXGDbyqpas"
             role="link"
             >
-            Checkout
+            Upgrade
             </button>  
 
 

@@ -77,7 +77,7 @@ export default {
     },    
     addItemButton (id) {
       this.$router.push({
-        name: 'AdminCreateItem',
+        name: 'AdminEditItem',
         params: { id: id }
       })
     },

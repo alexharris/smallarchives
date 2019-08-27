@@ -60,7 +60,8 @@
           <p></p>
           <p>There are no results. Please modify filters.</p>
         </div>
-      </div>          
+      </div>
+      <AdminAddItemButton />          
     </div>
   </div>
 </template>

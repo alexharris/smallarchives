@@ -23,7 +23,7 @@
         methods: {
             addItem: function() {
                 this.$router.push({
-                    name: 'AdminCreateItem',
+                    name: 'AdminEditNewItem',
                     params: { id: this.archiveId }
                 })            
             },

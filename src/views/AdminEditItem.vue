@@ -47,8 +47,8 @@
               <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab"> 
                 <!-- Title -->
                 <div class="form-group row">
-                  <label for="inputTitle" class="col-sm-2 col-form-label">Title *</label>
-                  <div class="col-sm-10">
+                  <label for="inputTitle" class="col-sm-3 col-form-label">Title *</label>
+                  <div class="col-sm-9">
                     <input class="form-control" id="inputTitle" v-model="itemTitle">
                     <div class="invalid-feedback">
                       Please enter a title.
@@ -58,32 +58,20 @@
                 </div>
                 <!-- Description -->
                 <div class="form-group row">
-                  <label for="inputDescription" class="col-sm-2 col-form-label">Description</label>
-                  <div class="col-sm-10">
+                  <label for="inputDescription" class="col-sm-3 col-form-label">Description</label>
+                  <div class="col-sm-9">
                     <textarea class="form-control" id="inputDescription" v-model="itemDescription"></textarea>
                     <small v-if="helpSwitcherValue" class="help-text form-text text-muted">An account of the resource.</small>
                   </div>
                 </div>  
                 <!-- Tags -->
                 <div class="form-group row">
-                  <label for="inputTags" class="col-sm-2 col-form-label">Tags</label>
-                  <div class="col-sm-10">
+                  <label for="inputTags" class="col-sm-3 col-form-label">Tags</label>
+                  <div class="col-sm-9">
                     <select class="form-control" id="inputTags" multiple v-model="selectedTags">
                       <option v-for="tag in tags">{{tag.tagTitle}}</option>
                     </select>
                     <small class="help-text form-text text-muted">Tags allow you to draw connections between separate items. Get started by editing the archive and adding the tags you want to use. They will then appear here and you can select which ones apply to each item.</small>
-                  </div>
-                </div>   
-                <!-- Featured image -->
-                
-                <div class="form-group row" >
-                  <label for="selectImage" class="col-sm-2 col-form-label">Featured Image</label>
-                  <div class="col-sm-10">
-                    
-                    <p>Select a featured image to display on the list and grid view: <br /><br />
-                      <input type="file" id="selectImage" v-on:change="handleFeatureImageChange" v-bind:class="{'is-invalid': imageInvalid}">
-                    </p>
-                    <span v-if="itemFeatureImageName != ''"><strong>Current Featured Image:</strong> {{itemFeatureImageName}}</span><br />
                   </div>
                 </div>                           
 
@@ -104,6 +92,23 @@
                   </div> -->
                   <div class="col-12">
                     <AdminMediaUploader ref="mediaUploader" :itemId="this.itemId" />
+                    <!-- Featured image -->
+                    
+                    <div class="card" >
+                      <div class="card-header">
+                        Feature Image Overide
+                      </div>
+                      <div class="card-body">
+                        
+                        <div class="col-sm-9">
+                          
+                          <p>Select a featured image to display on the list and grid view:</p>
+                            <input type="file" id="selectImage" v-on:change="handleFeatureImageChange" v-bind:class="{'is-invalid': imageInvalid}">
+                          </p>
+                          <span v-if="itemFeatureImageName != ''"><strong>Current Featured Image:</strong> {{itemFeatureImageName}}</span><br />
+                        </div>
+                      </div>
+                    </div>                       
                     <!-- <div v-if="itemMediaType == 'image'">
                       <img :src="itemSrc" />
 
@@ -279,13 +284,13 @@
                 <div class="row">
                   <div class="col-12">
                     <ul class="list-unstyled">
-                      <li><strong>ID:</strong> {{this.itemId}}</li>
+                      <li><strong>Item ID:</strong> {{this.itemId}}</li>
                     </ul>
-                    <div class="card border-danger ml-0 bg-transparent">
-                      <div class="card-header">Delete</div>
+                    <div class="card border-danger ml-0" style="max-width: 20rem;">
+                      <div class="card-header text-danger"><strong>Delete Item</strong></div>
                       <div class="card-body">
-                        <p>Warning: Deleting this item is permanent and you can't get it back</p>
-                        <a class="btn btn-outline-danger" @click.stop="itemDelete()">Delete</a>
+                        <p class="text-danger">Warning: Deleting this item is permanent and you can't get it back.</p>
+                        <a class="btn btn-danger text-white" @click.stop="itemDelete()">Delete</a>
                       </div>
                     </div> 
                   </div>                     
@@ -440,14 +445,26 @@ export default {
 
     } ,  
     handleFeatureImageChange(e, index) {
-      if(this.itemFeatureImageName != '') { // if the feature image is already set
-        this.itemOldFeatureImage = this.itemFeatureImageName // move the value
-        this.itemFeatureImage = e.target.files[0] // set it to new value
-        this.itemFeatureImageName = e.target.files[0].name
-      } else { // else
-        this.itemFeatureImage = e.target.files[0] // just set it
-        this.itemFeatureImageName = e.target.files[0].name
-      }
+
+            // if (!this.itemFeatureImageName || this.itemFeatureImageName === '') { // title is mandatory
+      //   this.errors.push('A feature image is required')
+      // }
+
+        if(e.target.files[0].type.includes('image/') && e.target.files[0].size > 1000000) { // image file size
+            this.errors.push('The featured image is too big! Images must be under 1MB.')
+        } else {
+          if(this.itemFeatureImageName != '') { // if the feature image is already set
+            this.itemOldFeatureImage = this.itemFeatureImageName // move the value
+            this.itemFeatureImage = e.target.files[0] // set it to new value
+            this.itemFeatureImageName = e.target.files[0].name
+          } else { // else
+            this.itemFeatureImage = e.target.files[0] // just set it
+            this.itemFeatureImageName = e.target.files[0].name
+          }
+        }
+      
+
+
 
       
     },   
@@ -544,17 +561,6 @@ export default {
         this.errors.push('A title is required')
       }
 
-      // if (!this.itemFeatureImageName || this.itemFeatureImageName === '') { // title is mandatory
-      //   this.errors.push('A feature image is required')
-      // }
-
-      console.log(this.itemFeatureImage)
-      if(this.itemFeatureImage != '') {
-        if(this.itemFeatureImage.type.includes('image/') && this.itemFeatureImage.size > 1000000) { // image file size
-            this.errors.push('The featured image is too big! Images must be under 1MB.')
-        }
-      }
-
     },             
     onSubmit () {
 
@@ -625,3 +631,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.nav-pills .nav-link.active {
+  color: black;
+  background-color: lightgray;
+}
+
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="sign-up">  
-    <div class="row justify-content-center mt-5" v-if="notSignedUp">
+    <div class="row justify-content-center" v-if="notSignedUp">
       <div class="col-12 col-sm-10 col-md-8 col-lg-4" >
         <h3 class="mb-3">Sign up</h3>
           <template v-if="error">
@@ -43,7 +43,7 @@
               
             </form>
           </div>
-          <p class="mt-3">Already have an account? <router-link to="/login">Login</router-link>.</p>
+          <p class="mt-3">Already have an account? <router-link to="/login">Sign in</router-link>.</p>
       </div>
       <!-- <div class="col-12 col-sm-2 col-md-4 col-lg-4" >
         <div class="card" style="width: 18rem;">

@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="card-body">
-                        <h4 class="card-title">{{archiveTitle}}</h4>
+                        <h4 class="card-title"><a :href="'/u/' + username + '/' + archiveId">{{archiveTitle}}</a></h4>
                         <p class="card-text">{{archiveDesc}}</p>
                         <ul class="list-unstyled">
                             <li><strong>Number of Items: </strong> {{numberOfItems}} <br /></li>
@@ -35,8 +35,8 @@
                 </div>
                     <div class="card-footer text-muted w-100">
                         <span>Created on: {{archiveDateCreated}}</span>
-                        <a class="btn btn-primary ml-2 float-right" :href="'/u/' + username + '/' + archiveId">View</a>
-                        <a class="btn btn-outline-primary float-right" :href="'/admin/edit-archive/' + archiveId">Edit</a> 
+                        <a class="btn btn-primary btn-sm ml-2 float-right" :href="'/u/' + username + '/' + archiveId">View</a>
+                        <a class="btn btn-outline-primary btn-sm float-right" :href="'/admin/edit-archive/' + archiveId">Edit</a> 
                     </div>      
             </div>
         </div>        
