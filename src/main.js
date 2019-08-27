@@ -93,33 +93,6 @@ firebase.database.enableLogging(true);
 
 let app = "";
 
-// const prodConfig = {
-//   apiKey: "AIzaSyDNPR-6_0vWMpf3MPtzg_BBJOch_WBfCnI",
-//   authDomain: "pico-archive.firebaseapp.com",
-//   databaseURL: "https://pico-archive.firebaseio.com",
-//   projectId: "pico-archive",
-//   storageBucket: "pico-archive.appspot.com",
-//   messagingSenderId: "916542478628"
-// };
-
-// const devConfig = {
-//   apiKey: "AIzaSyAc1E0zzWcLMhCfQurfVeChRiuFbObJ9JU",
-//   authDomain: "smallarchives-bf331.firebaseapp.com",
-//   databaseURL: "https://smallarchives-bf331.firebaseio.com",
-//   projectId: "smallarchives-bf331",
-//   storageBucket: "smallarchives-bf331.appspot.com",
-//   messagingSenderId: "798629555483"
-// };
-
-//   const devConfig = {
-//     apiKey: process.env.VUE_APP_API_KEY,
-//     authDomain: process.env.VUE_APP_AUTH_DOMAIN,
-//     databaseURL: process.env.VUE_APP_DATABASE_URL,
-//     projectId: process.env.VUE_APP_PROJECT_ID,
-//     storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
-//     messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
-//   };
-
 if (process.env.NODE_ENV === "production") {
   const prodConfig = {
     apiKey: process.env.VUE_APP_API_KEY,
