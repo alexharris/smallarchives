@@ -378,6 +378,8 @@ export default {
         console.log('new')
         // load the tags
         this.getTags()
+        //load the custom fields
+        this.getCustomFields()
         // find out how many items there are
         sa.itemCollectionDbRef(this.uid, this.archiveId)
         .get()
@@ -471,7 +473,9 @@ export default {
           });
         });
       }).then(() => {
-        this.getExistingCustomFieldsValues()
+        if(this.$route.params.item_id != null) {
+          this.getExistingCustomFieldsValues()
+        }
       })
     },  
     getExistingCustomFieldsValues() {

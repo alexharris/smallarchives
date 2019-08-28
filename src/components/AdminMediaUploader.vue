@@ -34,7 +34,7 @@
                 <td class="text-center">
                     <div class="form-check" v-if="mimeType(file).includes('image')">
                        
-                    <input class="form-check-input" type="radio" name="exampleRadios" :id="file" :value="file" @change="setFeatureImage(file)" :checked="isThisImageCurrentlyFeatued(file)"/>
+                    <input class="form-check-input" type="radio" name="exampleRadios" :id="file" :value="file" @change="setFeatureImage(file)" :checked="isThisImageCurrentlyFeatured(file)"/>
                     </div>                 
                 </td>
                 </tr>
@@ -103,7 +103,7 @@ export default {
             return mime.lookup(file)
         },             
         // Determine if the image is currently featured
-        isThisImageCurrentlyFeatued: function(file) {
+        isThisImageCurrentlyFeatured: function(file) {
             if(file === this.existingFeatureImage) {
                 return true
             } else {
