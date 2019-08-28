@@ -130,11 +130,7 @@
               <p>Tags are used to group items together. Add tags here to make them available when creating or updating an item.</p>
               <hr class="my-4" />   
               <div class="tags">  
-                <form class="form-inline mb-4">
-                  <label class="sr-only" for="inlineFormInputName2">Name</label>
-                  <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
-                  <div class="btn btn-primary" v-on:click.stop="addTag">Add</div>
-                </form>    
+ 
                 <p>Existing tags:</p>   
                 <span v-if="tags.length == 0">
                   <p>This archive currently does not have any tags! Add a tag below and click <strong>Add</strong>.</p>
@@ -142,6 +138,11 @@
                 <span class="badge badge-warning mr-2" v-for="tag in tags" v-else>
                   {{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 badge-close" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" />
                 </span>
+                <form class="form-inline mb-4">
+                  <label class="sr-only" for="inlineFormInputName2">Name</label>
+                  <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
+                  <div class="btn btn-primary" v-on:click.stop="addTag">Add</div>
+                </form>                   
               </div>
             </div>  
 
@@ -488,10 +489,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
   .tags {
     size: 2em;
   }
+
+  .nav-pills .nav-link.active {
+    color: black;
+    background-color: lightgray;
+}
 
 </style>

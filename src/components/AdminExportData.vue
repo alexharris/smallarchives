@@ -94,7 +94,7 @@ export default {
             itemTitle: doc.data().itemTitle,   
             itemDescription: doc.data().itemDescription,  
             tags: doc.data().tags.join(','),            
-            itemMediaFileName: doc.data().itemMediaFileName,            
+            // itemMediaFileName: doc.data().itemMediaFileName,            
             // itemMediaYoutubeId: doc.data().itemMediaYoutubeId,            
             itemType: doc.data().itemType,            
             itemContributor: doc.data().itemContributor,            
@@ -112,7 +112,7 @@ export default {
             itemSource: doc.data().itemSource,  
             itemSubject: doc.data().itemSubject,
             customFields: doc.data().customFields,
-            itemFeatureImageName: doc.data().itemFeatureImageName,
+            // itemFeatureImageName: doc.data().itemFeatureImageName,
             tags: Object.assign({}, doc.data().tags),
             itemMediaFiles: Object.assign({}, doc.data().itemMediaFiles)
 
