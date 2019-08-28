@@ -1,16 +1,13 @@
 <template>
     <div>
-        <!-- <div v-for="file in newFiles">
-            {{file.name}}
-        </div> -->
         <table class="table" v-if="combinedFiles.length > 0">
             <thead> 
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Delete</th>
-                    <th scope="col">
-                        Feature 
+                    <th scope="col" class="text-center">
+                        Feature
                         <popper
                             trigger="click"
                             :options="{
@@ -18,7 +15,7 @@
                             modifiers: { offset: { offset: '0,0' } }
                             }">
                             <div class="popper">
-                            The feature image is what will display
+                            The feature image will display on the archive page.
                             </div>
                         
                             <button class="btn btn-link" slot="reference">
@@ -34,17 +31,17 @@
                 <td>{{file}}</td>
                 <!-- <td><input type="checkbox" @change="manageDeleteArray(file)"></td> -->
                 <td><div class="btn btn-sm btn-outline-danger" @click="deleteFile(file)">Delete</div></td>
-                <td>
-                    <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" :id="file" :value="file" v-model="featureImage">
+                <td class="text-center">
+                    <div class="form-check" v-if="mimeType(file).includes('image')">
+                       
+                    <input class="form-check-input" type="radio" name="exampleRadios" :id="file" :value="file" @change="setFeatureImage(file)" :checked="isThisImageCurrentlyFeatued(file)"/>
                     </div>                 
                 </td>
                 </tr>
             </tbody>
         </table>  
-        {{featureImage}}
         <div class="">
-            <label class="btn btn-primary" >
+            <label class="btn btn-primary btn-sm" >
                 Add file <input type="file" @change="fileAdded" accept=".jpg, .jpeg, .tif, .png, .gif, .wav, .mp3, .ogg, .m4a, .pdf, .mov, .mpg, .mpeg" hidden>
             </label>
         </div>                
@@ -73,7 +70,9 @@ export default {
             newFiles: [], // new files added to the item
             newFileNames: [],
             filesToBeDeleted: [],
-            featureImage: ''
+            featureImage: '',
+            existingFeatureImage: '',
+            truth: true
         }
     },
     watch: { 
@@ -81,10 +80,7 @@ export default {
         itemId: function(newVal, oldVal) { // watch it
         this.newItemId = newVal
             // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-        },
-        featureImage: function(newVal, oldVal) {
-            this.setFeatureImage(newVal)
-        }        
+        },    
     },    
     created() {
         //send existing files to make array of File objects
@@ -100,10 +96,20 @@ export default {
             } else {
                 return 0
             }
-            
-        }      
+        }
     }, 
-    methods: {   
+    methods: {  
+        mimeType: function(file) {
+            return mime.lookup(file)
+        },             
+        // Determine if the image is currently featured
+        isThisImageCurrentlyFeatued: function(file) {
+            if(file === this.existingFeatureImage) {
+                return true
+            } else {
+                return false
+            }
+        } ,    
         //----
         // When a file is added via the UI
         //----
@@ -130,19 +136,22 @@ export default {
             console.log('Name: ' + this.newFiles[i].name)
             console.log('File: ' + this.newFiles[i])
 
-                // ----
-                // This puts the file into storage
-                // at some point should check to see if it already exists and tell user
-                sa.itemStorageRef(this.uid, this.archiveId, this.newItemId, this.newFiles[i].name).put(this.newFiles[i]).then((snapshot) => {
-                    console.log('Uploaded a blob or file!');
-                });    
-                // ----    
-                // This puts the filename in the database 
-                // at some point should check to see if it already exists and tell user
+            // ----
+            // This puts the file into storage
+            // at some point should check to see if it already exists and tell user
+            sa.itemStorageRef(this.uid, this.archiveId, this.newItemId, this.newFiles[i].name).put(this.newFiles[i]).then((snapshot) => {
+                console.log('Uploaded a blob or file!');
+            });    
+            // ----    
+            // This puts the filename in the database 
+            // at some point should check to see if it already exists and tell user
                 sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
-                    itemMediaFiles: firebase.firestore.FieldValue.arrayUnion(this.newFiles[i].name)
-                })
+                    itemMediaFiles: firebase.firestore.FieldValue.arrayUnion(this.newFiles[i].name),
+                }) 
             }            
+            sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
+                featureImage: this.featureImage
+            }) 
         },
 
         deleteFile: function(fileName) {
@@ -219,19 +228,29 @@ export default {
                 }
             }).catch(function(error) {
                 console.log("Error getting document:", error);
-            });                
+            }).then(() => {
+
+                this.getFeatureImage()
+            })               
 
         },
+        //----
+        // Get the feature image for the item
+        //----        
+        getFeatureImage: function() {
+            sa.itemDocumentDbRef(this.uid, this.archiveId, this.newItemId).get().then((doc) => {
+                if (doc.exists) {
+                    this.existingFeatureImage = doc.data().featureImage
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        },          
         //----
         // Set the feature image on the item record
         //----        
         setFeatureImage: function(featureImage) {
-            sa.itemDocumentDbRef(this.uid, this.archiveId, this.newItemId).update({
-                featureImage: featureImage
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });                
-
+            this.featureImage = featureImage
         },        
 
     },

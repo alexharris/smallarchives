@@ -94,7 +94,7 @@
                     <AdminMediaUploader ref="mediaUploader" :itemId="this.itemId" />
                     <!-- Featured image -->
                     
-                    <div class="card" >
+                    <!-- <div class="card" >
                       <div class="card-header">
                         Feature Image Overide
                       </div>
@@ -108,7 +108,10 @@
                           <span v-if="itemFeatureImageName != ''"><strong>Current Featured Image:</strong> {{itemFeatureImageName}}</span><br />
                         </div>
                       </div>
-                    </div>                       
+                    </div>                        -->
+
+
+
                     <!-- <div v-if="itemMediaType == 'image'">
                       <img :src="itemSrc" />
 
@@ -341,9 +344,6 @@ export default {
       itemCreator:'',
       itemDate:'',
       itemLocation:'',
-      itemFeatureImage: '',
-      itemFeatureImageName: '',
-      itemOldFeatureImage: '',
       itemMediaFiles: [],
       newItemMediaFiles: [],
       itemMediaType:'',
@@ -407,8 +407,6 @@ export default {
           this.itemCreator = doc.data().itemCreator
           this.itemDate = doc.data().itemDate
           this.itemTitle = doc.data().itemTitle
-          // this.itemFeatureImage = doc.data().itemFeatureImage
-          this.itemFeatureImageName = doc.data().itemFeatureImageName
           this.itemFormat = doc.data().itemFormat
           this.itemIdentifier = doc.data().itemIdentifier
           this.itemLanguage = doc.data().itemLanguage
@@ -443,53 +441,8 @@ export default {
 
 
 
-    } ,  
-    handleFeatureImageChange(e, index) {
-
-            // if (!this.itemFeatureImageName || this.itemFeatureImageName === '') { // title is mandatory
-      //   this.errors.push('A feature image is required')
-      // }
-
-        if(e.target.files[0].type.includes('image/') && e.target.files[0].size > 1000000) { // image file size
-            this.errors.push('The featured image is too big! Images must be under 1MB.')
-        } else {
-          if(this.itemFeatureImageName != '') { // if the feature image is already set
-            this.itemOldFeatureImage = this.itemFeatureImageName // move the value
-            this.itemFeatureImage = e.target.files[0] // set it to new value
-            this.itemFeatureImageName = e.target.files[0].name
-          } else { // else
-            this.itemFeatureImage = e.target.files[0] // just set it
-            this.itemFeatureImageName = e.target.files[0].name
-          }
-        }
-      
-
-
-
-      
-    },   
-    deleteOldFeatureImage() {
-      // delete the legacy image and thumb derivative
-      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, 'thumb_').delete()
-      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemOldFeatureImage, '').delete()
-    },
-    deleteCurrentFeatureImage() {
-      // delete the current image and thumb derivative
-      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImageName, 'thumb_').delete()
-      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImageName, '').delete()
-    },    
-    addFeatureImage() { // Upload feature image to the DB
-      if(this.itemOldFeatureImage != '') { //check to see if there is a new feature image
-        this.deleteOldFeatureImage() //delete the old one
-      }
-      // add the new one
-      sa.itemFeatureStorageRef(this.uid, this.archiveId, this.itemId, this.itemFeatureImage.name).put(this.itemFeatureImage).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });   
-
-    },       
+    } ,         
     getTags() {
-      console.log('tags')
       this.tags = [];   
 
       sa.tagCollectionDbRef(this.uid, this.archiveId)
@@ -569,9 +522,6 @@ export default {
       if(!(this.errors.length > 0)) {      
         this.addItemEditsToDB()
         this.addCustomFieldValues()
-        if(this.itemFeatureImage != '') {
-          this.addFeatureImage()
-        }
       }
     },
     addItemEditsToDB () {
@@ -600,7 +550,6 @@ export default {
           itemSubject: this.itemSubject,
           itemType: this.itemType,
           itemCreationDate: new Date(),
-          itemFeatureImageName: this.itemFeatureImageName,
           tags: this.selectedTags
         }, { merge: true }).then(() => {
           this.$refs.mediaUploader.uploadFiles()
@@ -613,14 +562,9 @@ export default {
 
       // Needs to check and see if there are any media files to delete
 
-     
-
       // delete the document
       sa.itemDocumentDbRef(this.uid, this.archiveId, this.itemId).delete()
       
-      // delete the feature image
-      this.deleteCurrentFeatureImage() 
-
       // reroute after delete
       this.$router.push({ name: 'PublicArchive', params: { id: this.$route.params.archive_id, username: firebase.auth().currentUser.displayName }})
 

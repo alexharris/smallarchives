@@ -93,39 +93,36 @@ firebase.database.enableLogging(true);
 
 let app = "";
 
-if (process.env.NODE_ENV === "production") {
-  const prodConfig = {
-    apiKey: process.env.VUE_APP_API_KEY,
-    authDomain: process.env.VUE_APP_AUTH_DOMAIN,
-    databaseURL: process.env.VUE_APP_DATABASE_URL,
-    projectId: process.env.VUE_APP_PROJECT_ID,
-    storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
-  };  
-  firebase.initializeApp(prodConfig);
-  console.log("***************************************************");
-  console.log("******************* PRODUCTION ********************");
-  console.log("***** Make sure to use `firebase use default` *****");
-  console.log("***************************************************");
 
-} else if (process.env.NODE_ENV === "development") {
+// console.log(process.env)
 
-  const devConfig = {
-    apiKey: process.env.VUE_APP_API_KEY,
-    authDomain: process.env.VUE_APP_AUTH_DOMAIN,
-    databaseURL: process.env.VUE_APP_DATABASE_URL,
-    projectId: process.env.VUE_APP_PROJECT_ID,
-    storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
-  };
+const firebaseConfig = {
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_DATABASE_URL,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
+};
 
-  firebase.initializeApp(devConfig);
-  console.log("***********************************************");
-  console.log("***************** DEVELOPMENT *****************");
-  console.log("***** Make sure to use `firebase use dev` *****");
-  console.log("***********************************************");
 
-}
+// uncomment whichever you want to use
+
+// console.log("***************************************************");
+// console.log("****************** PRODUCTION DB *******************");
+// console.log("***** Make sure to use `firebase use default` *****");
+// console.log("***************************************************");
+
+
+
+// console.log("***********************************************");
+// console.log("**************** DEVELOPMENT DB ****************");
+// console.log("***** Make sure to use `firebase use dev` *****");
+// console.log("***********************************************");
+
+
+firebase.initializeApp(firebaseConfig);
+
 
 var storage = firebase.storage();
 

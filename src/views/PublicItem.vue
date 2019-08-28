@@ -176,7 +176,6 @@ export default {
 	        this.item.itemCoverageLong = doc.data().itemCoverageLong
 	        this.item.itemCreationDate = sa.getFormattedDate(doc.data().itemCreationDate)
 					this.item.tags = doc.data().tags
-					console.log(doc.data())
 					this.item.customFields = doc.data().customFields
 
 	      } else {
