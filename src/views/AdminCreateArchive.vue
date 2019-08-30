@@ -44,12 +44,12 @@
               <input type="checkbox" id="listView" v-model="showList">
             </div>
           </div>    
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
             <div class="col-sm-10">
               <input type="checkbox" id="gridView" v-model="showGrid">
             </div>
-          </div>  
+          </div>   -->
           <div class="form-group row">
             <label for="mapView" class="col-sm-2 col-form-label">Show Map View</label>
             <div class="col-sm-10">

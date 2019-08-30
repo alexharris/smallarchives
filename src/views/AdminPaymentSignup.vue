@@ -48,7 +48,7 @@
 
                 <button
             class="btn btn-success"
-            id="checkout-button-plan_FT2uZXGDbyqpas"
+            id="checkout-button-plan_Fhyo4B7XBn8FbO"
             role="link"
             >
             Upgrade
@@ -76,14 +76,14 @@ export default {
     }
   },
   mounted () {
-    var stripe = Stripe('pk_test_1Xevbq0rqu1q2qQzMe5bFGBR00C58N65EB');
+    var stripe = Stripe('pk_live_wowB8pLbUllziTekqZnB1cUb00SFGl1Y20');
 
-    var checkoutButton = document.getElementById('checkout-button-plan_FT2uZXGDbyqpas');
+    var checkoutButton = document.getElementById('checkout-button-plan_Fhyo4B7XBn8FbO');
     checkoutButton.addEventListener('click', function () {
         // When the customer clicks on the button, redirect
         // them to Checkout.
         stripe.redirectToCheckout({
-        items: [{plan: 'plan_FT2uZXGDbyqpas', quantity: 1}],
+        items: [{plan: 'plan_Fhyo4B7XBn8FbO', quantity: 1}],
 
         // Do not rely on the redirect to the successUrl for fulfilling
         // purchases, customers may not always reach the success_url after
