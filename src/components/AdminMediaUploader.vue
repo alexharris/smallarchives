@@ -105,6 +105,7 @@ export default {
         // Determine if the image is currently featured
         isThisImageCurrentlyFeatured: function(file) {
             if(file === this.existingFeatureImage) {
+                this.featureImage = file
                 return true
             } else {
                 return false
@@ -148,7 +149,9 @@ export default {
                 sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
                     itemMediaFiles: firebase.firestore.FieldValue.arrayUnion(this.newFiles[i].name),
                 }) 
-            }            
+            }   
+            // ----   
+            // This puts the name of the feature image into the DB         
             sa.itemDocumentDbRef(this.uid, this.archiveId,this.newItemId).update({
                 featureImage: this.featureImage
             }) 

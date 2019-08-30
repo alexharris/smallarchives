@@ -11,7 +11,11 @@
               <l-tileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tileLayer>
                 <template v-for="item in renderedItems">
                   <l-marker v-if="item.itemCoverageLat != ''" :lat-lng="[item.itemCoverageLat, item.itemCoverageLong]">
-                    <l-popup><a @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a></l-popup>
+                    <l-popup>
+                  
+                    <img :src="item.itemFeatureImage" />
+                    <a @click.stop="viewSingleItem(item.itemId)">{{item.itemTitle}}</a>
+                    </l-popup>
                   </l-marker>
                 </template>
             </l-map>
@@ -91,6 +95,7 @@ export default {
     createItemArray: function() {
       var uid = this.uid
       var archiveId = this.$route.params.archive_id
+      var itemSrcUrl = ''
 
        // clear it so it resets each time this is called
       this.items = []      
@@ -100,22 +105,49 @@ export default {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
 
-          
-          this.items.push({
-            fileName: doc.data().file,
-            itemTitle: doc.data().itemTitle,
-            itemId: doc.id,
-            itemCreationDate: sa.getFormattedDate(doc.data().itemCreationDate),
-            itemText: doc.data().itemText,
-            itemType: doc.data().itemType,
-            itemCoverageLat: doc.data().itemCoverageLat,
-            itemCoverageLong: doc.data().itemCoverageLong,
-            itemTags: doc.data().tags
-          });
-        })
+          var imagePrefix = '';
+          var featureImage = '';
+          var itemFeatureImageUrl = '';
 
-        // sort the results
-        this.items.sort(this.sortByTitle)
+          if(doc.data().itemMediaType === 'image') {
+            imagePrefix = 'thumb_'
+          } else {
+            imagePrefix = ''
+          }
+
+          
+          sa.itemStorageRef(uid, archiveId, doc.id, doc.data().featureImage, 'thumb_').getDownloadURL().then((url) => {
+            itemFeatureImageUrl = url
+          }).catch(function(error) {
+            itemSrcUrl = ''
+            console.log(error.message)
+          }).then(() => {
+            this.items.push({
+              fileName: doc.data().file,
+              itemTitle: doc.data().itemTitle,
+              itemId: doc.id,
+              itemCreationDate: doc.data().itemCreationDate,
+              itemText: doc.data().itemText,
+              itemType: doc.data().itemType,
+              itemMediaType: doc.data().itemMediaType,
+              itemFeatureImage: itemFeatureImageUrl,
+              itemMediaYoutubeId: doc.data().itemMediaYoutubeId,
+              itemMediaInternetArchiveId: 'https://archive.org/embed/' + doc.data().itemMediaInternetArchiveId,
+              itemSrc: itemSrcUrl,
+              itemCoverageLat: doc.data().itemCoverageLat,
+              itemCoverageLong: doc.data().itemCoverageLong,
+              itemTags: doc.data().tags
+            }); 
+        
+            // sort the results
+            this.items.sort(this.sortByTitle)
+
+            // load rendered items
+            this.renderedItems = this.items     
+            this.filterItemArray()  
+            
+          })
+        })
   
       }).then(() => {
         this.filterItemArray()
@@ -168,15 +200,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
-  img {
-    height: 300px;
+  .leaflet-popup-content {
+    border: 1px solid #f00;
+    width:200px !important;
   }
 
   .vue2leaflet-map {
     //height: 515px;
   }
+
+  img {width: 200px;}
 
   .map-container {
     width: 100%;
