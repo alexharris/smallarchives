@@ -1,6 +1,6 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8 my-3">  
+  <div class="container mx-auto">
+
       <h1 class="h3">About Small Archives</h1>
 
       <p class="lead">Small Archives is a platform for publishing collections on the web. The goal of the site is to make it easy to create nice looking, easy to use digital archives that can help individuals and institutions display their collections, whatever they may be, in an organized and thoughtful way.</p>
@@ -32,7 +32,6 @@
 
       <h2 class="h4">Contact</h2>
       <p>You can reach me at smallarchives@gmail.com or <A href="https://twitter.com/smallarchives">@smallarchives</A> on twitter.</p>
-    </div>
   </div>
 </template>
 

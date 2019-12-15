@@ -1,52 +1,47 @@
 <template>
-    <div class="user-menu bg-primary" v-bind:class="{ menuVisible: showMenu, menuExpanded: !menuExpanded }">
-        <div class="row">
-          <div class="col-12">
-              <button class=" btn btn-primary btn-sm m-4 float-right user-menu-button" @click="$emit('toggleMenu')"><font-awesome-icon icon="times" size="2x" /></button>
-          </div>
-          <div class="col-12">
-            <!-- EXPANDED MENU -->
-            <transition name="fade" v-if="menuExpanded">
-              <ul class="list-group list-group-flush position-fixed bg-transparent">
-                <li class="list-group-item bg-transparent list-group-item-action border-0">
-                  <span @click="toggleMenuExpand" class="menu-expand-button p-md-2"><font-awesome-icon icon="long-arrow-alt-left" size="2x" /></span>
-                </li>
-                <li class="list-group-item bg-transparent list-group-item-action border-0">
-                  <a href="/admin/" class="p-2"><font-awesome-icon class="mr-3" icon="tachometer-alt" size="1x" />Dashboard</a>
-                </li>
-                <li class="list-group-item bg-transparent list-group-item-action border-0">
-                  <a href="/admin/account" class="p-2"><font-awesome-icon class="mr-3" icon="user-circle" size="1x" />Account</a>
-                </li>
-                <li class="list-group-item bg-transparent list-group-item-action border-0">
-                  <a href="/" class="p-2"><font-awesome-icon class="mr-3" icon="home" size="1x" />Home</a>
-                </li>
-                <li class="list-group-item bg-transparent list-group-item-action border-0 fixed-bottom">
-                  <a href="" @click="logout()" class="p-2"><font-awesome-icon class="mr-3" icon="sign-out-alt" size="1x" />Logout</a>
-                </li>            
-              </ul>
-            </transition>
-            <!-- NOT EXPANDED MENU -->
-            <ul class="list-group list-group-flush position-fixed bg-transparent" v-else>
-              <li class="list-group-item bg-transparent list-group-item-action border-0 text-center">
-                <span class="menu-expand-button" @click="toggleMenuExpand"><font-awesome-icon icon="long-arrow-alt-right" size="2x" /></span>
-              </li>
-              <li class="list-group-item bg-transparent list-group-item-action border-0">
-                <a href="/admin/" class="p-2"><font-awesome-icon icon="tachometer-alt" size="1x" /></a>
-              </li>
-              <li class="list-group-item bg-transparent list-group-item-action border-0">
-                <a href="/admin/account" class="p-2"><font-awesome-icon icon="user-circle" size="1x" /></a>
-              </li>
+  <div class="user-menu text-lg mr-4 h-screen hidden md:block" v-bind:class="{ menuVisible: showMenu, 'md:w-1/4': menuExpanded }">
+    <button class="md:hidden right-0 absolute p-4 z-50 text-white" @click="$emit('toggleMenu')"><font-awesome-icon icon="times" size="2x" /></button>
+    <!-- EXPANDED MENU -->
+    <transition name="fade" v-if="menuExpanded">
+      <ul class="text-white bg-gray-900 shadow p-4 h-screen inset-0 md:inset-auto text-lg mb-0">
+        <li>
+          <a @click.stop="toggleMenuExpand" class="hover:text-blue-400 p-2"><font-awesome-icon icon="long-arrow-alt-left" size="2x" /></a>
+        </li>
+        <li>
+          <a href="/admin/" class="hover:text-blue-400 no-underline p-2"><font-awesome-icon class="mr-3" icon="tachometer-alt" size="1x" />Dashboard</a>
+        </li>
+        <li>
+          <a href="/admin/account" class="hover:text-blue-400 no-underline p-2"><font-awesome-icon class="mr-3" icon="user-circle" size="1x" />Account</a>
+        </li>
+        <li>
+          <a href="/" class="hover:text-blue-400 no-underline p-2"><font-awesome-icon class="mr-3" icon="home" size="1x" />Home</a>
+        </li>
+        <li class="">
+          <a href="" @click="logout()" class="hover:text-blue-400 no-underline p-2"><font-awesome-icon class="mr-3" icon="sign-out-alt" size="1x" />Logout</a>
+        </li>            
+      </ul>
+    </transition>
+    <!-- NOT EXPANDED MENU -->
+    <ul class="text-white bg-gray-900 p-4 h-screen inset-0 float-left mb-0" v-else>
+      <li class="">
+        <span class="menu-expand-button" @click="toggleMenuExpand"><font-awesome-icon icon="long-arrow-alt-right" size="2x" /></span>
+      </li>
+      <li>
+        <a href="/admin/" class="p-2"><font-awesome-icon icon="tachometer-alt" size="1x" /></a>
+      </li>
+      <li>
+        <a href="/admin/account" class="p-2"><font-awesome-icon icon="user-circle" size="1x" /></a>
+      </li>
 
-              <li class="list-group-item bg-transparent list-group-item-action border-0">
-                <a href="/" class="p-2"><font-awesome-icon icon="home" size="1x" /></a>
-              </li>
-              <li class="list-group-item bg-transparent list-group-item-action border-0 fixed-bottom">
-                <a href="" @click="logout()" class="p-2"><font-awesome-icon icon="sign-out-alt" size="1x" /></a>
-              </li>              
-            </ul>            
-          </div>
-        </div>
-    </div>
+      <li>
+        <a href="/" class="p-2"><font-awesome-icon icon="home" size="1x" /></a>
+      </li>
+      <li class="">
+        <a href="" @click="logout()" class="p-2"><font-awesome-icon icon="sign-out-alt" size="1x" /></a>
+      </li>              
+    </ul>            
+
+  </div>
 </template>
 
 <script>
@@ -104,11 +99,11 @@ export default {
 }
 
   .user-menu {
-      width: 250px;
+      // width: 250px;
       transition: width .2s ease-in-out;
       &.menuExpanded {
         transition: width .2s ease-in-out;
-        width: 80px;
+        // width: 80px;
       }
   }
 

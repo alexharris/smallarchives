@@ -11,116 +11,119 @@
 
             </div>                
         </div> -->
-        <div class="row justify-content-center px-5 py-5 my-5 d-flex">
-            <div class="col-12 col-lg-8 my-md-5 order-2 order-lg-1 ">  
+        <div class="container mx-auto">
+            <div class="p-16">  
                 <!-- <h2 class="h1 display-5"><strong>Small Archives</strong></h2>  -->
-                <h2 class="my-4 pb-2 display-4 intro-text">Small Archives is a simple web platform for publishing collections of <span class="random-item">{{randomItem}}.</span></h2>
+                <h2 class="text-4xl h-64">Small Archives is a simple web platform for publishing collections of <span class="random-item">{{randomItem}}.</span></h2>
                 <p class="pt-5">
-                <a class="btn btn-primary" href="/sign-up">Sign Up</a>
+                <a class="btn-dark" href="/sign-up">Sign Up</a>
                 <a class="btn btn-outline-primary ml-3" href="/demo">View Demo</a>
                 </p> 
             </div>
         </div> 
-        <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
-            <div class="col-12 col-12 col-lg-8 my-md-3">
-                <h2>Features –</h2>
-                <p class="lead">Some of the stuff that Small Archives offers.</p>
-                <div class="row noborder pb-md-5">
-                    <div class="col-12 col-lg-4 my-3">
+        <div class="border-t">
+            <div class="container mx-auto">
+                <h2 class="p-4">Features –</h2>
+                <p class="p-4">Some of the stuff that Small Archives offers.</p>
+                <div class="flex flex-col sm:flex-row">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Multi-media –</h3>
                         <p class="card-text text-left">Mix and match images, audio, video and PDFs to display your collection as you see fit.</p>
                     </div>
-                    <div class="col-12 col-lg-4 my-3">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Metadata –</h3>
                         <p class="card-text text-left">Small Archives uses default Dublin Core Metatdata fields, with a few minor modifications, and clear field definitions to assist with data entry.</p>
                     </div>
-                    <div class="col-12 col-lg-4 my-3">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">A-a-a-S –</h3>
                         <p class="card-text text-left">Small Archives is Archives-as-a-Service. No need to set anything up or host anything. Just sign up and get started.</p>                            
                     </div>  
                 </div>
-                <div class="row noborder my-md-5">
-                    <div class="col-12 col-lg-4 my-3">
+                <div class="flex flex-col sm:flex-row">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Tags –</h3>
                         <p class="card-text text-left">Define custom filterable tags to group items together.</p>
                     </div>
-                    <div class="col-12 col-lg-4 my-3">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Lookin' good –</h3>
                         <p class="card-text text-left">Display your collections in beautiful grid and list views with custom thumbnails. Add a map view if your data contains geographic information.</p>
                     </div>
-                    <div class="col-12 col-lg-4 my-3">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Export – </h3>
                         <p class="card-text text-left">Take your data with you with full CSV exports.</p>
                     </div>  
                 </div>                    
             </div>                              
         </div>
-        <div class="row mt-5 pt-md-5 px-md-5 justify-content-center cards-row no-border">
-            <div class="col-12 col-12 col-lg-8 my-md-3">
-                <h2>Not Features –</h2>
-                <p class="lead">Some of the stuff that Small Archives does not offer.</p>
-                <div class="row noborder pb-md-5">
-                    <div class="col-12 col-lg-4 my-3">
+        <div class="border-t">
+            <div class="container mx-auto">
+                <h2 class="p-4">Not Features –</h2>
+                <p class="p-4">Some of the stuff that Small Archives does not offer.</p>
+                <div class="flex flex-col sm:flex-row">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Social Networking –</h3>
                         <p class="card-text text-left">There is no way to friend anybody, like anything, or subscribe to anything.</p>
                     </div>
-                    <div class="col-12 col-lg-4 my-3">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Machine Learning –</h3>
                         <p class="card-text text-left">Small Archives can't automatically detect anything...we don't know how.</p>
                     </div>
-                    <div class="col-12 col-lg-4 my-3">
+                    <div class="flex-1 p-4">
                         <h3 class="card-title text-left">Algorithms –</h3>
                         <p class="card-text text-left">We only know two algorithms: <code>y=mx+b</code> and <code>a2+b2=c2</code>, and we haven't figured out how to make those helpful for this product (are those even algorithms?)</p>                            
                     </div>  
                 </div>                   
             </div>                              
         </div>        
-        <div class="row px-sm-5 mb-4 py-5 justify-content-center example-row">
-            <div class="col-12 col-lg-5 p-0 text-center">
+        <div class="bg-gray-900 py-16">
+            <div class="container mx-auto flex flex-col md:flex-row text-white">
                 <!-- <a href="/demo">
                     <img class="img-link" src="img/demo-screenshot.jpg" />     
                 </a>  -->
-                <video class="demo-video fullscreen" autoplay loop muted>
-                <source src="img/smallarchives-demo.mp4" type="video/mp4">
-                <!-- fallback for browsers that don't support video tag -->
-                <a href="img/smallarchives-demo.mp4">download video</a>
-                </video>                
+                <video class="md:w-3/5" autoplay loop muted>
+                    <source src="img/smallarchives-demo.mp4" type="video/mp4">
+                    <!-- fallback for browsers that don't support video tag -->
+                    <a href="img/smallarchives-demo.mp4">download video</a>
+                </video>  
+                <div class="md:w-2/5 py-8 md:px-8 md:py-0">           
+                    <h2 class="h2">View a demo –</h2>
+                    <p>View an example of a small archive with our demo collection.</p>
+                    <p><a href="/demo" class="btn btn-warning">View Demo</a></p>                    
+                </div>                                
 
             </div>
-            <div class="col-12 col-lg-3 pl-0 mx-0 pl-lg-5 py-5">           
-                <h2 class="h2">View a demo –</h2>
-                <p>View an example of a small archive with our demo collection.</p>
-                <p><a href="/demo" class="btn btn-warning">View Demo</a></p>                    
-            </div>               
+             
         </div>                               
-        <div class="row justify-content-center px-md-5 py-5 ">
-            <div class="col-12 col-lg-4 mb-4 pr-5">
-                <h3>Ongoing Development –</h3>  
-                <p>Small Archives is in active development. You can view (and make comments on) our public roadmap <a href="https://trello.com/b/i04fENfA/small-archives-roadmap">here</a>, or view our code repository <a href="https://github.com/alexharris/smallarchives">here</a>.</p>
-                <p>We greatly appreciate any feedback.</p>
-                    <ul class="list-unstyled my-4">
-                    <li><strong>Email:</strong> smallarchives at gmail dot com</li>
-                    <li><strong>Twitter:</strong>&nbsp;<a href="https://twitter.com/smallarchives">@smallarchives</a></li>
-                    <li><strong>Instagram:</strong>&nbsp;<a href="https://instagram.com/smallarchives">@smallarchives</a></li>
-                </ul> 
-            </div>
-            <div class="col-12 col-lg-4 newsletter"> 
-                <div class="card bg-transparent">
-                    <div class="card-body p-0" >
-                        <h3>Newsletter –</h3> 
-                        <p>Receive periodic updates about our service. So far, we have sent zero updates, but maybe someday.</p>
-                        <form class="form-inline mb-5" action="https://tinyletter.com/smallarchives" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/smallarchives', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
-                            <div class="form-group mb-2">
-                                <label for="tlemail" class="sr-only">Email address</label>
-                                <input type="text" name="email" id="tlemail" placeholder="Email address" class="form-control mr-sm-2" />
-                                <input type="hidden" value="1" name="embed"/><br />
-                                <input type="submit" value="Sign Up" class="btn-dark btn" />
-                            </div>
-                        </form> 
-                        <font-awesome-icon class="float-left pr-2" :icon="['fab', 'twitter']" size="2x" />
-                        <p>Or follow our progress on twitter <a href="https://twitter.com/smallarchives">@smallarchives</a>.</p>
-                    </div>
-                </div>          
+        <div class="container mx-auto mt-8">
+            <div class="flex flex-col sm:flex-row">
+                <div class="p-4">
+                    <h3>Ongoing Development –</h3>  
+                    <p>Small Archives is in active development. You can view (and make comments on) our public roadmap <a href="https://trello.com/b/i04fENfA/small-archives-roadmap">here</a>, or view our code repository <a href="https://github.com/alexharris/smallarchives">here</a>.</p>
+                    <p>We greatly appreciate any feedback.</p>
+                        <ul class="list-unstyled my-4">
+                        <li><strong>Email:</strong> smallarchives at gmail dot com</li>
+                        <li><strong>Twitter:</strong>&nbsp;<a href="https://twitter.com/smallarchives">@smallarchives</a></li>
+                        <li><strong>Instagram:</strong>&nbsp;<a href="https://instagram.com/smallarchives">@smallarchives</a></li>
+                    </ul> 
+                </div>
+                <div class="p-4"> 
+                    <div class="card bg-transparent">
+                        <div class="card-body p-0" >
+                            <h3>Newsletter –</h3> 
+                            <p>Receive periodic updates about our service. So far, we have sent zero updates, but maybe someday.</p>
+                            <form class="form-inline mb-5" action="https://tinyletter.com/smallarchives" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/smallarchives', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+                                <div class="form-group mb-2">
+                                    <label for="tlemail" class="sr-only">Email address</label>
+                                    <input type="text" name="email" id="tlemail" placeholder="Email address" class="form-control mr-sm-2" />
+                                    <input type="hidden" value="1" name="embed"/><br />
+                                    <input type="submit" value="Sign Up" class="btn-dark btn" />
+                                </div>
+                            </form> 
+                            <font-awesome-icon class="float-left pr-2" :icon="['fab', 'twitter']" size="2x" />
+                            <p>Or follow our progress on twitter <a href="https://twitter.com/smallarchives">@smallarchives</a>.</p>
+                        </div>
+                    </div>          
+                </div>
             </div>
         </div>             
 	</div>
@@ -192,6 +195,7 @@ export default {
     }
 
     .row {
+
         border-bottom: 1px solid lightgrey;
         &.noborder {
             border: none;

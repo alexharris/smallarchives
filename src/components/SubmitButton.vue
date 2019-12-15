@@ -1,8 +1,8 @@
 <template>
     <div v-if="formIsLoading == false">
         <hr class="my-4" />
-        <div class="btn btn-primary mr-2" v-on:click="$emit('submit')">Submit</div>
-        <a class="btn btn-outline-primary" v-on:click="$emit('cancel')">Cancel</a>
+        <a class="btn-dark mr-2" v-on:click="$emit('submit')">Submit</a>
+        <a class="btn-red" v-on:click="$emit('cancel')">Cancel</a>
     </div>
     <div v-else>
         <hr class="my-4" />

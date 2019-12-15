@@ -1,38 +1,35 @@
 <template>
-	<div id="app" class="d-flex flex-column h-100" > 
+	<div id="app"> 
     <!-- Navbar -->
-    <div class="container-fluid fixed-top">
-      <div class="row justify-content-center shadow-sm bg-white">
-        <div class="col-12 col-lg-8">
-          <header v-if="isPromo" class="bg-white">
-            <nav class="navbar navbar-expand-lg" >
-              <a class="navbar-brand" href="/">SMALL ARCHIVES</a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"><font-awesome-icon icon="bars" size="1x" /></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarText">
-                <div class="mr-auto"><a class="nav-link" href="/about">About</a></div>
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link btn btn-primary" href="/login" v-if="!user"><font-awesome-icon class="mr-2" icon="user-circle" size="1x" />Sign in</a>
-                  </li>                          
-                </ul>
-                <a class="nav-link btn btn-primary" href="/admin/" v-if="user"><font-awesome-icon icon="cog" size="1x" /> Dashboard</a>
-              </div>
+    <div class="">
+      <div class="row justify-content-center shadow-lg bg-white">
+        <div class="container mx-auto">
+          <header v-if="isPromo" class="flex flex-col md:flex-row justify-between items-start md:items-center p-4">
+            <div class="flex flex-row justify-between w-full">
+              <a href="/" class="navbar-brand text-xl">SMALL ARCHIVES</a>
+              <button type="button" class="md:hidden" @click="menuVisible = !menuVisible">
+                <span><font-awesome-icon icon="bars" size="1x" /></span>
+              </button>             
+            </div>
+            <nav  :class="{hidden: menuVisible}" class="flex flex-col w-full md:flex-row md:justify-end md:items-center">
+
+              <a class="nav-link md:pr-4" href="/about">About</a>
+              <a class="btn-dark" href="/login" v-if="!user"><font-awesome-icon class="mr-2" icon="user-circle" size="1x" />Sign in</a>
+              <a class="btn-dark" href="/admin/" v-if="user"><font-awesome-icon icon="cog" size="1x" /> Dashboard</a>
             </nav>      
           </header> 
         </div>
       </div>
     </div>
     <!-- Main content -->
-    <div class="container-fluid wrapper flex-shrink-0 h-100" v-bind:class="{'mt-5': isPromo, 'pt-5': isPromo}" v-cloak> 
+    <div class="" v-bind:class="{'mt-5': isPromo, 'pt-5': isPromo}" v-cloak> 
       <!-- If this is person is logged in and owns this archive -->
-      <div class="row h-100" v-if="isAdmin || confirmOwner != false">
+      <div  class="md:flex flex-row" v-if="isAdmin || confirmOwner != false">
         <AdminSidebar v-bind:menuVisible="this.menuVisible" v-on:toggleMenu="toggleMenu" />
-        <div class="main pb-5 mb-5">
+        <div class="">
           <div class="col-12 p-0 fixed-bottom">
             <div class="navbar navbar-light bg-light p-0" >
-              <button class=" btn btn-sm btn-primary user-menu-button m-2" @click="toggleMenu()"><font-awesome-icon icon="cog" size="1x" /> Admin</button>
+              <button class=" btn-dark md:hidden m-2" @click="toggleMenu()"><font-awesome-icon icon="cog" size="1x" /> Admin</button>
             </div>  
           </div>     
           <div class="mx-3">   

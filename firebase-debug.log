@@ -1,0 +1,104 @@
+[debug] [2019-11-14T23:53:16.320Z] ----------------------------------------------------------------------
+[debug] [2019-11-14T23:53:16.322Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2019-11-14T23:53:16.323Z] CLI Version:   7.1.1
+[debug] [2019-11-14T23:53:16.323Z] Platform:      darwin
+[debug] [2019-11-14T23:53:16.323Z] Node Version:  v11.6.0
+[debug] [2019-11-14T23:53:16.324Z] Time:          Thu Nov 14 2019 15:53:16 GMT-0800 (Pacific Standard Time)
+[debug] [2019-11-14T23:53:16.324Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-11-14T23:53:16.331Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-14T23:53:16.331Z] > authorizing via signed-in user
+[debug] [2019-11-14T23:53:16.331Z] [iam] checking project pico-archive for permissions ["firebase.projects.get"]
+[debug] [2019-11-14T23:53:16.333Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/pico-archive:testIamPermissions  
+
+[debug] [2019-11-14T23:53:16.548Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-14T23:53:16.550Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pico-archive  
+ 
+[debug] [2019-11-14T23:53:16.746Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/alexharris/Sites/pico-archive'...
+[info] 
+[debug] [2019-11-14T23:53:16.750Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pico-archive/webApps/-/config  
+ 
+[warn] ⚠  Your requested "node" version "8" doesn't match your global version "11"
+[debug] [2019-11-14T23:53:16.888Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pico-archive/adminSdkConfig  
+ 
+[debug] [2019-11-14T23:53:17.063Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: Emulator started at http://localhost:5001
+[debug] [2019-11-14T23:53:17.455Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "/Users/alexharris/Sites/pico-archive/functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: dist
+[info] ✔  hosting: Local server: http://localhost:5000
+[debug] [2019-11-14T23:53:18.078Z] [runtime-status] Functions runtime initialized. {"cwd":"/Users/alexharris/Sites/pico-archive/functions","node_version":"11.6.0"}
+[debug] [2019-11-14T23:53:18.079Z] [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true} {}
+[debug] [2019-11-14T23:53:18.333Z] [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.2.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2019-11-14T23:53:18.460Z] [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.1.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2019-11-14T23:53:18.460Z] [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.1.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2019-11-14T23:53:19.588Z] [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.2.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2019-11-14T23:53:20.367Z] [runtime-status] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"8.2.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-admin/lib/index.js"}}
+[debug] [2019-11-14T23:53:20.780Z] [default-admin-app-used]  {"databaseURL":"https://pico-archive.firebaseio.com","storageBucket":"pico-archive.appspot.com","projectId":"pico-archive","credential":{}}
+[debug] [2019-11-14T23:53:20.780Z] [runtime-status] Intializing default app. {"databaseURL":"https://pico-archive.firebaseio.com","storageBucket":"pico-archive.appspot.com","projectId":"pico-archive","credential":{}}
+[warn] ⚠  TypeError: Cannot read property 'webhooks' of undefined
+    at Object.<anonymous> (/Users/alexharris/Sites/pico-archive/functions/index.js:126:57)
+    at Module._compile (internal/modules/cjs/loader.js:721:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:732:10)
+    at Module.load (internal/modules/cjs/loader.js:620:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:560:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:552:3)
+    at Module.require (internal/modules/cjs/loader.js:657:17)
+    at require (internal/modules/cjs/helpers.js:22:18)
+    at /usr/local/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:615:33
+    at Generator.next (<anonymous>)
+[warn] ⚠  We were unable to load your functions code. (see above)
+[debug] [2019-11-14T23:59:09.010Z] ----------------------------------------------------------------------
+[debug] [2019-11-14T23:59:09.012Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2019-11-14T23:59:09.012Z] CLI Version:   7.1.1
+[debug] [2019-11-14T23:59:09.012Z] Platform:      darwin
+[debug] [2019-11-14T23:59:09.012Z] Node Version:  v11.6.0
+[debug] [2019-11-14T23:59:09.013Z] Time:          Thu Nov 14 2019 15:59:09 GMT-0800 (Pacific Standard Time)
+[debug] [2019-11-14T23:59:09.013Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-11-14T23:59:09.019Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-14T23:59:09.020Z] > authorizing via signed-in user
+[debug] [2019-11-14T23:59:09.020Z] [iam] checking project pico-archive for permissions ["firebase.projects.get"]
+[debug] [2019-11-14T23:59:09.021Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/pico-archive:testIamPermissions  
+
+[debug] [2019-11-14T23:59:09.192Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-14T23:59:09.194Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pico-archive  
+ 
+[debug] [2019-11-14T23:59:09.437Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/alexharris/Sites/pico-archive'...
+[info] 
+[debug] [2019-11-14T23:59:09.440Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pico-archive/webApps/-/config  
+ 
+[warn] ⚠  Your requested "node" version "8" doesn't match your global version "11"
+[debug] [2019-11-14T23:59:09.452Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pico-archive/adminSdkConfig  
+ 
+[debug] [2019-11-14T23:59:09.626Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-14T23:59:09.738Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: dist
+[info] ✔  hosting: Local server: http://localhost:5000
+[info] ✔  functions: Emulator started at http://localhost:5001
+[info] i  functions: Watching "/Users/alexharris/Sites/pico-archive/functions" for Cloud Functions...
+[debug] [2019-11-14T23:59:10.231Z] [runtime-status] Functions runtime initialized. {"cwd":"/Users/alexharris/Sites/pico-archive/functions","node_version":"11.6.0"}
+[debug] [2019-11-14T23:59:10.232Z] [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true} {}
+[debug] [2019-11-14T23:59:10.234Z] [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.2.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2019-11-14T23:59:10.235Z] [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.1.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2019-11-14T23:59:10.236Z] [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.1.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-functions/lib/index.js"}
+[debug] [2019-11-14T23:59:10.269Z] [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.2.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-admin/lib/index.js"}
+[debug] [2019-11-14T23:59:10.292Z] [runtime-status] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"8.2.0","resolution":"/Users/alexharris/Sites/pico-archive/functions/node_modules/firebase-admin/lib/index.js"}}
+[debug] [2019-11-14T23:59:10.301Z] [default-admin-app-used]  {"databaseURL":"https://pico-archive.firebaseio.com","storageBucket":"pico-archive.appspot.com","projectId":"pico-archive","credential":{}}
+[debug] [2019-11-14T23:59:10.301Z] [runtime-status] Intializing default app. {"databaseURL":"https://pico-archive.firebaseio.com","storageBucket":"pico-archive.appspot.com","projectId":"pico-archive","credential":{}}
+[warn] ⚠  TypeError: Cannot read property 'webhooks' of undefined
+    at Object.<anonymous> (/Users/alexharris/Sites/pico-archive/functions/index.js:126:57)
+    at Module._compile (internal/modules/cjs/loader.js:721:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:732:10)
+    at Module.load (internal/modules/cjs/loader.js:620:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:560:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:552:3)
+    at Module.require (internal/modules/cjs/loader.js:657:17)
+    at require (internal/modules/cjs/helpers.js:22:18)
+    at /usr/local/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:615:33
+    at Generator.next (<anonymous>)
+[warn] ⚠  We were unable to load your functions code. (see above)

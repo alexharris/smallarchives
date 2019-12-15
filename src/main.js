@@ -138,4 +138,4 @@ firebase.auth().onAuthStateChanged(() => {
 });
 
 import "./assets/styles/styles.scss";
-import "bootstrap";
+// import "bootstrap";

@@ -1,5 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 @import "../../assets/styles/bootstrap-overides.scss"; 
-@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+// @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
 
 // @font-face {
 //     font-family: 'Inter';
@@ -16,6 +22,42 @@
 //          url("../Inter-ExtraBold.woff") format("woff");
 //   }
 
+h1 {
+  @apply text-3xl pb-4
+}
+
+h2 {
+  @apply text-2xl pb-4
+}
+
+h3 {
+  @apply text-xl pb-4
+}
+
+a, .link {
+  @apply underline cursor-pointer
+}
+
+a:hover {
+  @apply no-underline
+}
+
+.btn-dark {
+  @apply bg-gray-900 p-2 rounded text-white border border-gray-900 no-underline
+}
+
+.btn-dark:hover {
+  @apply bg-gray-900 p-2 rounded bg-white border border-gray-900 text-gray-900 no-underline
+}
+
+.btn-red {
+  @apply bg-red-600 p-2 rounded text-white border border-red-600 no-underline
+}
+
+.btn-red:hover {
+  @apply bg-red-600 p-2 rounded bg-white border border-red-600 text-red-600 no-underline
+}
+
   h1,h2,h3,h4,h5, .navbar-brand {
     font-family: 'Times New Roman', serif;
     // font-family: 'inter', sans-serif !important;
@@ -23,7 +65,11 @@
   }
 
   p {
-    margin: 1em 0;
+    @apply mb-4
+  }
+
+  ul {
+    @apply mb-4
   }
 
   code {
@@ -31,6 +77,16 @@
     background-color: lightgrey;
     padding: 2px;
   }
+
+  // .form-field {
+  //   @apply flex flex-row justify-start pb-4;
+  //   label {
+  //     @apply pr-4 w-full w-1/4
+  //   }
+  //   input {
+  //     @apply rounded p-2 w-full w-3/4
+  //   }
+  // }
 
   // body {
   //   font-family: Georgia, sans-serif !important;
@@ -106,28 +162,28 @@
     }
   }
 
-  a {
-    cursor: pointer;
-    color: $blue;
-    &:not(.btn):not(.nav-link):not(.navbar-brand):not(.btn-link) {
-      text-decoration: underline;
-      &:hover {
-        text-decoration: none;
-      }
-    }
-    &:hover {
-      // padding-bottom: 4px;
-      text-decoration: underline;
-      // color: blue;
-      cursor: pointer;
-      // border-bottom: 2px solid $pink;
-    }
-    img {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
+  // a {
+  //   cursor: pointer;
+  //   color: $blue;
+  //   &:not(.btn):not(.nav-link):not(.navbar-brand):not(.btn-link) {
+  //     text-decoration: underline;
+  //     &:hover {
+  //       text-decoration: none;
+  //     }
+  //   }
+  //   &:hover {
+  //     // padding-bottom: 4px;
+  //     text-decoration: underline;
+  //     // color: blue;
+  //     cursor: pointer;
+  //     // border-bottom: 2px solid $pink;
+  //   }
+  //   img {
+  //     &:hover {
+  //       cursor: pointer;
+  //     }
+  //   }
+  // }
 
 .btn {
     &:hover {
@@ -142,39 +198,20 @@
     }
 }
 
-.user-menu {
-  a {
-    color: $light;
-    text-decoration: none !important;
-    font-size: 1.3em;
-    &:hover {
-      color: $info
-      // background-color: blue
-    }
-  }
-}
 
 .menuVisible {
   z-index: -400;
 }
 
-.user-menu-button {
-  display: none;
-}
+// .user-menu-button {
+//   display: none;
+// }
 
-@media all and (max-width : 768px) {
-  .user-menu {
-    display: none;
-    
-  }
+
   .menuVisible {
-    display: block;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    z-index: 1100;
+    display: block !important;
+    // position: fixed;
+    // top: 0;
+    // bottom: 0;
+    // z-index: 1100;
   }
-  .user-menu-button {
-    display: block;
-  }
-}

@@ -1,64 +1,99 @@
 <template>
-  <div class="row justify-content-center">
+  <div class="">
 
-      <div class="col-11 my-4">
 
+       
+        <h1 class="h4">
+          New Archive
+        </h1>
+        
+        <p>Set some basic information and settings for your archive. You will be able to change all of this in the future, as well as add advanced configuration such as custom tags and fields.</p>
+        <hr class="my-2" />
         <template v-if="errors.length > 0">
-          <div class="alert alert-danger" role="alert" show>
+          <div class="bg-red-200 p-4 mb-2" role="alert" show>
             <ul>
               <li v-for="error in errors">{{error}}</li>
             </ul>
           </div>
-        </template>        
-        <h1 class="h4">
-          New Archive
-        </h1>
-        <p>Set some basic information and settings for your archive. You will be able to change all of this in the future, as well as add advanced configuration such as custom tags and fields.</p>
-        <hr class="my-4" />
+        </template>         
         <form @submit="onSubmit">
           <!-- Title -->
-          <div class="form-group row">
+          <FormField 
+            id="title"
+            label="Title"
+            type=""
+            placeholder="Title"
+            v-model="archive.title"
+          />             
+          <!-- <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-10">
               <input class="form-control" id="inputTitle" placeholder="Archive title" v-model="archive.title">
             </div>
-          </div>
+          </div> -->
           <!-- Description -->
-          <div class="form-group row">
+          <FormField 
+            id="description"
+            label="Description"
+            type="textarea"
+            placeholder="Archive Description"
+            v-model="archive.desc"
+          />             
+          <!-- <div class="form-group row">
             <label for="inputDesc" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
               <textarea class="form-control" id="inputTitle" placeholder="Archive description" v-model="archive.desc"></textarea>
             </div>
-          </div>   
+          </div>    -->
           <!-- Header image --> 
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="selectHeaderImage" class="col-sm-2 col-form-label">Select Header Image</label>
             <div class="col-sm-10">
               <input type="file" id="selectHeaderImage" v-on:change="handleFileChange">
             </div>
-          </div> 
+          </div>  -->
+          <FormField 
+            id="headerimage"
+            label="Header Image"
+            type="file"
+            placeholder=""
+            v-model.lazy="archiveHeaderImage"
+          />          
           <!-- Views -->
-          <div class="form-group row">
+          <FormField 
+            id="listview"
+            label="List View"
+            type="checkbox"
+            placeholder=""
+            v-model="showList"
+          />             
+          <!-- <div class="form-group row">
             <label for="listView" class="col-sm-2 col-form-label">Show List View</label>
             <div class="col-sm-10">
               <input type="checkbox" id="listView" v-model="showList">
             </div>
-          </div>    
+          </div>     -->
           <!-- <div class="form-group row">
             <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
             <div class="col-sm-10">
               <input type="checkbox" id="gridView" v-model="showGrid">
             </div>
           </div>   -->
-          <div class="form-group row">
+          <FormField 
+            id="mapview"
+            label="Map View"
+            type="checkbox"
+            placeholder=""
+            v-model="showMap"
+          />              
+          <!-- <div class="form-group row">
             <label for="mapView" class="col-sm-2 col-form-label">Show Map View</label>
             <div class="col-sm-10">
               <input type="checkbox" id="mapView" v-model="showMap">
             </div>
-          </div>                                         
+          </div>                                          -->
           <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" :formIsLoading="isLoading" />                                          
         </form>
-      </div>
 
   </div>
 </template>
@@ -68,11 +103,13 @@
 import firebase from 'firebase/app'
 import sa from '../sa'
 import SubmitButton from '../components/SubmitButton'
+import FormField from '../components/FormField'
 
 export default {
   name: 'AdminCreateArchive',
   components: {
-    SubmitButton
+    SubmitButton,
+    FormField
   },   
   data () {
     return {
@@ -95,9 +132,9 @@ export default {
     this.uid = currentUser.uid;
   },
   methods: {
-    handleFileChange(e, index) {
-      this.archiveHeaderImage = e.target.files[0]
-    },      
+    // handleFileChange(e, index) {
+    //   this.archiveHeaderImage = e.target.files[0]
+    // },      
     onSubmit () {
 
       this.isLoading = true;
@@ -110,7 +147,7 @@ export default {
         this.isLoading = false;
         return
       }
-
+      
       // Fake set the image name field if no image is added
       if(this.archiveHeaderImage === null) {
         this.archiveHeaderImage = {
@@ -142,7 +179,7 @@ export default {
         }
       }).then(() => {
         
-
+        console.log('4')
         this.$router.push({
           name: 'Admin',
         })         

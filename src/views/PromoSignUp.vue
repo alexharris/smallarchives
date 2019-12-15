@@ -1,50 +1,69 @@
 <template>
-  <div class="sign-up">  
-    <div class="row justify-content-center" v-if="notSignedUp">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-4" >
-        <h3 class="mb-3">Sign up</h3>
+  <div class="container mx-auto">  
+    <div class="w-4/5 sm:w-2/3 md:w-1/2 mx-auto" v-if="notSignedUp">
+        <h3 >Sign up</h3>
           <template v-if="error">
-            <div class="alert alert-danger" show>{{error}}</div>
+            <div class="bg-red-200 p-4 rounded" show>{{error}}</div>
           </template>  
           <!-- Error message for Stripe Checkout -->
           <div id="error-message"></div>
-          <div class="card">           
-            <form class="card-body">
+          <div class="shadow-lg p-8">           
+
               <!-- Username -->
-              <div class="form-group row justify-content-center">
+              <!-- <div class="form-group row justify-content-center">
                 
                 <div class="col-sm-10">
                   <label for="inputUsername">Username</label>
                   <input class="form-control" id="inputUsername" placeholder="Username" v-model="displayName" required>
                   <small class="help-text form-text text-muted">Your archives will be available at smallarchives.com/u/<em>username</em>.</small>
                 </div>
-              </div>
+              </div> -->
+              <FormField 
+                id="username"
+                label="Username"
+                type=""
+                placeholder="Username"
+                v-model="displayName"
+                helptext="Your Public Address: smallarchives.com/u/username"
+              />
               <!-- Email -->
-              <div class="form-group row justify-content-center">
+              <FormField 
+                id="email"
+                label="Email"
+                type="email"
+                placeholder="Email Address"
+                v-model="email"
+              />              
+              <!-- <div class="form-group row justify-content-center">
                 
                 <div class="col-sm-10">
                   <label for="inputEmail">Email</label>
                   <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
                 </div>
-              </div>
+              </div> -->
+
               <!-- Password -->
-              <div class="form-group row justify-content-center">
+              <FormField 
+                id="password"
+                label="Password"
+                type="password"
+                placeholder="Password"
+                v-model="password"
+              />                 
+              <!-- <div class="form-group row justify-content-center">
                 
                 <div class="col-sm-10">
                   <label for="inputPassword">Password</label>
                   <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
                 </div>
-              </div>                 
-              <div class="row justify-content-center pt-3">
-                <div class="col-sm-10">
-                  <div class="btn btn-dark " @click="checkUsername">Sign Up</div>
-                </div>
-              </div>
+              </div>                  -->
+              <button type="button" class="btn-dark" @click="checkUsername">Create Account</button>
+
               
-            </form>
+
           </div>
           <p class="mt-3">Already have an account? <router-link to="/login">Sign in</router-link>.</p>
-      </div>
+
       <!-- <div class="col-12 col-sm-2 col-md-4 col-lg-4" >
         <div class="card" style="width: 18rem;">
           <div class="card-body">
@@ -67,8 +86,13 @@
 
  <script>
   import firebase from 'firebase/app';
+  import FormField from '../components/FormField'
+
   export default {
     name: 'UserSignUp',
+    components: {
+      FormField
+    },    
     data() {
       return {
         email: '',
