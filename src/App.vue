@@ -26,22 +26,16 @@
       <!-- If this is person is logged in and owns this archive -->
       <div  class="md:flex flex-row" v-if="isAdmin || confirmOwner != false">
         <AdminSidebar v-bind:menuVisible="this.menuVisible" v-on:toggleMenu="toggleMenu" />
-        <div class="">
-          <div class="col-12 p-0 fixed-bottom">
-            <div class="navbar navbar-light bg-light p-0" >
-              <button class=" btn-dark md:hidden m-2" @click="toggleMenu()"><font-awesome-icon icon="cog" size="1x" /> Admin</button>
-            </div>  
-          </div>     
-          <div class="mx-3">   
-            <router-view/>  
-          </div>
+        <!-- <div class="navbar navbar-light bg-light p-0" >
+          <button class=" btn-dark md:hidden m-2" @click="toggleMenu()"><font-awesome-icon icon="cog" size="1x" /> Admin</button>
+        </div>   -->
+        <div class="w-full px-4 mx-auto">   
+          <router-view/>  
         </div>
       </div>
       <!-- This is if the person is not logged in -->
       <div class="row" v-else>
-        <div class="col-12">  
           <router-view/>  
-        </div>
       </div>  
     </div>      
   </div>

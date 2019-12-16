@@ -58,6 +58,18 @@ a:hover {
   @apply bg-red-600 p-2 rounded bg-white border border-red-600 text-red-600 no-underline
 }
 
+.tab {
+  @apply w-24 rounded-full border border-gray-900 text-center p-2 mr-2 cursor-pointer shadow
+}
+
+.tab:hover {
+  @apply bg-gray-300
+}
+
+.tab.active {
+  @apply bg-gray-900 text-white
+}
+
   h1,h2,h3,h4,h5, .navbar-brand {
     font-family: 'Times New Roman', serif;
     // font-family: 'inter', sans-serif !important;

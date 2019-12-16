@@ -1,18 +1,19 @@
 <template>
-    <div class="mt-2">
+    <div>
+        <h2>Custom Fields</h2>
         <p>Add custom fields that can be filled out across all items.</p>
-        <table class="table" v-if="customFields.length > 0">
-            <thead>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Hint</th>
-                <th>Action</th>
+        <table class="w-full text-left" v-if="customFields.length > 0">
+            <thead class="bg-gray-200">
+                <th class="px-4 py-2">Name</th>
+                <th class="px-4 py-2">Type</th>
+                <th class="px-4 py-2">Hint</th>
+                <th class="px-4 py-2">Action</th>
             </thead>
-            <tr v-for="field in customFields">
-                <td>{{field.id}}</td>
-                <td>{{field.customFieldType}}</td>
-                <td>{{field.customFieldHint}}</td>
-                <td><button class="btn btn-sm btn-outline-primary" @click="deleteCustomField(field.id)">Delete</button></td>
+            <tr v-for="field in customFields" class="border-b border-gray-900 h-4">
+                <td class="px-4 py-2">{{field.id}}</td>
+                <td class="px-4 py-2">{{field.customFieldType}}</td>
+                <td class="px-4 py-2">{{field.customFieldHint}}</td>
+                <td class="px-4 py-2"><button class="text-red-600" @click="deleteCustomField(field.id)">Delete</button></td>
             </tr>
         </table>
         <div v-else>
@@ -20,40 +21,70 @@
         </div>
         <hr class="my-4" />
         <template v-if="errors.length > 0">
-            <div class="alert alert-danger" show>
-                <h3>Errors</h3>
-                <ul>
+            <AlertBox color="red" strength="200">
+            <ul>
                 <li v-for="error in errors">{{error}}</li>
-                </ul>
-            </div>
+            </ul>
+            </AlertBox>            
         </template>        
         <p><strong>Add new Custom Field</strong></p>
         <div class="form-row my-3">
-            <div class="form-group col-12 col-md-3">
+            <!-- <div class="form-group col-12 col-md-3">
                 <label for="fieldName">Field Name</label>
                 <input class="form-control" id="fieldName" v-model="customFieldName">
-            </div>
-            <div class="form-group col-12 col-md-3">
+            </div> -->
+            <FormField 
+              id="fieldname"
+              label="Field Name"
+              type="text"
+              placeholder="Field Name"
+              v-model="customFieldName"
+            />     
+            <FormField 
+              id="fielieldtypedname"
+              label="Field Type"
+              type="select"
+              v-bind:options="['Text']"
+              placeholder="Field Type"
+              v-model="customFieldType"
+              helptext="'Text' is the only option for now!"
+            />               
+            <!-- Text is the only field type for now, this can be brought back when that changes -->
+            <!-- <div class="form-group col-12 col-md-3">
                 <label for="fieldType">Field Type</label>
                 <select id="fieldType" class="form-control" v-model="customFieldType">
                     <option selected>Text</option>
                 </select>
-            </div>
-            <div class="form-group col-12 col-md-3">
+            </div> -->
+            <!-- <div class="form-group col-12 col-md-3">
                 <label for="fieldHint">Hint Text</label>
                 <input class="form-control" id="fieldHint" v-model="customFieldHint">
-            </div>
+            </div> -->
+            <FormField 
+              id="hint"
+              label="Hint text"
+              type="text"
+              placeholder="Hint text"
+              v-model="customFieldHint"
+              helptext="Remind future you what kind of information this field holds"
+            />              
         </div>        
-        <button class="btn btn-primary" @click="addCustomField">Add Field</button>
+        <button class="btn-dark" @click="addCustomField">Add Field</button>
     </div>
 </template>
 
 <script>
 import firebase from 'firebase/app';
 import sa from '../sa'
+import AlertBox from '../components/AlertBox'
+import FormField from '../components/FormField'
 
 export default {
     name: "AdminCustomFields",
+    components: {
+        FormField,
+        AlertBox
+    },
     data() {
         return {
             uid: '',
@@ -61,7 +92,7 @@ export default {
             customFields: [],
             customFieldName: '',
             customFieldNameError: false,
-            customFieldType: '',
+            customFieldType: 'text',
             customFieldTypeError: false,
             customFieldHint: '',
             newCustomFields: [],

@@ -6,12 +6,14 @@
       <a class="btn btn-dark" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>   
     </div>
     <div v-else>
-      <h4>Your Dashboard –</h4>
+      <h2>Your Dashboard –</h2>
       <template v-for="archive in archives">
         <AdminArchiveSnapshot :archiveId="archive.id" />
-      </template>   
+      </template>
+      <AlertBox color="blue" strength="200" v-if="subscriptionType === 'None'">
+        <a href="/payment">Upgrade</a> to add additional archives.
+      </AlertBox>   
       <a v-if="archives.length < 1 || subscriptionType === 'Annual' " class="btn btn-outline-dark btn-sm my-4" href="/admin/add-archive">New Archive <font-awesome-icon icon="plus" size="1x" /></a>
-      <div v-if="subscriptionType === 'None'"><a href="/payment">Upgrade</a> to add additional archives.</div>
     </div>
   </div>          
 </template>
@@ -22,12 +24,14 @@ import firebase from 'firebase/app'
 import sa from '../sa'
 import ArchiveHeaderImage from '../components/ArchiveHeaderImage'
 import AdminArchiveSnapshot from '../components/AdminArchiveSnapshot'
+import AlertBox from '../components/AlertBox.vue';
 
 export default {
   name: 'AdminDashboard',
   components: {
     ArchiveHeaderImage,
-    AdminArchiveSnapshot
+    AdminArchiveSnapshot,
+    AlertBox
   },
   data () {
     return {

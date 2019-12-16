@@ -14,32 +14,20 @@
             <a class="btn btn-primary" :href="'/admin/edit-archive/' + archiveId">Edit</a>
         </div>
     </div> -->
-    <div>
-        <div class="card mb-3">
-            <div class="row no-gutters">
-                <div class="col-lg-4 p-4">
-                <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3 header-image"/>
-                </div>
-                <div class="col-lg-8">
-                    <div class="card-body">
-                        <h4 class="card-title"><a :href="'/u/' + username + '/' + archiveId">{{archiveTitle}}</a></h4>
-                        <p class="card-text">{{archiveDesc}}</p>
-                        <ul class="list-unstyled">
-                            <li><strong>Number of Items: </strong> {{numberOfItems}} <br /></li>
-                            <li><strong>Custom Fields: </strong><span v-for="field in archiveCustomFields" class="badge badge-pill badge-info mr-2">{{field}}</span><br /></li>
-                            <li><strong>Tags: </strong><span v-for="tag in archiveTags" class="badge badge-pill badge-warning mr-2">{{tag}}</span><br /></li>
-                            
-                        </ul>
-                    </div>
-                
-                </div>
-                    <div class="card-footer text-muted w-100">
-                        <span>Created on: {{archiveDateCreated}}</span>
-                        <a class="btn btn-primary btn-sm ml-2 float-right" :href="'/u/' + username + '/' + archiveId">View</a>
-                        <a class="btn btn-outline-primary btn-sm float-right" :href="'/admin/edit-archive/' + archiveId">Edit</a> 
-                    </div>      
-            </div>
-        </div>        
+    <div class="inline-block w-full shadow p-4">
+            <ArchiveHeaderImage v-bind:archiveId="key" class="float-left pr-4" />
+            <h2><a :href="'/u/' + username + '/' + archiveId">{{archiveTitle}}</a></h2>
+            <p v-if="archiveDesc != ''">{{archiveDesc}}</p>
+            <ul>
+                <li><strong>Number of Items: </strong> {{numberOfItems}} <br /></li>
+                <li><strong>Custom Fields: </strong><span v-for="field in archiveCustomFields" class="badge badge-pill badge-info mr-2">{{field}}</span><br /></li>
+                <li><strong>Tags: </strong><span v-for="tag in archiveTags" class="badge badge-pill badge-warning mr-2">{{tag}}</span><br /></li>
+                <li><strong>Created on:</strong> {{archiveDateCreated}}</li>
+                <li><a class="pr-2" :href="'/u/' + username + '/' + archiveId">View</a><a :href="'/admin/edit-archive/' + archiveId">Edit</a></li>
+            </ul>
+    </div>
+  
+    
         <!-- <div class="row">
             <div class="col-xs-12 col-lg-4">
                 <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3 header-image"/>
@@ -57,7 +45,7 @@
                 <a class="btn btn-outline-primary" :href="'/admin/edit-archive/' + archiveId">Edit</a>            
             </div>   
         </div> -->  
-    </div>
+
 </template>
 
 <script>

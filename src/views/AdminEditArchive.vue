@@ -1,196 +1,225 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-12 col-sm-11 pt-4">
+
       
-      <h1 class="h3 float-left"> Edit Archive</h1>
-      <a :href="backUrl" class="float-right close-item"><font-awesome-icon icon="times" size="1x" /></a><br />
-      <br />
+      <h1 class="h3"> Edit Archive</h1>
+      <!-- <a :href="backUrl" class="close-item"><font-awesome-icon icon="times" size="1x" /></a><br /> -->
       <template v-if="errors.length > 0">
-        <div class="alert alert-danger" role="alert" show>
+        <AlertBox color="red" strength="200">
           <ul>
             <li v-for="error in errors">{{error}}</li>
           </ul>
-        </div>
-      </template>   
-      <div class="card">
-        <div class="card-header">     
-          <ul class="nav nav-pills card-header-pills" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="field-tab" data-toggle="tab" href="#field" role="tab" aria-controls="field" aria-selected="false">Fields</a>
-            </li>         
-            <li class="nav-item">
-              <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Tags</a>
-            </li>       
-            <li class="nav-item">
-              <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
-            </li>        
-          </ul>     
-        </div>
-        <div class="card-body">
-          <div id="myTabContent" class="tab-content my-2">   
+        </AlertBox>
+        <!-- <div class="alert alert-danger" role="alert" show>
+          <ul>
+            <li v-for="error in errors">{{error}}</li>
+          </ul>
+        </div> -->
+      </template>    
+        <div class="flex flex-row">
+            <span @click="tab = 'basic'" class="tab" :class="{active: (tab == 'basic')}">Basic</span>
+            <span @click="tab = 'fields'" class="tab" :class="{active: (tab == 'fields')}">Fields</span>
+            <span @click="tab = 'tags'" class="tab" :class="{active: (tab == 'tags')}">Tags</span>
+            <span @click="tab = 'admin'" class="tab" :class="{active: (tab == 'admin')}">Admin</span>
+        </div>     
+        <div id="myTabContent" class="tab-content my-2">   
+          
           <!-- Start first tab -->
-            <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">   
-              <!-- Title -->
-              <div class="form-group row">
-                <label for="inputTitle" class="col-sm-4 col-form-label">Title</label>
-                <div class="col-sm-8">
-                  <input class="form-control" id="inputTitle" v-model="archive.title">
-                </div>
-              </div> 
-              <!-- Desc -->
-              <div class="form-group row">
-                <label for="inputDesc" class="col-sm-4 col-form-label">Description</label>
-                <div class="col-sm-8">
-                  <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
-                </div>
-              </div>   
-              <!-- Header Image -->
-              <div v-if="archive.headerImage" class="my-4">
-                <div class="row">
-                  <div class="col-sm-4">Header Image</div>
-                  <div class="cols-m-8">
-                    <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
-                    <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
-                  </div>
+          <div v-if="tab == 'basic'" class="shadow-lg p-4">  
+            <h2>Basic Details</h2> 
+            <!-- Title -->
+            <FormField 
+              id="title"
+              label="Title"
+              type=""
+              placeholder="Title"
+              v-model="archive.title"
+            />               
+
+            <!-- <div class="form-group row">
+              <label for="inputTitle" class="col-sm-4 col-form-label">Title</label>
+              <div class="col-sm-8">
+                <input class="form-control" id="inputTitle" v-model="archive.title">
+              </div>
+            </div>  -->
+            <!-- Desc -->
+            <FormField 
+              id="description"
+              label="Description"
+              type="textarea"
+              placeholder="Description"
+              v-model="archive.desc"
+            />               
+            <!-- <div class="form-group row">
+              <label for="inputDesc" class="col-sm-4 col-form-label">Description</label>
+              <div class="col-sm-8">
+                <textarea class="form-control" id="inputDesc" v-model="archive.desc"></textarea>
+              </div>
+            </div>    -->
+            <!-- Header Image -->
+            <FormField 
+              id="headerimage"
+              label="Header Image"
+              type="file"
+              placeholder=""
+              v-model.lazy="archive.headerImage"
+            />               
+            <!-- <div v-if="archive.headerImage" class="my-4">
+              <div class="row">
+                <div class="col-sm-4">Header Image</div>
+                <div class="cols-m-8">
+                  <ArchiveHeaderImage v-bind:archiveId="key" class="mr-3"/>
+                  <div @click.stop="archive.headerImage = ''" class="btn btn-outline-dark my-4">Remove</div>
                 </div>
               </div>
-              <div v-else>
-                <div class="form-group row">
-                  <label for="inputFile" class="col-sm-4 col-form-label">Header Image</label>
-                  <input type="file" id="inputFile" v-on:change="handleFileChange">
-                </div>
-              </div>        
-              <h4>View types</h4>
-              <p>The grid view will always show by default, but you can decide if you want to also display items in a table format or map view. Map view will only display items that have a latitude and longitude.</p>
-              <!-- Views -->
-              <div class="form-group row">
-                <label for="listView" class="col-sm-4 col-form-label">Show List View</label>
-                <div class="col-sm-8">
-                  <input type="checkbox" id="listView" v-model="showList">
-                </div>
-              </div>    
-              <!-- <div class="form-group row">
-                <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
-                <div class="col-sm-10">
-                  <input type="checkbox" id="gridView" v-model="showGrid">
-                </div>
-              </div>   -->
-
-              <div class="form-group row">
-                <label for="mapView" class="col-sm-4 col-form-label">Show Map View</label>
-                <div class="col-sm-8">
-                  <input type="checkbox" id="mapView" v-model="showMap">
-                </div>
-              </div>  
-              <!-- Map Coordinates -->
-              <div class="card" v-if="showMap">
-                <div class="card-header">
-                  Map Settings
-                </div>
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="inputMapLat" class="col-12 col-sm-4 col-form-label">Initial Map Latitude</label>
-                    <div class="col-12 col-sm-8">
-                      <input class="form-control" id="inputMapLat" v-model.number="mapLat">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputMapLong" class="col-12 col-sm-4 col-form-label">Initial Map Longitude</label>
-                    <div class="col-12 col-sm-8">
-                      <input class="form-control" id="inputMapLong" v-model.number="mapLong">
-                    </div>
-                  </div>  
-                  <div class="form-group row">
-                    <label for="customRange2" class="col-12 col-sm-4 col-form-label">Initial Map Zoom</label>
-                    <div class="col-12 col-sm-2 text-center">
-                      <strong>{{zoom}}</strong>
-                    </div>            
-                    <div class="col-12 col-sm-8">
-                      <input type="range" class="custom-range" min="0" max="16" id="customRange2" v-model.number="zoom">    
-                    </div>
-                  </div> 
-                </div>
-              </div>     
-              <!-- Submit -->
-              <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" :formIsLoading="isLoading" />                      
-
-              
-                          
-              
             </div>
-            <!-- start second tab -->
-            <div class="tab-pane fade" id="field" role="tabpanel" aria-labelledby="field-tab">
-              <AdminCustomFields />   
-            </div>          
-            <!-- start third tab -->
-            <div class="tab-pane fade" id="tag" role="tabpanel" aria-labelledby="tag-tab">     
-              <p>Tags are used to group items together. Add tags here to make them available when creating or updating an item.</p>
-              <hr class="my-4" />   
-              <div class="tags">  
- 
-                <p>Existing tags:</p>   
-                <span v-if="tags.length == 0">
-                  <p>This archive currently does not have any tags! Add a tag below and click <strong>Add</strong>.</p>
-                </span>
-                <span class="badge badge-warning mr-2" v-for="tag in tags" v-else>
-                  {{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 badge-close" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" />
-                </span>
-                <form class="form-inline mb-4">
-                  <label class="sr-only" for="inlineFormInputName2">Name</label>
-                  <input type="text" class="form-control mr-2" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
-                  <div class="btn btn-primary" v-on:click.stop="addTag">Add</div>
-                </form>                   
+            <div v-else>
+              <div class="form-group row">
+                <label for="inputFile" class="col-sm-4 col-form-label">Header Image</label>
+                <input type="file" id="inputFile" v-on:change="handleFileChange">
               </div>
-            </div>  
-
-            <!-- start fourth tab -->
-            <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-              <ul class="list-unstyled">
-                <li><strong>Created:</strong> {{dateCreated}}</li>
-                <li><strong>ID:</strong> {{key}}</li>
-                <li><strong>Export Data: </strong> <AdminExportData /></li>
-                <!-- <li><strong>Import Data: </strong> <AdminImportData /></li> -->
-              </ul>
-              <div class="admin my-4">
-                <div class=" card-deck">
-
-                  <!-- Card two -->
-                  <div class="card border-danger">
-                    <div class="card-header">Delete Archive</div>
-                    <div class="card-body">
-                      <p>Warning: Deleting this archive is permanent and you can't get it back.</p>
-                      <a class="btn btn-outline-danger" data-target="#exampleModal" data-toggle="modal">Delete</a>
-                    </div>
-                  </div>             
-                </div> 
+            </div>         -->
+            <h3>View types</h3>
+            <p>The grid view will always show by default, but you can decide if you want to also display items in a table format or map view.</p>
+            <!-- Views -->
+            <FormField 
+              id="listview"
+              label="List View"
+              type="checkbox"
+              placeholder=""
+              v-model="showList"
+            />               
+            <!-- <div class="form-group row">
+              <label for="listView" class="col-sm-4 col-form-label">Show List View</label>
+              <div class="col-sm-8">
+                <input type="checkbox" id="listView" v-model="showList">
               </div>
-            </div>                  
-          </div>     
-        </div>
-      </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">CONFIRM DELETION!</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>          
-          <div class="modal-body">           
-            <p>Are you totally sure you want to delete this archive? You really can't get it back at all.</p>
+            </div>     -->
+            <!-- <div class="form-group row">
+              <label for="gridView" class="col-sm-2 col-form-label">Show Grid View</label>
+              <div class="col-sm-10">
+                <input type="checkbox" id="gridView" v-model="showGrid">
+              </div>
+            </div>   -->
+            <FormField 
+              id="mapview"
+              label="Map View"
+              type="checkbox"
+              placeholder=""
+              v-model="showMap"
+            />   
+            <!-- <div class="form-group row">
+              <label for="mapView" class="col-sm-4 col-form-label">Show Map View</label>
+              <div class="col-sm-8">
+                <input type="checkbox" id="mapView" v-model="showMap">
+              </div>
+            </div>   -->
+            <!-- Map Coordinates -->
+            <AlertBox color="gray" strength="200" v-if="showMap">
+                <h3>Map Settings</h3>
+                <p>The map view will only show items that have latitude and longitude values.</p>
+                <!-- <div class="form-group row">
+                  <label for="inputMapLat" class="col-12 col-sm-4 col-form-label">Initial Map Latitude</label>
+                  <div class="col-12 col-sm-8">
+                    <input class="form-control" id="inputMapLat" v-model.number="mapLat">
+                  </div>
+                </div> -->
+                <FormField 
+                  id="maplat"
+                  label="Initial Map Latitude"
+                  type="text"
+                  placeholder=""
+                  v-model="mapLat"
+                  helptext="Starting latitude"
+                />                   
+                <!-- <div class="form-group row">
+                  <label for="inputMapLong" class="col-12 col-sm-4 col-form-label">Initial Map Longitude</label>
+                  <div class="col-12 col-sm-8">
+                    <input class="form-control" id="inputMapLong" v-model.number="mapLong">
+                  </div>
+                </div>   -->
+                <FormField 
+                  id="maplong"
+                  label="Initial Map Longitude"
+                  type="text"
+                  placeholder=""
+                  v-model="mapLong"
+                  helptext="Starting longitude"
+                />   
+                <FormField 
+                  id="zoom"
+                  label="Initial Map Zoom"
+                  type="number"
+                  placeholder=""
+                  v-model="zoom"
+                  min="0"
+                  max="16"
+                  helptext="Starting zoom, between 0 and 16"
+                />                                  
+                <!-- <div class="form-group row">
+                  <label for="customRange2" class="col-12 col-sm-4 col-form-label">Initial Map Zoom</label>
+                  <div class="col-12 col-sm-2 text-center">
+                    <strong>{{zoom}}</strong>
+                  </div>            
+                  <div class="col-12 col-sm-8">
+                    <input type="range" class="custom-range" min="0" max="16" id="customRange2" v-model.number="zoom">    
+                  </div>
+                </div>  -->
+            </AlertBox>     
+            <!-- Submit -->
+            <SubmitButton v-on:submit="onSubmit" v-on:cancel="goBack" :formIsLoading="isLoading" />                      
+
+            
+                        
+
           </div>
-          <div class="modal-footer">
-            <a class="btn btn-outline-danger" @click.stop="deletearchive(key)">I understand, please delete</a>
+          <!-- start second tab -->
+          <div v-if="tab == 'fields'" class="shadow-lg p-4">
+            <AdminCustomFields />   
           </div>          
-        </div>
-      </div>
-    </div>
+          <!-- start third tab -->
+          <div v-if="tab == 'tags'" class="shadow-lg p-4">     
+            <h2>Tags</h2>
+            <p>Tags are used to group items together. Add tags here to make them available when creating or updating an item.</p>
+            <hr class="my-4" />   
+            <div class="tags">  
+
+              <h3>Existing tags</h3>   
+              <span v-if="tags.length == 0">
+                <p>This archive currently does not have any tags! Add a tag below and click <strong>Add</strong>.</p>
+              </span>
+              <div class="w-full flex flex-row flex-wrap py-4"  v-else>
+                <span v-for="tag in tags" class="mr-4">
+                  <span class="bg-yellow-200 p-4 rounded shadow">{{tag.tagTitle}}<font-awesome-icon icon="times" class="ml-2 cursor-pointer" v-on:click.stop="deleteTagFromArchive(tag.tagId, tag.tagTitle)" size="1x" /></span>
+                </span>
+              </div>              
+              <form class="form-inline my-4 flex flex-row">
+                <input type="text" class="border border-gray-900 p-2 rounded mr-4" id="inlineFormInputName2" placeholder="A tag" v-model="newTag">
+                <div class="btn-dark inline-block py-2 cursor-pointer" v-on:click.stop="addTag">Add</div>
+              </form>                   
+            </div>
+          </div>  
+
+          <!-- start fourth tab -->
+          <div v-if="tab == 'admin'" class="shadow-lg p-4">
+            <ul class="list-unstyled">
+              <li><strong>Created:</strong> {{dateCreated}}</li>
+              <li><strong>ID:</strong> {{key}}</li>
+              <li><strong>Export Data: </strong> <AdminExportData /></li>
+              <!-- <li><strong>Import Data: </strong> <AdminImportData /></li> -->
+            </ul>
+            <AlertBox color="yellow" strength="200" v-if="deleteConfirm">
+              <h3>Delete Archive</h3>
+              <p>Warning: Deleting this archive is permanent and you can't get it back.</p>
+              <a class="btn-dark" @click="deleteConfirm = !deleteConfirm">Delete</a>
+            </AlertBox>       
+            <AlertBox color="red" strength="200" v-else>
+              <h3>CONFIRM DELETION!!!</h3>
+              <p>Are you totally sure you want to delete this archive? You really can't get it back at all.</p>
+              <a class="btn-red mr-2" @click.stop="deletearchive(key)">I understand, please delete</a> <a class="btn-dark" @click="deleteConfirm = !deleteConfirm">No thanks!</a>
+            </AlertBox>                   
+          </div>                  
+        </div>     
   </div>
    
 </template>
@@ -204,6 +233,8 @@ import AdminExportData from '../components/AdminExportData'
 import AdminImportData from '../components/AdminImportData'
 import AdminCustomFields from '../components/AdminCustomFields'
 import SubmitButton from '../components/SubmitButton'
+import AlertBox from '../components/AlertBox'
+import FormField from '../components/FormField'
 
 export default {
   name: 'AdminEditArchive',
@@ -212,7 +243,9 @@ export default {
     AdminExportData,
     AdminImportData,
     SubmitButton,
-    AdminCustomFields
+    AdminCustomFields,
+    AlertBox,
+    FormField
   }, 
   data () {
     return {
@@ -226,14 +259,16 @@ export default {
       newTag: '',
       tags: [],
       newTags: [],
-      showMap: true,
+      showMap: false,
       // showGrid: true,
       showList: false,
       isLoading: false,
       zoom: 1,
       mapLat: 1,
       mapLong: 1,
-      backUrl: '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id
+      backUrl: '/u/' + firebase.auth().currentUser.displayName + '/' + this.$route.params.archive_id,
+      tab: 'basic',
+      deleteConfirm: 'false'
     }
   },
   created () {
