@@ -2,7 +2,7 @@
   "name": "generate-thumbnail-functions",
   "description": "Generate Thumbnail Firebase Functions sample",
   "dependencies": {
-    "ajv": "^5.5.2",
+    "ajv": "^6.12.3",
     "child-process-promise": "^2.2.0",
     "firebase": "^6.3.1",
     "firebase-admin": "^8.2.0",
